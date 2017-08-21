@@ -16,8 +16,16 @@
 
 bool portable_mode = false;
 
-int GetConfigPath(char *path, size_t size, const char *name)
-{
+OBSApp::OBSApp(profiler_name_store_t *store) :
+profilerNameStore(store) {
+    
+}
+
+OBSApp::~OBSApp() {
+    
+}
+
+int OBSApp::GetConfigPath(char *path, size_t size, const char *name) {
     if (!OBS_UNIX_STRUCTURE && portable_mode) {
         if (name && *name) {
             return snprintf(path, size, CONFIG_PATH "/%s", name);
@@ -27,4 +35,27 @@ int GetConfigPath(char *path, size_t size, const char *name)
     } else {
         return os_get_config_path(path, size, name);
     }
+}
+
+bool OBSApp::StartupOBS(const char* locale) {
+    char path[512];
+    
+    // load config
+    if (GetConfigPath(path, sizeof(path), "obs-studio/plugin_config") <= 0) {
+        return false;
+    }
+    
+    // startup obs
+    if(!obs_startup(locale, path, profilerNameStore)) {
+        return false;
+    }
+    
+    // init modules
+    blog(LOG_INFO, "---------------------------------");
+    obs_load_all_modules();
+    blog(LOG_INFO, "---------------------------------");
+    obs_log_loaded_modules();
+    blog(LOG_INFO, "---------------------------------");
+    obs_post_load_modules();
+    return true;
 }

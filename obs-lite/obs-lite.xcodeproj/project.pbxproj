@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92FFDA7C1F4AF0C700AB5892 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA781F4AF0C700AB5892 /* AppDelegate.m */; };
+		92FFDA7C1F4AF0C700AB5892 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */; };
 		92FFDA7D1F4AF0C700AB5892 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA791F4AF0C700AB5892 /* main.m */; };
 		92FFDA7E1F4AF0C700AB5892 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA7B1F4AF0C700AB5892 /* ViewController.m */; };
 		92FFDA841F4AF0E200AB5892 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FFDA831F4AF0E200AB5892 /* Contents.json */; };
@@ -118,7 +118,7 @@
 /* Begin PBXFileReference section */
 		92D586F71F4AF0A90048D381 /* obs-lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "obs-lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92FFDA771F4AF0C700AB5892 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		92FFDA781F4AF0C700AB5892 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		92FFDA791F4AF0C700AB5892 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		92FFDA7A1F4AF0C700AB5892 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		92FFDA7B1F4AF0C700AB5892 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -370,7 +370,7 @@
 				92FFDC3F1F4B074D00AB5892 /* plugins */,
 				92FFDC4B1F4B076600AB5892 /* ui */,
 				92FFDA771F4AF0C700AB5892 /* AppDelegate.h */,
-				92FFDA781F4AF0C700AB5892 /* AppDelegate.m */,
+				92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */,
 				92FFDA791F4AF0C700AB5892 /* main.m */,
 				92FFDA7A1F4AF0C700AB5892 /* ViewController.h */,
 				92FFDA7B1F4AF0C700AB5892 /* ViewController.m */,
@@ -899,7 +899,7 @@
 				92FFDBB41F4AF80800AB5892 /* hashtable_seed.c in Sources */,
 				92FFDB801F4AF66100AB5892 /* obs-avc.c in Sources */,
 				92FFDBB81F4AF80800AB5892 /* pack_unpack.c in Sources */,
-				92FFDA7C1F4AF0C700AB5892 /* AppDelegate.m in Sources */,
+				92FFDA7C1F4AF0C700AB5892 /* AppDelegate.mm in Sources */,
 				92FFDBB91F4AF80800AB5892 /* strbuffer.c in Sources */,
 				92FFDC3D1F4B072F00AB5892 /* vec3.c in Sources */,
 				92FFDABE1F4AF2A000AB5892 /* dstr.c in Sources */,

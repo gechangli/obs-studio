@@ -14,5 +14,23 @@
 #define OBS_UNIX_STRUCTURE 0
 #endif
 
-// global helper
-int GetConfigPath(char *path, size_t size, const char *name);
+/**
+ * OBS application
+ */
+class OBSApp {
+private:
+    profiler_name_store_t* profilerNameStore = nullptr;
+    
+public:
+    // get config file path
+    static int GetConfigPath(char* path, size_t size, const char* name);
+    
+    OBSApp(profiler_name_store_t *store);
+    virtual ~OBSApp();
+    
+    bool StartupOBS(const char* locale);
+    
+    profiler_name_store_t* GetProfilerNameStore() const {
+        return profilerNameStore;
+    }
+};
