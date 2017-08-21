@@ -34,7 +34,7 @@ extern "C" {
 
 #define INT_CUR_LINE __LINE__
 #define FILE_LINE __FILE__ " (" S__LINE__ "): "
-
+    
 enum {
 	/**
 	 * Use if there's a problem that can potentially affect the program,

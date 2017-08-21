@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "obs.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+    
+    // load all obs modules
+    obs_load_all_modules();
 }
 
 
