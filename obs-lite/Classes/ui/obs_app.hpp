@@ -24,6 +24,9 @@ private:
 public:
     // get config file path
     static int GetConfigPath(char* path, size_t size, const char* name);
+    static void AddExtraModulePaths();
+    static int GetProgramDataPath(char *path, size_t size, const char *name);
+    static char* GetProgramDataPathPtr(const char *name);
     
     OBSApp(profiler_name_store_t *store);
     virtual ~OBSApp();

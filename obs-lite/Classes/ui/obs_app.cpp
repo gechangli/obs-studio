@@ -10,9 +10,12 @@
 #include <util/dstr.h>
 #include <util/platform.h>
 #include <util/profiler.hpp>
+#include <util/util.hpp>
 #include <obs-config.h>
 #include <obs.hpp>
 #include "obs_app.hpp"
+
+using namespace std;
 
 bool portable_mode = false;
 
@@ -23,6 +26,44 @@ profilerNameStore(store) {
 
 OBSApp::~OBSApp() {
     
+}
+
+void OBSApp::AddExtraModulePaths() {
+    char base_module_dir[512];
+#if defined(_WIN32) || defined(__APPLE__)
+    int ret = GetProgramDataPath(base_module_dir, sizeof(base_module_dir),
+                                 "obs-studio/plugins/%module%");
+#else
+    int ret = GetConfigPath(base_module_dir, sizeof(base_module_dir),
+                            "obs-studio/plugins/%module%");
+#endif
+    
+    if (ret <= 0)
+        return;
+    
+    string path = (char*)base_module_dir;
+#if defined(__APPLE__)
+    obs_add_module_path((path + "/bin").c_str(), (path + "/data").c_str());
+    
+    BPtr<char> config_bin = os_get_config_path_ptr("obs-studio/plugins/%module%/bin");
+    BPtr<char> config_data = os_get_config_path_ptr("obs-studio/plugins/%module%/data");
+    obs_add_module_path(config_bin, config_data);
+    
+#elif ARCH_BITS == 64
+    obs_add_module_path((path + "/bin/64bit").c_str(),
+                        (path + "/data").c_str());
+#else
+    obs_add_module_path((path + "/bin/32bit").c_str(),
+                        (path + "/data").c_str());
+#endif
+}
+
+int OBSApp::GetProgramDataPath(char *path, size_t size, const char *name) {
+    return os_get_program_data_path(path, size, name);
+}
+
+char* OBSApp::GetProgramDataPathPtr(const char *name) {
+    return os_get_program_data_path_ptr(name);
 }
 
 int OBSApp::GetConfigPath(char *path, size_t size, const char *name) {
