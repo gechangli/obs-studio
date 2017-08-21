@@ -6,6 +6,7 @@ find_package(FFmpeg REQUIRED
 	COMPONENTS avformat avutil swscale swresample
 	OPTIONAL_COMPONENTS avcodec)
 include_directories(${FFMPEG_INCLUDE_DIRS})
+link_directories(/usr/local/lib)
 
 if (NOT "${FFMPEG_AVCODEC_LIBRARIES}" STREQUAL "")
 	list(REMOVE_ITEM FFMPEG_LIBRARIES ${FFMPEG_AVCODEC_LIBRARIES})

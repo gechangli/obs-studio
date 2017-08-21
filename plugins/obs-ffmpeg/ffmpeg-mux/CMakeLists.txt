@@ -17,6 +17,7 @@ add_executable(ffmpeg-mux
 find_library(COREFOUNDATION CoreFoundation)
 mark_as_advanced(COREFOUNDATION)
 include_directories(${COREFOUNDATION})
+link_directories(/usr/local/lib)
 
 target_link_libraries(ffmpeg-mux
 	bz2

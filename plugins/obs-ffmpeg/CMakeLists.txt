@@ -54,6 +54,7 @@ endif()
 find_package(FFmpeg REQUIRED
 	COMPONENTS avcodec avfilter avdevice avutil swscale avformat swresample)
 include_directories(${FFMPEG_INCLUDE_DIRS})
+link_directories(/usr/local/lib)
 
 set(obs-ffmpeg_HEADERS
 	obs-ffmpeg-formats.h
