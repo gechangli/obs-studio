@@ -23,7 +23,8 @@
 .idea
 
 #xcode
-*.xcodeproj/
+*.xcworkspace
+xcuserdata
 
 #other stuff (windows stuff, qt moc stuff, etc)
 Release_MD/
