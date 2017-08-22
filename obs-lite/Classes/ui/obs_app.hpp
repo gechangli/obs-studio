@@ -31,6 +31,7 @@ public:
     OBSApp(profiler_name_store_t *store);
     virtual ~OBSApp();
     
+    void RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader);
     bool StartupOBS(const char* locale);
     
     profiler_name_store_t* GetProfilerNameStore() const {

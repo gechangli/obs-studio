@@ -78,6 +78,10 @@ int OBSApp::GetConfigPath(char *path, size_t size, const char *name) {
     }
 }
 
+void OBSApp::RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader) {
+    obs_register_static_module_loader(loader);
+}
+
 bool OBSApp::StartupOBS(const char* locale) {
     char path[512];
     

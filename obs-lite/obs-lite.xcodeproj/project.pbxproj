@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		927B92F81F4C65640032FC2F /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 927B92F11F4C65640032FC2F /* av-capture.mm */; };
+		927B92F91F4C65640032FC2F /* en-US.ini in Resources */ = {isa = PBXBuildFile; fileRef = 927B92F41F4C65640032FC2F /* en-US.ini */; };
+		927B92FA1F4C65640032FC2F /* zh-CN.ini in Resources */ = {isa = PBXBuildFile; fileRef = 927B92F51F4C65640032FC2F /* zh-CN.ini */; };
 		92FFDA7C1F4AF0C700AB5892 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */; };
 		92FFDA7D1F4AF0C700AB5892 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA791F4AF0C700AB5892 /* main.m */; };
 		92FFDA7E1F4AF0C700AB5892 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA7B1F4AF0C700AB5892 /* ViewController.m */; };
@@ -109,13 +112,15 @@
 		92FFDC3C1F4B072F00AB5892 /* vec2.c in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDC261F4B072F00AB5892 /* vec2.c */; };
 		92FFDC3D1F4B072F00AB5892 /* vec3.c in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDC281F4B072F00AB5892 /* vec3.c */; };
 		92FFDC3E1F4B072F00AB5892 /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDC2A1F4B072F00AB5892 /* vec4.c */; };
-		92FFDC481F4B074D00AB5892 /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDC411F4B074D00AB5892 /* av-capture.mm */; };
-		92FFDC491F4B074D00AB5892 /* en-US.ini in Resources */ = {isa = PBXBuildFile; fileRef = 92FFDC441F4B074D00AB5892 /* en-US.ini */; };
-		92FFDC4A1F4B074D00AB5892 /* zh-CN.ini in Resources */ = {isa = PBXBuildFile; fileRef = 92FFDC451F4B074D00AB5892 /* zh-CN.ini */; };
 		92FFDC4E1F4B076600AB5892 /* obs_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDC4C1F4B076600AB5892 /* obs_app.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		927B92F11F4C65640032FC2F /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
+		927B92F41F4C65640032FC2F /* en-US.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "en-US.ini"; sourceTree = "<group>"; };
+		927B92F51F4C65640032FC2F /* zh-CN.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zh-CN.ini"; sourceTree = "<group>"; };
+		927B92F61F4C65640032FC2F /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
+		927B92F71F4C65640032FC2F /* scope-guard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "scope-guard.hpp"; sourceTree = "<group>"; };
 		92D586F71F4AF0A90048D381 /* obs-lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "obs-lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92FFDA771F4AF0C700AB5892 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -312,11 +317,6 @@
 		92FFDC291F4B072F00AB5892 /* vec3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec3.h; sourceTree = "<group>"; };
 		92FFDC2A1F4B072F00AB5892 /* vec4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vec4.c; sourceTree = "<group>"; };
 		92FFDC2B1F4B072F00AB5892 /* vec4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec4.h; sourceTree = "<group>"; };
-		92FFDC411F4B074D00AB5892 /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
-		92FFDC441F4B074D00AB5892 /* en-US.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "en-US.ini"; sourceTree = "<group>"; };
-		92FFDC451F4B074D00AB5892 /* zh-CN.ini */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "zh-CN.ini"; sourceTree = "<group>"; };
-		92FFDC461F4B074D00AB5892 /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
-		92FFDC471F4B074D00AB5892 /* scope-guard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "scope-guard.hpp"; sourceTree = "<group>"; };
 		92FFDC4C1F4B076600AB5892 /* obs_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obs_app.cpp; sourceTree = "<group>"; };
 		92FFDC4D1F4B076600AB5892 /* obs_app.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = obs_app.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -342,6 +342,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		927B92F01F4C65640032FC2F /* mac_avcapture */ = {
+			isa = PBXGroup;
+			children = (
+				927B92F11F4C65640032FC2F /* av-capture.mm */,
+				927B92F21F4C65640032FC2F /* data */,
+				927B92F61F4C65640032FC2F /* left-right.hpp */,
+				927B92F71F4C65640032FC2F /* scope-guard.hpp */,
+			);
+			path = mac_avcapture;
+			sourceTree = "<group>";
+		};
+		927B92F21F4C65640032FC2F /* data */ = {
+			isa = PBXGroup;
+			children = (
+				927B92F31F4C65640032FC2F /* locale */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		927B92F31F4C65640032FC2F /* locale */ = {
+			isa = PBXGroup;
+			children = (
+				927B92F41F4C65640032FC2F /* en-US.ini */,
+				927B92F51F4C65640032FC2F /* zh-CN.ini */,
+			);
+			path = locale;
+			sourceTree = "<group>";
+		};
 		92D586EE1F4AF0A90048D381 = {
 			isa = PBXGroup;
 			children = (
@@ -702,37 +730,9 @@
 		92FFDC3F1F4B074D00AB5892 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
-				92FFDC401F4B074D00AB5892 /* mac-avcapture */,
+				927B92F01F4C65640032FC2F /* mac_avcapture */,
 			);
 			path = plugins;
-			sourceTree = "<group>";
-		};
-		92FFDC401F4B074D00AB5892 /* mac-avcapture */ = {
-			isa = PBXGroup;
-			children = (
-				92FFDC411F4B074D00AB5892 /* av-capture.mm */,
-				92FFDC421F4B074D00AB5892 /* data */,
-				92FFDC461F4B074D00AB5892 /* left-right.hpp */,
-				92FFDC471F4B074D00AB5892 /* scope-guard.hpp */,
-			);
-			path = "mac-avcapture";
-			sourceTree = "<group>";
-		};
-		92FFDC421F4B074D00AB5892 /* data */ = {
-			isa = PBXGroup;
-			children = (
-				92FFDC431F4B074D00AB5892 /* locale */,
-			);
-			path = data;
-			sourceTree = "<group>";
-		};
-		92FFDC431F4B074D00AB5892 /* locale */ = {
-			isa = PBXGroup;
-			children = (
-				92FFDC441F4B074D00AB5892 /* en-US.ini */,
-				92FFDC451F4B074D00AB5892 /* zh-CN.ini */,
-			);
-			path = locale;
 			sourceTree = "<group>";
 		};
 		92FFDC4B1F4B076600AB5892 /* ui */ = {
@@ -808,8 +808,8 @@
 				92FFDBB01F4AF80800AB5892 /* Android.mk in Resources */,
 				92FFDBAF1F4AF80800AB5892 /* .gitignore in Resources */,
 				92FFDA871F4AF0E600AB5892 /* Main.storyboard in Resources */,
-				92FFDC4A1F4B074D00AB5892 /* zh-CN.ini in Resources */,
-				92FFDC491F4B074D00AB5892 /* en-US.ini in Resources */,
+				927B92FA1F4C65640032FC2F /* zh-CN.ini in Resources */,
+				927B92F91F4C65640032FC2F /* en-US.ini in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -881,8 +881,8 @@
 				92FFDB891F4AF66100AB5892 /* obs-output-delay.c in Sources */,
 				92FFDC351F4B072F00AB5892 /* math-extra.c in Sources */,
 				92FFDB841F4AF66100AB5892 /* obs-encoder.c in Sources */,
+				927B92F81F4C65640032FC2F /* av-capture.mm in Sources */,
 				92FFDC391F4B072F00AB5892 /* quat.c in Sources */,
-				92FFDC481F4B074D00AB5892 /* av-capture.mm in Sources */,
 				92FFDB811F4AF66100AB5892 /* obs-cocoa.c in Sources */,
 				92FFDBF91F4B071C00AB5892 /* audio-io.c in Sources */,
 				92FFDAC81F4AF2A000AB5892 /* threading-posix.c in Sources */,

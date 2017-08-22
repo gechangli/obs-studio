@@ -336,6 +336,18 @@ EXPORT bool obs_get_audio_info(struct obs_audio_info *oai);
 EXPORT int obs_open_module(obs_module_t **module, const char *path,
 		const char *data_path);
 
+/// module structure creator for static module
+typedef obs_module_t* (*OBS_STATIC_MODULE_CREATOR)(const char*);
+    
+/**
+ * Opens a static module manually
+ */
+EXPORT int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator, const char* data_path);
+    
+// register a callback to load static modules
+typedef void (*OBS_STATIC_MODULE_LOADER)();
+EXPORT void obs_register_static_module_loader(OBS_STATIC_MODULE_LOADER loader);
+    
 /**
  * Initializes the module, which calls its obs_module_load export.  If the
  * module is already loaded, then this function does nothing and returns

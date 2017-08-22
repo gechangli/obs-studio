@@ -1401,7 +1401,7 @@ obs_sceneitem_t *obs_scene_add(obs_scene_t *scene, obs_source_t *source)
 
 	full_unlock(scene);
 
-	if (!scene->source->context.private)
+	if (!scene->source->context.is_private)
 		init_hotkeys(scene, item, obs_source_get_name(source));
 
 	calldata_init_fixed(&params, stack, sizeof(stack));

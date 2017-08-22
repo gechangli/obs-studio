@@ -27,6 +27,9 @@
 #define MODULE_EXTERN extern
 #endif
 
+// hide symbol in a module
+#define MODULE_HIDDEN __attribute__ ((visibility ("hidden")))
+
 /**
  * @file
  * @brief This file is used by modules for module declaration and module
@@ -84,6 +87,21 @@ bool obs_module_load(void)
 	MODULE_EXPORT uint32_t obs_module_ver(void); \
 	uint32_t obs_module_ver(void) {return LIBOBS_API_VER;}
 
+/// declare a module which is statically linked with obs
+#define OBS_DECLARE_STATIC_MODULE() \
+    static obs_module_t *obs_module_pointer; \
+    MODULE_HIDDEN void obs_module_set_pointer(obs_module_t *module) { \
+        obs_module_pointer = module; \
+    } \
+    MODULE_HIDDEN obs_module_t *obs_current_module(void) {return obs_module_pointer;} \
+    MODULE_HIDDEN uint32_t obs_module_ver(void) {return LIBOBS_API_VER;}
+
+/// to manually register a static module
+#define OBS_DECLARE_STATIC_MODULE_CREATOR(name) \
+    MODULE_EXTERN obs_module_t* create_static_module_##name(const char* data_path);
+#define OBS_OPEN_STATIC_MODULE(name) \
+    obs_open_static_module(create_static_module_##name, "data/obs-plugins/"#name);
+
 /**
  * Required: Called when the module is loaded.  Use this function to load all
  * the sources/encoders/outputs/services for your module, or anything else that
@@ -131,6 +149,27 @@ MODULE_EXPORT void obs_module_free_locale(void);
 		text_lookup_destroy(obs_module_lookup); \
 	}
 
+/// declare locale memthod used by static module
+#define OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(module_name, default_locale) \
+    static lookup_t *obs_module_lookup = NULL; \
+    MODULE_HIDDEN const char *obs_module_text(const char *val) { \
+        const char *out = val; \
+        text_lookup_getstr(obs_module_lookup, val, &out); \
+        return out; \
+    } \
+    MODULE_HIDDEN bool obs_module_get_string(const char *val, const char **out) { \
+        return text_lookup_getstr(obs_module_lookup, val, out); \
+    } \
+    MODULE_HIDDEN void obs_module_set_locale(const char *locale) { \
+        if (obs_module_lookup) text_lookup_destroy(obs_module_lookup); \
+        obs_module_lookup = obs_module_load_locale( \
+                obs_current_module(), \
+                default_locale, locale); \
+    } \
+    MODULE_HIDDEN void obs_module_free_locale(void) { \
+        text_lookup_destroy(obs_module_lookup); \
+    }
+    
 /** Helper function for looking up locale if default locale handler was used */
 MODULE_EXTERN const char *obs_module_text(const char *lookup_string);
 
@@ -166,6 +205,10 @@ MODULE_EXTERN obs_module_t *obs_current_module(void);
 #define OBS_MODULE_AUTHOR(name) \
 	MODULE_EXPORT const char *obs_module_author(void); \
 	const char *obs_module_author(void) {return name;}
+
+/// declare the author for static module
+#define OBS_STATIC_MODULE_AUTHOR(name) \
+    MODULE_HIDDEN const char *obs_module_author(void) {return name;}
 
 /** Optional: Returns the full name of the module */
 MODULE_EXPORT const char *obs_module_name(void);

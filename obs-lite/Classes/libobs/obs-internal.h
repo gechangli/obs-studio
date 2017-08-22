@@ -79,6 +79,7 @@ struct obs_module {
 	char *data_path;
 	void *module;
 	bool loaded;
+    bool is_static;
 
 	bool        (*load)(void);
 	void        (*unload)(void);
@@ -425,7 +426,7 @@ struct obs_context_data {
 	struct obs_context_data         *next;
 	struct obs_context_data         **prev_next;
 
-	bool                            private;
+	bool                            is_private;
 };
 
 extern bool obs_context_data_init(
@@ -434,7 +435,7 @@ extern bool obs_context_data_init(
 		obs_data_t              *settings,
 		const char              *name,
 		obs_data_t              *hotkey_data,
-		bool                    private);
+		bool                    is_private);
 extern void obs_context_data_free(struct obs_context_data *context);
 
 extern void obs_context_data_insert(struct obs_context_data *context,
@@ -685,7 +686,7 @@ struct obs_source {
 extern const struct obs_source_info *get_source_info(const char *id);
 extern bool obs_source_init_context(struct obs_source *source,
 		obs_data_t *settings, const char *name,
-		obs_data_t *hotkey_data, bool private);
+		obs_data_t *hotkey_data, bool is_private);
 
 extern void obs_source_save(obs_source_t *source);
 extern void obs_source_load(obs_source_t *source);
@@ -717,7 +718,7 @@ static inline void obs_source_dosignal(struct obs_source *source,
 
 	calldata_init_fixed(&data, stack, sizeof(stack));
 	calldata_set_ptr(&data, "source", source);
-	if (signal_obs && !source->context.private)
+	if (signal_obs && !source->context.is_private)
 		signal_handler_signal(obs->signals, signal_obs, &data);
 	if (signal_source)
 		signal_handler_signal(source->context.signals, signal_source,

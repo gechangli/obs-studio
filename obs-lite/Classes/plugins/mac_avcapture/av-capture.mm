@@ -6,6 +6,7 @@
 
 #include <obs-module.h>
 #include <obs.hpp>
+#include <obs-internal.h>
 #include <media-io/video-io.h>
 
 #include <util/dstr.hpp>
@@ -21,6 +22,9 @@
 #include "scope-guard.hpp"
 
 #define NBSP "\xC2\xA0"
+
+// it is statically linked
+#define __STATIC_MODULE__
 
 using namespace std;
 
@@ -2173,10 +2177,21 @@ static void av_capture_update(void *data, obs_data_t *settings)
 			obs_data_get_bool(settings, "buffering"));
 }
 
+// declare module, static or not
+#ifdef __STATIC_MODULE__
+OBS_DECLARE_STATIC_MODULE()
+OBS_STATIC_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "en-US")
+#else
 OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("mac-avcapture", "en-US")
+OBS_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "en-US")
+#endif
 
+// module load method
+#ifdef __STATIC_MODULE__
+static bool _obs_module_load()
+#else
 bool obs_module_load(void)
+#endif
 {
 #ifdef __MAC_10_10
 	// Enable iOS device to show up as AVCapture devices
@@ -2208,3 +2223,29 @@ bool obs_module_load(void)
 	obs_register_source(&av_capture_info);
 	return true;
 }
+
+#ifdef __STATIC_MODULE__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+obs_module_t* create_static_module_mac_avcapture(const char *data_path) {
+    obs_module_t* mod = (obs_module_t*)bzalloc(sizeof(obs_module_t));
+    mod->mod_name = bstrdup("mac_avcapture");
+    mod->file = bstrdup("mac_avcapture");
+    mod->data_path = bstrdup(data_path);
+    mod->is_static = true;
+    mod->load = _obs_module_load;
+    mod->set_locale = obs_module_set_locale;
+    mod->free_locale = obs_module_free_locale;
+    mod->ver = obs_module_ver;
+    mod->set_pointer = obs_module_set_pointer;
+    return mod;
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

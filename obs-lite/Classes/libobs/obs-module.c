@@ -24,6 +24,8 @@
 
 extern const char *get_module_extension(void);
 
+static OBS_STATIC_MODULE_LOADER obs_static_module_loader = NULL;
+
 static inline int req_func_not_found(const char *name, const char *path)
 {
 	blog(LOG_ERROR, "Required module function '%s' in module '%s' not "
@@ -34,6 +36,7 @@ static inline int req_func_not_found(const char *name, const char *path)
 
 static int load_module_exports(struct obs_module *mod, const char *path)
 {
+    mod->is_static = false;
 	mod->load = os_dlsym(mod->module, "obs_module_load");
 	if (!mod->load)
 		return req_func_not_found("obs_module_load", path);
@@ -116,6 +119,30 @@ int obs_open_module(obs_module_t **module, const char *path,
 		mod.set_locale(obs->locale);
 
 	return MODULE_SUCCESS;
+}
+
+void obs_register_static_module_loader(OBS_STATIC_MODULE_LOADER loader) {
+    obs_static_module_loader = loader;
+}
+
+int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator, const char* data_path) {
+    // check obs core
+    if (!obs)
+        return MODULE_ERROR;
+    
+    // create module
+    obs_module_t* mod = creator(data_path);
+    
+    // put module to link list
+    mod->next = obs->first_module;
+    obs->first_module = mod;
+    mod->set_pointer(mod);
+    
+    // init module
+    obs_init_module(mod);
+    
+    // ok
+    return MODULE_SUCCESS;
 }
 
 bool obs_init_module(obs_module_t *module)
@@ -245,13 +272,24 @@ static const char *reset_win32_symbol_paths_name = "reset_win32_symbol_paths";
 
 void obs_load_all_modules(void)
 {
+    // start profile
 	profile_start(obs_load_all_modules_name);
+    
+    // load dynamic modules
 	obs_find_modules(load_all_callback, NULL);
+    
+    // load static modules
+    if(obs_static_module_loader) {
+        obs_static_module_loader();
+    }
+    
 #ifdef _WIN32
 	profile_start(reset_win32_symbol_paths_name);
 	reset_win32_symbol_paths();
 	profile_end(reset_win32_symbol_paths_name);
 #endif
+    
+    // end profile
 	profile_end(obs_load_all_modules_name);
 }
 

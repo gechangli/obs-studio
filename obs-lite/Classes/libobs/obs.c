@@ -1251,7 +1251,7 @@ void obs_enum_sources(bool (*enum_proc)(void*, obs_source_t*), void *param)
 			(obs_source_t*)source->context.next;
 
 		if ((source->info.type == OBS_SOURCE_TYPE_INPUT) != 0 &&
-		    !source->context.private &&
+		    !source->context.is_private &&
 		    !enum_proc(param, source))
 			break;
 
@@ -1315,7 +1315,7 @@ static inline void *get_context_by_name(void *vfirst, const char *name,
 
 	context = *first;
 	while (context) {
-		if (!context->private && strcmp(context->name, name) == 0) {
+		if (!context->is_private && strcmp(context->name, name) == 0) {
 			context = addref(context);
 			break;
 		}
@@ -1688,7 +1688,7 @@ obs_data_array_t *obs_save_sources_filtered(obs_save_source_filter_cb cb,
 
 	while (source) {
 		if ((source->info.type != OBS_SOURCE_TYPE_FILTER) != 0 &&
-				!source->context.private && cb(data_, source)) {
+				!source->context.is_private && cb(data_, source)) {
 			obs_data_t *source_data = obs_save_source(source);
 
 			obs_data_array_push_back(array, source_data);
@@ -1742,7 +1742,7 @@ static inline bool obs_context_data_init_wrap(
 {
 	assert(context);
 	memset(context, 0, sizeof(*context));
-	context->private = private;
+	context->is_private = private;
 	context->type = type;
 
 	pthread_mutex_init_value(&context->rename_cache_mutex);
@@ -1838,7 +1838,7 @@ void obs_context_data_setname(struct obs_context_data *context,
 
 	if (context->name)
 		da_push_back(context->rename_cache, &context->name);
-	context->name = dup_name(name, context->private);
+	context->name = dup_name(name, context->is_private);
 
 	pthread_mutex_unlock(&context->rename_cache_mutex);
 }
