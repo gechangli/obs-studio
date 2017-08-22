@@ -138,6 +138,10 @@ int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator, const char* data_p
     obs->first_module = mod;
     mod->set_pointer(mod);
     
+    // load module locale info
+    if (mod->set_locale)
+        mod->set_locale(obs->locale);
+    
     // init module
     obs_init_module(mod);
     

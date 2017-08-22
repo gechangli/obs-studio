@@ -10,7 +10,7 @@
 #include <media-io/video-io.h>
 
 #include <util/dstr.hpp>
-
+#include <util/util.hpp>
 #include <algorithm>
 #include <initializer_list>
 #include <cinttypes>
@@ -2219,6 +2219,8 @@ bool obs_module_load(void)
 		.get_properties = av_capture_properties,
 		.update         = av_capture_update,
 	};
+    
+    blog(LOG_INFO, "the name is %s", av_capture_getname(nullptr));
 
 	obs_register_source(&av_capture_info);
 	return true;

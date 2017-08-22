@@ -36,7 +36,7 @@ static void loadStaticModules() {
     // init obs app
     self.obsApp = new OBSApp(nullptr);
     self.obsApp->RegisterStaticModuleLoader(loadStaticModules);
-    self.obsApp->StartupOBS("en_US");
+    self.obsApp->StartupOBS("zh_CN");
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

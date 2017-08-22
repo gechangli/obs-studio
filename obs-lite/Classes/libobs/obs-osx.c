@@ -15,19 +15,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "util/platform.h"
-#include "util/dstr.h"
-#include "obs.h"
-#include "obs-internal.h"
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/sysctl.h>
+#import "util/platform.h"
+#import "util/dstr.h"
+#import "obs.h"
+#import "obs-internal.h"
 
-#include <objc/objc.h>
-#include <Carbon/Carbon.h>
-#include <IOKit/hid/IOHIDDevice.h>
-#include <IOKit/hid/IOHIDManager.h>
+#import <unistd.h>
+#import <sys/types.h>
+#import <sys/sysctl.h>
+
+#import <objc/objc.h>
+#import <Carbon/Carbon.h>
+#import <IOKit/hid/IOHIDDevice.h>
+#import <IOKit/hid/IOHIDManager.h>
 
 const char *get_module_extension(void)
 {
@@ -35,13 +38,11 @@ const char *get_module_extension(void)
 }
 
 static const char *module_bin[] = {
-	"../obs-plugins",
-	OBS_INSTALL_PREFIX "obs-plugins",
+	"obs-plugins"
 };
 
 static const char *module_data[] = {
-	"../data/obs-plugins/%module%",
-	OBS_INSTALL_DATA_PATH "obs-plugins/%module%",
+	"data/obs-plugins/%module%"
 };
 
 static const int module_patterns_size =
@@ -49,8 +50,9 @@ static const int module_patterns_size =
 
 void add_default_module_paths(void)
 {
-	for (int i = 0; i < module_patterns_size; i++)
+    for (int i = 0; i < module_patterns_size; i++) {
 		obs_add_module_path(module_bin[i], module_data[i]);
+    }
 }
 
 char *find_libobs_data_file(const char *file)
@@ -1325,3 +1327,5 @@ bool obs_hotkeys_platform_is_pressed(obs_hotkeys_platform_t *plat,
 
 	return false;
 }
+
+#endif // #if TARGET_OS_OSX

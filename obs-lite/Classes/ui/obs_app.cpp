@@ -96,7 +96,6 @@ bool OBSApp::StartupOBS(const char* locale) {
     }
     
     // init modules
-    blog(LOG_INFO, "---------------------------------");
     obs_load_all_modules();
     blog(LOG_INFO, "---------------------------------");
     obs_log_loaded_modules();
