@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdio.h>
+#include <string>
+#include <util/util.hpp>
 
 #ifdef __APPLE__
 #define BASE_PATH ".."
@@ -20,6 +22,15 @@
 class OBSApp {
 private:
     profiler_name_store_t* profilerNameStore = nullptr;
+    ConfigFile globalConfig;
+    
+    bool MakeUserDirs();
+    bool MakeUserProfileDirs();
+    bool do_mkdir(const char *path);
+    std::string GetSceneCollectionFileFromName(const char *name);
+    std::string GetProfileDirFromName(const char *name);
+    bool InitGlobalConfig();
+    bool InitGlobalConfigDefaults();
     
 public:
     // get config file path
