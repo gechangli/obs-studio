@@ -86,7 +86,7 @@ bool OBSApp::StartupOBS(const char* locale) {
     char path[512];
     
     // load config
-    if (GetConfigPath(path, sizeof(path), "obs-studio/plugin_config") <= 0) {
+    if (GetConfigPath(path, sizeof(path), "data/plugin_config") <= 0) {
         return false;
     }
     

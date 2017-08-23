@@ -39,11 +39,11 @@ const char *get_module_extension(void)
 }
 
 static const char *module_bin[] = {
-	"obs-plugins"
+	"plugins"
 };
 
 static const char *module_data[] = {
-	"data/obs-plugins/%module%"
+	"data/plugins/%module%"
 };
 
 static const int module_patterns_size =

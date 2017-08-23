@@ -15,6 +15,9 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #include "base.h"
 #include "platform.h"
 #include "dstr.h"
@@ -72,43 +75,28 @@ uint64_t os_gettime_ns(void)
 }
 
 /* gets the location [domain mask]/Library/Application Support/[name] */
-static int os_get_path_internal(char *dst, size_t size, const char *name,
-		NSSearchPathDomainMask domainMask)
+static int os_get_path_internal(char *dst, size_t size, const char *name)
 {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(
-			NSApplicationSupportDirectory, domainMask, YES);
-
-	if([paths count] == 0)
-		bcrash("Could not get home directory (platform-cocoa)");
-
-	NSString *application_support = paths[0];
-	const char *base_path = [application_support UTF8String];
+    // get app resource path
+	NSString* resPath = [NSBundle mainBundle].resourcePath;
 
 	if (!name || !*name)
-		return snprintf(dst, size, "%s", base_path);
+		return snprintf(dst, size, "%s", [resPath UTF8String]);
 	else
-		return snprintf(dst, size, "%s/%s", base_path, name);
+		return snprintf(dst, size, "%s/%s", [resPath UTF8String], name);
 }
 
-static char *os_get_path_ptr_internal(const char *name,
-		NSSearchPathDomainMask domainMask)
+static char *os_get_path_ptr_internal(const char *name)
 {
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(
-			NSApplicationSupportDirectory, domainMask, YES);
-
-	if([paths count] == 0)
-		bcrash("Could not get home directory (platform-cocoa)");
-
-	NSString *application_support = paths[0];
-
-	NSUInteger len = [application_support
-		lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    // get app resource path
+    NSString* resPath = [NSBundle mainBundle].resourcePath;
+	NSUInteger len = [resPath lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
 
 	char *path_ptr = bmalloc(len+1);
 
 	path_ptr[len] = 0;
 
-	memcpy(path_ptr, [application_support UTF8String], len);
+	memcpy(path_ptr, [resPath UTF8String], len);
 
 	struct dstr path;
 	dstr_init_move_array(&path, path_ptr);
@@ -119,22 +107,22 @@ static char *os_get_path_ptr_internal(const char *name,
 
 int os_get_config_path(char *dst, size_t size, const char *name)
 {
-	return os_get_path_internal(dst, size, name, NSUserDomainMask);
+	return os_get_path_internal(dst, size, name);
 }
 
 char *os_get_config_path_ptr(const char *name)
 {
-	return os_get_path_ptr_internal(name, NSUserDomainMask);
+	return os_get_path_ptr_internal(name);
 }
 
 int os_get_program_data_path(char *dst, size_t size, const char *name)
 {
-	return os_get_path_internal(dst, size, name, NSLocalDomainMask);
+	return os_get_path_internal(dst, size, name);
 }
 
 char *os_get_program_data_path_ptr(const char *name)
 {
-	return os_get_path_ptr_internal(name, NSLocalDomainMask);
+	return os_get_path_ptr_internal(name);
 }
 
 struct os_cpu_usage_info {
@@ -352,3 +340,5 @@ int os_get_logical_cores(void)
 		os_get_cores_internal();
 	return logical_cores;
 }
+
+#endif // #if TARGET_OS_OSX
