@@ -14,10 +14,11 @@
 #include <obs-config.h>
 #include <obs.hpp>
 #include "obs_app.hpp"
+#include <TargetConditionals.h>
 
 using namespace std;
 
-#define DEFAULT_LANG "en-US"
+#define DEFAULT_LANG "en_US"
 
 bool portable_mode = false;
 string opt_starting_collection;
@@ -322,9 +323,11 @@ bool OBSApp::InitGlobalConfig() {
         changed = true;
     }
     
+    // write config file to disk
     if (changed)
         config_save_safe(globalConfig, "tmp", nullptr);
     
+    // init default value
     return InitGlobalConfigDefaults();
 }
 
@@ -366,25 +369,13 @@ bool OBSApp::InitGlobalConfigDefaults() {
                             "RecordWhenStreaming", false);
     config_set_default_bool(globalConfig, "BasicWindow",
                             "KeepRecordingWhenStreamStops", false);
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "SysTrayEnabled", true);
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "SysTrayWhenStarted", false);
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "SaveProjectors", false);
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "ShowTransitions", true);
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "ShowListboxToolbars", true);
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "ShowStatusBar", true);
     
 #ifdef _WIN32
     config_set_default_bool(globalConfig, "Audio", "DisableAudioDucking",
                             true);
 #endif
     
-#ifdef __APPLE__
+#if TARGET_OS_OSX
     config_set_default_bool(globalConfig, "Video", "DisableOSXVSync", true);
     config_set_default_bool(globalConfig, "Video", "ResetOSXVSyncOnExit",
                             true);
