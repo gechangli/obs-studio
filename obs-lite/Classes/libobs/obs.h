@@ -337,12 +337,12 @@ EXPORT int obs_open_module(obs_module_t **module, const char *path,
 		const char *data_path);
 
 /// module structure creator for static module
-typedef obs_module_t* (*OBS_STATIC_MODULE_CREATOR)(const char*);
+typedef obs_module_t* (*OBS_STATIC_MODULE_CREATOR)();
     
 /**
  * Opens a static module manually
  */
-EXPORT int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator, const char* data_path);
+EXPORT int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator);
     
 // register a callback to load static modules
 typedef void (*OBS_STATIC_MODULE_LOADER)();

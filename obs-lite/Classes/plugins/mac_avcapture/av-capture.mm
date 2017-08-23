@@ -2180,10 +2180,10 @@ static void av_capture_update(void *data, obs_data_t *settings)
 // declare module, static or not
 #ifdef __STATIC_MODULE__
 OBS_DECLARE_STATIC_MODULE()
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "en-US")
+OBS_STATIC_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "zh_CN")
 #else
 OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "en-US")
+OBS_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "zh_CN")
 #endif
 
 // module load method
@@ -2219,8 +2219,6 @@ bool obs_module_load(void)
 		.get_properties = av_capture_properties,
 		.update         = av_capture_update,
 	};
-    
-    blog(LOG_INFO, "the name is %s", av_capture_getname(nullptr));
 
 	obs_register_source(&av_capture_info);
 	return true;
@@ -2232,11 +2230,11 @@ bool obs_module_load(void)
 extern "C" {
 #endif
 
-obs_module_t* create_static_module_mac_avcapture(const char *data_path) {
+obs_module_t* create_static_module_mac_avcapture() {
     obs_module_t* mod = (obs_module_t*)bzalloc(sizeof(obs_module_t));
     mod->mod_name = bstrdup("mac_avcapture");
     mod->file = bstrdup("mac_avcapture");
-    mod->data_path = bstrdup(data_path);
+    mod->data_path = bstrdup("");
     mod->is_static = true;
     mod->load = _obs_module_load;
     mod->set_locale = obs_module_set_locale;

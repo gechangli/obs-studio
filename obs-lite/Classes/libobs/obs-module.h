@@ -98,9 +98,9 @@ bool obs_module_load(void)
 
 /// to manually register a static module
 #define OBS_DECLARE_STATIC_MODULE_CREATOR(name) \
-    MODULE_EXTERN obs_module_t* create_static_module_##name(const char* data_path);
+    MODULE_EXTERN obs_module_t* create_static_module_##name();
 #define OBS_OPEN_STATIC_MODULE(name) \
-    obs_open_static_module(create_static_module_##name, "data/obs-plugins/"#name);
+    obs_open_static_module(create_static_module_##name);
 
 /**
  * Required: Called when the module is loaded.  Use this function to load all

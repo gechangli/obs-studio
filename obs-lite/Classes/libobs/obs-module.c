@@ -23,6 +23,7 @@
 #include "obs-module.h"
 
 extern const char *get_module_extension(void);
+extern const char* get_absolute_module_data_path(const char* mod_name);
 
 static OBS_STATIC_MODULE_LOADER obs_static_module_loader = NULL;
 
@@ -125,13 +126,16 @@ void obs_register_static_module_loader(OBS_STATIC_MODULE_LOADER loader) {
     obs_static_module_loader = loader;
 }
 
-int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator, const char* data_path) {
+int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator) {
     // check obs core
     if (!obs)
         return MODULE_ERROR;
     
     // create module
-    obs_module_t* mod = creator(data_path);
+    obs_module_t* mod = creator();
+    
+    // put module real data path
+    mod->data_path = get_absolute_module_data_path(mod->mod_name);
     
     // put module to link list
     mod->next = obs->first_module;
@@ -218,7 +222,7 @@ char *obs_find_module_file(obs_module_t *module, const char *file)
 	if (!module)
 		return NULL;
 
-	dstr_copy(&output, module->data_path);
+	dstr_copy(&output, obs_get_module_data_path(module));
 	if (!dstr_is_empty(&output) && dstr_end(&output) != '/' && *file)
 		dstr_cat_ch(&output, '/');
 	dstr_cat(&output, file);

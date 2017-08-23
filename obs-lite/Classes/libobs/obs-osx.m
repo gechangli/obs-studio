@@ -27,10 +27,11 @@
 #import <sys/types.h>
 #import <sys/sysctl.h>
 
-#import <objc/objc.h>
 #import <Carbon/Carbon.h>
 #import <IOKit/hid/IOHIDDevice.h>
 #import <IOKit/hid/IOHIDManager.h>
+#import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 const char *get_module_extension(void)
 {
@@ -50,9 +51,18 @@ static const int module_patterns_size =
 
 void add_default_module_paths(void)
 {
+    NSString* resPath = [NSBundle mainBundle].resourcePath;
     for (int i = 0; i < module_patterns_size; i++) {
-		obs_add_module_path(module_bin[i], module_data[i]);
+        NSString* dataPath = [resPath stringByAppendingFormat:@"/%s", module_data[i]];
+		obs_add_module_path(module_bin[i], [dataPath UTF8String]);
     }
+}
+
+const char* get_absolute_module_data_path(const char* mod_name) {
+    NSString* resPath = [NSBundle mainBundle].resourcePath;
+    NSString* dataPath = [resPath stringByAppendingFormat:@"/%s", module_data[0]];
+    dataPath = [dataPath stringByReplacingOccurrencesOfString:@"%module%" withString:[NSString stringWithUTF8String:mod_name]];
+    return bstrdup([dataPath UTF8String]);
 }
 
 char *find_libobs_data_file(const char *file)
@@ -113,42 +123,31 @@ static void log_available_memory(void)
 				memory_available / 1024 / 1024);
 }
 
-static void log_os_name(id pi, SEL UTF8String)
+static void log_os_name(NSProcessInfo* pi)
 {
-	unsigned long os_id = (unsigned long)objc_msgSend(pi,
-			sel_registerName("operatingSystem"));
-
-	id os = objc_msgSend(pi,
-			sel_registerName("operatingSystemName"));
-	const char *name = (const char*)objc_msgSend(os, UTF8String);
+    NSUInteger os_id = [pi operatingSystem];
+    NSString* os = [pi operatingSystemName];
 
 	if (os_id == 5 /*NSMACHOperatingSystem*/) {
-		blog(LOG_INFO, "OS Name: Mac OS X (%s)", name);
+		blog(LOG_INFO, "OS Name: Mac OS X (%s)", [os UTF8String]);
 		return;
 	}
 
-	blog(LOG_INFO, "OS Name: %s", name ? name : "Unknown");
+	blog(LOG_INFO, "OS Name: %s", os ? [os UTF8String] : "Unknown");
 }
 
-static void log_os_version(id pi, SEL UTF8String)
+static void log_os_version(NSProcessInfo* pi)
 {
-	id vs = objc_msgSend(pi,
-			sel_registerName("operatingSystemVersionString"));
-	const char *version = (const char*)objc_msgSend(vs, UTF8String);
+    NSString* vs = pi.operatingSystemVersionString;
 
-	blog(LOG_INFO, "OS Version: %s", version ? version : "Unknown");
+	blog(LOG_INFO, "OS Version: %s", vs ? [vs UTF8String] : "Unknown");
 }
 
 static void log_os(void)
 {
-	Class NSProcessInfo = objc_getClass("NSProcessInfo");
-	id pi  = objc_msgSend((id)NSProcessInfo,
-			sel_registerName("processInfo"));
-
-	SEL UTF8String = sel_registerName("UTF8String");
-
-	log_os_name(pi, UTF8String);
-	log_os_version(pi, UTF8String);
+    NSProcessInfo* pi = [NSProcessInfo processInfo];
+	log_os_name(pi);
+	log_os_version(pi);
 }
 
 static void log_kernel_version(void)
@@ -1280,11 +1279,7 @@ static bool mouse_button_pressed(obs_key_t key, bool *pressed)
 		return false;
 	}
 
-	Class NSEvent = objc_getClass("NSEvent");
-	SEL pressedMouseButtons = sel_registerName("pressedMouseButtons");
-	NSUInteger buttons = (NSUInteger)objc_msgSend((id)NSEvent,
-			pressedMouseButtons);
-
+    NSUInteger buttons = NSEvent.pressedMouseButtons;
 	*pressed = (buttons & (1 << button)) != 0;
 	return true;
 }
