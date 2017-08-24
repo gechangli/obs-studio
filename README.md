@@ -1,2 +1,2 @@
-# obs-studio
-A command line version of obs
+# What is this
+Under working, no explaination available. Ignore it please.
