@@ -27,7 +27,6 @@
 
 //#include "util/darray.h"
 
-
 struct gl_windowinfo {
 	NSView *view;
 };
@@ -150,19 +149,19 @@ void gl_update(gs_device_t *device)
 	[device->plat->context update];
 }
 
-void device_enter_context(gs_device_t *device)
+void GL_EXPORTS(device_enter_context)(gs_device_t *device)
 {
 	[device->plat->context makeCurrentContext];
 }
 
-void device_leave_context(gs_device_t *device)
+void GL_EXPORTS(device_leave_context)(gs_device_t *device)
 {
 	UNUSED_PARAMETER(device);
 
 	[NSOpenGLContext clearCurrentContext];
 }
 
-void device_load_swapchain(gs_device_t *device, gs_swapchain_t *swap)
+void GL_EXPORTS(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swap)
 {
 	if(device->cur_swap == swap)
 		return;
@@ -175,7 +174,7 @@ void device_load_swapchain(gs_device_t *device, gs_swapchain_t *swap)
 	}
 }
 
-void device_present(gs_device_t *device)
+void GL_EXPORTS(device_present)(gs_device_t *device)
 {
 	[device->plat->context flushBuffer];
 }
@@ -187,7 +186,7 @@ void gl_getclientsize(const struct gs_swap_chain *swap, uint32_t *width,
 	if(height) *height = swap->info.cy;
 }
 
-gs_texture_t *device_texture_create_from_iosurface(gs_device_t *device,
+gs_texture_t * GL_EXPORTS(device_texture_create_from_iosurface)(gs_device_t *device,
 		void *iosurf)
 {
 	IOSurfaceRef ref = (IOSurfaceRef)iosurf;
@@ -253,7 +252,7 @@ fail:
 	return NULL;
 }
 
-bool gs_texture_rebind_iosurface(gs_texture_t *texture, void *iosurf)
+bool GL_EXPORTS(gs_texture_rebind_iosurface)(gs_texture_t *texture, void *iosurf)
 {
 	if (!texture)
 		return false;

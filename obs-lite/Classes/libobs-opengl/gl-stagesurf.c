@@ -42,7 +42,7 @@ static bool create_pixel_pack_buffer(struct gs_stage_surface *surf)
 	return success;
 }
 
-gs_stagesurf_t *device_stagesurface_create(gs_device_t *device, uint32_t width,
+gs_stagesurf_t * GL_EXPORTS(device_stagesurface_create)(gs_device_t *device, uint32_t width,
 		uint32_t height, enum gs_color_format color_format)
 {
 	struct gs_stage_surface *surf;
@@ -65,7 +65,7 @@ gs_stagesurf_t *device_stagesurface_create(gs_device_t *device, uint32_t width,
 	return surf;
 }
 
-void gs_stagesurface_destroy(gs_stagesurf_t *stagesurf)
+void GL_EXPORTS(gs_stagesurface_destroy)(gs_stagesurf_t *stagesurf)
 {
 	if (stagesurf) {
 		if (stagesurf->pack_buffer)
@@ -110,7 +110,7 @@ static bool can_stage(struct gs_stage_surface *dst, struct gs_texture_2d *src)
 
 /* Apparently for mac, PBOs won't do an asynchronous transfer unless you use
  * FBOs along with glReadPixels, which is really dumb. */
-void device_stage_texture(gs_device_t *device, gs_stagesurf_t *dst,
+void GL_EXPORTS(device_stage_texture)(gs_device_t *device, gs_stagesurf_t *dst,
 		gs_texture_t *src)
 {
 	struct gs_texture_2d *tex2d = (struct gs_texture_2d*)src;
@@ -186,23 +186,23 @@ failed:
 
 #endif
 
-uint32_t gs_stagesurface_get_width(const gs_stagesurf_t *stagesurf)
+uint32_t GL_EXPORTS(gs_stagesurface_get_width)(const gs_stagesurf_t *stagesurf)
 {
 	return stagesurf->width;
 }
 
-uint32_t gs_stagesurface_get_height(const gs_stagesurf_t *stagesurf)
+uint32_t GL_EXPORTS(gs_stagesurface_get_height)(const gs_stagesurf_t *stagesurf)
 {
 	return stagesurf->height;
 }
 
-enum gs_color_format gs_stagesurface_get_color_format(
+enum gs_color_format GL_EXPORTS(gs_stagesurface_get_color_format)(
 		const gs_stagesurf_t *stagesurf)
 {
 	return stagesurf->format;
 }
 
-bool gs_stagesurface_map(gs_stagesurf_t *stagesurf, uint8_t **data,
+bool GL_EXPORTS(gs_stagesurface_map)(gs_stagesurf_t *stagesurf, uint8_t **data,
 		uint32_t *linesize)
 {
 	if (!gl_bind_buffer(GL_PIXEL_PACK_BUFFER, stagesurf->pack_buffer))
@@ -222,7 +222,7 @@ fail:
 	return false;
 }
 
-void gs_stagesurface_unmap(gs_stagesurf_t *stagesurf)
+void GL_EXPORTS(gs_stagesurface_unmap)(gs_stagesurf_t *stagesurf)
 {
 	if (!gl_bind_buffer(GL_PIXEL_PACK_BUFFER, stagesurf->pack_buffer))
 		return;

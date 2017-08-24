@@ -27,6 +27,14 @@
 
 #include "gl-helpers.h"
 
+// if link gl subsystem statically, define this
+#define __STATIC_OPENGL_RENDERER__
+#ifdef __STATIC_OPENGL_RENDERER__
+#define GL_EXPORTS(name) _gl_##name
+#else
+#define GL_EXPORTS(name) name
+#endif
+
 struct gl_platform;
 struct gl_windowinfo;
 

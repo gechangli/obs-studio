@@ -76,7 +76,7 @@ static bool create_buffers(struct gs_vertex_buffer *vb)
 	return true;
 }
 
-gs_vertbuffer_t *device_vertexbuffer_create(gs_device_t *device,
+gs_vertbuffer_t * GL_EXPORTS(device_vertexbuffer_create)(gs_device_t *device,
 		struct gs_vb_data *data, uint32_t flags)
 {
 	struct gs_vertex_buffer *vb = bzalloc(sizeof(struct gs_vertex_buffer));
@@ -94,7 +94,7 @@ gs_vertbuffer_t *device_vertexbuffer_create(gs_device_t *device,
 	return vb;
 }
 
-void gs_vertexbuffer_destroy(gs_vertbuffer_t *vb)
+void GL_EXPORTS(gs_vertexbuffer_destroy)(gs_vertbuffer_t *vb)
 {
 	if (vb) {
 		if (vb->vertex_buffer)
@@ -120,7 +120,7 @@ void gs_vertexbuffer_destroy(gs_vertbuffer_t *vb)
 	}
 }
 
-void gs_vertexbuffer_flush(gs_vertbuffer_t *vb)
+void GL_EXPORTS(gs_vertexbuffer_flush)(gs_vertbuffer_t *vb)
 {
 	size_t i;
 
@@ -170,7 +170,7 @@ failed:
 	blog(LOG_ERROR, "gs_vertexbuffer_flush (GL) failed");
 }
 
-struct gs_vb_data *gs_vertexbuffer_get_data(const gs_vertbuffer_t *vb)
+struct gs_vb_data * GL_EXPORTS(gs_vertexbuffer_get_data)(const gs_vertbuffer_t *vb)
 {
 	return vb->data;
 }
@@ -255,7 +255,7 @@ bool load_vb_buffers(struct gs_program *program, struct gs_vertex_buffer *vb,
 	return true;
 }
 
-void device_load_vertexbuffer(gs_device_t *device, gs_vertbuffer_t *vb)
+void GL_EXPORTS(device_load_vertexbuffer)(gs_device_t *device, gs_vertbuffer_t *vb)
 {
 	device->cur_vertex_buffer = vb;
 }
