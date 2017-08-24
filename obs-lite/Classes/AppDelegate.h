@@ -1,15 +1,10 @@
-//
-//  AppDelegate.h
-//  obs-lite
-//
-//  Created by MaRuoJie on 2017/8/21.
-//  Copyright © 2017年 thu. All rights reserved.
-//
-
 #import <Cocoa/Cocoa.h>
+#import "obs.h"
+#import "obs_app.hpp"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+@property (nonatomic, assign) OBSApp* obsApp;
 
 @end
 

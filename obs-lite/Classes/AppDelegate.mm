@@ -1,15 +1,6 @@
-//
-//  AppDelegate.m
-//  obs-lite
-//
-//  Created by MaRuoJie on 2017/8/21.
-//  Copyright © 2017年 thu. All rights reserved.
-//
-
 #import "AppDelegate.h"
-#import "obs.h"
-#import "obs_app.hpp"
 #import "obs-module.h"
+#import "ViewController.h"
 
 OBS_DECLARE_STATIC_MODULE_CREATOR(mac_avcapture)
 
@@ -18,8 +9,6 @@ static void loadStaticModules() {
 }
 
 @interface AppDelegate ()
-
-@property (nonatomic, assign) OBSApp* obsApp;
 
 @end
 
@@ -31,17 +20,17 @@ static void loadStaticModules() {
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // Insert code here to initialize your application
-    
     // init obs app
     self.obsApp = new OBSApp(nullptr);
     self.obsApp->RegisterStaticModuleLoader(loadStaticModules);
     self.obsApp->StartupOBS("zh_CN");
+    NSOpenGLView* glView = ((ViewController*)NSApp.mainWindow.contentViewController).glView;
+    self.obsApp->ResetVideo(glView.frame.size.width,
+                       glView.frame.size.height);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
 }
-
 
 @end

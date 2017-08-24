@@ -75,6 +75,23 @@ bool OBSApp::StartupOBS(const char* locale) {
     return true;
 }
 
+int OBSApp::ResetVideo(int w, int h) {
+    struct obs_video_info ovi;
+    ovi.adapter         = 0;
+    ovi.base_width      = w;
+    ovi.base_height     = h;
+    ovi.fps_num         = 30000;
+    ovi.fps_den         = 1001;
+    ovi.graphics_module = config_get_string(globalConfig, "Video", "Renderer");
+    ovi.output_format   = VIDEO_FORMAT_RGBA;
+    ovi.output_width    = w;
+    ovi.output_height   = h;
+    
+    if (obs_reset_video(&ovi) != 0)
+        throw "Couldn't initialize video";
+    return 0;
+}
+
 bool OBSApp::do_mkdir(const char *path) {
     if (os_mkdirs(path) == MKDIR_ERROR) {
         blog(LOG_ERROR, "Failed to create directory %s", path);
@@ -155,7 +172,7 @@ bool OBSApp::InitGlobalConfigDefaults() {
     config_set_default_string(globalConfig, "Video", "Renderer",
                               "Direct3D 11");
 #else
-    config_set_default_string(globalConfig, "Video", "Renderer", "OpenGL");
+    config_set_default_string(globalConfig, "Video", "Renderer", "OpenGL-static");
 #endif
     
     config_set_default_bool(globalConfig, "BasicWindow",

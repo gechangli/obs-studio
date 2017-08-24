@@ -1,8 +1,8 @@
 #pragma once
 
-#include <stdio.h>
-#include <string>
+#include "obs.h"
 #include <util/util.hpp>
+#include <util/profiler.h>
 
 #ifdef __APPLE__
 #define BASE_PATH ".."
@@ -24,6 +24,7 @@ private:
     profiler_name_store_t* profilerNameStore = nullptr;
     ConfigFile globalConfig;
     
+    // config related
     bool MakeUserDirs();
     bool do_mkdir(const char *path);
     bool InitGlobalConfig();
@@ -40,6 +41,9 @@ public:
     // startup
     void RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader);
     bool StartupOBS(const char* locale);
+    
+    // reset
+    int ResetVideo(int w, int h);
     
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;

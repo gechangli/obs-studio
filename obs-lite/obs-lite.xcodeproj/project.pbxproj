@@ -43,10 +43,10 @@
 		9299DCB31F4D1B4F000DBF75 /* video-matrices.c in Sources */ = {isa = PBXBuildFile; fileRef = 9299DC901F4D1B4F000DBF75 /* video-matrices.c */; };
 		9299DCB41F4D1B4F000DBF75 /* video-scaler-ffmpeg.c in Sources */ = {isa = PBXBuildFile; fileRef = 9299DC911F4D1B4F000DBF75 /* video-scaler-ffmpeg.c */; };
 		9299DCBD1F4D1B5A000DBF75 /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9299DCB71F4D1B5A000DBF75 /* av-capture.mm */; };
-		9299DCBE1F4D1B5A000DBF75 /* obs_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9299DCBB1F4D1B5A000DBF75 /* obs_app.cpp */; };
+		92A19F591F4E845500B24588 /* obs_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92A19F571F4E845500B24588 /* obs_app.cpp */; };
 		92FFDA7C1F4AF0C700AB5892 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */; };
 		92FFDA7D1F4AF0C700AB5892 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA791F4AF0C700AB5892 /* main.m */; };
-		92FFDA7E1F4AF0C700AB5892 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA7B1F4AF0C700AB5892 /* ViewController.m */; };
+		92FFDA7E1F4AF0C700AB5892 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA7B1F4AF0C700AB5892 /* ViewController.mm */; };
 		92FFDA841F4AF0E200AB5892 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FFDA831F4AF0E200AB5892 /* Contents.json */; };
 		92FFDA871F4AF0E600AB5892 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 92FFDA851F4AF0E600AB5892 /* Main.storyboard */; };
 		92FFDAB71F4AF2A000AB5892 /* array-serializer.c in Sources */ = {isa = PBXBuildFile; fileRef = 92FFDA8B1F4AF2A000AB5892 /* array-serializer.c */; };
@@ -189,14 +189,14 @@
 		9299DCB71F4D1B5A000DBF75 /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
 		9299DCB81F4D1B5A000DBF75 /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
 		9299DCB91F4D1B5A000DBF75 /* scope-guard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "scope-guard.hpp"; sourceTree = "<group>"; };
-		9299DCBB1F4D1B5A000DBF75 /* obs_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obs_app.cpp; sourceTree = "<group>"; };
-		9299DCBC1F4D1B5A000DBF75 /* obs_app.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = obs_app.hpp; sourceTree = "<group>"; };
+		92A19F571F4E845500B24588 /* obs_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obs_app.cpp; sourceTree = "<group>"; };
+		92A19F581F4E845500B24588 /* obs_app.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = obs_app.hpp; sourceTree = "<group>"; };
 		92D586F71F4AF0A90048D381 /* obs-lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "obs-lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92FFDA771F4AF0C700AB5892 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		92FFDA791F4AF0C700AB5892 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		92FFDA7A1F4AF0C700AB5892 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		92FFDA7B1F4AF0C700AB5892 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		92FFDA7B1F4AF0C700AB5892 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		92FFDA811F4AF0DB00AB5892 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		92FFDA831F4AF0E200AB5892 /* Contents.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
 		92FFDA861F4AF0E600AB5892 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -472,11 +472,11 @@
 			path = mac_avcapture;
 			sourceTree = "<group>";
 		};
-		9299DCBA1F4D1B5A000DBF75 /* ui */ = {
+		92A19F561F4E845500B24588 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				9299DCBB1F4D1B5A000DBF75 /* obs_app.cpp */,
-				9299DCBC1F4D1B5A000DBF75 /* obs_app.hpp */,
+				92A19F571F4E845500B24588 /* obs_app.cpp */,
+				92A19F581F4E845500B24588 /* obs_app.hpp */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -506,13 +506,13 @@
 				92FFDACA1F4AF30800AB5892 /* config */,
 				92FFDB961F4AF80800AB5892 /* deps */,
 				92FFDA881F4AF2A000AB5892 /* libobs */,
+				92A19F561F4E845500B24588 /* ui */,
 				9299DCB51F4D1B5A000DBF75 /* plugins */,
-				9299DCBA1F4D1B5A000DBF75 /* ui */,
 				92FFDA771F4AF0C700AB5892 /* AppDelegate.h */,
 				92FFDA781F4AF0C700AB5892 /* AppDelegate.mm */,
 				92FFDA791F4AF0C700AB5892 /* main.m */,
 				92FFDA7A1F4AF0C700AB5892 /* ViewController.h */,
-				92FFDA7B1F4AF0C700AB5892 /* ViewController.m */,
+				92FFDA7B1F4AF0C700AB5892 /* ViewController.mm */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -817,7 +817,7 @@
 				9299DCA41F4D1B4F000DBF75 /* matrix4.c in Sources */,
 				92FFDABD1F4AF2A000AB5892 /* crc32.c in Sources */,
 				92FFDB851F4AF66100AB5892 /* obs-hotkey-name-map.c in Sources */,
-				92FFDA7E1F4AF0C700AB5892 /* ViewController.m in Sources */,
+				92FFDA7E1F4AF0C700AB5892 /* ViewController.mm in Sources */,
 				92FFDB8E1F4AF66100AB5892 /* obs-source-deinterlace.c in Sources */,
 				92FFDB7F1F4AF66100AB5892 /* obs-audio.c in Sources */,
 				92FFDB951F4AF66100AB5892 /* obs.c in Sources */,
@@ -829,7 +829,7 @@
 				9299DC9B1F4D1B4F000DBF75 /* effect-parser.c in Sources */,
 				92FFDABF1F4AF2A000AB5892 /* file-serializer.c in Sources */,
 				9299DCB21F4D1B4F000DBF75 /* video-io.c in Sources */,
-				9299DCBE1F4D1B5A000DBF75 /* obs_app.cpp in Sources */,
+				92A19F591F4E845500B24588 /* obs_app.cpp in Sources */,
 				9299DCB31F4D1B4F000DBF75 /* video-matrices.c in Sources */,
 				9299DC9D1F4D1B4F000DBF75 /* graphics-ffmpeg.c in Sources */,
 				92FFDAC21F4AF2A000AB5892 /* platform-osx.m in Sources */,
