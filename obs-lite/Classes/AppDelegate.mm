@@ -25,8 +25,7 @@ static void loadStaticModules() {
     self.obsApp->RegisterStaticModuleLoader(loadStaticModules);
     self.obsApp->StartupOBS("zh_CN");
     NSOpenGLView* glView = ((ViewController*)NSApp.mainWindow.contentViewController).glView;
-    self.obsApp->ResetVideo(glView.frame.size.width,
-                       glView.frame.size.height);
+    self.obsApp->ResetVideo((int)glView.frame.size.width, (int)glView.frame.size.height);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
