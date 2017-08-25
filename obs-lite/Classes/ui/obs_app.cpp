@@ -139,11 +139,13 @@ bool OBSApp::InitService() {
 bool OBSApp::LoadService() {
     const char *type;
     
+    // get service profile
     char serviceJsonPath[512];
     int ret = GetProfilePath(serviceJsonPath, sizeof(serviceJsonPath), SERVICE_PATH);
     if (ret <= 0)
         return false;
     
+    // if profile exists, load it and test to create service
     if(os_file_exists(serviceJsonPath)) {
         obs_data_t *data = obs_data_create_from_json_file_safe(serviceJsonPath, nullptr);
         
@@ -153,8 +155,7 @@ bool OBSApp::LoadService() {
         obs_data_t *settings = obs_data_get_obj(data, "settings");
         obs_data_t *hotkey_data = obs_data_get_obj(data, "hotkeys");
         
-        service = obs_service_create(type, "default_service", settings,
-                                     hotkey_data);
+        service = obs_service_create(type, "default_service", settings, hotkey_data);
         obs_service_release(service);
         
         obs_data_release(hotkey_data);
