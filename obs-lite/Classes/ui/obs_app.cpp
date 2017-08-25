@@ -19,6 +19,7 @@
 using namespace std;
 
 #define DEFAULT_LANG "en_US"
+#define SERVICE_PATH "service.json"
 
 bool portable_mode = false;
 
@@ -41,6 +42,28 @@ int OBSApp::GetConfigPath(char *path, size_t size, const char *name) {
     } else {
         return os_get_config_path(path, size, name);
     }
+}
+
+int OBSApp::GetProfilePath(char *path, size_t size, const char *file) {
+    char profiles_path[512];
+    const char *profile = config_get_string(globalConfig, "Basic", "ProfileDir");
+    int ret;
+    
+    if (!profile)
+        return -1;
+    if (!path)
+        return -1;
+    if (!file)
+        file = "";
+    
+    ret = GetConfigPath(profiles_path, 512, "data/profiles");
+    if (ret <= 0)
+        return ret;
+    
+    if (!*file)
+        return snprintf(path, size, "%s/%s", profiles_path, profile);
+    
+    return snprintf(path, size, "%s/%s/%s", profiles_path, profile, file);
 }
 
 void OBSApp::RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader) {
@@ -72,11 +95,15 @@ bool OBSApp::StartupOBS(const char* locale) {
     obs_log_loaded_modules();
     blog(LOG_INFO, "---------------------------------");
     obs_post_load_modules();
+    
+    // init rtmp services
+    if (!InitService())
+        throw "Failed to initialize service";
+    
     return true;
 }
 
 int OBSApp::ResetVideo(int w, int h) {
-    blog(LOG_INFO, "width is %d, height is %d", w, h);
     struct obs_video_info ovi;
     ovi.adapter         = 0;
     ovi.base_width      = w;
@@ -91,6 +118,51 @@ int OBSApp::ResetVideo(int w, int h) {
     if (obs_reset_video(&ovi) != 0)
         throw "Couldn't initialize video";
     return 0;
+}
+
+bool OBSApp::InitService() {
+    ProfileScope("OBSApp::InitService");
+    
+    // create service from profile
+    if (LoadService())
+        return true;
+    
+    // if there is no profile, try to create a common rtmp service to test
+    service = obs_service_create("rtmp_common", "default_service", nullptr, nullptr);
+    if (!service)
+        return false;
+    obs_service_release(service);
+    
+    return true;
+}
+
+bool OBSApp::LoadService() {
+    const char *type;
+    
+    char serviceJsonPath[512];
+    int ret = GetProfilePath(serviceJsonPath, sizeof(serviceJsonPath), SERVICE_PATH);
+    if (ret <= 0)
+        return false;
+    
+    if(os_file_exists(serviceJsonPath)) {
+        obs_data_t *data = obs_data_create_from_json_file_safe(serviceJsonPath, nullptr);
+        
+        obs_data_set_default_string(data, "type", "rtmp_common");
+        type = obs_data_get_string(data, "type");
+        
+        obs_data_t *settings = obs_data_get_obj(data, "settings");
+        obs_data_t *hotkey_data = obs_data_get_obj(data, "hotkeys");
+        
+        service = obs_service_create(type, "default_service", settings,
+                                     hotkey_data);
+        obs_service_release(service);
+        
+        obs_data_release(hotkey_data);
+        obs_data_release(settings);
+        obs_data_release(data);
+    }
+
+    return !!service;
 }
 
 bool OBSApp::do_mkdir(const char *path) {
@@ -116,6 +188,11 @@ bool OBSApp::MakeUserDirs() {
         return false;
     
     if (GetConfigPath(path, sizeof(path), "data/profiler_data") <= 0)
+        return false;
+    if (!do_mkdir(path))
+        return false;
+    
+    if (GetConfigPath(path, sizeof(path), "data/profiles") <= 0)
         return false;
     if (!do_mkdir(path))
         return false;
@@ -164,10 +241,9 @@ bool OBSApp::InitGlobalConfig() {
 }
 
 bool OBSApp::InitGlobalConfigDefaults() {
-    config_set_default_string(globalConfig, "General", "Language",
-                              DEFAULT_LANG);
-    config_set_default_string(globalConfig, "General", "ProcessPriority",
-                              "Normal");
+    config_set_default_string(globalConfig, "General", "Language", DEFAULT_LANG);
+    config_set_default_string(globalConfig, "General", "ProcessPriority", "Normal");
+    config_set_default_string(globalConfig, "Basic", "ProfileDir", "default");
     
 #if _WIN32
     config_set_default_string(globalConfig, "Video", "Renderer",
@@ -175,17 +251,7 @@ bool OBSApp::InitGlobalConfigDefaults() {
 #else
     config_set_default_string(globalConfig, "Video", "Renderer", "OpenGL-static");
 #endif
-    
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "RecordWhenStreaming", false);
-    config_set_default_bool(globalConfig, "BasicWindow",
-                            "KeepRecordingWhenStreamStops", false);
-    
-#ifdef _WIN32
-    config_set_default_bool(globalConfig, "Audio", "DisableAudioDucking",
-                            true);
-#endif
-    
+
 #if TARGET_OS_OSX
     config_set_default_bool(globalConfig, "Video", "DisableOSXVSync", true);
     config_set_default_bool(globalConfig, "Video", "ResetOSXVSyncOnExit",

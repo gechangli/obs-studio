@@ -1,6 +1,6 @@
 #pragma once
 
-#include "obs.h"
+#include "obs.hpp"
 #include <util/util.hpp>
 #include <util/profiler.h>
 
@@ -23,16 +23,20 @@ class OBSApp {
 private:
     profiler_name_store_t* profilerNameStore = nullptr;
     ConfigFile globalConfig;
+    OBSService service;
     
     // config related
     bool MakeUserDirs();
     bool do_mkdir(const char *path);
     bool InitGlobalConfig();
     bool InitGlobalConfigDefaults();
+    bool InitService();
+    bool LoadService();
     
 public:
     // get config file path
-    static int GetConfigPath(char* path, size_t size, const char* name);
+    int GetConfigPath(char* path, size_t size, const char* name);
+    int GetProfilePath(char *path, size_t size, const char *file);
     
     // ctor & dtor
     OBSApp(profiler_name_store_t *store);
