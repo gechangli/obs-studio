@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		921644441F5059AF00C403A1 /* rtmp-common.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216443E1F5059AF00C403A1 /* rtmp-common.c */; };
+		921644451F5059AF00C403A1 /* rtmp-custom.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216443F1F5059AF00C403A1 /* rtmp-custom.c */; };
+		921644461F5059AF00C403A1 /* rtmp-services-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 921644411F5059AF00C403A1 /* rtmp-services-main.c */; };
+		9216444B1F5068D500C403A1 /* twitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 921644491F5068D500C403A1 /* twitch.c */; };
+		921644501F5068EF00C403A1 /* file-updater.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216444E1F5068EF00C403A1 /* file-updater.c */; };
+		921644521F50691900C403A1 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 921644511F50691900C403A1 /* libcurl.tbd */; };
 		927B92FC1F4C8DBB0032FC2F /* data in Resources */ = {isa = PBXBuildFile; fileRef = 927B92FB1F4C8DBB0032FC2F /* data */; };
 		9299DCBD1F4D1B5A000DBF75 /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9299DCB71F4D1B5A000DBF75 /* av-capture.mm */; };
 		92A19F591F4E845500B24588 /* obs_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92A19F571F4E845500B24588 /* obs_app.cpp */; };
@@ -128,6 +134,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9216443E1F5059AF00C403A1 /* rtmp-common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-common.c"; sourceTree = "<group>"; };
+		9216443F1F5059AF00C403A1 /* rtmp-custom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-custom.c"; sourceTree = "<group>"; };
+		921644401F5059AF00C403A1 /* rtmp-format-ver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rtmp-format-ver.h"; sourceTree = "<group>"; };
+		921644411F5059AF00C403A1 /* rtmp-services-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-services-main.c"; sourceTree = "<group>"; };
+		921644481F50685100C403A1 /* lookup-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lookup-config.h"; sourceTree = "<group>"; };
+		921644491F5068D500C403A1 /* twitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twitch.c; sourceTree = "<group>"; };
+		9216444A1F5068D500C403A1 /* twitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
+		9216444E1F5068EF00C403A1 /* file-updater.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "file-updater.c"; sourceTree = "<group>"; };
+		9216444F1F5068EF00C403A1 /* file-updater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "file-updater.h"; sourceTree = "<group>"; };
+		921644511F50691900C403A1 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		927B92FB1F4C8DBB0032FC2F /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		9299DCB71F4D1B5A000DBF75 /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
 		9299DCB81F4D1B5A000DBF75 /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
@@ -356,6 +372,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				921644521F50691900C403A1 /* libcurl.tbd in Frameworks */,
 				92FFDBCC1F4AFA9900AB5892 /* CoreMediaIO.framework in Frameworks */,
 				92FFDAFB1F4AF4D100AB5892 /* libiconv.tbd in Frameworks */,
 				92FFDAF91F4AF4CA00AB5892 /* libbz2.tbd in Frameworks */,
@@ -372,10 +389,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9216443D1F5059AF00C403A1 /* rtmp_services */ = {
+			isa = PBXGroup;
+			children = (
+				921644481F50685100C403A1 /* lookup-config.h */,
+				9216443E1F5059AF00C403A1 /* rtmp-common.c */,
+				9216443F1F5059AF00C403A1 /* rtmp-custom.c */,
+				921644401F5059AF00C403A1 /* rtmp-format-ver.h */,
+				921644411F5059AF00C403A1 /* rtmp-services-main.c */,
+				921644491F5068D500C403A1 /* twitch.c */,
+				9216444A1F5068D500C403A1 /* twitch.h */,
+			);
+			path = rtmp_services;
+			sourceTree = "<group>";
+		};
+		9216444C1F5068EF00C403A1 /* file-updater */ = {
+			isa = PBXGroup;
+			children = (
+				9216444D1F5068EF00C403A1 /* file-updater */,
+			);
+			path = "file-updater";
+			sourceTree = "<group>";
+		};
+		9216444D1F5068EF00C403A1 /* file-updater */ = {
+			isa = PBXGroup;
+			children = (
+				9216444E1F5068EF00C403A1 /* file-updater.c */,
+				9216444F1F5068EF00C403A1 /* file-updater.h */,
+			);
+			path = "file-updater";
+			sourceTree = "<group>";
+		};
 		9299DCB51F4D1B5A000DBF75 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
 				9299DCB61F4D1B5A000DBF75 /* mac_avcapture */,
+				9216443D1F5059AF00C403A1 /* rtmp_services */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -757,6 +806,7 @@
 		92FFDACC1F4AF31500AB5892 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				921644511F50691900C403A1 /* libcurl.tbd */,
 				92FFDBCB1F4AFA9900AB5892 /* CoreMediaIO.framework */,
 				92FFDAFA1F4AF4D100AB5892 /* libiconv.tbd */,
 				92FFDAF81F4AF4CA00AB5892 /* libbz2.tbd */,
@@ -774,6 +824,7 @@
 		92FFDB961F4AF80800AB5892 /* deps */ = {
 			isa = PBXGroup;
 			children = (
+				9216444C1F5068EF00C403A1 /* file-updater */,
 				92A19F761F4E990400B24588 /* glad */,
 				92FFDB971F4AF80800AB5892 /* jansson */,
 			);
@@ -900,6 +951,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92B8534A1F4F1F9A004A2648 /* format-conversion.c in Sources */,
+				921644451F5059AF00C403A1 /* rtmp-custom.c in Sources */,
 				92B853451F4F1F9A004A2648 /* vec2.c in Sources */,
 				92A1A0311F4E9A3E00B24588 /* utf8.c in Sources */,
 				92A1A0271F4E9A3E00B24588 /* dstr.c in Sources */,
@@ -943,6 +995,7 @@
 				92A1A02D1F4E9A3E00B24588 /* platform.c in Sources */,
 				92FFDB821F4AF66100AB5892 /* obs-data.c in Sources */,
 				92B853441F4F1F9A004A2648 /* texture-render.c in Sources */,
+				921644461F5059AF00C403A1 /* rtmp-services-main.c in Sources */,
 				92B8534E1F4F1F9A004A2648 /* video-io.c in Sources */,
 				92FFDBBA1F4AF80800AB5892 /* strconv.c in Sources */,
 				92B853351F4F1F9A004A2648 /* axisang.c in Sources */,
@@ -962,11 +1015,13 @@
 				92A19F6F1F4E98B200B24588 /* gl-shaderparser.c in Sources */,
 				92FFDB891F4AF66100AB5892 /* obs-output-delay.c in Sources */,
 				92B853311F4F1F9A004A2648 /* calldata.c in Sources */,
+				921644501F5068EF00C403A1 /* file-updater.c in Sources */,
 				92FFDB841F4AF66100AB5892 /* obs-encoder.c in Sources */,
 				92B8534C1F4F1F9A004A2648 /* video-fourcc.c in Sources */,
 				92B8533E1F4F1F9A004A2648 /* math-extra.c in Sources */,
 				92FFDB811F4AF66100AB5892 /* obs-osx.m in Sources */,
 				92A1A02B1F4E9A3E00B24588 /* platform-nix.c in Sources */,
+				921644441F5059AF00C403A1 /* rtmp-common.c in Sources */,
 				92B853371F4F1F9A004A2648 /* effect-parser.c in Sources */,
 				92A1A02E1F4E9A3E00B24588 /* profiler.c in Sources */,
 				92A1A0211F4E9A3E00B24588 /* base.c in Sources */,
@@ -992,6 +1047,7 @@
 				92A1A02A1F4E9A3E00B24588 /* pipe-posix.c in Sources */,
 				92FFDBB81F4AF80800AB5892 /* pack_unpack.c in Sources */,
 				92FFDA7C1F4AF0C700AB5892 /* AppDelegate.mm in Sources */,
+				9216444B1F5068D500C403A1 /* twitch.c in Sources */,
 				92FFDBB91F4AF80800AB5892 /* strbuffer.c in Sources */,
 				92A19F6D1F4E98B200B24588 /* gl-indexbuffer.c in Sources */,
 				92B853481F4F1F9A004A2648 /* audio-io.c in Sources */,
@@ -1116,6 +1172,7 @@
 					/usr/local/include,
 					"$(PROJECT_DIR)/Classes/libobs",
 					"$(PROJECT_DIR)/Classes/deps/glad/include",
+					"$(PROJECT_DIR)/Classes/deps/file-updater",
 					/usr/X11/include,
 				);
 				INFOPLIST_FILE = Info.plist;
@@ -1152,6 +1209,7 @@
 					/usr/local/include,
 					"$(PROJECT_DIR)/Classes/libobs",
 					"$(PROJECT_DIR)/Classes/deps/glad/include",
+					"$(PROJECT_DIR)/Classes/deps/file-updater",
 					/usr/X11/include,
 				);
 				INFOPLIST_FILE = Info.plist;

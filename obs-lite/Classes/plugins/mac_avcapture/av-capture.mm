@@ -26,6 +26,15 @@
 // it is statically linked
 #define __STATIC_MODULE__
 
+// declare module, static or not
+#ifdef __STATIC_MODULE__
+OBS_DECLARE_STATIC_MODULE(mac_avcapture)
+OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(mac_avcapture, "zh_CN")
+#else
+OBS_DECLARE_MODULE()
+OBS_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "zh_CN")
+#endif
+
 using namespace std;
 
 namespace std {
@@ -2177,15 +2186,6 @@ static void av_capture_update(void *data, obs_data_t *settings)
 			obs_data_get_bool(settings, "buffering"));
 }
 
-// declare module, static or not
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE()
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "zh_CN")
-#endif
-
 // module load method
 #ifdef __STATIC_MODULE__
 static bool _obs_module_load()
@@ -2237,10 +2237,10 @@ obs_module_t* create_static_module_mac_avcapture() {
     mod->data_path = bstrdup("");
     mod->is_static = true;
     mod->load = _obs_module_load;
-    mod->set_locale = obs_module_set_locale;
-    mod->free_locale = obs_module_free_locale;
-    mod->ver = obs_module_ver;
-    mod->set_pointer = obs_module_set_pointer;
+    mod->set_locale = _obs_module_set_locale;
+    mod->free_locale = _obs_module_free_locale;
+    mod->ver = _obs_module_ver;
+    mod->set_pointer = _obs_module_set_pointer;
     return mod;
 }
 
@@ -2248,4 +2248,4 @@ obs_module_t* create_static_module_mac_avcapture() {
 }
 #endif
 
-#endif
+#endif // #ifdef __STATIC_MODULE__
