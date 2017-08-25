@@ -76,6 +76,7 @@ bool OBSApp::StartupOBS(const char* locale) {
 }
 
 int OBSApp::ResetVideo(int w, int h) {
+    blog(LOG_INFO, "width is %d, height is %d", w, h);
     struct obs_video_info ovi;
     ovi.adapter         = 0;
     ovi.base_width      = w;
