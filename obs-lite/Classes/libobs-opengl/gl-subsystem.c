@@ -23,6 +23,10 @@
 #undef far
 #undef near
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 /* #define SHOW_ALL_GL_MESSAGES */
 
 #ifdef _DEBUG
@@ -273,13 +277,13 @@ gs_swapchain_t *GL_EXPORTS(device_swapchain_create)(gs_device_t *device,
 	swap->wi     = gl_windowinfo_create(info);
 	if (!swap->wi) {
 		blog(LOG_ERROR, "device_swapchain_create (GL) failed");
-		gs_swapchain_destroy(swap);
+		GL_EXPORTS(gs_swapchain_destroy)(swap);
 		return NULL;
 	}
 
 	if (!gl_platform_init_swapchain(swap)) {
 		blog(LOG_ERROR, "gl_platform_init_swapchain  failed");
-		gs_swapchain_destroy(swap);
+		GL_EXPORTS(gs_swapchain_destroy)(swap);
 		return NULL;
 	}
 
@@ -1407,3 +1411,7 @@ void GL_EXPORTS(gs_samplerstate_destroy)(gs_samplerstate_t *samplerstate)
 
 	samplerstate_release(samplerstate);
 }
+
+#ifdef __cplusplus
+}
+#endif

@@ -67,10 +67,9 @@ const char* get_absolute_module_data_path(const char* mod_name) {
 
 char *find_libobs_data_file(const char *file)
 {
-	struct dstr path;
-	dstr_init_copy(&path, OBS_INSTALL_DATA_PATH "/libobs/");
-	dstr_cat(&path, file);
-	return path.array;
+    NSString* resPath = [NSBundle mainBundle].resourcePath;
+    NSString* dataPath = [resPath stringByAppendingFormat:@"/data/libobs/%s", file];
+    return bstrdup([dataPath UTF8String]);
 }
 
 static void log_processor_name(void)

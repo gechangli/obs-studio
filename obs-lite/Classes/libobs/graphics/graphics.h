@@ -428,6 +428,10 @@ EXPORT gs_texture_t *gs_texrender_get_texture(const gs_texrender_t *texrender);
 #define GS_ERROR_MODULE_NOT_FOUND -2
 #define GS_ERROR_NOT_SUPPORTED    -3
 
+#define GS_CLEAR_COLOR   (1<<0)
+#define GS_CLEAR_DEPTH   (1<<1)
+#define GS_CLEAR_STENCIL (1<<2)
+    
 struct gs_window {
 #if defined(_WIN32)
 	void                    *hwnd;
@@ -625,10 +629,6 @@ EXPORT void gs_draw(enum gs_draw_mode draw_mode, uint32_t start_vert,
 		uint32_t num_verts);
 EXPORT void gs_end_scene(void);
 
-#define GS_CLEAR_COLOR   (1<<0)
-#define GS_CLEAR_DEPTH   (1<<1)
-#define GS_CLEAR_STENCIL (1<<2)
-
 EXPORT void gs_load_swapchain(gs_swapchain_t *swapchain);
 EXPORT void gs_clear(uint32_t clear_flags, const struct vec4 *color,
 		float depth, uint8_t stencil);
@@ -812,6 +812,213 @@ static inline uint32_t gs_get_total_levels(uint32_t width, uint32_t height)
 
 	return num_levels;
 }
+    
+#define __STATIC_OPENGL_RENDERER__
+#ifdef __STATIC_OPENGL_RENDERER__
+    
+EXPORT gs_swapchain_t *_gl_gs_swapchain_create(const struct gs_init_data *data);
+
+EXPORT void _gl_gs_resize(uint32_t x, uint32_t y);
+EXPORT void _gl_gs_get_size(uint32_t *x, uint32_t *y);
+EXPORT uint32_t _gl_gs_get_width(void);
+EXPORT uint32_t _gl_gs_get_height(void);
+
+EXPORT gs_texture_t *_gl_gs_texture_create(uint32_t width, uint32_t height,
+                                       enum gs_color_format color_format, uint32_t levels,
+                                       const uint8_t **data, uint32_t flags);
+EXPORT gs_texture_t *_gl_gs_cubetexture_create(uint32_t size,
+                                           enum gs_color_format color_format, uint32_t levels,
+                                           const uint8_t **data, uint32_t flags);
+EXPORT gs_texture_t *_gl_gs_voltexture_create(uint32_t width, uint32_t height,
+                                          uint32_t depth, enum gs_color_format color_format,
+                                          uint32_t levels, const uint8_t **data, uint32_t flags);
+
+EXPORT gs_zstencil_t *_gl_gs_zstencil_create(uint32_t width, uint32_t height,
+                                         enum gs_zstencil_format format);
+
+EXPORT gs_stagesurf_t *_gl_gs_stagesurface_create(uint32_t width, uint32_t height,
+                                              enum gs_color_format color_format);
+
+EXPORT gs_samplerstate_t *_gl_gs_samplerstate_create(
+                                                 const struct gs_sampler_info *info);
+
+EXPORT gs_shader_t *_gl_gs_vertexshader_create(const char *shader,
+                                           const char *file, char **error_string);
+EXPORT gs_shader_t *_gl_gs_pixelshader_create(const char *shader,
+                                          const char *file, char **error_string);
+
+EXPORT gs_vertbuffer_t *_gl_gs_vertexbuffer_create(struct gs_vb_data *data,
+                                               uint32_t flags);
+EXPORT gs_indexbuffer_t *_gl_gs_indexbuffer_create(enum gs_index_type type,
+                                               void *indices, size_t num, uint32_t flags);
+
+EXPORT enum gs_texture_type _gl_gs_get_texture_type(const gs_texture_t *texture);
+
+EXPORT void _gl_gs_load_vertexbuffer(gs_vertbuffer_t *vertbuffer);
+EXPORT void _gl_gs_load_indexbuffer(gs_indexbuffer_t *indexbuffer);
+EXPORT void _gl_gs_load_texture(gs_texture_t *tex, int unit);
+EXPORT void _gl_gs_load_samplerstate(gs_samplerstate_t *samplerstate, int unit);
+EXPORT void _gl_gs_load_vertexshader(gs_shader_t *vertshader);
+EXPORT void _gl_gs_load_pixelshader(gs_shader_t *pixelshader);
+
+EXPORT void _gl_gs_load_default_samplerstate(bool b_3d, int unit);
+
+EXPORT gs_shader_t *_gl_gs_get_vertex_shader(void);
+EXPORT gs_shader_t *_gl_gs_get_pixel_shader(void);
+
+EXPORT gs_texture_t  *_gl_gs_get_render_target(void);
+EXPORT gs_zstencil_t *_gl_gs_get_zstencil_target(void);
+
+EXPORT void _gl_gs_set_render_target(gs_texture_t *tex, gs_zstencil_t *zstencil);
+EXPORT void _gl_gs_set_cube_render_target(gs_texture_t *cubetex, int side,
+                                      gs_zstencil_t *zstencil);
+
+EXPORT void _gl_gs_copy_texture(gs_texture_t *dst, gs_texture_t *src);
+EXPORT void _gl_gs_copy_texture_region(
+                                   gs_texture_t *dst, uint32_t dst_x, uint32_t dst_y,
+                                   gs_texture_t *src, uint32_t src_x, uint32_t src_y,
+                                   uint32_t src_w, uint32_t src_h);
+EXPORT void _gl_gs_stage_texture(gs_stagesurf_t *dst, gs_texture_t *src);
+
+EXPORT void _gl_gs_begin_scene(void);
+EXPORT void _gl_gs_draw(enum gs_draw_mode draw_mode, uint32_t start_vert,
+                    uint32_t num_verts);
+EXPORT void _gl_gs_end_scene(void);
+
+EXPORT void _gl_gs_load_swapchain(gs_swapchain_t *swapchain);
+EXPORT void _gl_gs_clear(uint32_t clear_flags, const struct vec4 *color,
+                     float depth, uint8_t stencil);
+EXPORT void _gl_gs_present(void);
+EXPORT void _gl_gs_flush(void);
+
+EXPORT void _gl_gs_set_cull_mode(enum gs_cull_mode mode);
+EXPORT enum gs_cull_mode _gl_gs_get_cull_mode(void);
+
+EXPORT void _gl_gs_enable_blending(bool enable);
+EXPORT void _gl_gs_enable_depth_test(bool enable);
+EXPORT void _gl_gs_enable_stencil_test(bool enable);
+EXPORT void _gl_gs_enable_stencil_write(bool enable);
+EXPORT void _gl_gs_enable_color(bool red, bool green, bool blue, bool alpha);
+
+EXPORT void _gl_gs_blend_function(enum gs_blend_type src, enum gs_blend_type dest);
+EXPORT void _gl_gs_blend_function_separate(
+                                       enum gs_blend_type src_c, enum gs_blend_type dest_c,
+                                       enum gs_blend_type src_a, enum gs_blend_type dest_a);
+EXPORT void _gl_gs_depth_function(enum gs_depth_test test);
+
+EXPORT void _gl_gs_stencil_function(enum gs_stencil_side side,
+                                enum gs_depth_test test);
+EXPORT void _gl_gs_stencil_op(enum gs_stencil_side side,
+                          enum gs_stencil_op_type fail,
+                          enum gs_stencil_op_type zfail,
+                          enum gs_stencil_op_type zpass);
+
+EXPORT void _gl_gs_set_viewport(int x, int y, int width, int height);
+EXPORT void _gl_gs_get_viewport(struct gs_rect *rect);
+EXPORT void _gl_gs_set_scissor_rect(const struct gs_rect *rect);
+
+EXPORT void _gl_gs_ortho(float left, float right, float top, float bottom,
+                     float znear, float zfar);
+EXPORT void _gl_gs_frustum(float left, float right, float top, float bottom,
+                       float znear, float zfar);
+
+EXPORT void _gl_gs_projection_push(void);
+EXPORT void _gl_gs_projection_pop(void);
+
+EXPORT void     _gl_gs_swapchain_destroy(gs_swapchain_t *swapchain);
+
+EXPORT void     _gl_gs_texture_destroy(gs_texture_t *tex);
+EXPORT uint32_t _gl_gs_texture_get_width(const gs_texture_t *tex);
+EXPORT uint32_t _gl_gs_texture_get_height(const gs_texture_t *tex);
+EXPORT enum gs_color_format _gl_gs_texture_get_color_format(
+                                                        const gs_texture_t *tex);
+EXPORT bool     _gl_gs_texture_map(gs_texture_t *tex, uint8_t **ptr,
+                               uint32_t *linesize);
+EXPORT void     _gl_gs_texture_unmap(gs_texture_t *tex);
+/** special-case function (GL only) - specifies whether the texture is a
+ * GL_TEXTURE_RECTANGLE type, which doesn't use normalized texture
+ * coordinates, doesn't support mipmapping, and requires address clamping */
+EXPORT bool     _gl_gs_texture_is_rect(const gs_texture_t *tex);
+/**
+ * Gets a pointer to the context-specific object associated with the texture.
+ * For example, for GL, this is a GLuint*.  For D3D11, ID3D11Texture2D*.
+ */
+EXPORT void    *_gl_gs_texture_get_obj(gs_texture_t *tex);
+
+EXPORT void     _gl_gs_cubetexture_destroy(gs_texture_t *cubetex);
+EXPORT uint32_t _gl_gs_cubetexture_get_size(const gs_texture_t *cubetex);
+EXPORT enum gs_color_format _gl_gs_cubetexture_get_color_format(
+                                                            const gs_texture_t *cubetex);
+
+EXPORT void     _gl_gs_voltexture_destroy(gs_texture_t *voltex);
+EXPORT uint32_t _gl_gs_voltexture_get_width(const gs_texture_t *voltex);
+EXPORT uint32_t _gl_gs_voltexture_get_height(const gs_texture_t *voltex);
+EXPORT uint32_t _gl_gs_voltexture_get_depth(const gs_texture_t *voltex);
+EXPORT enum gs_color_format _gl_gs_voltexture_get_color_format(
+                                                           const gs_texture_t *voltex);
+
+EXPORT void     _gl_gs_stagesurface_destroy(gs_stagesurf_t *stagesurf);
+EXPORT uint32_t _gl_gs_stagesurface_get_width(const gs_stagesurf_t *stagesurf);
+EXPORT uint32_t _gl_gs_stagesurface_get_height(const gs_stagesurf_t *stagesurf);
+EXPORT enum gs_color_format _gl_gs_stagesurface_get_color_format(
+                                                             const gs_stagesurf_t *stagesurf);
+EXPORT bool     _gl_gs_stagesurface_map(gs_stagesurf_t *stagesurf, uint8_t **data,
+                                    uint32_t *linesize);
+EXPORT void     _gl_gs_stagesurface_unmap(gs_stagesurf_t *stagesurf);
+
+EXPORT void     _gl_gs_zstencil_destroy(gs_zstencil_t *zstencil);
+
+EXPORT void     _gl_gs_samplerstate_destroy(gs_samplerstate_t *samplerstate);
+
+EXPORT void     _gl_gs_vertexbuffer_destroy(gs_vertbuffer_t *vertbuffer);
+EXPORT void     _gl_gs_vertexbuffer_flush(gs_vertbuffer_t *vertbuffer);
+EXPORT struct gs_vb_data *_gl_gs_vertexbuffer_get_data(
+                                                   const gs_vertbuffer_t *vertbuffer);
+
+EXPORT void     _gl_gs_indexbuffer_destroy(gs_indexbuffer_t *indexbuffer);
+EXPORT void     _gl_gs_indexbuffer_flush(gs_indexbuffer_t *indexbuffer);
+EXPORT void     *_gl_gs_indexbuffer_get_data(const gs_indexbuffer_t *indexbuffer);
+EXPORT size_t   _gl_gs_indexbuffer_get_num_indices(
+                                               const gs_indexbuffer_t *indexbuffer);
+EXPORT enum gs_index_type _gl_gs_indexbuffer_get_type(
+                                                  const gs_indexbuffer_t *indexbuffer);
+    
+EXPORT void _gl_gs_shader_destroy(gs_shader_t *shader);
+
+EXPORT int _gl_gs_shader_get_num_params(const gs_shader_t *shader);
+EXPORT gs_sparam_t *_gl_gs_shader_get_param_by_idx(gs_shader_t *shader,
+                                               uint32_t param);
+EXPORT gs_sparam_t *_gl_gs_shader_get_param_by_name(gs_shader_t *shader,
+                                                const char *name);
+
+EXPORT gs_sparam_t *_gl_gs_shader_get_viewproj_matrix(const gs_shader_t *shader);
+EXPORT gs_sparam_t *_gl_gs_shader_get_world_matrix(const gs_shader_t *shader);
+
+EXPORT void _gl_gs_shader_get_param_info(const gs_sparam_t *param,
+                                     struct gs_shader_param_info *info);
+EXPORT void _gl_gs_shader_set_bool(gs_sparam_t *param, bool val);
+EXPORT void _gl_gs_shader_set_float(gs_sparam_t *param, float val);
+EXPORT void _gl_gs_shader_set_int(gs_sparam_t *param, int val);
+EXPORT void _gl_gs_shader_set_matrix3(gs_sparam_t *param, const struct matrix3 *val);
+EXPORT void _gl_gs_shader_set_matrix4(gs_sparam_t *param, const struct matrix4 *val);
+EXPORT void _gl_gs_shader_set_vec2(gs_sparam_t *param, const struct vec2 *val);
+EXPORT void _gl_gs_shader_set_vec3(gs_sparam_t *param, const struct vec3 *val);
+EXPORT void _gl_gs_shader_set_vec4(gs_sparam_t *param, const struct vec4 *val);
+EXPORT void _gl_gs_shader_set_texture(gs_sparam_t *param, gs_texture_t *val);
+EXPORT void _gl_gs_shader_set_val(gs_sparam_t *param, const void *val, size_t size);
+EXPORT void _gl_gs_shader_set_default(gs_sparam_t *param);
+EXPORT void _gl_gs_shader_set_next_sampler(gs_sparam_t *param,
+                                       gs_samplerstate_t *sampler);
+    
+#ifdef __APPLE__
+    /* OSX/Cocoa specific functions */
+    EXPORT gs_texture_t * _gl_device_texture_create_from_iosurface(gs_device_t *dev,
+                                                          void *iosurf);
+    EXPORT bool _gl_gs_texture_rebind_iosurface(gs_texture_t *texture,
+                                        void *iosurf);
+#endif
+    
+#endif // #define __STATIC_OPENGL_RENDERER__
 
 #ifdef __cplusplus
 }

@@ -19,7 +19,19 @@
 #include "../util/dstr.h"
 #include "../util/platform.h"
 #include "graphics-internal.h"
+#include "device-exports.h"
 
+#define __STATIC_OPENGL_RENDERER__
+#ifdef __STATIC_OPENGL_RENDERER__
+#define GRAPHICS_IMPORT(func) \
+    do { \
+        exports->func = _gl_##func; \
+    } while(false)
+#define GRAPHICS_IMPORT_OPTIONAL(func) \
+    do { \
+        exports->func = _gl_##func; \
+    } while(false)
+#else
 #define GRAPHICS_IMPORT(func) \
 	do { \
 		exports->func = os_dlsym(module, #func); \
@@ -34,6 +46,7 @@
 	do { \
 		exports->func = os_dlsym(module, #func); \
 	} while (false)
+#endif // #ifdef __STATIC_OPENGL_RENDERER__
 
 bool load_graphics_imports(struct gs_exports *exports, void *module,
 		const char *module_name)
@@ -42,7 +55,6 @@ bool load_graphics_imports(struct gs_exports *exports, void *module,
 
 	GRAPHICS_IMPORT(device_get_name);
 	GRAPHICS_IMPORT(device_get_type);
-	GRAPHICS_IMPORT_OPTIONAL(device_enum_adapters);
 	GRAPHICS_IMPORT(device_preprocessor_name);
 	GRAPHICS_IMPORT(device_create);
 	GRAPHICS_IMPORT(device_destroy);
