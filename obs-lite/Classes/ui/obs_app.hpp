@@ -34,6 +34,9 @@ private:
     // rtmp service
     OBSService service;
     
+    // current scene
+    OBSSource curScene;
+    
     // fade transition
     obs_source_t *fadeTransition;
     
@@ -74,9 +77,10 @@ public:
     // reset
     int ResetVideo();
     
-    // load
+    // scene
     void LoadDefaultScene();
     void LoadScene(const char* file);
+    void SetCurrentScene(OBSSource* s);
 
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;

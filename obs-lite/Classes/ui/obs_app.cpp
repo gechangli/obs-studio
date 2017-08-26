@@ -220,6 +220,10 @@ bool OBSApp::LoadService() {
 
 void OBSApp::SourceLoaded(void *data, obs_source_t *source) {
     blog(LOG_INFO, "source loaded for id: %s", source->info.id);
+    if (obs_scene_from_source(source) != NULL) {
+        OBSSource sref = OBSSource(source);
+        ((OBSApp*)data)->SetCurrentScene(&sref);
+    }
 }
 
 void OBSApp::LoadDefaultScene() {
@@ -278,6 +282,10 @@ void OBSApp::LoadScene(const char *file) {
 //    LoadAudioDevice(AUX_AUDIO_3,     5, data);
     
     obs_load_sources(sources, OBSApp::SourceLoaded, this);
+}
+
+void OBSApp::SetCurrentScene(OBSSource* s) {
+    curScene = *s;
 }
 
 void OBSApp::ClearSceneData() {

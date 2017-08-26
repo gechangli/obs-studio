@@ -718,8 +718,8 @@
 		92FFDA7F1F4AF0CC00AB5892 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				927B92FB1F4C8DBB0032FC2F /* data */,
 				92FFDA851F4AF0E600AB5892 /* Main.storyboard */,
+				927B92FB1F4C8DBB0032FC2F /* data */,
 				92FFDA821F4AF0E200AB5892 /* AppIcon.appiconset */,
 			);
 			name = Resources;
