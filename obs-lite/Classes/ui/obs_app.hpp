@@ -3,6 +3,7 @@
 #include "obs.hpp"
 #include <util/util.hpp>
 #include <util/profiler.h>
+#include <vector>
 
 #ifdef __APPLE__
 #define BASE_PATH ".."
@@ -43,6 +44,9 @@ private:
     // fade transition
     obs_source_t *fadeTransition;
     
+    // transitions
+    std::vector<OBSSource> transitions;
+    
     // buffer used for renderring
     gs_vertbuffer_t *box = nullptr;
     gs_vertbuffer_t *boxLeft = nullptr;
@@ -62,6 +66,7 @@ private:
     void ClearSceneData();
     void InitDefaultTransitions();
     void InitTransition(obs_source_t *transition);
+    obs_source_t* FindTransition(const char *name);
     static void SourceLoaded(void *data, obs_source_t *source);
     static void RenderMain(void *data, uint32_t cx, uint32_t cy);
     

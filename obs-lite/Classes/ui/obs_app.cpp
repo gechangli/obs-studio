@@ -275,6 +275,14 @@ void OBSApp::LoadScene(const char *file) {
     if (!name || !*name)
         name = curSceneCollection;
     
+    // find transition
+    curTransition = FindTransition(transitionName);
+    if (!curTransition)
+        curTransition = fadeTransition;
+    
+    // set transition
+    obs_set_output_source(0, curTransition);
+
 //    LoadAudioDevice(DESKTOP_AUDIO_1, 1, data);
 //    LoadAudioDevice(DESKTOP_AUDIO_2, 2, data);
 //    LoadAudioDevice(AUX_AUDIO_1,     3, data);
@@ -282,6 +290,17 @@ void OBSApp::LoadScene(const char *file) {
 //    LoadAudioDevice(AUX_AUDIO_3,     5, data);
     
     obs_load_sources(sources, OBSApp::SourceLoaded, this);
+}
+
+obs_source_t* OBSApp::FindTransition(const char *name) {
+    for(vector<OBSSource>::iterator iter = transitions.begin(); iter != transitions.end(); iter++) {
+        OBSSource tr = *iter;
+        const char *trName = obs_source_get_name(tr);
+        if (strcmp(trName, name) == 0)
+            return tr;
+    }
+    
+    return nullptr;
 }
 
 void OBSApp::SetCurrentScene(OBSSource* s) {
@@ -327,6 +346,7 @@ void OBSApp::InitDefaultTransitions() {
             
             obs_source_t *tr = obs_source_create_private(id, name, NULL);
             InitTransition(tr);
+            transitions.emplace_back(tr);
             
             if (strcmp(id, "fade_transition") == 0)
                 fadeTransition = tr;
