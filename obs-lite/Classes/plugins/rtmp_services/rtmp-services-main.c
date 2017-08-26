@@ -61,7 +61,7 @@ bool obs_module_load(void)
 {
 	init_twitch_data();
 
-#if !defined(_WIN32) || CHECK_FOR_SERVICE_UPDATES
+#if !defined(_WIN32) && CHECK_FOR_SERVICE_UPDATES
 	char *local_dir = obs_module_file("");
 	char *cache_dir = obs_module_config_path("");
 	struct dstr module_name = {0};

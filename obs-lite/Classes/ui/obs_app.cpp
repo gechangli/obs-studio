@@ -23,7 +23,9 @@ using namespace std;
 
 bool portable_mode = false;
 
-OBSApp::OBSApp(profiler_name_store_t *store) :
+OBSApp::OBSApp(int w, int h, profiler_name_store_t *store) :
+videoWidth(w),
+videoHeight(h),
 profilerNameStore(store) {
     
 }
@@ -96,28 +98,77 @@ bool OBSApp::StartupOBS(const char* locale) {
     blog(LOG_INFO, "---------------------------------");
     obs_post_load_modules();
     
+    // reset video
+    ResetVideo();
+    
     // init rtmp services
     if (!InitService())
         throw "Failed to initialize service";
     
+    // init graphics
+    InitPrimitives();
+    
     return true;
 }
 
-int OBSApp::ResetVideo(int w, int h) {
+int OBSApp::ResetVideo() {
     struct obs_video_info ovi;
     ovi.adapter         = 0;
-    ovi.base_width      = w;
-    ovi.base_height     = h;
+    ovi.base_width      = videoWidth;
+    ovi.base_height     = videoHeight;
     ovi.fps_num         = 30000;
     ovi.fps_den         = 1001;
     ovi.graphics_module = config_get_string(globalConfig, "Video", "Renderer");
     ovi.output_format   = VIDEO_FORMAT_RGBA;
-    ovi.output_width    = w;
-    ovi.output_height   = h;
+    ovi.output_width    = videoWidth;
+    ovi.output_height   = videoHeight;
     
     if (obs_reset_video(&ovi) != 0)
         throw "Couldn't initialize video";
     return 0;
+}
+
+void OBSApp::InitPrimitives() {
+    ProfileScope("OBSApp::InitPrimitives");
+    
+    obs_enter_graphics();
+    
+    gs_render_start(true);
+    gs_vertex2f(0.0f, 0.0f);
+    gs_vertex2f(0.0f, 1.0f);
+    gs_vertex2f(1.0f, 1.0f);
+    gs_vertex2f(1.0f, 0.0f);
+    gs_vertex2f(0.0f, 0.0f);
+    box = gs_render_save();
+    
+    gs_render_start(true);
+    gs_vertex2f(0.0f, 0.0f);
+    gs_vertex2f(0.0f, 1.0f);
+    boxLeft = gs_render_save();
+    
+    gs_render_start(true);
+    gs_vertex2f(0.0f, 0.0f);
+    gs_vertex2f(1.0f, 0.0f);
+    boxTop = gs_render_save();
+    
+    gs_render_start(true);
+    gs_vertex2f(1.0f, 0.0f);
+    gs_vertex2f(1.0f, 1.0f);
+    boxRight = gs_render_save();
+    
+    gs_render_start(true);
+    gs_vertex2f(0.0f, 1.0f);
+    gs_vertex2f(1.0f, 1.0f);
+    boxBottom = gs_render_save();
+    
+    gs_render_start(true);
+    for (int i = 0; i <= 360; i += (360/20)) {
+        float pos = RAD(float(i));
+        gs_vertex2f(cosf(pos), sinf(pos));
+    }
+    circle = gs_render_save();
+    
+    obs_leave_graphics();
 }
 
 bool OBSApp::InitService() {

@@ -30,11 +30,12 @@ static void loadStaticModules() {
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
     // init obs app
-    self.obsApp = new OBSApp(nullptr);
-    self.obsApp->RegisterStaticModuleLoader(loadStaticModules);
-    self.obsApp->StartupOBS("zh_CN");
-    NSOpenGLView* glView = ((ViewController*)NSApp.mainWindow.contentViewController).glView;
-    self.obsApp->ResetVideo((int)glView.frame.size.width, (int)glView.frame.size.height);
+    if(!self.obsApp) {
+        NSOpenGLView* glView = ((ViewController*)NSApp.mainWindow.contentViewController).glView;
+        self.obsApp = new OBSApp((int)glView.frame.size.width, (int)glView.frame.size.height);
+        self.obsApp->RegisterStaticModuleLoader(loadStaticModules);
+        self.obsApp->StartupOBS("zh_CN");
+    }
 }
 
 @end

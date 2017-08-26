@@ -21,9 +21,18 @@
  */
 class OBSApp {
 private:
+    int videoWidth;
+    int videoHeight;
     profiler_name_store_t* profilerNameStore = nullptr;
     ConfigFile globalConfig;
     OBSService service;
+    
+    gs_vertbuffer_t *box = nullptr;
+    gs_vertbuffer_t *boxLeft = nullptr;
+    gs_vertbuffer_t *boxTop = nullptr;
+    gs_vertbuffer_t *boxRight = nullptr;
+    gs_vertbuffer_t *boxBottom = nullptr;
+    gs_vertbuffer_t *circle = nullptr;
     
     // config related
     bool MakeUserDirs();
@@ -32,6 +41,7 @@ private:
     bool InitGlobalConfigDefaults();
     bool InitService();
     bool LoadService();
+    void InitPrimitives();
     
 public:
     // get config file path
@@ -39,7 +49,7 @@ public:
     int GetProfilePath(char *path, size_t size, const char *file);
     
     // ctor & dtor
-    OBSApp(profiler_name_store_t *store);
+    OBSApp(int w, int h, profiler_name_store_t *store = nullptr);
     virtual ~OBSApp();
     
     // startup
@@ -47,7 +57,7 @@ public:
     bool StartupOBS(const char* locale);
     
     // reset
-    int ResetVideo(int w, int h);
+    int ResetVideo();
     
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;
