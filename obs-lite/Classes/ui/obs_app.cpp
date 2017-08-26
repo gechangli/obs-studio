@@ -13,6 +13,7 @@
 #include <util/util.hpp>
 #include <obs-config.h>
 #include <obs.hpp>
+#include "obs-internal.h"
 #include "obs_app.hpp"
 #include <TargetConditionals.h>
 
@@ -215,6 +216,116 @@ bool OBSApp::LoadService() {
     }
 
     return !!service;
+}
+
+void OBSApp::SourceLoaded(void *data, obs_source_t *source) {
+    blog(LOG_INFO, "source loaded for id: %s", source->info.id);
+}
+
+void OBSApp::LoadDefaultScene() {
+    // load scene
+    char scenePath[512];
+    int ret = GetConfigPath(scenePath, sizeof(scenePath), "data/scenes/default.json");
+    if (ret <= 0)
+        throw "Failed to get scene collection json file path";
+    LoadScene(scenePath);
+}
+
+void OBSApp::LoadScene(const char *file) {
+    // load scene json
+    obs_data_t *data = obs_data_create_from_json_file_safe(file, nullptr);
+    if (!data) {
+        return;
+    }
+    
+    // clear old scene data
+    ClearSceneData();
+    InitDefaultTransitions();
+    
+    // get fields from json
+    obs_data_array_t *sceneOrder = obs_data_get_array(data, "scene_order");
+    obs_data_array_t *sources = obs_data_get_array(data, "sources");
+    obs_data_array_t *transitions = obs_data_get_array(data, "transitions");
+    const char *sceneName = obs_data_get_string(data, "current_scene");
+    const char *programSceneName = obs_data_get_string(data, "current_program_scene");
+    const char *transitionName = obs_data_get_string(data, "current_transition");
+    
+    // get transition duration
+    int newDuration = obs_data_get_int(data, "transition_duration");
+    if (!newDuration)
+        newDuration = 300;
+    
+    // get transition name, if don't have, get fade transition name
+    if (!transitionName)
+        transitionName = obs_source_get_name(fadeTransition);
+    
+    const char *curSceneCollection = config_get_string(globalConfig, "Basic", "SceneCollection");
+    
+    obs_data_set_default_string(data, "name", curSceneCollection);
+    
+    const char       *name = obs_data_get_string(data, "name");
+    obs_source_t     *curScene;
+    obs_source_t     *curProgramScene;
+    obs_source_t     *curTransition;
+    
+    if (!name || !*name)
+        name = curSceneCollection;
+    
+//    LoadAudioDevice(DESKTOP_AUDIO_1, 1, data);
+//    LoadAudioDevice(DESKTOP_AUDIO_2, 2, data);
+//    LoadAudioDevice(AUX_AUDIO_1,     3, data);
+//    LoadAudioDevice(AUX_AUDIO_2,     4, data);
+//    LoadAudioDevice(AUX_AUDIO_3,     5, data);
+    
+    obs_load_sources(sources, OBSApp::SourceLoaded, this);
+}
+
+void OBSApp::ClearSceneData() {
+    // clear output sources
+    obs_set_output_source(0, nullptr);
+    obs_set_output_source(1, nullptr);
+    obs_set_output_source(2, nullptr);
+    obs_set_output_source(3, nullptr);
+    obs_set_output_source(4, nullptr);
+    obs_set_output_source(5, nullptr);
+    
+    // remove unused sources
+    auto cb = [](void *unused, obs_source_t *source)
+    {
+        obs_source_remove(source);
+        UNUSED_PARAMETER(unused);
+        return true;
+    };
+    obs_enum_sources(cb, nullptr);
+    
+    // log
+    blog(LOG_INFO, "All scene data cleared");
+    blog(LOG_INFO, "------------------------------------------------");
+}
+
+void OBSApp::InitTransition(obs_source_t *transition) {
+    // TODO: not understand this yet
+}
+
+void OBSApp::InitDefaultTransitions() {
+    size_t idx = 0;
+    const char *id;
+    
+    /* automatically add transitions that have no configuration (things
+     * such as cut/fade/etc) */
+    while (obs_enum_transition_types(idx++, &id)) {
+        if (!obs_is_source_configurable(id)) {
+            const char *name = obs_source_get_display_name(id);
+            
+            obs_source_t *tr = obs_source_create_private(id, name, NULL);
+            InitTransition(tr);
+            
+            if (strcmp(id, "fade_transition") == 0)
+                fadeTransition = tr;
+            
+            obs_source_release(tr);
+        }
+    }
 }
 
 bool OBSApp::do_mkdir(const char *path) {

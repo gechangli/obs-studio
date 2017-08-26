@@ -35,6 +35,7 @@ static void loadStaticModules() {
         self.obsApp = new OBSApp((int)glView.frame.size.width, (int)glView.frame.size.height);
         self.obsApp->RegisterStaticModuleLoader(loadStaticModules);
         self.obsApp->StartupOBS("zh_CN");
+        self.obsApp->LoadDefaultScene();
     }
 }
 

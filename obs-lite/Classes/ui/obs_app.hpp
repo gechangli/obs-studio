@@ -21,12 +21,23 @@
  */
 class OBSApp {
 private:
+    // size of video
     int videoWidth;
     int videoHeight;
+    
+    // profiler store
     profiler_name_store_t* profilerNameStore = nullptr;
+    
+    // global config file
     ConfigFile globalConfig;
+    
+    // rtmp service
     OBSService service;
     
+    // fade transition
+    obs_source_t *fadeTransition;
+    
+    // buffer used for renderring
     gs_vertbuffer_t *box = nullptr;
     gs_vertbuffer_t *boxLeft = nullptr;
     gs_vertbuffer_t *boxTop = nullptr;
@@ -42,6 +53,10 @@ private:
     bool InitService();
     bool LoadService();
     void InitPrimitives();
+    void ClearSceneData();
+    void InitDefaultTransitions();
+    void InitTransition(obs_source_t *transition);
+    static void SourceLoaded(void *data, obs_source_t *source);
     
 public:
     // get config file path
@@ -59,6 +74,10 @@ public:
     // reset
     int ResetVideo();
     
+    // load
+    void LoadDefaultScene();
+    void LoadScene(const char* file);
+
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;
     }
