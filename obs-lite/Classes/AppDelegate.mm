@@ -36,6 +36,7 @@ static void loadStaticModules() {
         self.obsApp->RegisterStaticModuleLoader(loadStaticModules);
         self.obsApp->StartupOBS("zh_CN");
         self.obsApp->LoadDefaultScene();
+        self.obsApp->CreateDisplay({ glView });
     }
 }
 

@@ -430,3 +430,55 @@ bool OBSApp::InitGlobalConfigDefaults() {
 #endif
     return true;
 }
+
+void OBSApp::CreateDisplay(gs_window window) {
+    // if already created, return
+    if(display) {
+        return;
+    }
+    
+    // create display
+    gs_init_data info = {};
+    info.cx = videoWidth;
+    info.cy = videoHeight;
+    info.format = GS_RGBA;
+    info.zsformat = GS_ZS_NONE;
+    info.window = window;
+    display = obs_display_create(&info);
+    
+    // add draw callback
+    obs_display_add_draw_callback(GetDisplay(), OBSApp::RenderMain, this);
+}
+
+obs_display_t* OBSApp::GetDisplay() {
+    return display;
+}
+
+void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
+    obs_video_info ovi;
+    
+    obs_get_video_info(&ovi);
+    
+    int previewCX = int(ovi.base_width);
+    int previewCY = int(ovi.base_height);
+    
+    gs_viewport_push();
+    gs_projection_push();
+    
+    /* --------------------------------------- */
+    
+    gs_ortho(0.0f, float(ovi.base_width), 0.0f, float(ovi.base_height),
+             -100.0f, 100.0f);
+    gs_set_viewport(0, 0, previewCX, previewCY);
+    
+    obs_render_main_view();
+    gs_load_vertexbuffer(nullptr);
+    
+    /* --------------------------------------- */
+    
+    gs_projection_pop();
+    gs_viewport_pop();
+    
+    UNUSED_PARAMETER(cx);
+    UNUSED_PARAMETER(cy);
+}

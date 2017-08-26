@@ -37,6 +37,9 @@ private:
     // current scene
     OBSSource curScene;
     
+    // display
+    OBSDisplay display;
+    
     // fade transition
     obs_source_t *fadeTransition;
     
@@ -60,6 +63,7 @@ private:
     void InitDefaultTransitions();
     void InitTransition(obs_source_t *transition);
     static void SourceLoaded(void *data, obs_source_t *source);
+    static void RenderMain(void *data, uint32_t cx, uint32_t cy);
     
 public:
     // get config file path
@@ -82,6 +86,10 @@ public:
     void LoadScene(const char* file);
     void SetCurrentScene(OBSSource* s);
 
+    // display
+    void CreateDisplay(gs_window window);
+    obs_display_t* GetDisplay();
+    
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;
     }
