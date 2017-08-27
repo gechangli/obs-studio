@@ -27,14 +27,8 @@ bool portable_mode = false;
 OBSApp::OBSApp(int w, int h, profiler_name_store_t *store) :
 viewWidth(w),
 viewHeight(h),
+videoScale(0),
 profilerNameStore(store) {
-    viewAspect = float(viewWidth) / float(viewHeight);
-    videoAspect = 1280.0 / 720.0;
-    if(viewAspect > videoAspect) {
-        videoScale = float(viewHeight) / 720.0;
-    } else {
-        videoScale = float(viewWidth) / 1280.0;
-    }
 }
 
 OBSApp::~OBSApp() {
@@ -479,21 +473,33 @@ void OBSApp::CreateDisplay(gs_window window) {
     
     // add draw callback
     obs_display_add_draw_callback(GetDisplay(), OBSApp::RenderMain, this);
+    
+    // get video settings
+    obs_video_info ovi;
+    obs_get_video_info(&ovi);
+    
+    // ensure video scale is set
+    if(videoScale == 0) {
+        float viewAspect = float(viewWidth) / float(viewHeight);
+        float videoAspect = float(ovi.base_width) / float(ovi.base_height);
+        if(viewAspect > videoAspect) {
+            videoScale = float(viewHeight) / float(ovi.base_height);
+        } else {
+            videoScale = float(viewWidth) / float(ovi.base_width);
+        }
+    }
 }
 
 obs_display_t* OBSApp::GetDisplay() {
     return display;
 }
 
-float OBSApp::GetVideoScale() {
-    return videoScale;
-}
-
 void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
+    // get video settings
     obs_video_info ovi;
-    
     obs_get_video_info(&ovi);
     
+    // ensure video scale is set
     OBSApp* app = (OBSApp*)data;
     float videoScale = app->GetVideoScale();
     int previewCX = int(videoScale * ovi.base_width);

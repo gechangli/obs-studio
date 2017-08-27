@@ -25,8 +25,6 @@ private:
     // size of video, render scale
     int viewWidth;
     int viewHeight;
-    float videoAspect;
-    float viewAspect;
     float videoScale;
     
     // profiler store
@@ -98,8 +96,11 @@ public:
     void CreateDisplay(gs_window window);
     obs_display_t* GetDisplay();
     
-    // scale
-    float GetVideoScale();
+    // accessor
+    inline float GetVideoScale() { return videoScale; }
+    inline void SetVideoScale(float v) { videoScale = v; }
+    inline int GetViewWidth() { return viewWidth; }
+    inline int GetViewHeight() { return viewHeight; }
     
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;
