@@ -24,7 +24,9 @@ using namespace std;
 
 bool portable_mode = false;
 
-OBSApp::OBSApp(int w, int h, profiler_name_store_t *store) :
+OBSApp::OBSApp(int baseWidth, int baseHeight, int w, int h, profiler_name_store_t *store) :
+baseWidth(baseWidth),
+baseHeight(baseHeight),
 viewWidth(w),
 viewHeight(h),
 videoScale(0),
@@ -115,14 +117,14 @@ bool OBSApp::StartupOBS(const char* locale) {
 int OBSApp::ResetVideo() {
     struct obs_video_info ovi;
     ovi.adapter         = 0;
-    ovi.base_width      = 1280;
-    ovi.base_height     = 720;
+    ovi.base_width      = baseWidth;
+    ovi.base_height     = baseHeight;
     ovi.fps_num         = 30000;
     ovi.fps_den         = 1001;
     ovi.graphics_module = config_get_string(globalConfig, "Video", "Renderer");
     ovi.output_format   = VIDEO_FORMAT_RGBA;
-    ovi.output_width    = viewWidth;
-    ovi.output_height   = viewHeight;
+    ovi.output_width    = 1280;
+    ovi.output_height   = 720;
     
     if (obs_reset_video(&ovi) != 0)
         throw "Couldn't initialize video";

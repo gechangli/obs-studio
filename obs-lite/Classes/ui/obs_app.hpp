@@ -31,6 +31,8 @@ private:
     // size of video, render scale
     int viewWidth;
     int viewHeight;
+    int baseWidth;
+    int baseHeight;
     float videoScale;
     
     // profiler store
@@ -84,7 +86,7 @@ public:
     int GetProfilePath(char *path, size_t size, const char *file);
     
     // ctor & dtor
-    OBSApp(int w, int h, profiler_name_store_t *store = nullptr);
+    OBSApp(int baseWidth, int baseHeight, int w, int h, profiler_name_store_t *store = nullptr);
     virtual ~OBSApp();
     
     // startup
