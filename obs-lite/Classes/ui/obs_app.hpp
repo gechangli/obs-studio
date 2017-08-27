@@ -22,9 +22,12 @@
  */
 class OBSApp {
 private:
-    // size of video
-    int videoWidth;
-    int videoHeight;
+    // size of video, render scale
+    int viewWidth;
+    int viewHeight;
+    float videoAspect;
+    float viewAspect;
+    float videoScale;
     
     // profiler store
     profiler_name_store_t* profilerNameStore = nullptr;
@@ -94,6 +97,9 @@ public:
     // display
     void CreateDisplay(gs_window window);
     obs_display_t* GetDisplay();
+    
+    // scale
+    float GetVideoScale();
     
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;

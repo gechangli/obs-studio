@@ -25,10 +25,16 @@ using namespace std;
 bool portable_mode = false;
 
 OBSApp::OBSApp(int w, int h, profiler_name_store_t *store) :
-videoWidth(w),
-videoHeight(h),
+viewWidth(w),
+viewHeight(h),
 profilerNameStore(store) {
-    
+    viewAspect = float(viewWidth) / float(viewHeight);
+    videoAspect = 1280.0 / 720.0;
+    if(viewAspect > videoAspect) {
+        videoScale = float(viewHeight) / 720.0;
+    } else {
+        videoScale = float(viewWidth) / 1280.0;
+    }
 }
 
 OBSApp::~OBSApp() {
@@ -115,14 +121,14 @@ bool OBSApp::StartupOBS(const char* locale) {
 int OBSApp::ResetVideo() {
     struct obs_video_info ovi;
     ovi.adapter         = 0;
-    ovi.base_width      = videoWidth;
-    ovi.base_height     = videoHeight;
+    ovi.base_width      = 1280;
+    ovi.base_height     = 720;
     ovi.fps_num         = 30000;
     ovi.fps_den         = 1001;
     ovi.graphics_module = config_get_string(globalConfig, "Video", "Renderer");
     ovi.output_format   = VIDEO_FORMAT_RGBA;
-    ovi.output_width    = videoWidth;
-    ovi.output_height   = videoHeight;
+    ovi.output_width    = viewWidth;
+    ovi.output_height   = viewHeight;
     
     if (obs_reset_video(&ovi) != 0)
         throw "Couldn't initialize video";
@@ -464,8 +470,8 @@ void OBSApp::CreateDisplay(gs_window window) {
     
     // create display
     gs_init_data info = {};
-    info.cx = videoWidth;
-    info.cy = videoHeight;
+    info.cx = viewWidth;
+    info.cy = viewHeight;
     info.format = GS_RGBA;
     info.zsformat = GS_ZS_NONE;
     info.window = window;
@@ -479,13 +485,19 @@ obs_display_t* OBSApp::GetDisplay() {
     return display;
 }
 
+float OBSApp::GetVideoScale() {
+    return videoScale;
+}
+
 void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     obs_video_info ovi;
     
     obs_get_video_info(&ovi);
     
-    int previewCX = int(ovi.base_width);
-    int previewCY = int(ovi.base_height);
+    OBSApp* app = (OBSApp*)data;
+    float videoScale = app->GetVideoScale();
+    int previewCX = int(videoScale * ovi.base_width);
+    int previewCY = int(videoScale * ovi.base_height);
     
     gs_viewport_push();
     gs_projection_push();
