@@ -17,6 +17,12 @@
 #define OBS_UNIX_STRUCTURE 0
 #endif
 
+#define DESKTOP_AUDIO_1 Str("DesktopAudioDevice1")
+#define DESKTOP_AUDIO_2 Str("DesktopAudioDevice2")
+#define AUX_AUDIO_1     Str("AuxAudioDevice1")
+#define AUX_AUDIO_2     Str("AuxAudioDevice2")
+#define AUX_AUDIO_3     Str("AuxAudioDevice3")
+
 /**
  * OBS application
  */
@@ -68,6 +74,7 @@ private:
     void InitDefaultTransitions();
     void InitTransition(obs_source_t *transition);
     obs_source_t* FindTransition(const char *name);
+    void LoadAudioDevice(const char *name, int channel, obs_data_t *parent);
     static void SourceLoaded(void *data, obs_source_t *source);
     static void RenderMain(void *data, uint32_t cx, uint32_t cy);
     

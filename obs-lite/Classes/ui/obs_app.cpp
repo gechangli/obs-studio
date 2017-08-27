@@ -494,6 +494,20 @@ obs_display_t* OBSApp::GetDisplay() {
     return display;
 }
 
+void OBSApp::LoadAudioDevice(const char *name, int channel, obs_data_t *parent) {
+    obs_data_t *data = obs_data_get_obj(parent, name);
+    if (!data)
+        return;
+    
+    obs_source_t *source = obs_load_source(data);
+    if (source) {
+        obs_set_output_source(channel, source);
+        obs_source_release(source);
+    }
+    
+    obs_data_release(data);
+}
+
 void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     // get video settings
     obs_video_info ovi;
