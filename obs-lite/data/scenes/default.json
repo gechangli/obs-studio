@@ -50,170 +50,170 @@
     "name": "未命名",
     "preview_locked": false,
     "quick_transitions": [
-                          {
-                          "duration": 300,
-                          "hotkeys": [],
-                          "id": 1,
-                          "name": "剪切"
-                          },
-                          {
-                          "duration": 300,
-                          "hotkeys": [],
-                          "id": 2,
-                          "name": "淡出"
-                          }
-                          ],
+        {
+            "duration": 300,
+            "hotkeys": [],
+            "id": 1,
+            "name": "剪切"
+        },
+        {
+            "duration": 300,
+            "hotkeys": [],
+            "id": 2,
+            "name": "淡出"
+        }
+    ],
     "saved_preview_projectors": [
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 },
-                                 {
-                                 "saved_preview_projectors": 0
-                                 }
-                                 ],
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        },
+        {
+            "saved_preview_projectors": 0
+        }
+    ],
     "saved_projectors": [
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         },
-                         {
-                         "saved_projectors": ""
-                         }
-                         ],
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        },
+        {
+            "saved_projectors": ""
+        }
+    ],
     "scaling_enabled": false,
     "scaling_level": 0,
     "scaling_off_x": 0.0,
     "scaling_off_y": 0.0,
     "scene_order": [
-                    {
-                    "name": "场景"
-                    }
-                    ],
+        {
+            "name": "场景"
+        }
+    ],
     "sources": [
-                {
-                "deinterlace_field_order": 0,
-                "deinterlace_mode": 0,
-                "enabled": true,
-                "flags": 0,
-                "hotkeys": {
+        {
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {
                 "OBSBasic.SelectScene": [],
                 "libobs.hide_scene_item.视频捕捉设备": [],
                 "libobs.show_scene_item.视频捕捉设备": []
-                },
-                "id": "scene",
-                "mixers": 0,
-                "monitoring_type": 0,
-                "muted": false,
-                "name": "场景",
-                "push-to-mute": false,
-                "push-to-mute-delay": 0,
-                "push-to-talk": false,
-                "push-to-talk-delay": 0,
-                "settings": {
+            },
+            "id": "scene",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "场景",
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
                 "id_counter": 7,
                 "items": [
-                          {
-                          "align": 5,
-                          "bounds": {
-                          "x": 0.0,
-                          "y": 0.0
-                          },
-                          "bounds_align": 0,
-                          "bounds_type": 0,
-                          "crop_bottom": 0,
-                          "crop_left": 0,
-                          "crop_right": 0,
-                          "crop_top": 0,
-                          "id": 7,
-                          "locked": false,
-                          "name": "视频捕捉设备",
-                          "pos": {
-                          "x": 0.0,
-                          "y": 0.0
-                          },
-                          "rot": 0.0,
-                          "scale": {
-                          "x": 1.5,
-                          "y": 1.5
-                          },
-                          "scale_filter": "disable",
-                          "visible": true
-                          }
-                          ]
-                },
-                "sync": 0,
-                "volume": 1.0
-                },
-                {
-                "deinterlace_field_order": 0,
-                "deinterlace_mode": 0,
-                "enabled": true,
-                "flags": 0,
-                "hotkeys": {},
-                "id": "av_capture_input",
-                "mixers": 0,
-                "monitoring_type": 0,
-                "muted": false,
-                "name": "视频捕捉设备",
-                "push-to-mute": false,
-                "push-to-mute-delay": 0,
-                "push-to-talk": false,
-                "push-to-talk-delay": 0,
-                "settings": {
+                    {
+                        "align": 5,
+                        "bounds": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "bounds_align": 0,
+                        "bounds_type": 0,
+                        "crop_bottom": 0,
+                        "crop_left": 0,
+                        "crop_right": 0,
+                        "crop_top": 0,
+                        "id": 7,
+                        "locked": false,
+                        "name": "视频捕捉设备",
+                        "pos": {
+                            "x": 0.0,
+                            "y": 0.0
+                        },
+                        "rot": 0.0,
+                        "scale": {
+                            "x": 1.5,
+                            "y": 1.5
+                        },
+                        "scale_filter": "disable",
+                        "visible": true
+                    }
+                ]
+            },
+            "sync": 0,
+            "volume": 1.0
+        },
+        {
+            "deinterlace_field_order": 0,
+            "deinterlace_mode": 0,
+            "enabled": true,
+            "flags": 0,
+            "hotkeys": {},
+            "id": "av_capture_input",
+            "mixers": 0,
+            "monitoring_type": 0,
+            "muted": false,
+            "name": "视频捕捉设备",
+            "push-to-mute": false,
+            "push-to-mute-delay": 0,
+            "push-to-talk": false,
+            "push-to-talk-delay": 0,
+            "settings": {
                 "device": "0x1450000005ac8511",
                 "device_name": "FaceTime 高清相机（内建）"
-                },
-                "sync": 0,
-                "volume": 1.0
-                }
-                ],
+            },
+            "sync": 0,
+            "volume": 1.0
+        }
+    ],
     "transition_duration": 300,
     "transitions": []
 }

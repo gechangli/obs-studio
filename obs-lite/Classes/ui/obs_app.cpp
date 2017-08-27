@@ -274,6 +274,15 @@ void OBSApp::LoadScene(const char *file) {
     
     if (!name || !*name)
         name = curSceneCollection;
+
+//    LoadAudioDevice(DESKTOP_AUDIO_1, 1, data);
+//    LoadAudioDevice(DESKTOP_AUDIO_2, 2, data);
+//    LoadAudioDevice(AUX_AUDIO_1,     3, data);
+//    LoadAudioDevice(AUX_AUDIO_2,     4, data);
+//    LoadAudioDevice(AUX_AUDIO_3,     5, data);
+    
+    // load sources
+    obs_load_sources(sources, OBSApp::SourceLoaded, this);
     
     // find transition
     curTransition = FindTransition(transitionName);
@@ -282,14 +291,10 @@ void OBSApp::LoadScene(const char *file) {
     
     // set transition
     obs_set_output_source(0, curTransition);
-
-//    LoadAudioDevice(DESKTOP_AUDIO_1, 1, data);
-//    LoadAudioDevice(DESKTOP_AUDIO_2, 2, data);
-//    LoadAudioDevice(AUX_AUDIO_1,     3, data);
-//    LoadAudioDevice(AUX_AUDIO_2,     4, data);
-//    LoadAudioDevice(AUX_AUDIO_3,     5, data);
     
-    obs_load_sources(sources, OBSApp::SourceLoaded, this);
+    // get current scene
+    curScene = obs_get_source_by_name(sceneName);
+    obs_transition_set(curTransition, curScene);
 }
 
 obs_source_t* OBSApp::FindTransition(const char *name) {
