@@ -175,6 +175,15 @@ static NSString *get_string(obs_data_t *data, char const *name)
 static AVCaptureDevice *get_device(obs_data_t *settings)
 {
 	auto uid = get_string(settings, "device");
+    if([uid isEqualToString:@"default"]) {
+        for (AVCaptureDevice* dev in [AVCaptureDevice devices]) {
+            if ([dev hasMediaType: AVMediaTypeVideo] ||
+                [dev hasMediaType: AVMediaTypeMuxed]) {
+                uid = dev.uniqueID;
+                break;
+            }
+        }
+    }
 	return [AVCaptureDevice deviceWithUniqueID:uid];
 }
 
@@ -1182,6 +1191,15 @@ static bool av_capture_init(av_capture *capture, obs_data_t *settings)
 		return false;
 
 	capture->uid = get_string(settings, "device");
+    if([capture->uid isEqualToString:@"default"]) {
+        for (AVCaptureDevice* dev in [AVCaptureDevice devices]) {
+            if ([dev hasMediaType: AVMediaTypeVideo] ||
+                [dev hasMediaType: AVMediaTypeMuxed]) {
+                capture->uid = dev.uniqueID;
+                break;
+            }
+        }
+    }
 
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	capture->disconnect_observer.reset([nc

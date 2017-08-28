@@ -207,8 +207,8 @@
             "push-to-talk": false,
             "push-to-talk-delay": 0,
             "settings": {
-                "device": "0x1450000005ac8511",
-                "device_name": "FaceTime 高清相机（内建）"
+                "device": "default",
+                "device_name": "Default Device"
             },
             "sync": 0,
             "volume": 1.0
