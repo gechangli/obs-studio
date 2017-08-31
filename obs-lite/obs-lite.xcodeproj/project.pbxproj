@@ -55,6 +55,12 @@
 		92A1A02F1F4E9A3E00B24588 /* text-lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FF51F4E9A3E00B24588 /* text-lookup.c */; };
 		92A1A0301F4E9A3E00B24588 /* threading-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FF71F4E9A3E00B24588 /* threading-posix.c */; };
 		92A1A0311F4E9A3E00B24588 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FFA1F4E9A3E00B24588 /* utf8.c */; };
+		92A8359A1F57ADEE00DF6141 /* audio-device-enum.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835911F57ADEE00DF6141 /* audio-device-enum.c */; };
+		92A8359B1F57ADEE00DF6141 /* mac-audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835931F57ADEE00DF6141 /* mac-audio.c */; };
+		92A8359C1F57ADEE00DF6141 /* mac-display-capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A835941F57ADEE00DF6141 /* mac-display-capture.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		92A8359D1F57ADEE00DF6141 /* mac-window-capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A835961F57ADEE00DF6141 /* mac-window-capture.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		92A8359E1F57ADEE00DF6141 /* plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835971F57ADEE00DF6141 /* plugin-main.c */; };
+		92A8359F1F57ADEE00DF6141 /* window-utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A835991F57ADEE00DF6141 /* window-utils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		92B8532F1F4F1F9A004A2648 /* coreaudio-enum-devices.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B852E51F4F1F9A004A2648 /* coreaudio-enum-devices.c */; };
 		92B853301F4F1F9A004A2648 /* coreaudio-output.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B852E61F4F1F9A004A2648 /* coreaudio-output.c */; };
 		92B853311F4F1F9A004A2648 /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B852E91F4F1F9A004A2648 /* calldata.c */; };
@@ -230,6 +236,15 @@
 		92A19FFB1F4E9A3E00B24588 /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
 		92A19FFC1F4E9A3E00B24588 /* util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = util.hpp; sourceTree = "<group>"; };
 		92A19FFD1F4E9A3E00B24588 /* util_uint128.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util_uint128.h; sourceTree = "<group>"; };
+		92A835911F57ADEE00DF6141 /* audio-device-enum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "audio-device-enum.c"; sourceTree = "<group>"; };
+		92A835921F57ADEE00DF6141 /* audio-device-enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "audio-device-enum.h"; sourceTree = "<group>"; };
+		92A835931F57ADEE00DF6141 /* mac-audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mac-audio.c"; sourceTree = "<group>"; };
+		92A835941F57ADEE00DF6141 /* mac-display-capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "mac-display-capture.m"; sourceTree = "<group>"; };
+		92A835951F57ADEE00DF6141 /* mac-helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mac-helpers.h"; sourceTree = "<group>"; };
+		92A835961F57ADEE00DF6141 /* mac-window-capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "mac-window-capture.m"; sourceTree = "<group>"; };
+		92A835971F57ADEE00DF6141 /* plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "plugin-main.c"; sourceTree = "<group>"; };
+		92A835981F57ADEE00DF6141 /* window-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "window-utils.h"; sourceTree = "<group>"; };
+		92A835991F57ADEE00DF6141 /* window-utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "window-utils.m"; sourceTree = "<group>"; };
 		92B852E51F4F1F9A004A2648 /* coreaudio-enum-devices.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "coreaudio-enum-devices.c"; sourceTree = "<group>"; };
 		92B852E61F4F1F9A004A2648 /* coreaudio-output.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "coreaudio-output.c"; sourceTree = "<group>"; };
 		92B852E71F4F1F9A004A2648 /* mac-helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mac-helpers.h"; sourceTree = "<group>"; };
@@ -457,6 +472,7 @@
 			isa = PBXGroup;
 			children = (
 				9299DCB61F4D1B5A000DBF75 /* mac_avcapture */,
+				92A835901F57ADEE00DF6141 /* mac_capture */,
 				923D9D911F51C9490097031F /* obs_transitions */,
 				9216443D1F5059AF00C403A1 /* rtmp_services */,
 			);
@@ -596,6 +612,22 @@
 				92A19FFD1F4E9A3E00B24588 /* util_uint128.h */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		92A835901F57ADEE00DF6141 /* mac_capture */ = {
+			isa = PBXGroup;
+			children = (
+				92A835911F57ADEE00DF6141 /* audio-device-enum.c */,
+				92A835921F57ADEE00DF6141 /* audio-device-enum.h */,
+				92A835931F57ADEE00DF6141 /* mac-audio.c */,
+				92A835941F57ADEE00DF6141 /* mac-display-capture.m */,
+				92A835951F57ADEE00DF6141 /* mac-helpers.h */,
+				92A835961F57ADEE00DF6141 /* mac-window-capture.m */,
+				92A835971F57ADEE00DF6141 /* plugin-main.c */,
+				92A835981F57ADEE00DF6141 /* window-utils.h */,
+				92A835991F57ADEE00DF6141 /* window-utils.m */,
+			);
+			path = mac_capture;
 			sourceTree = "<group>";
 		};
 		92B852E31F4F1F9A004A2648 /* audio-monitoring */ = {
@@ -986,9 +1018,11 @@
 			files = (
 				92B8534A1F4F1F9A004A2648 /* format-conversion.c in Sources */,
 				921644451F5059AF00C403A1 /* rtmp-custom.c in Sources */,
+				92A8359B1F57ADEE00DF6141 /* mac-audio.c in Sources */,
 				92B853451F4F1F9A004A2648 /* vec2.c in Sources */,
 				92A1A0311F4E9A3E00B24588 /* utf8.c in Sources */,
 				92A1A0271F4E9A3E00B24588 /* dstr.c in Sources */,
+				92A8359A1F57ADEE00DF6141 /* audio-device-enum.c in Sources */,
 				92FFDBB21F4AF80800AB5892 /* error.c in Sources */,
 				923D9D9E1F51C9490097031F /* transition-fade.c in Sources */,
 				92A1A02C1F4E9A3E00B24588 /* platform-osx.m in Sources */,
@@ -1000,11 +1034,13 @@
 				92A19F751F4E98B200B24588 /* gl-zstencil.c in Sources */,
 				92A19F731F4E98B200B24588 /* gl-texturecube.c in Sources */,
 				92FFDBB31F4AF80800AB5892 /* hashtable.c in Sources */,
+				92A8359F1F57ADEE00DF6141 /* window-utils.m in Sources */,
 				92A19F831F4E990400B24588 /* glad_glx.c in Sources */,
 				92B853361F4F1F9A004A2648 /* bounds.c in Sources */,
 				92B853501F4F1F9A004A2648 /* video-scaler-ffmpeg.c in Sources */,
 				92A19F711F4E98B200B24588 /* gl-subsystem.c in Sources */,
 				92A1A0291F4E9A3E00B24588 /* lexer.c in Sources */,
+				92A8359C1F57ADEE00DF6141 /* mac-display-capture.m in Sources */,
 				92FFDB851F4AF66100AB5892 /* obs-hotkey-name-map.c in Sources */,
 				923D9D9B1F51C9490097031F /* obs-transitions.c in Sources */,
 				92A1A0301F4E9A3E00B24588 /* threading-posix.c in Sources */,
@@ -1028,6 +1064,7 @@
 				92FFDBB71F4AF80800AB5892 /* memory.c in Sources */,
 				92B853411F4F1F9A004A2648 /* plane.c in Sources */,
 				92FFDB831F4AF66100AB5892 /* obs-display.c in Sources */,
+				92A8359E1F57ADEE00DF6141 /* plugin-main.c in Sources */,
 				92A1A02D1F4E9A3E00B24588 /* platform.c in Sources */,
 				92FFDB821F4AF66100AB5892 /* obs-data.c in Sources */,
 				92B853441F4F1F9A004A2648 /* texture-render.c in Sources */,
@@ -1067,6 +1104,7 @@
 				92B8533D1F4F1F9A004A2648 /* libnsgif.c in Sources */,
 				92B8533C1F4F1F9A004A2648 /* image-file.c in Sources */,
 				9299DCBD1F4D1B5A000DBF75 /* av-capture.mm in Sources */,
+				92A8359D1F57ADEE00DF6141 /* mac-window-capture.m in Sources */,
 				92B8533B1F4F1F9A004A2648 /* graphics.c in Sources */,
 				92A19F821F4E990400B24588 /* glad.c in Sources */,
 				92B853431F4F1F9A004A2648 /* shader-parser.c in Sources */,

@@ -80,6 +80,10 @@ private:
     static void SourceLoaded(void *data, obs_source_t *source);
     static void RenderMain(void *data, uint32_t cx, uint32_t cy);
     
+    // reset
+    int ResetVideo();
+    bool ResetAudio();
+    
 public:
     // get config file path
     int GetConfigPath(char* path, size_t size, const char* name);
@@ -92,9 +96,6 @@ public:
     // startup
     void RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader);
     bool StartupOBS(const char* locale);
-    
-    // reset
-    int ResetVideo();
     
     // scene
     void LoadDefaultScene();

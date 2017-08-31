@@ -15,6 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+#ifdef __APPLE__
 #include <TargetConditionals.h>
 #if TARGET_OS_OSX
 
@@ -300,3 +301,4 @@ bool GL_EXPORTS(gs_texture_rebind_iosurface)(gs_texture_t *texture, void *iosurf
 }
 
 #endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

@@ -101,6 +101,10 @@ bool OBSApp::StartupOBS(const char* locale) {
     blog(LOG_INFO, "---------------------------------");
     obs_post_load_modules();
     
+    // reset audio
+    if(!ResetAudio())
+        throw "Failed to initialize audio";
+    
     // reset video
     ResetVideo();
     
@@ -112,6 +116,22 @@ bool OBSApp::StartupOBS(const char* locale) {
     InitPrimitives();
     
     return true;
+}
+
+bool OBSApp::ResetAudio() {
+    ProfileScope("OBSApp::ResetAudio");
+    
+    struct obs_audio_info ai;
+    ai.samples_per_sec = config_get_uint(globalConfig, "Audio", "SampleRate");
+    
+    const char *channelSetupStr = config_get_string(globalConfig, "Audio", "ChannelSetup");
+
+    if (strcmp(channelSetupStr, "Mono") == 0)
+        ai.speakers = SPEAKERS_MONO;
+    else
+        ai.speakers = SPEAKERS_STEREO;
+    
+    return obs_reset_audio(&ai);
 }
 
 int OBSApp::ResetVideo() {
@@ -455,6 +475,13 @@ bool OBSApp::InitGlobalConfigDefaults() {
     config_set_default_bool(globalConfig, "Video", "ResetOSXVSyncOnExit",
                             true);
 #endif
+    
+    // audio
+    config_set_default_string(globalConfig, "Audio", "MonitoringDeviceId", "default");
+    config_set_default_string(globalConfig, "Audio", "MonitoringDeviceName", "Default");
+    config_set_default_uint  (globalConfig, "Audio", "SampleRate", 44100);
+    config_set_default_string(globalConfig, "Audio", "ChannelSetup", "Stereo");
+    
     return true;
 }
 

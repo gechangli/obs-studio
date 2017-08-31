@@ -15,6 +15,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#ifdef __APPLE__
 #include <TargetConditionals.h>
 #if TARGET_OS_OSX
 
@@ -342,3 +343,4 @@ int os_get_logical_cores(void)
 }
 
 #endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__
