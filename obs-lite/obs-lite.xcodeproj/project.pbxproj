@@ -7,22 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		921644441F5059AF00C403A1 /* rtmp-common.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216443E1F5059AF00C403A1 /* rtmp-common.c */; };
-		921644451F5059AF00C403A1 /* rtmp-custom.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216443F1F5059AF00C403A1 /* rtmp-custom.c */; };
-		921644461F5059AF00C403A1 /* rtmp-services-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 921644411F5059AF00C403A1 /* rtmp-services-main.c */; };
-		9216444B1F5068D500C403A1 /* twitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 921644491F5068D500C403A1 /* twitch.c */; };
 		921644501F5068EF00C403A1 /* file-updater.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216444E1F5068EF00C403A1 /* file-updater.c */; };
 		921644521F50691900C403A1 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 921644511F50691900C403A1 /* libcurl.tbd */; };
-		923D9D9B1F51C9490097031F /* obs-transitions.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D931F51C9490097031F /* obs-transitions.c */; };
-		923D9D9C1F51C9490097031F /* transition-cut.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D941F51C9490097031F /* transition-cut.c */; };
-		923D9D9D1F51C9490097031F /* transition-fade-to-color.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D951F51C9490097031F /* transition-fade-to-color.c */; };
-		923D9D9E1F51C9490097031F /* transition-fade.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D961F51C9490097031F /* transition-fade.c */; };
-		923D9D9F1F51C9490097031F /* transition-luma-wipe.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D971F51C9490097031F /* transition-luma-wipe.c */; };
-		923D9DA01F51C9490097031F /* transition-slide.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D981F51C9490097031F /* transition-slide.c */; };
-		923D9DA11F51C9490097031F /* transition-stinger.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D991F51C9490097031F /* transition-stinger.c */; };
-		923D9DA21F51C9490097031F /* transition-swipe.c in Sources */ = {isa = PBXBuildFile; fileRef = 923D9D9A1F51C9490097031F /* transition-swipe.c */; };
 		927B92FC1F4C8DBB0032FC2F /* data in Resources */ = {isa = PBXBuildFile; fileRef = 927B92FB1F4C8DBB0032FC2F /* data */; };
-		9299DCBD1F4D1B5A000DBF75 /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9299DCB71F4D1B5A000DBF75 /* av-capture.mm */; };
 		92A19F591F4E845500B24588 /* obs_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92A19F571F4E845500B24588 /* obs_app.cpp */; };
 		92A19F6B1F4E98B200B24588 /* gl-osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A19F5C1F4E98B200B24588 /* gl-osx.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		92A19F6C1F4E98B200B24588 /* gl-helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19F5D1F4E98B200B24588 /* gl-helpers.c */; };
@@ -55,14 +42,28 @@
 		92A1A02F1F4E9A3E00B24588 /* text-lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FF51F4E9A3E00B24588 /* text-lookup.c */; };
 		92A1A0301F4E9A3E00B24588 /* threading-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FF71F4E9A3E00B24588 /* threading-posix.c */; };
 		92A1A0311F4E9A3E00B24588 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FFA1F4E9A3E00B24588 /* utf8.c */; };
-		92A7AC881F5905A000D61BD9 /* obs-x264-plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC861F5905A000D61BD9 /* obs-x264-plugin-main.c */; };
-		92A7AC891F5905A000D61BD9 /* obs-x264.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC871F5905A000D61BD9 /* obs-x264.c */; };
-		92A8359A1F57ADEE00DF6141 /* audio-device-enum.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835911F57ADEE00DF6141 /* audio-device-enum.c */; };
-		92A8359B1F57ADEE00DF6141 /* mac-audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835931F57ADEE00DF6141 /* mac-audio.c */; };
-		92A8359C1F57ADEE00DF6141 /* mac-display-capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A835941F57ADEE00DF6141 /* mac-display-capture.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		92A8359D1F57ADEE00DF6141 /* mac-window-capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A835961F57ADEE00DF6141 /* mac-window-capture.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		92A8359E1F57ADEE00DF6141 /* plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835971F57ADEE00DF6141 /* plugin-main.c */; };
-		92A8359F1F57ADEE00DF6141 /* window-utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A835991F57ADEE00DF6141 /* window-utils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		92A7ACB01F590CB400D61BD9 /* encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC8B1F590CB400D61BD9 /* encoder.cpp */; };
+		92A7ACB11F590CB400D61BD9 /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC8E1F590CB400D61BD9 /* av-capture.mm */; };
+		92A7ACB21F590CB400D61BD9 /* audio-device-enum.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC921F590CB400D61BD9 /* audio-device-enum.c */; };
+		92A7ACB31F590CB400D61BD9 /* mac-audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC941F590CB400D61BD9 /* mac-audio.c */; };
+		92A7ACB41F590CB400D61BD9 /* mac-display-capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC951F590CB400D61BD9 /* mac-display-capture.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		92A7ACB51F590CB400D61BD9 /* mac-window-capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC971F590CB400D61BD9 /* mac-window-capture.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		92A7ACB61F590CB400D61BD9 /* plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC981F590CB400D61BD9 /* plugin-main.c */; };
+		92A7ACB71F590CB400D61BD9 /* window-utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC9A1F590CB400D61BD9 /* window-utils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		92A7ACB81F590CB400D61BD9 /* obs-transitions.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC9D1F590CB400D61BD9 /* obs-transitions.c */; };
+		92A7ACB91F590CB400D61BD9 /* transition-cut.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC9E1F590CB400D61BD9 /* transition-cut.c */; };
+		92A7ACBA1F590CB400D61BD9 /* transition-fade-to-color.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC9F1F590CB400D61BD9 /* transition-fade-to-color.c */; };
+		92A7ACBB1F590CB400D61BD9 /* transition-fade.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACA01F590CB400D61BD9 /* transition-fade.c */; };
+		92A7ACBC1F590CB400D61BD9 /* transition-luma-wipe.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACA11F590CB400D61BD9 /* transition-luma-wipe.c */; };
+		92A7ACBD1F590CB400D61BD9 /* transition-slide.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACA21F590CB400D61BD9 /* transition-slide.c */; };
+		92A7ACBE1F590CB400D61BD9 /* transition-stinger.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACA31F590CB400D61BD9 /* transition-stinger.c */; };
+		92A7ACBF1F590CB400D61BD9 /* transition-swipe.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACA41F590CB400D61BD9 /* transition-swipe.c */; };
+		92A7ACC01F590CB400D61BD9 /* obs-x264-plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACA61F590CB400D61BD9 /* obs-x264-plugin-main.c */; };
+		92A7ACC11F590CB400D61BD9 /* obs-x264.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACA71F590CB400D61BD9 /* obs-x264.c */; };
+		92A7ACC21F590CB400D61BD9 /* rtmp-common.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACAA1F590CB400D61BD9 /* rtmp-common.c */; };
+		92A7ACC31F590CB400D61BD9 /* rtmp-custom.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACAB1F590CB400D61BD9 /* rtmp-custom.c */; };
+		92A7ACC41F590CB400D61BD9 /* rtmp-services-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACAD1F590CB400D61BD9 /* rtmp-services-main.c */; };
+		92A7ACC51F590CB400D61BD9 /* twitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7ACAE1F590CB400D61BD9 /* twitch.c */; };
 		92B8532F1F4F1F9A004A2648 /* coreaudio-enum-devices.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B852E51F4F1F9A004A2648 /* coreaudio-enum-devices.c */; };
 		92B853301F4F1F9A004A2648 /* coreaudio-output.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B852E61F4F1F9A004A2648 /* coreaudio-output.c */; };
 		92B853311F4F1F9A004A2648 /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B852E91F4F1F9A004A2648 /* calldata.c */; };
@@ -150,29 +151,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9216443E1F5059AF00C403A1 /* rtmp-common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-common.c"; sourceTree = "<group>"; };
-		9216443F1F5059AF00C403A1 /* rtmp-custom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-custom.c"; sourceTree = "<group>"; };
-		921644401F5059AF00C403A1 /* rtmp-format-ver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rtmp-format-ver.h"; sourceTree = "<group>"; };
-		921644411F5059AF00C403A1 /* rtmp-services-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-services-main.c"; sourceTree = "<group>"; };
-		921644481F50685100C403A1 /* lookup-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lookup-config.h"; sourceTree = "<group>"; };
-		921644491F5068D500C403A1 /* twitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twitch.c; sourceTree = "<group>"; };
-		9216444A1F5068D500C403A1 /* twitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
 		9216444E1F5068EF00C403A1 /* file-updater.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "file-updater.c"; sourceTree = "<group>"; };
 		9216444F1F5068EF00C403A1 /* file-updater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "file-updater.h"; sourceTree = "<group>"; };
 		921644511F50691900C403A1 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
-		923D9D921F51C9490097031F /* easings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easings.h; sourceTree = "<group>"; };
-		923D9D931F51C9490097031F /* obs-transitions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-transitions.c"; sourceTree = "<group>"; };
-		923D9D941F51C9490097031F /* transition-cut.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-cut.c"; sourceTree = "<group>"; };
-		923D9D951F51C9490097031F /* transition-fade-to-color.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-fade-to-color.c"; sourceTree = "<group>"; };
-		923D9D961F51C9490097031F /* transition-fade.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-fade.c"; sourceTree = "<group>"; };
-		923D9D971F51C9490097031F /* transition-luma-wipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-luma-wipe.c"; sourceTree = "<group>"; };
-		923D9D981F51C9490097031F /* transition-slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-slide.c"; sourceTree = "<group>"; };
-		923D9D991F51C9490097031F /* transition-stinger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-stinger.c"; sourceTree = "<group>"; };
-		923D9D9A1F51C9490097031F /* transition-swipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-swipe.c"; sourceTree = "<group>"; };
 		927B92FB1F4C8DBB0032FC2F /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
-		9299DCB71F4D1B5A000DBF75 /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
-		9299DCB81F4D1B5A000DBF75 /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
-		9299DCB91F4D1B5A000DBF75 /* scope-guard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "scope-guard.hpp"; sourceTree = "<group>"; };
 		92A19F571F4E845500B24588 /* obs_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obs_app.cpp; sourceTree = "<group>"; };
 		92A19F581F4E845500B24588 /* obs_app.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = obs_app.hpp; sourceTree = "<group>"; };
 		92A19F5C1F4E98B200B24588 /* gl-osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "gl-osx.m"; sourceTree = "<group>"; };
@@ -238,17 +220,38 @@
 		92A19FFB1F4E9A3E00B24588 /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
 		92A19FFC1F4E9A3E00B24588 /* util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = util.hpp; sourceTree = "<group>"; };
 		92A19FFD1F4E9A3E00B24588 /* util_uint128.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util_uint128.h; sourceTree = "<group>"; };
-		92A7AC861F5905A000D61BD9 /* obs-x264-plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264-plugin-main.c"; sourceTree = "<group>"; };
-		92A7AC871F5905A000D61BD9 /* obs-x264.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264.c"; sourceTree = "<group>"; };
-		92A835911F57ADEE00DF6141 /* audio-device-enum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "audio-device-enum.c"; sourceTree = "<group>"; };
-		92A835921F57ADEE00DF6141 /* audio-device-enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "audio-device-enum.h"; sourceTree = "<group>"; };
-		92A835931F57ADEE00DF6141 /* mac-audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mac-audio.c"; sourceTree = "<group>"; };
-		92A835941F57ADEE00DF6141 /* mac-display-capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "mac-display-capture.m"; sourceTree = "<group>"; };
-		92A835951F57ADEE00DF6141 /* mac-helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mac-helpers.h"; sourceTree = "<group>"; };
-		92A835961F57ADEE00DF6141 /* mac-window-capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "mac-window-capture.m"; sourceTree = "<group>"; };
-		92A835971F57ADEE00DF6141 /* plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "plugin-main.c"; sourceTree = "<group>"; };
-		92A835981F57ADEE00DF6141 /* window-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "window-utils.h"; sourceTree = "<group>"; };
-		92A835991F57ADEE00DF6141 /* window-utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "window-utils.m"; sourceTree = "<group>"; };
+		92A7AC8B1F590CB400D61BD9 /* encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = encoder.cpp; sourceTree = "<group>"; };
+		92A7AC8C1F590CB400D61BD9 /* windows-imports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "windows-imports.h"; sourceTree = "<group>"; };
+		92A7AC8E1F590CB400D61BD9 /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
+		92A7AC8F1F590CB400D61BD9 /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
+		92A7AC901F590CB400D61BD9 /* scope-guard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "scope-guard.hpp"; sourceTree = "<group>"; };
+		92A7AC921F590CB400D61BD9 /* audio-device-enum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "audio-device-enum.c"; sourceTree = "<group>"; };
+		92A7AC931F590CB400D61BD9 /* audio-device-enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "audio-device-enum.h"; sourceTree = "<group>"; };
+		92A7AC941F590CB400D61BD9 /* mac-audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mac-audio.c"; sourceTree = "<group>"; };
+		92A7AC951F590CB400D61BD9 /* mac-display-capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "mac-display-capture.m"; sourceTree = "<group>"; };
+		92A7AC961F590CB400D61BD9 /* mac-helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mac-helpers.h"; sourceTree = "<group>"; };
+		92A7AC971F590CB400D61BD9 /* mac-window-capture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "mac-window-capture.m"; sourceTree = "<group>"; };
+		92A7AC981F590CB400D61BD9 /* plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "plugin-main.c"; sourceTree = "<group>"; };
+		92A7AC991F590CB400D61BD9 /* window-utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "window-utils.h"; sourceTree = "<group>"; };
+		92A7AC9A1F590CB400D61BD9 /* window-utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "window-utils.m"; sourceTree = "<group>"; };
+		92A7AC9C1F590CB400D61BD9 /* easings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easings.h; sourceTree = "<group>"; };
+		92A7AC9D1F590CB400D61BD9 /* obs-transitions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-transitions.c"; sourceTree = "<group>"; };
+		92A7AC9E1F590CB400D61BD9 /* transition-cut.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-cut.c"; sourceTree = "<group>"; };
+		92A7AC9F1F590CB400D61BD9 /* transition-fade-to-color.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-fade-to-color.c"; sourceTree = "<group>"; };
+		92A7ACA01F590CB400D61BD9 /* transition-fade.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-fade.c"; sourceTree = "<group>"; };
+		92A7ACA11F590CB400D61BD9 /* transition-luma-wipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-luma-wipe.c"; sourceTree = "<group>"; };
+		92A7ACA21F590CB400D61BD9 /* transition-slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-slide.c"; sourceTree = "<group>"; };
+		92A7ACA31F590CB400D61BD9 /* transition-stinger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-stinger.c"; sourceTree = "<group>"; };
+		92A7ACA41F590CB400D61BD9 /* transition-swipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-swipe.c"; sourceTree = "<group>"; };
+		92A7ACA61F590CB400D61BD9 /* obs-x264-plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264-plugin-main.c"; sourceTree = "<group>"; };
+		92A7ACA71F590CB400D61BD9 /* obs-x264.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264.c"; sourceTree = "<group>"; };
+		92A7ACA91F590CB400D61BD9 /* lookup-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "lookup-config.h"; sourceTree = "<group>"; };
+		92A7ACAA1F590CB400D61BD9 /* rtmp-common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-common.c"; sourceTree = "<group>"; };
+		92A7ACAB1F590CB400D61BD9 /* rtmp-custom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-custom.c"; sourceTree = "<group>"; };
+		92A7ACAC1F590CB400D61BD9 /* rtmp-format-ver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rtmp-format-ver.h"; sourceTree = "<group>"; };
+		92A7ACAD1F590CB400D61BD9 /* rtmp-services-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-services-main.c"; sourceTree = "<group>"; };
+		92A7ACAE1F590CB400D61BD9 /* twitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twitch.c; sourceTree = "<group>"; };
+		92A7ACAF1F590CB400D61BD9 /* twitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
 		92B852E51F4F1F9A004A2648 /* coreaudio-enum-devices.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "coreaudio-enum-devices.c"; sourceTree = "<group>"; };
 		92B852E61F4F1F9A004A2648 /* coreaudio-output.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "coreaudio-output.c"; sourceTree = "<group>"; };
 		92B852E71F4F1F9A004A2648 /* mac-helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mac-helpers.h"; sourceTree = "<group>"; };
@@ -425,20 +428,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9216443D1F5059AF00C403A1 /* rtmp_services */ = {
-			isa = PBXGroup;
-			children = (
-				921644481F50685100C403A1 /* lookup-config.h */,
-				9216443E1F5059AF00C403A1 /* rtmp-common.c */,
-				9216443F1F5059AF00C403A1 /* rtmp-custom.c */,
-				921644401F5059AF00C403A1 /* rtmp-format-ver.h */,
-				921644411F5059AF00C403A1 /* rtmp-services-main.c */,
-				921644491F5068D500C403A1 /* twitch.c */,
-				9216444A1F5068D500C403A1 /* twitch.h */,
-			);
-			path = rtmp_services;
-			sourceTree = "<group>";
-		};
 		9216444C1F5068EF00C403A1 /* file-updater */ = {
 			isa = PBXGroup;
 			children = (
@@ -456,42 +445,17 @@
 			path = "file-updater";
 			sourceTree = "<group>";
 		};
-		923D9D911F51C9490097031F /* obs_transitions */ = {
-			isa = PBXGroup;
-			children = (
-				923D9D921F51C9490097031F /* easings.h */,
-				923D9D931F51C9490097031F /* obs-transitions.c */,
-				923D9D941F51C9490097031F /* transition-cut.c */,
-				923D9D951F51C9490097031F /* transition-fade-to-color.c */,
-				923D9D961F51C9490097031F /* transition-fade.c */,
-				923D9D971F51C9490097031F /* transition-luma-wipe.c */,
-				923D9D981F51C9490097031F /* transition-slide.c */,
-				923D9D991F51C9490097031F /* transition-stinger.c */,
-				923D9D9A1F51C9490097031F /* transition-swipe.c */,
-			);
-			path = obs_transitions;
-			sourceTree = "<group>";
-		};
 		9299DCB51F4D1B5A000DBF75 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
-				9299DCB61F4D1B5A000DBF75 /* mac_avcapture */,
-				92A835901F57ADEE00DF6141 /* mac_capture */,
-				923D9D911F51C9490097031F /* obs_transitions */,
-				92A7AC851F5905A000D61BD9 /* obs_x264 */,
-				9216443D1F5059AF00C403A1 /* rtmp_services */,
+				92A7AC8A1F590CB400D61BD9 /* coreaudio-encoder */,
+				92A7AC8D1F590CB400D61BD9 /* mac-avcapture */,
+				92A7AC911F590CB400D61BD9 /* mac-capture */,
+				92A7AC9B1F590CB400D61BD9 /* obs-transitions */,
+				92A7ACA51F590CB400D61BD9 /* obs-x264 */,
+				92A7ACA81F590CB400D61BD9 /* rtmp-services */,
 			);
 			path = plugins;
-			sourceTree = "<group>";
-		};
-		9299DCB61F4D1B5A000DBF75 /* mac_avcapture */ = {
-			isa = PBXGroup;
-			children = (
-				9299DCB71F4D1B5A000DBF75 /* av-capture.mm */,
-				9299DCB81F4D1B5A000DBF75 /* left-right.hpp */,
-				9299DCB91F4D1B5A000DBF75 /* scope-guard.hpp */,
-			);
-			path = mac_avcapture;
 			sourceTree = "<group>";
 		};
 		92A19F561F4E845500B24588 /* ui */ = {
@@ -619,29 +583,78 @@
 			path = util;
 			sourceTree = "<group>";
 		};
-		92A7AC851F5905A000D61BD9 /* obs_x264 */ = {
+		92A7AC8A1F590CB400D61BD9 /* coreaudio-encoder */ = {
 			isa = PBXGroup;
 			children = (
-				92A7AC861F5905A000D61BD9 /* obs-x264-plugin-main.c */,
-				92A7AC871F5905A000D61BD9 /* obs-x264.c */,
+				92A7AC8B1F590CB400D61BD9 /* encoder.cpp */,
+				92A7AC8C1F590CB400D61BD9 /* windows-imports.h */,
 			);
-			path = obs_x264;
+			path = "coreaudio-encoder";
 			sourceTree = "<group>";
 		};
-		92A835901F57ADEE00DF6141 /* mac_capture */ = {
+		92A7AC8D1F590CB400D61BD9 /* mac-avcapture */ = {
 			isa = PBXGroup;
 			children = (
-				92A835911F57ADEE00DF6141 /* audio-device-enum.c */,
-				92A835921F57ADEE00DF6141 /* audio-device-enum.h */,
-				92A835931F57ADEE00DF6141 /* mac-audio.c */,
-				92A835941F57ADEE00DF6141 /* mac-display-capture.m */,
-				92A835951F57ADEE00DF6141 /* mac-helpers.h */,
-				92A835961F57ADEE00DF6141 /* mac-window-capture.m */,
-				92A835971F57ADEE00DF6141 /* plugin-main.c */,
-				92A835981F57ADEE00DF6141 /* window-utils.h */,
-				92A835991F57ADEE00DF6141 /* window-utils.m */,
+				92A7AC8E1F590CB400D61BD9 /* av-capture.mm */,
+				92A7AC8F1F590CB400D61BD9 /* left-right.hpp */,
+				92A7AC901F590CB400D61BD9 /* scope-guard.hpp */,
 			);
-			path = mac_capture;
+			path = "mac-avcapture";
+			sourceTree = "<group>";
+		};
+		92A7AC911F590CB400D61BD9 /* mac-capture */ = {
+			isa = PBXGroup;
+			children = (
+				92A7AC921F590CB400D61BD9 /* audio-device-enum.c */,
+				92A7AC931F590CB400D61BD9 /* audio-device-enum.h */,
+				92A7AC941F590CB400D61BD9 /* mac-audio.c */,
+				92A7AC951F590CB400D61BD9 /* mac-display-capture.m */,
+				92A7AC961F590CB400D61BD9 /* mac-helpers.h */,
+				92A7AC971F590CB400D61BD9 /* mac-window-capture.m */,
+				92A7AC981F590CB400D61BD9 /* plugin-main.c */,
+				92A7AC991F590CB400D61BD9 /* window-utils.h */,
+				92A7AC9A1F590CB400D61BD9 /* window-utils.m */,
+			);
+			path = "mac-capture";
+			sourceTree = "<group>";
+		};
+		92A7AC9B1F590CB400D61BD9 /* obs-transitions */ = {
+			isa = PBXGroup;
+			children = (
+				92A7AC9C1F590CB400D61BD9 /* easings.h */,
+				92A7AC9D1F590CB400D61BD9 /* obs-transitions.c */,
+				92A7AC9E1F590CB400D61BD9 /* transition-cut.c */,
+				92A7AC9F1F590CB400D61BD9 /* transition-fade-to-color.c */,
+				92A7ACA01F590CB400D61BD9 /* transition-fade.c */,
+				92A7ACA11F590CB400D61BD9 /* transition-luma-wipe.c */,
+				92A7ACA21F590CB400D61BD9 /* transition-slide.c */,
+				92A7ACA31F590CB400D61BD9 /* transition-stinger.c */,
+				92A7ACA41F590CB400D61BD9 /* transition-swipe.c */,
+			);
+			path = "obs-transitions";
+			sourceTree = "<group>";
+		};
+		92A7ACA51F590CB400D61BD9 /* obs-x264 */ = {
+			isa = PBXGroup;
+			children = (
+				92A7ACA61F590CB400D61BD9 /* obs-x264-plugin-main.c */,
+				92A7ACA71F590CB400D61BD9 /* obs-x264.c */,
+			);
+			path = "obs-x264";
+			sourceTree = "<group>";
+		};
+		92A7ACA81F590CB400D61BD9 /* rtmp-services */ = {
+			isa = PBXGroup;
+			children = (
+				92A7ACA91F590CB400D61BD9 /* lookup-config.h */,
+				92A7ACAA1F590CB400D61BD9 /* rtmp-common.c */,
+				92A7ACAB1F590CB400D61BD9 /* rtmp-custom.c */,
+				92A7ACAC1F590CB400D61BD9 /* rtmp-format-ver.h */,
+				92A7ACAD1F590CB400D61BD9 /* rtmp-services-main.c */,
+				92A7ACAE1F590CB400D61BD9 /* twitch.c */,
+				92A7ACAF1F590CB400D61BD9 /* twitch.h */,
+			);
+			path = "rtmp-services";
 			sourceTree = "<group>";
 		};
 		92B852E31F4F1F9A004A2648 /* audio-monitoring */ = {
@@ -1031,36 +1044,36 @@
 			buildActionMask = 2147483647;
 			files = (
 				92B8534A1F4F1F9A004A2648 /* format-conversion.c in Sources */,
-				921644451F5059AF00C403A1 /* rtmp-custom.c in Sources */,
-				92A8359B1F57ADEE00DF6141 /* mac-audio.c in Sources */,
 				92B853451F4F1F9A004A2648 /* vec2.c in Sources */,
 				92A1A0311F4E9A3E00B24588 /* utf8.c in Sources */,
 				92A1A0271F4E9A3E00B24588 /* dstr.c in Sources */,
-				92A8359A1F57ADEE00DF6141 /* audio-device-enum.c in Sources */,
 				92FFDBB21F4AF80800AB5892 /* error.c in Sources */,
-				923D9D9E1F51C9490097031F /* transition-fade.c in Sources */,
 				92A1A02C1F4E9A3E00B24588 /* platform-osx.m in Sources */,
 				92FFDB861F4AF66100AB5892 /* obs-hotkey.c in Sources */,
+				92A7ACBC1F590CB400D61BD9 /* transition-luma-wipe.c in Sources */,
+				92A7ACB71F590CB400D61BD9 /* window-utils.m in Sources */,
 				92A1A0221F4E9A3E00B24588 /* bmem.c in Sources */,
 				92FFDB901F4AF66100AB5892 /* obs-source.c in Sources */,
 				92FFDBBC1F4AF80800AB5892 /* value.c in Sources */,
 				92B8534B1F4F1F9A004A2648 /* media-remux.c in Sources */,
+				92A7ACBB1F590CB400D61BD9 /* transition-fade.c in Sources */,
 				92A19F751F4E98B200B24588 /* gl-zstencil.c in Sources */,
 				92A19F731F4E98B200B24588 /* gl-texturecube.c in Sources */,
+				92A7ACB11F590CB400D61BD9 /* av-capture.mm in Sources */,
 				92FFDBB31F4AF80800AB5892 /* hashtable.c in Sources */,
-				92A8359F1F57ADEE00DF6141 /* window-utils.m in Sources */,
 				92A19F831F4E990400B24588 /* glad_glx.c in Sources */,
 				92B853361F4F1F9A004A2648 /* bounds.c in Sources */,
 				92B853501F4F1F9A004A2648 /* video-scaler-ffmpeg.c in Sources */,
 				92A19F711F4E98B200B24588 /* gl-subsystem.c in Sources */,
 				92A1A0291F4E9A3E00B24588 /* lexer.c in Sources */,
-				92A8359C1F57ADEE00DF6141 /* mac-display-capture.m in Sources */,
+				92A7ACB91F590CB400D61BD9 /* transition-cut.c in Sources */,
+				92A7ACC11F590CB400D61BD9 /* obs-x264.c in Sources */,
 				92FFDB851F4AF66100AB5892 /* obs-hotkey-name-map.c in Sources */,
-				923D9D9B1F51C9490097031F /* obs-transitions.c in Sources */,
 				92A1A0301F4E9A3E00B24588 /* threading-posix.c in Sources */,
 				92A1A0241F4E9A3E00B24588 /* cf-parser.c in Sources */,
 				92B853381F4F1F9A004A2648 /* effect.c in Sources */,
 				92A1A0201F4E9A3E00B24588 /* array-serializer.c in Sources */,
+				92A7ACC41F590CB400D61BD9 /* rtmp-services-main.c in Sources */,
 				92FFDA7E1F4AF0C700AB5892 /* ViewController.mm in Sources */,
 				92B853391F4F1F9A004A2648 /* graphics-ffmpeg.c in Sources */,
 				92FFDB8E1F4AF66100AB5892 /* obs-source-deinterlace.c in Sources */,
@@ -1074,18 +1087,16 @@
 				92A1A0261F4E9A3E00B24588 /* crc32.c in Sources */,
 				92A19F591F4E845500B24588 /* obs_app.cpp in Sources */,
 				92B853471F4F1F9A004A2648 /* vec4.c in Sources */,
-				92A7AC881F5905A000D61BD9 /* obs-x264-plugin-main.c in Sources */,
 				92A1A02F1F4E9A3E00B24588 /* text-lookup.c in Sources */,
 				92FFDBB71F4AF80800AB5892 /* memory.c in Sources */,
 				92B853411F4F1F9A004A2648 /* plane.c in Sources */,
 				92FFDB831F4AF66100AB5892 /* obs-display.c in Sources */,
-				92A8359E1F57ADEE00DF6141 /* plugin-main.c in Sources */,
 				92A1A02D1F4E9A3E00B24588 /* platform.c in Sources */,
+				92A7ACB01F590CB400D61BD9 /* encoder.cpp in Sources */,
 				92FFDB821F4AF66100AB5892 /* obs-data.c in Sources */,
 				92B853441F4F1F9A004A2648 /* texture-render.c in Sources */,
-				921644461F5059AF00C403A1 /* rtmp-services-main.c in Sources */,
+				92A7ACC51F590CB400D61BD9 /* twitch.c in Sources */,
 				92B8534E1F4F1F9A004A2648 /* video-io.c in Sources */,
-				923D9DA11F51C9490097031F /* transition-stinger.c in Sources */,
 				92FFDBBA1F4AF80800AB5892 /* strconv.c in Sources */,
 				92B853351F4F1F9A004A2648 /* axisang.c in Sources */,
 				92FFDB8F1F4AF66100AB5892 /* obs-source-transition.c in Sources */,
@@ -1098,33 +1109,33 @@
 				92B853321F4F1F9A004A2648 /* decl.c in Sources */,
 				92FFDB911F4AF66100AB5892 /* obs-video.c in Sources */,
 				92FFDB7E1F4AF66100AB5892 /* obs-audio-controls.c in Sources */,
+				92A7ACB81F590CB400D61BD9 /* obs-transitions.c in Sources */,
+				92A7ACC31F590CB400D61BD9 /* rtmp-custom.c in Sources */,
 				92B8533F1F4F1F9A004A2648 /* matrix3.c in Sources */,
+				92A7ACBF1F590CB400D61BD9 /* transition-swipe.c in Sources */,
 				92B853461F4F1F9A004A2648 /* vec3.c in Sources */,
 				92FFDB921F4AF66100AB5892 /* obs-view.c in Sources */,
-				923D9D9F1F51C9490097031F /* transition-luma-wipe.c in Sources */,
 				92A19F6F1F4E98B200B24588 /* gl-shaderparser.c in Sources */,
 				92FFDB891F4AF66100AB5892 /* obs-output-delay.c in Sources */,
 				92B853311F4F1F9A004A2648 /* calldata.c in Sources */,
-				92A7AC891F5905A000D61BD9 /* obs-x264.c in Sources */,
-				923D9DA01F51C9490097031F /* transition-slide.c in Sources */,
 				921644501F5068EF00C403A1 /* file-updater.c in Sources */,
 				92FFDB841F4AF66100AB5892 /* obs-encoder.c in Sources */,
+				92A7ACC01F590CB400D61BD9 /* obs-x264-plugin-main.c in Sources */,
 				92B8534C1F4F1F9A004A2648 /* video-fourcc.c in Sources */,
 				92B8533E1F4F1F9A004A2648 /* math-extra.c in Sources */,
 				92FFDB811F4AF66100AB5892 /* obs-osx.m in Sources */,
 				92A1A02B1F4E9A3E00B24588 /* platform-nix.c in Sources */,
-				921644441F5059AF00C403A1 /* rtmp-common.c in Sources */,
 				92B853371F4F1F9A004A2648 /* effect-parser.c in Sources */,
+				92A7ACB61F590CB400D61BD9 /* plugin-main.c in Sources */,
 				92A1A02E1F4E9A3E00B24588 /* profiler.c in Sources */,
 				92A1A0211F4E9A3E00B24588 /* base.c in Sources */,
 				92B8533D1F4F1F9A004A2648 /* libnsgif.c in Sources */,
 				92B8533C1F4F1F9A004A2648 /* image-file.c in Sources */,
-				9299DCBD1F4D1B5A000DBF75 /* av-capture.mm in Sources */,
-				92A8359D1F57ADEE00DF6141 /* mac-window-capture.m in Sources */,
 				92B8533B1F4F1F9A004A2648 /* graphics.c in Sources */,
 				92A19F821F4E990400B24588 /* glad.c in Sources */,
 				92B853431F4F1F9A004A2648 /* shader-parser.c in Sources */,
 				92A1A0231F4E9A3E00B24588 /* cf-lexer.c in Sources */,
+				92A7ACB21F590CB400D61BD9 /* audio-device-enum.c in Sources */,
 				92B853341F4F1F9A004A2648 /* signal.c in Sources */,
 				92A19F6E1F4E98B200B24588 /* gl-shader.c in Sources */,
 				92A1A0281F4E9A3E00B24588 /* file-serializer.c in Sources */,
@@ -1132,27 +1143,30 @@
 				92FFDB871F4AF66100AB5892 /* obs-module.c in Sources */,
 				92FFDB8A1F4AF66100AB5892 /* obs-output.c in Sources */,
 				92B8532F1F4F1F9A004A2648 /* coreaudio-enum-devices.c in Sources */,
-				923D9D9C1F51C9490097031F /* transition-cut.c in Sources */,
 				92B853421F4F1F9A004A2648 /* quat.c in Sources */,
 				92A1A0251F4E9A3E00B24588 /* config-file.c in Sources */,
+				92A7ACB31F590CB400D61BD9 /* mac-audio.c in Sources */,
 				92B853491F4F1F9A004A2648 /* audio-resampler-ffmpeg.c in Sources */,
 				92FFDBB41F4AF80800AB5892 /* hashtable_seed.c in Sources */,
 				92FFDB801F4AF66100AB5892 /* obs-avc.c in Sources */,
+				92A7ACBE1F590CB400D61BD9 /* transition-stinger.c in Sources */,
+				92A7ACBD1F590CB400D61BD9 /* transition-slide.c in Sources */,
+				92A7ACBA1F590CB400D61BD9 /* transition-fade-to-color.c in Sources */,
 				92A1A02A1F4E9A3E00B24588 /* pipe-posix.c in Sources */,
 				92FFDBB81F4AF80800AB5892 /* pack_unpack.c in Sources */,
+				92A7ACB41F590CB400D61BD9 /* mac-display-capture.m in Sources */,
 				92FFDA7C1F4AF0C700AB5892 /* AppDelegate.mm in Sources */,
-				9216444B1F5068D500C403A1 /* twitch.c in Sources */,
-				923D9DA21F51C9490097031F /* transition-swipe.c in Sources */,
 				92FFDBB91F4AF80800AB5892 /* strbuffer.c in Sources */,
 				92A19F6D1F4E98B200B24588 /* gl-indexbuffer.c in Sources */,
+				92A7ACC21F590CB400D61BD9 /* rtmp-common.c in Sources */,
 				92B853481F4F1F9A004A2648 /* audio-io.c in Sources */,
 				92FFDB8C1F4AF66100AB5892 /* obs-scene.c in Sources */,
 				92B8534F1F4F1F9A004A2648 /* video-matrices.c in Sources */,
 				92A19F701F4E98B200B24588 /* gl-stagesurf.c in Sources */,
 				92A19F741F4E98B200B24588 /* gl-vertexbuffer.c in Sources */,
 				92FFDBB11F4AF80800AB5892 /* dump.c in Sources */,
+				92A7ACB51F590CB400D61BD9 /* mac-window-capture.m in Sources */,
 				92A19F6B1F4E98B200B24588 /* gl-osx.m in Sources */,
-				923D9D9D1F51C9490097031F /* transition-fade-to-color.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
