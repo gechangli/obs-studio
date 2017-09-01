@@ -457,6 +457,17 @@ bool OBSApp::InitGlobalConfigDefaults() {
     config_set_default_string(globalConfig, "SimpleOutput", "StreamEncoder", SIMPLE_ENCODER_X264);
     config_set_default_uint(globalConfig, "SimpleOutput", "ABitrate", 160);
     
+    // general output
+    config_set_default_bool(globalConfig, "Output", "DelayEnable", false);
+    config_set_default_uint(globalConfig, "Output", "DelaySec", 20);
+    config_set_default_bool(globalConfig, "Output", "DelayPreserve", true);
+    config_set_default_bool(globalConfig, "Output", "Reconnect", true);
+    config_set_default_uint(globalConfig, "Output", "RetryDelay", 10);
+    config_set_default_uint(globalConfig, "Output", "MaxRetries", 20);
+    config_set_default_string(globalConfig, "Output", "BindIP", "default");
+    config_set_default_bool(globalConfig, "Output", "NewSocketLoopEnable", false);
+    config_set_default_bool(globalConfig, "Output", "LowLatencyEnable", false);
+    
     return true;
 }
 
@@ -544,10 +555,24 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     UNUSED_PARAMETER(cy);
 }
 
-void OBSApp::StartStreaming(const char* url, const char* key) {
+const char* OBSApp::FindAudioEncoderFromCodec(const char *type) {
+    const char *alt_enc_id = nullptr;
+    size_t i = 0;
+    
+    while (obs_enum_encoder_types(i++, &alt_enc_id)) {
+        const char *codec = obs_get_encoder_codec(alt_enc_id);
+        if (strcmp(type, codec) == 0) {
+            return alt_enc_id;
+        }
+    }
+    
+    return nullptr;
+}
+
+bool OBSApp::StartStreaming(const char* url, const char* key) {
     // if already in streaming, return
     if(streamingActive) {
-        return;
+        return false;
     }
     
     // if has service, release it
@@ -565,8 +590,86 @@ void OBSApp::StartStreaming(const char* url, const char* key) {
     
     // if not ok, return
     if(!service) {
-        return;
+        return false;
     }
+    
+    // setup output
+    SetupOutputs();
+    
+    // get output type
+    const char *type = obs_service_get_output_type(service);
+    if (!type)
+        type = "rtmp_output";
+
+    // create output
+    streamOutput = obs_output_create(type, "simple_stream", nullptr, nullptr);
+    if (!streamOutput)
+        return false;
+    obs_output_release(streamOutput);
+
+    // get codec
+    const char *codec = obs_output_get_supported_audio_codecs(streamOutput);
+    if (!codec) {
+        return false;
+    }
+    
+    // if codec is not AAC, re-create audio encoder
+    if (strcmp(codec, "aac") != 0) {
+        const char *id = FindAudioEncoderFromCodec(codec);
+        int audioBitrate = GetAudioBitrate();
+        obs_data_t *settings = obs_data_create();
+        obs_data_set_int(settings, "bitrate", audioBitrate);
+        
+        aacStreaming = obs_audio_encoder_create(id, "alt_audio_enc", nullptr, 0, nullptr);
+        obs_encoder_release(aacStreaming);
+        if (!aacStreaming)
+            return false;
+        
+        obs_encoder_update(aacStreaming, settings);
+        obs_encoder_set_audio(aacStreaming, obs_get_audio());
+        obs_data_release(settings);
+    }
+    
+    // set encoder to output, and bind service
+    obs_output_set_video_encoder(streamOutput, h264Streaming);
+    obs_output_set_audio_encoder(streamOutput, aacStreaming, 0);
+    obs_output_set_service(streamOutput, service);
+    
+    // get output default config
+    bool reconnect = config_get_bool(globalConfig, "Output", "Reconnect");
+    int retryDelay = (int)config_get_uint(globalConfig, "Output", "RetryDelay");
+    int maxRetries = (int)config_get_uint(globalConfig, "Output", "MaxRetries");
+    bool useDelay = config_get_bool(globalConfig, "Output", "DelayEnable");
+    int delaySec = (int)config_get_int(globalConfig, "Output", "DelaySec");
+    bool preserveDelay = config_get_bool(globalConfig, "Output", "DelayPreserve");
+    const char *bindIP = config_get_string(globalConfig, "Output", "BindIP");
+    bool enableNewSocketLoop = config_get_bool(globalConfig, "Output", "NewSocketLoopEnable");
+    bool enableLowLatencyMode = config_get_bool(globalConfig, "Output", "LowLatencyEnable");
+    
+    // update output settings
+    settings = obs_data_create();
+    obs_data_set_string(settings, "bind_ip", bindIP);
+    obs_data_set_bool(settings, "new_socket_loop_enabled", enableNewSocketLoop);
+    obs_data_set_bool(settings, "low_latency_mode_enabled", enableLowLatencyMode);
+    obs_output_update(streamOutput, settings);
+    obs_data_release(settings);
+    
+    // if not reconnect, set max retry time to zero
+    if (!reconnect)
+        maxRetries = 0;
+    
+    // set delay
+    obs_output_set_delay(streamOutput, useDelay ? delaySec : 0, preserveDelay ? OBS_OUTPUT_DELAY_PRESERVE : 0);
+    
+    // set reconnect settings
+    obs_output_set_reconnect_settings(streamOutput, maxRetries, retryDelay);
+    
+    // start streaming
+    if (obs_output_start(streamOutput)) {
+        return true;
+    }
+    
+    return false;
 }
 
 void OBSApp::CreateH264Encoder() {
@@ -795,4 +898,42 @@ void OBSApp::HandleSampleRate(obs_property_t* prop, const char *id) {
     obs_data_set_int(data.get(), "samplerate", sampleRate);
     
     obs_property_modified(prop, data.get());
+}
+
+void OBSApp::SetupOutputs() {
+    // create settings
+    obs_data_t *h264Settings = obs_data_create();
+    obs_data_t *aacSettings  = obs_data_create();
+    
+    // get bitrate of av
+    int videoBitrate = (int)config_get_uint(globalConfig, "SimpleOutput", "VBitrate");
+    int audioBitrate = GetAudioBitrate();
+    
+    // set settings
+    obs_data_set_string(h264Settings, "rate_control", "CBR");
+    obs_data_set_int(h264Settings, "bitrate", videoBitrate);
+    obs_data_set_string(aacSettings, "rate_control", "CBR");
+    obs_data_set_int(aacSettings, "bitrate", audioBitrate);
+    
+    // apply settings to rtmp service
+    obs_service_apply_encoder_settings(service, h264Settings, aacSettings);
+    
+    // set perferred video format
+    video_t *video = obs_get_video();
+    enum video_format format = video_output_get_format(video);
+    if (format != VIDEO_FORMAT_NV12 && format != VIDEO_FORMAT_I420) {
+        obs_encoder_set_preferred_video_format(h264Streaming, VIDEO_FORMAT_NV12);
+    }
+    
+    // apply settings to encoders
+    obs_encoder_update(h264Streaming, h264Settings);
+    obs_encoder_update(aacStreaming,  aacSettings);
+    
+    // release settings data struct
+    obs_data_release(h264Settings);
+    obs_data_release(aacSettings);
+    
+    // bind encoder with video/audio
+    obs_encoder_set_video(h264Streaming, obs_get_video());
+    obs_encoder_set_audio(aacStreaming,  obs_get_audio());
 }

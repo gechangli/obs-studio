@@ -79,9 +79,11 @@ private:
     OBSEncoder aacStreaming;
     OBSEncoder h264Streaming;
     std::string aacStreamEncID;
+    OBSOutput streamOutput;
     void CreateH264Encoder();
     void CreateH264Encoder(const char *encoderId);
     bool CreateAACEncoder(OBSEncoder &res, std::string &id, int bitrate, const char *name, size_t idx);
+    const char* FindAudioEncoderFromCodec(const char *type);
     const char* GetAACEncoderForBitrate(int bitrate);
     int GetAudioBitrate();
     int FindClosestAvailableAACBitrate(int bitrate);
@@ -91,6 +93,7 @@ private:
     static void HandleSampleRate(obs_property_t* prop, const char *id);
     static void HandleIntProperty(obs_property_t *prop, const char *id);
     static void HandleListProperty(obs_property_t *prop, const char *id);
+    void SetupOutputs();
     
     // config related
     bool MakeUserDirs();
@@ -140,7 +143,7 @@ public:
     obs_display_t* GetDisplay();
     
     // streaming
-    void StartStreaming(const char* url, const char* key);
+    bool StartStreaming(const char* url, const char* key);
     
     // accessor
     inline float GetVideoScale() { return videoScale; }
