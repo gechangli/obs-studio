@@ -20,7 +20,6 @@
 using namespace std;
 
 #define DEFAULT_LANG "en_US"
-#define SERVICE_PATH "service.json"
 
 bool portable_mode = false;
 
@@ -30,6 +29,7 @@ baseHeight(baseHeight),
 viewWidth(w),
 viewHeight(h),
 videoScale(0),
+streamingActive(false),
 profilerNameStore(store) {
 }
 
@@ -107,10 +107,6 @@ bool OBSApp::StartupOBS(const char* locale) {
     
     // reset video
     ResetVideo();
-    
-    // init rtmp services
-    if (!InitService())
-        throw "Failed to initialize service";
     
     // init graphics
     InitPrimitives();
@@ -194,50 +190,9 @@ void OBSApp::InitPrimitives() {
     obs_leave_graphics();
 }
 
-bool OBSApp::InitService() {
-    ProfileScope("OBSApp::InitService");
-    
-    // create service from profile
-    if (LoadService())
-        return true;
-    
-    // if there is no profile, try to create a common rtmp service to test
-    service = obs_service_create("rtmp_common", "default_service", nullptr, nullptr);
-    if (!service)
-        return false;
-    obs_service_release(service);
-    
-    return true;
-}
-
-bool OBSApp::LoadService() {
-    const char *type;
-    
-    // get service profile
-    char serviceJsonPath[512];
-    int ret = GetProfilePath(serviceJsonPath, sizeof(serviceJsonPath), SERVICE_PATH);
-    if (ret <= 0)
-        return false;
-    
-    // if profile exists, load it and test to create service
-    if(os_file_exists(serviceJsonPath)) {
-        obs_data_t *data = obs_data_create_from_json_file_safe(serviceJsonPath, nullptr);
-        
-        obs_data_set_default_string(data, "type", "rtmp_common");
-        type = obs_data_get_string(data, "type");
-        
-        obs_data_t *settings = obs_data_get_obj(data, "settings");
-        obs_data_t *hotkey_data = obs_data_get_obj(data, "hotkeys");
-        
-        service = obs_service_create(type, "default_service", settings, hotkey_data);
-        obs_service_release(service);
-        
-        obs_data_release(hotkey_data);
-        obs_data_release(settings);
-        obs_data_release(data);
-    }
-
-    return !!service;
+obs_service_t* OBSApp::LoadCustomService(obs_data_t* settings) {
+    obs_service_t* service = obs_service_create("rtmp_custom", "default_service", settings, nullptr);
+    return service;
 }
 
 void OBSApp::SourceLoaded(void *data, obs_source_t *source) {
@@ -482,6 +437,11 @@ bool OBSApp::InitGlobalConfigDefaults() {
     config_set_default_uint  (globalConfig, "Audio", "SampleRate", 44100);
     config_set_default_string(globalConfig, "Audio", "ChannelSetup", "Stereo");
     
+    // streaming
+    config_set_default_uint(globalConfig, "SimpleOutput", "VBitrate", 2500);
+    config_set_default_string(globalConfig, "SimpleOutput", "StreamEncoder", SIMPLE_ENCODER_X264);
+    config_set_default_uint(globalConfig, "SimpleOutput", "ABitrate", 160);
+    
     return true;
 }
 
@@ -567,4 +527,29 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     
     UNUSED_PARAMETER(cx);
     UNUSED_PARAMETER(cy);
+}
+
+void OBSApp::StartStreaming(const char* url, const char* key) {
+    // if already in streaming, return
+    if(streamingActive) {
+        return;
+    }
+    
+    // if has service, release it
+    if(service != nullptr) {
+        obs_service_release(service);
+        service = nullptr;
+    }
+    
+    // create services
+    obs_data_t* settings = obs_data_create();
+    obs_data_set_string(settings, "server", url);
+    obs_data_set_string(settings, "key", key);
+    service = LoadCustomService(settings);
+    obs_data_release(settings);
+    
+    // if not ok, return
+    if(!service) {
+        return;
+    }
 }

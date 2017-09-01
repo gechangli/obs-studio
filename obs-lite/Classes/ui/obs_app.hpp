@@ -17,11 +17,19 @@
 #define OBS_UNIX_STRUCTURE 0
 #endif
 
+// audio device name
 #define DESKTOP_AUDIO_1 "DesktopAudioDevice1"
 #define DESKTOP_AUDIO_2 "DesktopAudioDevice2"
 #define AUX_AUDIO_1     "AuxAudioDevice1"
 #define AUX_AUDIO_2     "AuxAudioDevice2"
 #define AUX_AUDIO_3     "AuxAudioDevice3"
+
+// encoder
+#define SIMPLE_ENCODER_X264                    "x264"
+#define SIMPLE_ENCODER_X264_LOWCPU             "x264_lowcpu"
+#define SIMPLE_ENCODER_QSV                     "qsv"
+#define SIMPLE_ENCODER_NVENC                   "nvenc"
+#define SIMPLE_ENCODER_AMD                     "amd"
 
 /**
  * OBS application
@@ -64,13 +72,15 @@ private:
     gs_vertbuffer_t *boxBottom = nullptr;
     gs_vertbuffer_t *circle = nullptr;
     
+    // streaming
+    bool streamingActive;
+    
     // config related
     bool MakeUserDirs();
     bool do_mkdir(const char *path);
     bool InitGlobalConfig();
     bool InitGlobalConfigDefaults();
-    bool InitService();
-    bool LoadService();
+    obs_service_t* LoadCustomService(obs_data_t* settings);
     void InitPrimitives();
     void ClearSceneData();
     void InitDefaultTransitions();
@@ -105,6 +115,9 @@ public:
     // display
     void CreateDisplay(gs_window window);
     obs_display_t* GetDisplay();
+    
+    // streaming
+    void StartStreaming(const char* url, const char* key);
     
     // accessor
     inline float GetVideoScale() { return videoScale; }
