@@ -689,11 +689,23 @@
                             <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nve-kG-nfm">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             </openGLView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FGJ-5F-U8G">
+                                <rect key="frame" x="395" y="13" width="71" height="32"/>
+                                <buttonCell key="cell" type="push" title="Push" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BWz-oW-fQc">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="onPushClicked:" target="XfG-lQ-9wD" id="vaZ-O0-bvU"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="nve-kG-nfm" secondAttribute="bottom" id="1Qg-ML-nVM"/>
                             <constraint firstItem="nve-kG-nfm" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="Hlv-XQ-p33"/>
+                            <constraint firstAttribute="trailing" secondItem="FGJ-5F-U8G" secondAttribute="trailing" constant="20" id="dx6-tX-b13"/>
                             <constraint firstAttribute="trailing" secondItem="nve-kG-nfm" secondAttribute="trailing" id="gul-nj-TtV"/>
+                            <constraint firstAttribute="bottom" secondItem="FGJ-5F-U8G" secondAttribute="bottom" constant="20" id="kbx-UV-FqV"/>
                             <constraint firstItem="nve-kG-nfm" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="vIs-U6-9eW"/>
                         </constraints>
                     </view>

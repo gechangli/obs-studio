@@ -2,6 +2,8 @@
 
 @interface ViewController()
 
+- (IBAction)onPushClicked:(id)sender;
+
 @end
 
 @implementation ViewController
@@ -16,5 +18,7 @@
     // Update the view, if already loaded.
 }
 
+- (IBAction)onPushClicked:(id)sender {
+}
 
 @end

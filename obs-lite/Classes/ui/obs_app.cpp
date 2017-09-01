@@ -224,15 +224,12 @@ void OBSApp::LoadScene(const char *file) {
     InitDefaultTransitions();
     
     // get fields from json
-    obs_data_array_t *sceneOrder = obs_data_get_array(data, "scene_order");
     obs_data_array_t *sources = obs_data_get_array(data, "sources");
-    obs_data_array_t *transitions = obs_data_get_array(data, "transitions");
     const char *sceneName = obs_data_get_string(data, "current_scene");
-    const char *programSceneName = obs_data_get_string(data, "current_program_scene");
     const char *transitionName = obs_data_get_string(data, "current_transition");
     
     // get transition duration
-    int newDuration = obs_data_get_int(data, "transition_duration");
+    int newDuration = (int)obs_data_get_int(data, "transition_duration");
     if (!newDuration)
         newDuration = 300;
     
@@ -246,7 +243,6 @@ void OBSApp::LoadScene(const char *file) {
     
     const char       *name = obs_data_get_string(data, "name");
     obs_source_t     *curScene;
-    obs_source_t     *curProgramScene;
     obs_source_t     *curTransition;
     
     if (!name || !*name)
