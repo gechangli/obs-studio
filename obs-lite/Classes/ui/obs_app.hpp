@@ -4,6 +4,8 @@
 #include <util/util.hpp>
 #include <util/profiler.h>
 #include <vector>
+#include <string>
+#include <map>
 
 #ifdef __APPLE__
 #define BASE_PATH ".."
@@ -74,6 +76,21 @@ private:
     
     // streaming
     bool streamingActive;
+    OBSEncoder aacStreaming;
+    OBSEncoder h264Streaming;
+    std::string aacStreamEncID;
+    void CreateH264Encoder();
+    void CreateH264Encoder(const char *encoderId);
+    bool CreateAACEncoder(OBSEncoder &res, std::string &id, int bitrate, const char *name, size_t idx);
+    const char* GetAACEncoderForBitrate(int bitrate);
+    int GetAudioBitrate();
+    int FindClosestAvailableAACBitrate(int bitrate);
+    const std::map<int, const char*>& GetAACEncoderBitrateMap();
+    void PopulateBitrateMap();
+    static void HandleEncoderProperties(const char *id);
+    static void HandleSampleRate(obs_property_t* prop, const char *id);
+    static void HandleIntProperty(obs_property_t *prop, const char *id);
+    static void HandleListProperty(obs_property_t *prop, const char *id);
     
     // config related
     bool MakeUserDirs();
@@ -94,6 +111,11 @@ private:
     int ResetVideo();
     bool ResetAudio();
     
+    // helper
+    static const char* NullToEmpty(const char *str);
+    static const char* EncoderName(const char *id);
+    static const char* GetCodec(const char *id);
+    
 public:
     // get config file path
     int GetConfigPath(char* path, size_t size, const char* name);
@@ -102,6 +124,7 @@ public:
     // ctor & dtor
     OBSApp(int baseWidth, int baseHeight, int w, int h, profiler_name_store_t *store = nullptr);
     virtual ~OBSApp();
+    static OBSApp* sharedApp();
     
     // startup
     void RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader);
@@ -124,6 +147,7 @@ public:
     inline void SetVideoScale(float v) { videoScale = v; }
     inline int GetViewWidth() { return viewWidth; }
     inline int GetViewHeight() { return viewHeight; }
+    inline ConfigFile& GetGlobalConfig() { return globalConfig; }
     
     profiler_name_store_t* GetProfilerNameStore() const {
         return profilerNameStore;

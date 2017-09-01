@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <mutex>
+#include <iomanip>
 #include <util/bmem.h>
 #include <util/dstr.h>
 #include <util/platform.h>
@@ -20,8 +21,24 @@
 using namespace std;
 
 #define DEFAULT_LANG "en_US"
+#define INVALID_BITRATE 10000
 
-bool portable_mode = false;
+// shared instance
+static OBSApp* sharedInstance;
+
+// audio encoder supported bitrates
+static map<int, const char*> bitrateMap;
+static once_flag populateBitrateMap;
+
+// audio encoder available
+static const string aac_ = "AAC";
+static const string encoders[] = {
+//    "ffmpeg_aac",
+//    "mf_aac",
+//    "libfdk_aac",
+    "CoreAudio_AAC",
+};
+static const string &fallbackEncoder = encoders[0];
 
 OBSApp::OBSApp(int baseWidth, int baseHeight, int w, int h, profiler_name_store_t *store) :
 baseWidth(baseWidth),
@@ -31,22 +48,19 @@ viewHeight(h),
 videoScale(0),
 streamingActive(false),
 profilerNameStore(store) {
+    sharedInstance = this;
 }
 
 OBSApp::~OBSApp() {
-    
+    sharedInstance = nullptr;
+}
+
+OBSApp* OBSApp::sharedApp() {
+    return sharedInstance;
 }
 
 int OBSApp::GetConfigPath(char *path, size_t size, const char *name) {
-    if (!OBS_UNIX_STRUCTURE && portable_mode) {
-        if (name && *name) {
-            return snprintf(path, size, CONFIG_PATH "/%s", name);
-        } else {
-            return snprintf(path, size, CONFIG_PATH);
-        }
-    } else {
-        return os_get_config_path(path, size, name);
-    }
+    return os_get_config_path(path, size, name);
 }
 
 int OBSApp::GetProfilePath(char *path, size_t size, const char *file) {
@@ -110,6 +124,11 @@ bool OBSApp::StartupOBS(const char* locale) {
     
     // init graphics
     InitPrimitives();
+    
+    // create encoder
+    CreateH264Encoder();
+    if(!CreateAACEncoder(aacStreaming, aacStreamEncID, GetAudioBitrate(), "simple_aac", 0))
+        throw "Failed to create aac streaming encoder (simple output)";
     
     return true;
 }
@@ -548,4 +567,232 @@ void OBSApp::StartStreaming(const char* url, const char* key) {
     if(!service) {
         return;
     }
+}
+
+void OBSApp::CreateH264Encoder() {
+    const char *encoder = config_get_string(globalConfig, "SimpleOutput", "StreamEncoder");
+    if (strcmp(encoder, SIMPLE_ENCODER_QSV) == 0)
+        CreateH264Encoder("obs_qsv11");
+    else if (strcmp(encoder, SIMPLE_ENCODER_AMD) == 0)
+        CreateH264Encoder("amd_amf_h264");
+    else if (strcmp(encoder, SIMPLE_ENCODER_NVENC) == 0)
+        CreateH264Encoder("ffmpeg_nvenc");
+    else
+        CreateH264Encoder("obs_x264");
+}
+
+void OBSApp::CreateH264Encoder(const char *encoderId) {
+    h264Streaming = obs_video_encoder_create(encoderId, "simple_h264_stream", nullptr, nullptr);
+    if (!h264Streaming)
+        throw "Failed to create h264 streaming encoder (simple output)";
+    obs_encoder_release(h264Streaming);
+}
+
+bool OBSApp::CreateAACEncoder(OBSEncoder &res, string &id, int bitrate, const char *name, size_t idx) {
+    const char *id_ = GetAACEncoderForBitrate(bitrate);
+    if (!id_) {
+        id.clear();
+        res = nullptr;
+        return false;
+    }
+    
+    if (id == id_)
+        return true;
+    
+    id = id_;
+    res = obs_audio_encoder_create(id_, name, nullptr, idx, nullptr);
+    
+    if (res) {
+        obs_encoder_release(res);
+        return true;
+    }
+    
+    return false;
+}
+
+const char* OBSApp::GetAACEncoderForBitrate(int bitrate) {
+    auto &map_ = GetAACEncoderBitrateMap();
+    auto res = map_.find(bitrate);
+    if (res == end(map_))
+        return NULL;
+    return res->second;
+}
+
+int OBSApp::GetAudioBitrate() {
+    int bitrate = (int)config_get_uint(globalConfig, "SimpleOutput", "ABitrate");
+    return FindClosestAvailableAACBitrate(bitrate);
+}
+
+int OBSApp::FindClosestAvailableAACBitrate(int bitrate) {
+    auto &map_ = GetAACEncoderBitrateMap();
+    int prev = 0;
+    int next = INVALID_BITRATE;
+    
+    for (auto val : map_) {
+        if (next > val.first) {
+            if (val.first == bitrate)
+                return bitrate;
+            
+            if (val.first < next && val.first > bitrate)
+                next = val.first;
+            if (val.first > prev && val.first < bitrate)
+                prev = val.first;
+        }
+    }
+    
+    if (next != INVALID_BITRATE)
+        return next;
+    if (prev != 0)
+        return prev;
+    return 192;
+}
+
+const map<int, const char*>& OBSApp::GetAACEncoderBitrateMap() {
+    PopulateBitrateMap();
+    return bitrateMap;
+}
+
+const char* OBSApp::NullToEmpty(const char *str) {
+    return str ? str : "";
+}
+
+const char * OBSApp::EncoderName(const char *id) {
+    return NullToEmpty(obs_encoder_get_display_name(id));
+}
+
+const char* OBSApp::GetCodec(const char *id) {
+    return NullToEmpty(obs_get_encoder_codec(id));
+}
+
+void OBSApp::PopulateBitrateMap() {
+    call_once(populateBitrateMap, []() {
+        HandleEncoderProperties(fallbackEncoder.c_str());
+
+        const char *id = nullptr;
+        for (size_t i = 0; obs_enum_encoder_types(i, &id); i++) {
+            auto Compare = [=](const string &val) {
+                return val == NullToEmpty(id);
+            };
+
+            if (find_if(begin(encoders), end(encoders), Compare) != end(encoders))
+                continue;
+
+            if (aac_ != GetCodec(id))
+                continue;
+
+            HandleEncoderProperties(id);
+        }
+
+        for (auto &encoder : encoders) {
+            if (encoder == fallbackEncoder)
+                continue;
+
+            if (aac_ != GetCodec(encoder.c_str()))
+                continue;
+
+            HandleEncoderProperties(encoder.c_str());
+        }
+
+        if (bitrateMap.empty()) {
+            blog(LOG_ERROR, "Could not enumerate any AAC encoder bitrates");
+            return;
+        }
+
+        ostringstream ss;
+        for (auto &entry : bitrateMap)
+            ss << "\n	" << setw(3) << entry.first << " kbit/s: '" << EncoderName(entry.second) << "' (" << entry.second << ')';
+
+        blog(LOG_DEBUG, "AAC encoder bitrate mapping:%s",
+        ss.str().c_str());
+    });
+}
+
+void OBSApp::HandleIntProperty(obs_property_t *prop, const char *id) {
+    const int max_ = obs_property_int_max(prop);
+    const int step = obs_property_int_step(prop);
+    
+    for (int i = obs_property_int_min(prop); i <= max_; i += step)
+        bitrateMap[i] = id;
+}
+
+void OBSApp::HandleListProperty(obs_property_t *prop, const char *id) {
+    obs_combo_format format = obs_property_list_format(prop);
+    if (format != OBS_COMBO_FORMAT_INT) {
+        blog(LOG_ERROR, "Encoder '%s' (%s) returned bitrate "
+             "OBS_PROPERTY_LIST property of unhandled "
+             "format %d",
+             EncoderName(id), id, static_cast<int>(format));
+        return;
+    }
+    
+    const size_t count = obs_property_list_item_count(prop);
+    for (size_t i = 0; i < count; i++) {
+        if (obs_property_list_item_disabled(prop, i))
+            continue;
+        
+        int bitrate = static_cast<int>(
+                                       obs_property_list_item_int(prop, i));
+        bitrateMap[bitrate] = id;
+    }
+}
+
+void OBSApp::HandleEncoderProperties(const char *id) {
+    auto DestroyProperties = [](obs_properties_t *props) {
+        obs_properties_destroy(props);
+    };
+    std::unique_ptr<obs_properties_t, decltype(DestroyProperties)> props{
+        obs_get_encoder_properties(id),
+        DestroyProperties};
+    
+    if (!props) {
+        blog(LOG_ERROR, "Failed to get properties for encoder "
+             "'%s' (%s)",
+             EncoderName(id), id);
+        return;
+    }
+    
+    // if encoder has samplerate, replace it with value in global config
+    obs_property_t *samplerate = obs_properties_get(props.get(), "samplerate");
+    if (samplerate)
+        HandleSampleRate(samplerate, id);
+    
+    obs_property_t *bitrate = obs_properties_get(props.get(), "bitrate");
+    
+    obs_property_type type = obs_property_get_type(bitrate);
+    switch (type) {
+        case OBS_PROPERTY_INT:
+            return HandleIntProperty(bitrate, id);
+        case OBS_PROPERTY_LIST:
+            return HandleListProperty(bitrate, id);
+        default:
+            break;
+    }
+    
+    blog(LOG_ERROR, "Encoder '%s' (%s) returned bitrate property "
+         "of unhandled type %d", EncoderName(id), id,
+         static_cast<int>(type));
+}
+
+void OBSApp::HandleSampleRate(obs_property_t* prop, const char *id) {
+    auto ReleaseData = [](obs_data_t *data) {
+        obs_data_release(data);
+    };
+    std::unique_ptr<obs_data_t, decltype(ReleaseData)> data {
+        obs_encoder_defaults(id),
+        ReleaseData
+    };
+    
+    if (!data) {
+        blog(LOG_ERROR, "Failed to get defaults for encoder '%s' (%s) "
+             "while populating bitrate map",
+             EncoderName(id), id);
+        return;
+    }
+    
+    ConfigFile& globalConfig = OBSApp::sharedApp()->GetGlobalConfig();
+    uint32_t sampleRate = (uint32_t)config_get_uint(globalConfig, "Audio", "SampleRate");
+    
+    obs_data_set_int(data.get(), "samplerate", sampleRate);
+    
+    obs_property_modified(prop, data.get());
 }
