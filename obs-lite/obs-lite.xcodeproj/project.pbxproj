@@ -55,6 +55,8 @@
 		92A1A02F1F4E9A3E00B24588 /* text-lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FF51F4E9A3E00B24588 /* text-lookup.c */; };
 		92A1A0301F4E9A3E00B24588 /* threading-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FF71F4E9A3E00B24588 /* threading-posix.c */; };
 		92A1A0311F4E9A3E00B24588 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A19FFA1F4E9A3E00B24588 /* utf8.c */; };
+		92A7AC881F5905A000D61BD9 /* obs-x264-plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC861F5905A000D61BD9 /* obs-x264-plugin-main.c */; };
+		92A7AC891F5905A000D61BD9 /* obs-x264.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AC871F5905A000D61BD9 /* obs-x264.c */; };
 		92A8359A1F57ADEE00DF6141 /* audio-device-enum.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835911F57ADEE00DF6141 /* audio-device-enum.c */; };
 		92A8359B1F57ADEE00DF6141 /* mac-audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A835931F57ADEE00DF6141 /* mac-audio.c */; };
 		92A8359C1F57ADEE00DF6141 /* mac-display-capture.m in Sources */ = {isa = PBXBuildFile; fileRef = 92A835941F57ADEE00DF6141 /* mac-display-capture.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -236,6 +238,8 @@
 		92A19FFB1F4E9A3E00B24588 /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
 		92A19FFC1F4E9A3E00B24588 /* util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = util.hpp; sourceTree = "<group>"; };
 		92A19FFD1F4E9A3E00B24588 /* util_uint128.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util_uint128.h; sourceTree = "<group>"; };
+		92A7AC861F5905A000D61BD9 /* obs-x264-plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264-plugin-main.c"; sourceTree = "<group>"; };
+		92A7AC871F5905A000D61BD9 /* obs-x264.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264.c"; sourceTree = "<group>"; };
 		92A835911F57ADEE00DF6141 /* audio-device-enum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "audio-device-enum.c"; sourceTree = "<group>"; };
 		92A835921F57ADEE00DF6141 /* audio-device-enum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "audio-device-enum.h"; sourceTree = "<group>"; };
 		92A835931F57ADEE00DF6141 /* mac-audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mac-audio.c"; sourceTree = "<group>"; };
@@ -474,6 +478,7 @@
 				9299DCB61F4D1B5A000DBF75 /* mac_avcapture */,
 				92A835901F57ADEE00DF6141 /* mac_capture */,
 				923D9D911F51C9490097031F /* obs_transitions */,
+				92A7AC851F5905A000D61BD9 /* obs_x264 */,
 				9216443D1F5059AF00C403A1 /* rtmp_services */,
 			);
 			path = plugins;
@@ -612,6 +617,15 @@
 				92A19FFD1F4E9A3E00B24588 /* util_uint128.h */,
 			);
 			path = util;
+			sourceTree = "<group>";
+		};
+		92A7AC851F5905A000D61BD9 /* obs_x264 */ = {
+			isa = PBXGroup;
+			children = (
+				92A7AC861F5905A000D61BD9 /* obs-x264-plugin-main.c */,
+				92A7AC871F5905A000D61BD9 /* obs-x264.c */,
+			);
+			path = obs_x264;
 			sourceTree = "<group>";
 		};
 		92A835901F57ADEE00DF6141 /* mac_capture */ = {
@@ -1060,6 +1074,7 @@
 				92A1A0261F4E9A3E00B24588 /* crc32.c in Sources */,
 				92A19F591F4E845500B24588 /* obs_app.cpp in Sources */,
 				92B853471F4F1F9A004A2648 /* vec4.c in Sources */,
+				92A7AC881F5905A000D61BD9 /* obs-x264-plugin-main.c in Sources */,
 				92A1A02F1F4E9A3E00B24588 /* text-lookup.c in Sources */,
 				92FFDBB71F4AF80800AB5892 /* memory.c in Sources */,
 				92B853411F4F1F9A004A2648 /* plane.c in Sources */,
@@ -1090,6 +1105,7 @@
 				92A19F6F1F4E98B200B24588 /* gl-shaderparser.c in Sources */,
 				92FFDB891F4AF66100AB5892 /* obs-output-delay.c in Sources */,
 				92B853311F4F1F9A004A2648 /* calldata.c in Sources */,
+				92A7AC891F5905A000D61BD9 /* obs-x264.c in Sources */,
 				923D9DA01F51C9490097031F /* transition-slide.c in Sources */,
 				921644501F5068EF00C403A1 /* file-updater.c in Sources */,
 				92FFDB841F4AF66100AB5892 /* obs-encoder.c in Sources */,

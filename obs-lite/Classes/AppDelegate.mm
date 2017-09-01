@@ -5,12 +5,14 @@
 OBS_DECLARE_STATIC_MODULE_CREATOR(mac_avcapture)
 OBS_DECLARE_STATIC_MODULE_CREATOR(mac_capture)
 OBS_DECLARE_STATIC_MODULE_CREATOR(obs_transitions)
+OBS_DECLARE_STATIC_MODULE_CREATOR(obs_x264)
 OBS_DECLARE_STATIC_MODULE_CREATOR(rtmp_services)
 
 static void loadStaticModules() {
     OBS_OPEN_STATIC_MODULE(mac_avcapture);
     OBS_OPEN_STATIC_MODULE(mac_capture);
     OBS_OPEN_STATIC_MODULE(obs_transitions);
+    OBS_OPEN_STATIC_MODULE(obs_x264);
     OBS_OPEN_STATIC_MODULE(rtmp_services);
 }
 
