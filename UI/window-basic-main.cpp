@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
     Copyright (C) 2013-2015 by Hugh Bailey <obs.jim@gmail.com>
                                Zachary Lund <admin@computerquip.com>
                                Philippe Groarke <philippe.groarke@gmail.com>
@@ -1507,6 +1507,14 @@ void OBSBasic::OBSInit()
 
 	if (config_get_bool(basicConfig, "General", "OpenStatsOnStartup"))
 		on_stats_triggered();
+
+	// add live platform names
+	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.DouYu", Q_NULLPTR));
+	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.Panda", Q_NULLPTR));
+	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.ZhanQi", Q_NULLPTR));
+	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.NetEase", Q_NULLPTR));
+	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.HuYa", Q_NULLPTR));
+	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.HuaJiao", Q_NULLPTR));
 
 	OBSBasicStats::InitializeValues();
 }
