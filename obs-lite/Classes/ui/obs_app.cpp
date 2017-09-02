@@ -40,14 +40,13 @@ static const string encoders[] = {
 };
 static const string &fallbackEncoder = encoders[0];
 
-OBSApp::OBSApp(int baseWidth, int baseHeight, int w, int h, profiler_name_store_t *store) :
-baseWidth(baseWidth),
-baseHeight(baseHeight),
-viewWidth(w),
-viewHeight(h),
-videoScale(0),
-streamingActive(false),
-profilerNameStore(store) {
+OBSApp::OBSApp(int baseWidth, int baseHeight, int w, int h) :
+m_baseWidth(baseWidth),
+m_baseHeight(baseHeight),
+m_viewWidth(w),
+m_viewHeight(h),
+m_videoScale(0),
+m_streamingActive(false) {
     sharedInstance = this;
 }
 
@@ -65,7 +64,7 @@ int OBSApp::GetConfigPath(char *path, size_t size, const char *name) {
 
 int OBSApp::GetProfilePath(char *path, size_t size, const char *file) {
     char profiles_path[512];
-    const char *profile = config_get_string(globalConfig, "Basic", "ProfileDir");
+    const char *profile = config_get_string(m_globalConfig, "Basic", "ProfileDir");
     int ret;
     
     if (!profile)
@@ -104,7 +103,7 @@ bool OBSApp::StartupOBS(const char* locale) {
     }
     
     // startup obs
-    if(!obs_startup(locale, path, profilerNameStore)) {
+    if(!obs_startup(locale, path, nullptr)) {
         return false;
     }
     
@@ -122,12 +121,9 @@ bool OBSApp::StartupOBS(const char* locale) {
     // reset video
     ResetVideo();
     
-    // init graphics
-    InitPrimitives();
-    
     // create encoder
     CreateH264Encoder();
-    if(!CreateAACEncoder(aacStreaming, aacStreamEncID, GetAudioBitrate(), "simple_aac", 0))
+    if(!CreateAACEncoder(m_aacStreaming, m_aacStreamEncID, GetAudioBitrate(), "simple_aac", 0))
         throw "Failed to create aac streaming encoder (simple output)";
     
     return true;
@@ -136,27 +132,29 @@ bool OBSApp::StartupOBS(const char* locale) {
 bool OBSApp::ResetAudio() {
     ProfileScope("OBSApp::ResetAudio");
     
+    // get audio sample rate and channel
     struct obs_audio_info ai;
-    ai.samples_per_sec = config_get_uint(globalConfig, "Audio", "SampleRate");
-    
-    const char *channelSetupStr = config_get_string(globalConfig, "Audio", "ChannelSetup");
+    ai.samples_per_sec = (int)config_get_uint(m_globalConfig, "Audio", "SampleRate");
+    const char *channelSetupStr = config_get_string(m_globalConfig, "Audio", "ChannelSetup");
 
+    // set mono or stereo
     if (strcmp(channelSetupStr, "Mono") == 0)
         ai.speakers = SPEAKERS_MONO;
     else
         ai.speakers = SPEAKERS_STEREO;
     
+    // reset audio
     return obs_reset_audio(&ai);
 }
 
 int OBSApp::ResetVideo() {
     struct obs_video_info ovi;
     ovi.adapter         = 0;
-    ovi.base_width      = baseWidth;
-    ovi.base_height     = baseHeight;
+    ovi.base_width      = m_baseWidth;
+    ovi.base_height     = m_baseHeight;
     ovi.fps_num         = 30000;
     ovi.fps_den         = 1001;
-    ovi.graphics_module = config_get_string(globalConfig, "Video", "Renderer");
+    ovi.graphics_module = config_get_string(m_globalConfig, "Video", "Renderer");
     ovi.output_format   = VIDEO_FORMAT_RGBA;
     ovi.output_width    = 1280;
     ovi.output_height   = 720;
@@ -164,49 +162,6 @@ int OBSApp::ResetVideo() {
     if (obs_reset_video(&ovi) != 0)
         throw "Couldn't initialize video";
     return 0;
-}
-
-void OBSApp::InitPrimitives() {
-    ProfileScope("OBSApp::InitPrimitives");
-    
-    obs_enter_graphics();
-    
-    gs_render_start(true);
-    gs_vertex2f(0.0f, 0.0f);
-    gs_vertex2f(0.0f, 1.0f);
-    gs_vertex2f(1.0f, 1.0f);
-    gs_vertex2f(1.0f, 0.0f);
-    gs_vertex2f(0.0f, 0.0f);
-    box = gs_render_save();
-    
-    gs_render_start(true);
-    gs_vertex2f(0.0f, 0.0f);
-    gs_vertex2f(0.0f, 1.0f);
-    boxLeft = gs_render_save();
-    
-    gs_render_start(true);
-    gs_vertex2f(0.0f, 0.0f);
-    gs_vertex2f(1.0f, 0.0f);
-    boxTop = gs_render_save();
-    
-    gs_render_start(true);
-    gs_vertex2f(1.0f, 0.0f);
-    gs_vertex2f(1.0f, 1.0f);
-    boxRight = gs_render_save();
-    
-    gs_render_start(true);
-    gs_vertex2f(0.0f, 1.0f);
-    gs_vertex2f(1.0f, 1.0f);
-    boxBottom = gs_render_save();
-    
-    gs_render_start(true);
-    for (int i = 0; i <= 360; i += (360/20)) {
-        float pos = RAD(float(i));
-        gs_vertex2f(cosf(pos), sinf(pos));
-    }
-    circle = gs_render_save();
-    
-    obs_leave_graphics();
 }
 
 obs_service_t* OBSApp::LoadCustomService(obs_data_t* settings) {
@@ -254,19 +209,9 @@ void OBSApp::LoadScene(const char *file) {
     
     // get transition name, if don't have, get fade transition name
     if (!transitionName)
-        transitionName = obs_source_get_name(fadeTransition);
+        transitionName = obs_source_get_name(m_fadeTransition);
     
-    const char *curSceneCollection = config_get_string(globalConfig, "Basic", "SceneCollection");
-    
-    obs_data_set_default_string(data, "name", curSceneCollection);
-    
-    const char       *name = obs_data_get_string(data, "name");
-    obs_source_t     *curScene;
-    obs_source_t     *curTransition;
-    
-    if (!name || !*name)
-        name = curSceneCollection;
-
+    // load audio devices
     LoadAudioDevice(DESKTOP_AUDIO_1, 1, data);
     LoadAudioDevice(DESKTOP_AUDIO_2, 2, data);
     LoadAudioDevice(AUX_AUDIO_1,     3, data);
@@ -277,20 +222,20 @@ void OBSApp::LoadScene(const char *file) {
     obs_load_sources(sources, OBSApp::SourceLoaded, this);
     
     // find transition
-    curTransition = FindTransition(transitionName);
+    obs_source_t* curTransition = FindTransition(transitionName);
     if (!curTransition)
-        curTransition = fadeTransition;
+        curTransition = m_fadeTransition;
     
     // set transition
     obs_set_output_source(0, curTransition);
     
     // get current scene
-    curScene = obs_get_source_by_name(sceneName);
+    obs_source_t* curScene = obs_get_source_by_name(sceneName);
     obs_transition_set(curTransition, curScene);
 }
 
 obs_source_t* OBSApp::FindTransition(const char *name) {
-    for(vector<OBSSource>::iterator iter = transitions.begin(); iter != transitions.end(); iter++) {
+    for(vector<OBSSource>::iterator iter = m_transitions.begin(); iter != m_transitions.end(); iter++) {
         OBSSource tr = *iter;
         const char *trName = obs_source_get_name(tr);
         if (strcmp(trName, name) == 0)
@@ -301,7 +246,7 @@ obs_source_t* OBSApp::FindTransition(const char *name) {
 }
 
 void OBSApp::SetCurrentScene(OBSSource* s) {
-    curScene = *s;
+    m_curScene = *s;
 }
 
 void OBSApp::ClearSceneData() {
@@ -335,7 +280,7 @@ void OBSApp::InitDefaultTransitions() {
     size_t idx = 0;
     const char *id;
     
-    /* automatically add transitions that have no configuration (things
+    /* automatically add m_transitions that have no configuration (things
      * such as cut/fade/etc) */
     while (obs_enum_transition_types(idx++, &id)) {
         if (!obs_is_source_configurable(id)) {
@@ -343,10 +288,10 @@ void OBSApp::InitDefaultTransitions() {
             
             obs_source_t *tr = obs_source_create_private(id, name, NULL);
             InitTransition(tr);
-            transitions.emplace_back(tr);
+            m_transitions.emplace_back(tr);
             
             if (strcmp(id, "fade_transition") == 0)
-                fadeTransition = tr;
+                m_fadeTransition = tr;
             
             obs_source_release(tr);
         }
@@ -414,7 +359,7 @@ bool OBSApp::InitGlobalConfig() {
         return false;
     }
     
-    int errorcode = globalConfig.Open(path, CONFIG_OPEN_ALWAYS);
+    int errorcode = m_globalConfig.Open(path, CONFIG_OPEN_ALWAYS);
     if (errorcode != CONFIG_SUCCESS) {
         blog(LOG_ERROR, "Failed to open global.ini: %d", errorcode);
         return false;
@@ -422,69 +367,67 @@ bool OBSApp::InitGlobalConfig() {
     
     // write config file to disk
     if (changed)
-        config_save_safe(globalConfig, "tmp", nullptr);
+        config_save_safe(m_globalConfig, "tmp", nullptr);
     
     // init default value
     return InitGlobalConfigDefaults();
 }
 
 bool OBSApp::InitGlobalConfigDefaults() {
-    config_set_default_string(globalConfig, "General", "Language", DEFAULT_LANG);
-    config_set_default_string(globalConfig, "General", "ProcessPriority", "Normal");
-    config_set_default_string(globalConfig, "Basic", "ProfileDir", "default");
+    config_set_default_string(m_globalConfig, "General", "Language", DEFAULT_LANG);
+    config_set_default_string(m_globalConfig, "General", "ProcessPriority", "Normal");
+    config_set_default_string(m_globalConfig, "Basic", "ProfileDir", "default");
     
 #if _WIN32
-    config_set_default_string(globalConfig, "Video", "Renderer",
+    config_set_default_string(m_globalConfig, "Video", "Renderer",
                               "Direct3D 11");
 #else
-    config_set_default_string(globalConfig, "Video", "Renderer", "OpenGL-static");
+    config_set_default_string(m_globalConfig, "Video", "Renderer", "OpenGL-static");
 #endif
 
 #if TARGET_OS_OSX
-    config_set_default_bool(globalConfig, "Video", "DisableOSXVSync", true);
-    config_set_default_bool(globalConfig, "Video", "ResetOSXVSyncOnExit",
+    config_set_default_bool(m_globalConfig, "Video", "DisableOSXVSync", true);
+    config_set_default_bool(m_globalConfig, "Video", "ResetOSXVSyncOnExit",
                             true);
 #endif
     
     // audio
-    config_set_default_string(globalConfig, "Audio", "MonitoringDeviceId", "default");
-    config_set_default_string(globalConfig, "Audio", "MonitoringDeviceName", "Default");
-    config_set_default_uint  (globalConfig, "Audio", "SampleRate", 44100);
-    config_set_default_string(globalConfig, "Audio", "ChannelSetup", "Stereo");
+    config_set_default_uint  (m_globalConfig, "Audio", "SampleRate", 44100);
+    config_set_default_string(m_globalConfig, "Audio", "ChannelSetup", "Stereo");
     
     // streaming
-    config_set_default_uint(globalConfig, "SimpleOutput", "VBitrate", 2500);
-    config_set_default_string(globalConfig, "SimpleOutput", "StreamEncoder", SIMPLE_ENCODER_X264);
-    config_set_default_uint(globalConfig, "SimpleOutput", "ABitrate", 160);
+    config_set_default_uint(m_globalConfig, "SimpleOutput", "VBitrate", 2500);
+    config_set_default_string(m_globalConfig, "SimpleOutput", "StreamEncoder", SIMPLE_ENCODER_X264);
+    config_set_default_uint(m_globalConfig, "SimpleOutput", "ABitrate", 160);
     
     // general output
-    config_set_default_bool(globalConfig, "Output", "DelayEnable", false);
-    config_set_default_uint(globalConfig, "Output", "DelaySec", 20);
-    config_set_default_bool(globalConfig, "Output", "DelayPreserve", true);
-    config_set_default_bool(globalConfig, "Output", "Reconnect", true);
-    config_set_default_uint(globalConfig, "Output", "RetryDelay", 10);
-    config_set_default_uint(globalConfig, "Output", "MaxRetries", 20);
-    config_set_default_string(globalConfig, "Output", "BindIP", "default");
-    config_set_default_bool(globalConfig, "Output", "NewSocketLoopEnable", false);
-    config_set_default_bool(globalConfig, "Output", "LowLatencyEnable", false);
+    config_set_default_bool(m_globalConfig, "Output", "DelayEnable", false);
+    config_set_default_uint(m_globalConfig, "Output", "DelaySec", 20);
+    config_set_default_bool(m_globalConfig, "Output", "DelayPreserve", true);
+    config_set_default_bool(m_globalConfig, "Output", "Reconnect", true);
+    config_set_default_uint(m_globalConfig, "Output", "RetryDelay", 10);
+    config_set_default_uint(m_globalConfig, "Output", "MaxRetries", 20);
+    config_set_default_string(m_globalConfig, "Output", "BindIP", "default");
+    config_set_default_bool(m_globalConfig, "Output", "NewSocketLoopEnable", false);
+    config_set_default_bool(m_globalConfig, "Output", "LowLatencyEnable", false);
     
     return true;
 }
 
 void OBSApp::CreateDisplay(gs_window window) {
     // if already created, return
-    if(display) {
+    if(m_display) {
         return;
     }
     
     // create display
     gs_init_data info = {};
-    info.cx = viewWidth;
-    info.cy = viewHeight;
+    info.cx = m_viewWidth;
+    info.cy = m_viewHeight;
     info.format = GS_RGBA;
     info.zsformat = GS_ZS_NONE;
     info.window = window;
-    display = obs_display_create(&info);
+    m_display = obs_display_create(&info);
     
     // add draw callback
     obs_display_add_draw_callback(GetDisplay(), OBSApp::RenderMain, this);
@@ -494,19 +437,19 @@ void OBSApp::CreateDisplay(gs_window window) {
     obs_get_video_info(&ovi);
     
     // ensure video scale is set
-    if(videoScale == 0) {
-        float viewAspect = float(viewWidth) / float(viewHeight);
+    if(m_videoScale == 0) {
+        float viewAspect = float(m_viewWidth) / float(m_viewHeight);
         float videoAspect = float(ovi.base_width) / float(ovi.base_height);
         if(viewAspect > videoAspect) {
-            videoScale = float(viewHeight) / float(ovi.base_height);
+            m_videoScale = float(m_viewHeight) / float(ovi.base_height);
         } else {
-            videoScale = float(viewWidth) / float(ovi.base_width);
+            m_videoScale = float(m_viewWidth) / float(ovi.base_width);
         }
     }
 }
 
 obs_display_t* OBSApp::GetDisplay() {
-    return display;
+    return m_display;
 }
 
 void OBSApp::LoadAudioDevice(const char *name, int channel, obs_data_t *parent) {
@@ -530,9 +473,9 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     
     // ensure video scale is set
     OBSApp* app = (OBSApp*)data;
-    float videoScale = app->GetVideoScale();
-    int previewCX = int(videoScale * ovi.base_width);
-    int previewCY = int(videoScale * ovi.base_height);
+    float m_videoScale = app->GetVideoScale();
+    int previewCX = int(m_videoScale * ovi.base_width);
+    int previewCY = int(m_videoScale * ovi.base_height);
     
     gs_viewport_push();
     gs_projection_push();
@@ -571,25 +514,25 @@ const char* OBSApp::FindAudioEncoderFromCodec(const char *type) {
 
 bool OBSApp::StartStreaming(const char* url, const char* key) {
     // if already in streaming, return
-    if(streamingActive) {
+    if(m_streamingActive) {
         return false;
     }
     
     // if has service, release it
-    if(service != nullptr) {
-        obs_service_release(service);
-        service = nullptr;
+    if(m_rtmpService != nullptr) {
+        obs_service_release(m_rtmpService);
+        m_rtmpService = nullptr;
     }
     
     // create services
     obs_data_t* settings = obs_data_create();
     obs_data_set_string(settings, "server", url);
     obs_data_set_string(settings, "key", key);
-    service = LoadCustomService(settings);
+    m_rtmpService = LoadCustomService(settings);
     obs_data_release(settings);
     
     // if not ok, return
-    if(!service) {
+    if(!m_rtmpService) {
         return false;
     }
     
@@ -597,18 +540,18 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
     SetupOutputs();
     
     // get output type
-    const char *type = obs_service_get_output_type(service);
+    const char *type = obs_service_get_output_type(m_rtmpService);
     if (!type)
         type = "rtmp_output";
 
     // create output
-    streamOutput = obs_output_create(type, "simple_stream", nullptr, nullptr);
-    if (!streamOutput)
+    m_streamOutput = obs_output_create(type, "simple_stream", nullptr, nullptr);
+    if (!m_streamOutput)
         return false;
-    obs_output_release(streamOutput);
+    obs_output_release(m_streamOutput);
 
     // get codec
-    const char *codec = obs_output_get_supported_audio_codecs(streamOutput);
+    const char *codec = obs_output_get_supported_audio_codecs(m_streamOutput);
     if (!codec) {
         return false;
     }
@@ -620,38 +563,38 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
         obs_data_t *settings = obs_data_create();
         obs_data_set_int(settings, "bitrate", audioBitrate);
         
-        aacStreaming = obs_audio_encoder_create(id, "alt_audio_enc", nullptr, 0, nullptr);
-        obs_encoder_release(aacStreaming);
-        if (!aacStreaming)
+        m_aacStreaming = obs_audio_encoder_create(id, "alt_audio_enc", nullptr, 0, nullptr);
+        obs_encoder_release(m_aacStreaming);
+        if (!m_aacStreaming)
             return false;
         
-        obs_encoder_update(aacStreaming, settings);
-        obs_encoder_set_audio(aacStreaming, obs_get_audio());
+        obs_encoder_update(m_aacStreaming, settings);
+        obs_encoder_set_audio(m_aacStreaming, obs_get_audio());
         obs_data_release(settings);
     }
     
     // set encoder to output, and bind service
-    obs_output_set_video_encoder(streamOutput, h264Streaming);
-    obs_output_set_audio_encoder(streamOutput, aacStreaming, 0);
-    obs_output_set_service(streamOutput, service);
+    obs_output_set_video_encoder(m_streamOutput, m_h264Streaming);
+    obs_output_set_audio_encoder(m_streamOutput, m_aacStreaming, 0);
+    obs_output_set_service(m_streamOutput, m_rtmpService);
     
     // get output default config
-    bool reconnect = config_get_bool(globalConfig, "Output", "Reconnect");
-    int retryDelay = (int)config_get_uint(globalConfig, "Output", "RetryDelay");
-    int maxRetries = (int)config_get_uint(globalConfig, "Output", "MaxRetries");
-    bool useDelay = config_get_bool(globalConfig, "Output", "DelayEnable");
-    int delaySec = (int)config_get_int(globalConfig, "Output", "DelaySec");
-    bool preserveDelay = config_get_bool(globalConfig, "Output", "DelayPreserve");
-    const char *bindIP = config_get_string(globalConfig, "Output", "BindIP");
-    bool enableNewSocketLoop = config_get_bool(globalConfig, "Output", "NewSocketLoopEnable");
-    bool enableLowLatencyMode = config_get_bool(globalConfig, "Output", "LowLatencyEnable");
+    bool reconnect = config_get_bool(m_globalConfig, "Output", "Reconnect");
+    int retryDelay = (int)config_get_uint(m_globalConfig, "Output", "RetryDelay");
+    int maxRetries = (int)config_get_uint(m_globalConfig, "Output", "MaxRetries");
+    bool useDelay = config_get_bool(m_globalConfig, "Output", "DelayEnable");
+    int delaySec = (int)config_get_int(m_globalConfig, "Output", "DelaySec");
+    bool preserveDelay = config_get_bool(m_globalConfig, "Output", "DelayPreserve");
+    const char *bindIP = config_get_string(m_globalConfig, "Output", "BindIP");
+    bool enableNewSocketLoop = config_get_bool(m_globalConfig, "Output", "NewSocketLoopEnable");
+    bool enableLowLatencyMode = config_get_bool(m_globalConfig, "Output", "LowLatencyEnable");
     
     // update output settings
     settings = obs_data_create();
     obs_data_set_string(settings, "bind_ip", bindIP);
     obs_data_set_bool(settings, "new_socket_loop_enabled", enableNewSocketLoop);
     obs_data_set_bool(settings, "low_latency_mode_enabled", enableLowLatencyMode);
-    obs_output_update(streamOutput, settings);
+    obs_output_update(m_streamOutput, settings);
     obs_data_release(settings);
     
     // if not reconnect, set max retry time to zero
@@ -659,13 +602,13 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
         maxRetries = 0;
     
     // set delay
-    obs_output_set_delay(streamOutput, useDelay ? delaySec : 0, preserveDelay ? OBS_OUTPUT_DELAY_PRESERVE : 0);
+    obs_output_set_delay(m_streamOutput, useDelay ? delaySec : 0, preserveDelay ? OBS_OUTPUT_DELAY_PRESERVE : 0);
     
     // set reconnect settings
-    obs_output_set_reconnect_settings(streamOutput, maxRetries, retryDelay);
+    obs_output_set_reconnect_settings(m_streamOutput, maxRetries, retryDelay);
     
     // start streaming
-    if (obs_output_start(streamOutput)) {
+    if (obs_output_start(m_streamOutput)) {
         return true;
     }
     
@@ -673,7 +616,7 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
 }
 
 void OBSApp::CreateH264Encoder() {
-    const char *encoder = config_get_string(globalConfig, "SimpleOutput", "StreamEncoder");
+    const char *encoder = config_get_string(m_globalConfig, "SimpleOutput", "StreamEncoder");
     if (strcmp(encoder, SIMPLE_ENCODER_QSV) == 0)
         CreateH264Encoder("obs_qsv11");
     else if (strcmp(encoder, SIMPLE_ENCODER_AMD) == 0)
@@ -685,10 +628,10 @@ void OBSApp::CreateH264Encoder() {
 }
 
 void OBSApp::CreateH264Encoder(const char *encoderId) {
-    h264Streaming = obs_video_encoder_create(encoderId, "simple_h264_stream", nullptr, nullptr);
-    if (!h264Streaming)
+    m_h264Streaming = obs_video_encoder_create(encoderId, "simple_h264_stream", nullptr, nullptr);
+    if (!m_h264Streaming)
         throw "Failed to create h264 streaming encoder (simple output)";
-    obs_encoder_release(h264Streaming);
+    obs_encoder_release(m_h264Streaming);
 }
 
 bool OBSApp::CreateAACEncoder(OBSEncoder &res, string &id, int bitrate, const char *name, size_t idx) {
@@ -722,7 +665,7 @@ const char* OBSApp::GetAACEncoderForBitrate(int bitrate) {
 }
 
 int OBSApp::GetAudioBitrate() {
-    int bitrate = (int)config_get_uint(globalConfig, "SimpleOutput", "ABitrate");
+    int bitrate = (int)config_get_uint(m_globalConfig, "SimpleOutput", "ABitrate");
     return FindClosestAvailableAACBitrate(bitrate);
 }
 
@@ -892,8 +835,8 @@ void OBSApp::HandleSampleRate(obs_property_t* prop, const char *id) {
         return;
     }
     
-    ConfigFile& globalConfig = OBSApp::sharedApp()->GetGlobalConfig();
-    uint32_t sampleRate = (uint32_t)config_get_uint(globalConfig, "Audio", "SampleRate");
+    ConfigFile& m_globalConfig = OBSApp::sharedApp()->GetGlobalConfig();
+    uint32_t sampleRate = (uint32_t)config_get_uint(m_globalConfig, "Audio", "SampleRate");
     
     obs_data_set_int(data.get(), "samplerate", sampleRate);
     
@@ -906,7 +849,7 @@ void OBSApp::SetupOutputs() {
     obs_data_t *aacSettings  = obs_data_create();
     
     // get bitrate of av
-    int videoBitrate = (int)config_get_uint(globalConfig, "SimpleOutput", "VBitrate");
+    int videoBitrate = (int)config_get_uint(m_globalConfig, "SimpleOutput", "VBitrate");
     int audioBitrate = GetAudioBitrate();
     
     // set settings
@@ -916,24 +859,24 @@ void OBSApp::SetupOutputs() {
     obs_data_set_int(aacSettings, "bitrate", audioBitrate);
     
     // apply settings to rtmp service
-    obs_service_apply_encoder_settings(service, h264Settings, aacSettings);
+    obs_service_apply_encoder_settings(m_rtmpService, h264Settings, aacSettings);
     
     // set perferred video format
     video_t *video = obs_get_video();
     enum video_format format = video_output_get_format(video);
     if (format != VIDEO_FORMAT_NV12 && format != VIDEO_FORMAT_I420) {
-        obs_encoder_set_preferred_video_format(h264Streaming, VIDEO_FORMAT_NV12);
+        obs_encoder_set_preferred_video_format(m_h264Streaming, VIDEO_FORMAT_NV12);
     }
     
     // apply settings to encoders
-    obs_encoder_update(h264Streaming, h264Settings);
-    obs_encoder_update(aacStreaming,  aacSettings);
+    obs_encoder_update(m_h264Streaming, h264Settings);
+    obs_encoder_update(m_aacStreaming,  aacSettings);
     
     // release settings data struct
     obs_data_release(h264Settings);
     obs_data_release(aacSettings);
     
     // bind encoder with video/audio
-    obs_encoder_set_video(h264Streaming, obs_get_video());
-    obs_encoder_set_audio(aacStreaming,  obs_get_audio());
+    obs_encoder_set_video(m_h264Streaming, obs_get_video());
+    obs_encoder_set_audio(m_aacStreaming,  obs_get_audio());
 }

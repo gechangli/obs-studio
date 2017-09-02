@@ -39,47 +39,40 @@
 class OBSApp {
 private:
     // size of video, render scale
-    int viewWidth;
-    int viewHeight;
-    int baseWidth;
-    int baseHeight;
-    float videoScale;
-    
-    // profiler store
-    profiler_name_store_t* profilerNameStore = nullptr;
+    int m_viewWidth;
+    int m_viewHeight;
+    int m_baseWidth;
+    int m_baseHeight;
+    float m_videoScale;
     
     // global config file
-    ConfigFile globalConfig;
+    ConfigFile m_globalConfig;
     
     // rtmp service
-    OBSService service;
+    OBSService m_rtmpService;
     
     // current scene
-    OBSSource curScene;
+    OBSSource m_curScene;
     
     // display
-    OBSDisplay display;
+    OBSDisplay m_display;
     
     // fade transition
-    obs_source_t *fadeTransition;
+    obs_source_t* m_fadeTransition;
     
     // transitions
-    std::vector<OBSSource> transitions;
-    
-    // buffer used for renderring
-    gs_vertbuffer_t *box = nullptr;
-    gs_vertbuffer_t *boxLeft = nullptr;
-    gs_vertbuffer_t *boxTop = nullptr;
-    gs_vertbuffer_t *boxRight = nullptr;
-    gs_vertbuffer_t *boxBottom = nullptr;
-    gs_vertbuffer_t *circle = nullptr;
+    std::vector<OBSSource> m_transitions;
     
     // streaming
-    bool streamingActive;
-    OBSEncoder aacStreaming;
-    OBSEncoder h264Streaming;
-    std::string aacStreamEncID;
-    OBSOutput streamOutput;
+    bool m_streamingActive;
+    OBSEncoder m_aacStreaming;
+    OBSEncoder m_h264Streaming;
+    std::string m_aacStreamEncID;
+    OBSOutput m_streamOutput;
+    OBSSignal m_signalStreamStarted;
+    OBSSignal m_signalStreamStopped;
+    OBSSignal m_signalStreamStarting;
+    OBSSignal m_signalStreamStopping;
     void CreateH264Encoder();
     void CreateH264Encoder(const char *encoderId);
     bool CreateAACEncoder(OBSEncoder &res, std::string &id, int bitrate, const char *name, size_t idx);
@@ -101,7 +94,6 @@ private:
     bool InitGlobalConfig();
     bool InitGlobalConfigDefaults();
     obs_service_t* LoadCustomService(obs_data_t* settings);
-    void InitPrimitives();
     void ClearSceneData();
     void InitDefaultTransitions();
     void InitTransition(obs_source_t *transition);
@@ -125,7 +117,7 @@ public:
     int GetProfilePath(char *path, size_t size, const char *file);
     
     // ctor & dtor
-    OBSApp(int baseWidth, int baseHeight, int w, int h, profiler_name_store_t *store = nullptr);
+    OBSApp(int m_baseWidth, int m_baseHeight, int w, int h);
     virtual ~OBSApp();
     static OBSApp* sharedApp();
     
@@ -146,13 +138,9 @@ public:
     bool StartStreaming(const char* url, const char* key);
     
     // accessor
-    inline float GetVideoScale() { return videoScale; }
-    inline void SetVideoScale(float v) { videoScale = v; }
-    inline int GetViewWidth() { return viewWidth; }
-    inline int GetViewHeight() { return viewHeight; }
-    inline ConfigFile& GetGlobalConfig() { return globalConfig; }
-    
-    profiler_name_store_t* GetProfilerNameStore() const {
-        return profilerNameStore;
-    }
+    inline float GetVideoScale() { return m_videoScale; }
+    inline void SetVideoScale(float v) { m_videoScale = v; }
+    inline int GetViewWidth() { return m_viewWidth; }
+    inline int GetViewHeight() { return m_viewHeight; }
+    inline ConfigFile& GetGlobalConfig() { return m_globalConfig; }
 };
