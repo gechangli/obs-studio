@@ -46,6 +46,7 @@ m_baseHeight(baseHeight),
 m_viewWidth(w),
 m_viewHeight(h),
 m_videoScale(0),
+m_delayActive(false),
 m_streamingActive(false) {
     sharedInstance = this;
 }
@@ -514,7 +515,7 @@ const char* OBSApp::FindAudioEncoderFromCodec(const char *type) {
 
 bool OBSApp::StartStreaming(const char* url, const char* key) {
     // if already in streaming, return
-    if(m_streamingActive) {
+    if(m_streamingActive || m_delayActive) {
         return false;
     }
     
@@ -543,36 +544,49 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
     const char *type = obs_service_get_output_type(m_rtmpService);
     if (!type)
         type = "rtmp_output";
-
-    // create output
-    m_streamOutput = obs_output_create(type, "simple_stream", nullptr, nullptr);
-    if (!m_streamOutput)
-        return false;
-    obs_output_release(m_streamOutput);
-
-    // get codec
-    const char *codec = obs_output_get_supported_audio_codecs(m_streamOutput);
-    if (!codec) {
-        return false;
-    }
     
-    // if codec is not AAC, re-create audio encoder
-    if (strcmp(codec, "aac") != 0) {
-        const char *id = FindAudioEncoderFromCodec(codec);
-        int audioBitrate = GetAudioBitrate();
-        obs_data_t *settings = obs_data_create();
-        obs_data_set_int(settings, "bitrate", audioBitrate);
-        
-        m_aacStreaming = obs_audio_encoder_create(id, "alt_audio_enc", nullptr, 0, nullptr);
-        obs_encoder_release(m_aacStreaming);
-        if (!m_aacStreaming)
+    // if current output type is not same as new type, re-init
+    // signal, output, codec and settings
+    if(m_outputType != type) {
+        // create output
+        m_streamOutput = obs_output_create(type, "simple_stream", nullptr, nullptr);
+        if (!m_streamOutput)
             return false;
+        obs_output_release(m_streamOutput);
         
-        obs_encoder_update(m_aacStreaming, settings);
-        obs_encoder_set_audio(m_aacStreaming, obs_get_audio());
-        obs_data_release(settings);
+        // reconnect signals
+        m_signalStreamStarting.Connect(obs_output_get_signal_handler(m_streamOutput), "starting", OnStreamStarting, this);
+        m_signalStreamStopping.Connect( obs_output_get_signal_handler(m_streamOutput), "stopping", OnStreamStopping, this);
+        m_signalStreamStarted.Connect(obs_output_get_signal_handler(m_streamOutput), "start", OnStreamStarted, this);
+        m_signalStreamStopped.Connect(obs_output_get_signal_handler(m_streamOutput), "stop", OnStreamStopped, this);
+        
+        // get codec
+        const char *codec = obs_output_get_supported_audio_codecs(m_streamOutput);
+        if (!codec) {
+            return false;
+        }
+        
+        // if codec is not AAC, re-create audio encoder
+        if (strcmp(codec, "aac") != 0) {
+            const char *id = FindAudioEncoderFromCodec(codec);
+            int audioBitrate = GetAudioBitrate();
+            obs_data_t *settings = obs_data_create();
+            obs_data_set_int(settings, "bitrate", audioBitrate);
+            
+            m_aacStreaming = obs_audio_encoder_create(id, "alt_audio_enc", nullptr, 0, nullptr);
+            obs_encoder_release(m_aacStreaming);
+            if (!m_aacStreaming)
+                return false;
+            
+            obs_encoder_update(m_aacStreaming, settings);
+            obs_encoder_set_audio(m_aacStreaming, obs_get_audio());
+            obs_data_release(settings);
+        }
+        
+        // save output type
+        m_outputType = type;
     }
-    
+
     // set encoder to output, and bind service
     obs_output_set_video_encoder(m_streamOutput, m_h264Streaming);
     obs_output_set_audio_encoder(m_streamOutput, m_aacStreaming, 0);
@@ -598,8 +612,9 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
     obs_data_release(settings);
     
     // if not reconnect, set max retry time to zero
-    if (!reconnect)
+    if (!reconnect) {
         maxRetries = 0;
+    }
     
     // set delay
     obs_output_set_delay(m_streamOutput, useDelay ? delaySec : 0, preserveDelay ? OBS_OUTPUT_DELAY_PRESERVE : 0);
@@ -609,10 +624,38 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
     
     // start streaming
     if (obs_output_start(m_streamOutput)) {
-        return true;
+        m_streamingActive = true;
     }
     
-    return false;
+    // return success or not
+    return m_streamingActive;
+}
+
+void OBSApp::StopStreaming(bool force) {
+    if (force)
+        obs_output_force_stop(m_streamOutput);
+    else
+        obs_output_stop(m_streamOutput);
+}
+
+void OBSApp::OnStreamStarting(void *data, calldata_t *params) {
+    OBSApp* app = (OBSApp*)data;
+    app->m_delayActive = true;
+}
+
+void OBSApp::OnStreamStopping(void *data, calldata_t *params) {
+    OBSApp* app = (OBSApp*)data;
+}
+
+void OBSApp::OnStreamStarted(void *data, calldata_t *params) {
+    OBSApp* app = (OBSApp*)data;
+    app->m_streamingActive = true;
+    app->m_delayActive = false;
+}
+
+void OBSApp::OnStreamStopped(void *data, calldata_t *params) {
+    OBSApp* app = (OBSApp*)data;
+    app->m_streamingActive = false;
 }
 
 void OBSApp::CreateH264Encoder() {

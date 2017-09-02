@@ -689,8 +689,8 @@
                             <openGLView useAuxiliaryDepthBufferStencil="NO" allowOffline="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nve-kG-nfm">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             </openGLView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FGJ-5F-U8G">
-                                <rect key="frame" x="395" y="13" width="71" height="32"/>
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FGJ-5F-U8G">
+                                <rect key="frame" x="331" y="13" width="135" height="32"/>
                                 <buttonCell key="cell" type="push" title="Push" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BWz-oW-fQc">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -711,6 +711,7 @@
                     </view>
                     <connections>
                         <outlet property="glView" destination="nve-kG-nfm" id="atY-J5-qWw"/>
+                        <outlet property="liveButton" destination="FGJ-5F-U8G" id="YEm-w2-aGL"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

@@ -65,6 +65,8 @@ private:
     
     // streaming
     bool m_streamingActive;
+    bool m_delayActive;
+    std::string m_outputType;
     OBSEncoder m_aacStreaming;
     OBSEncoder m_h264Streaming;
     std::string m_aacStreamEncID;
@@ -87,6 +89,10 @@ private:
     static void HandleIntProperty(obs_property_t *prop, const char *id);
     static void HandleListProperty(obs_property_t *prop, const char *id);
     void SetupOutputs();
+    static void OnStreamStarting(void *data, calldata_t *params);
+    static void OnStreamStopping(void *data, calldata_t *params);
+    static void OnStreamStarted(void *data, calldata_t *params);
+    static void OnStreamStopped(void *data, calldata_t *params);
     
     // config related
     bool MakeUserDirs();
@@ -136,6 +142,8 @@ public:
     
     // streaming
     bool StartStreaming(const char* url, const char* key);
+    void StopStreaming(bool force = false);
+    inline bool IsStreamingActive() { return m_streamingActive || m_delayActive; }
     
     // accessor
     inline float GetVideoScale() { return m_videoScale; }
