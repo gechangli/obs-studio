@@ -630,6 +630,7 @@ private slots:
 	void on_transitionProps_clicked();
 
 	void on_liveList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+	void on_liveOpenButton_clicked(bool checked);
 
 	void on_modeSwitch_clicked();
 

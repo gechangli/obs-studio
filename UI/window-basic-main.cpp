@@ -326,6 +326,11 @@ void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWid
 	ui->liveCodeEdit->setText(info.liveCode);
 }
 
+void OBSBasic::on_liveOpenButton_clicked(bool checked) {
+	LivePlatform plt = m_lpWeb.GetCurrentPlatform();
+	QDesktopServices::openUrl(QUrl(QString(m_lpWeb.GetPlatformHomeUrl(plt))));
+}
+
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
 		vector<OBSSource> &audioSources)
 {
