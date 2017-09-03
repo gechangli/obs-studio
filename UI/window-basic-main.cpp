@@ -312,7 +312,8 @@ void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWid
 	// save old info
 	if(changed) {
 		live_platform_info_t info = {
-			"", ""
+			"",
+			""
 		};
 		strcpy(info.rtmpUrl, ui->rtmpUrlEdit->text().toStdString().c_str());
 		strcpy(info.liveCode, ui->liveCodeEdit->text().toStdString().c_str());
@@ -327,6 +328,7 @@ void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWid
 }
 
 void OBSBasic::on_liveOpenButton_clicked(bool checked) {
+	// open live platform web site
 	LivePlatform plt = m_lpWeb.GetCurrentPlatform();
 	QDesktopServices::openUrl(QUrl(QString(m_lpWeb.GetPlatformHomeUrl(plt))));
 }
@@ -4025,6 +4027,16 @@ void OBSBasic::StartStreaming()
 
 	SaveProject();
 
+	// save current platform info
+	live_platform_info_t info = {
+		"",
+		""
+	};
+	strcpy(info.rtmpUrl, ui->rtmpUrlEdit->text().toStdString().c_str());
+	strcpy(info.liveCode, ui->liveCodeEdit->text().toStdString().c_str());
+	m_lpWeb.SetCurrentPlatformInfo(info);
+
+	// update button text
 	ui->streamButton->setEnabled(false);
 	ui->streamButton->setText(QTStr("Basic.Main.Connecting"));
 
