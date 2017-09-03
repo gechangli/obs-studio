@@ -1508,14 +1508,6 @@ void OBSBasic::OBSInit()
 	if (config_get_bool(basicConfig, "General", "OpenStatsOnStartup"))
 		on_stats_triggered();
 
-	// add live platform names
-	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.DouYu", Q_NULLPTR));
-	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.Panda", Q_NULLPTR));
-	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.ZhanQi", Q_NULLPTR));
-	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.NetEase", Q_NULLPTR));
-	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.HuYa", Q_NULLPTR));
-	ui->livePlatforms->addItem(QApplication::translate("OBSBasic", "Basic.Live.HuaJiao", Q_NULLPTR));
-
 	OBSBasicStats::InitializeValues();
 }
 
