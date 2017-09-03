@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1345</width>
+    <width>1422</width>
     <height>820</height>
    </rect>
   </property>
@@ -102,7 +102,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1345</width>
+     <width>1422</width>
      <height>26</height>
     </rect>
    </property>
@@ -1047,7 +1047,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="liveDock_2">
+  <widget class="QDockWidget" name="liveDock">
    <property name="windowTitle">
     <string>Basic.Main.Lives</string>
    </property>
@@ -1113,11 +1113,6 @@
          <widget class="QLineEdit" name="liveCodeEdit"/>
         </item>
        </layout>
-       <zorder>rtmpUrlLabel</zorder>
-       <zorder>liveList</zorder>
-       <zorder>rtmpUrlEdit</zorder>
-       <zorder>liveCodeLabel</zorder>
-       <zorder>liveCodeEdit</zorder>
       </widget>
      </item>
      <item>
