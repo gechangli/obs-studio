@@ -63,6 +63,13 @@ class OBSBasicStats;
 
 struct BasicOutputHandler;
 
+struct output_context {
+	LivePlatform plt;
+	OBSService service;
+	BasicOutputHandler* outputHandler;
+};
+typedef struct output_context output_context_t;
+
 enum class QtDataRole {
 	OBSRef = Qt::UserRole,
 	OBSSignals,
@@ -142,8 +149,7 @@ private:
 	QPointer<QTimer>    cpuUsageTimer;
 	os_cpu_usage_info_t *cpuUsageInfo = nullptr;
 
-	OBSService service;
-	std::unique_ptr<BasicOutputHandler> outputHandler;
+	std::vector<output_context_t> m_outputs;
 	bool streamingStopping = false;
 	bool recordingStopping = false;
 	bool replayBufferStopping = false;
@@ -200,6 +206,7 @@ private:
 	void          ClearHotkeys();
 
 	bool          InitService();
+	void ClearServices();
 
 	bool          InitBasicConfigDefaults();
 	bool          InitBasicConfig();
@@ -361,6 +368,9 @@ private:
 	void LoadSavedPreviewProjectors(
 		obs_data_array_t *savedPreviewProjectors);
 
+public:
+	BasicOutputHandler* FirstOutputHandler();
+
 public slots:
 	void StartStreaming();
 	void StopStreaming();
@@ -477,8 +487,9 @@ public:
 	obs_service_t *GetService();
 	void          SetService(obs_service_t *service);
 
-	bool StreamingActive() const;
-	bool Active() const;
+	bool StreamingActive();
+	bool RecordingActive();
+	bool Active();
 
 	int  ResetVideo();
 	bool ResetAudio();
@@ -505,7 +516,6 @@ public:
 	}
 
 	void SaveService();
-	bool LoadService();
 
 	inline void EnableOutputs(bool enable)
 	{

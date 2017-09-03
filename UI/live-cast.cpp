@@ -25,14 +25,18 @@ void LivePlatformWeb::OpenWeb() {
 }
 
 live_platform_info_t& LivePlatformWeb::GetCurrentPlatformInfo() {
-	map<int, live_platform_info_t>::iterator itor = m_infos.find(m_curPlatform);
+	return GetPlatformInfo(m_curPlatform);
+}
+
+live_platform_info_t& LivePlatformWeb::GetPlatformInfo(LivePlatform p) {
+	map<int, live_platform_info_t>::iterator itor = m_infos.find(p);
 	if(itor == m_infos.end()) {
-		m_infos[m_curPlatform] = {
+		m_infos[p] = {
 			"",
 			""
 		};
 	}
-	return m_infos[m_curPlatform];
+	return m_infos[p];
 }
 
 void LivePlatformWeb::SetCurrentPlatformInfo(live_platform_info_t& info) {

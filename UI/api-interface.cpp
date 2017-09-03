@@ -216,7 +216,11 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	bool obs_frontend_streaming_active(void) override
 	{
-		return main->outputHandler->StreamingActive();
+		if(main->FirstOutputHandler()) {
+			return main->FirstOutputHandler()->StreamingActive();
+		} else {
+			return false;
+		}
 	}
 
 	void obs_frontend_recording_start(void) override
@@ -231,7 +235,11 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	bool obs_frontend_recording_active(void) override
 	{
-		return main->outputHandler->RecordingActive();
+		if(main->FirstOutputHandler()) {
+			return main->FirstOutputHandler()->RecordingActive();
+		} else {
+			return false;
+		}
 	}
 
 	void obs_frontend_replay_buffer_start(void) override
@@ -246,7 +254,11 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	bool obs_frontend_replay_buffer_active(void) override
 	{
-		return main->outputHandler->ReplayBufferActive();
+		if(main->FirstOutputHandler()) {
+			return main->FirstOutputHandler()->ReplayBufferActive();
+		} else {
+			return false;
+		}
 	}
 
 	void *obs_frontend_add_tools_menu_qaction(const char *name) override
@@ -289,23 +301,35 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	obs_output_t *obs_frontend_get_streaming_output(void) override
 	{
-		OBSOutput output = main->outputHandler->streamOutput;
-		obs_output_addref(output);
-		return output;
+		if(main->FirstOutputHandler()) {
+			OBSOutput output = main->FirstOutputHandler()->streamOutput;
+			obs_output_addref(output);
+			return output;
+		} else {
+			return nullptr;
+		}
 	}
 
 	obs_output_t *obs_frontend_get_recording_output(void) override
 	{
-		OBSOutput out = main->outputHandler->fileOutput;
-		obs_output_addref(out);
-		return out;
+		if(main->FirstOutputHandler()) {
+			OBSOutput out = main->FirstOutputHandler()->fileOutput;
+			obs_output_addref(out);
+			return out;
+		} else {
+			return nullptr;
+		}
 	}
 
 	obs_output_t *obs_frontend_get_replay_buffer_output(void) override
 	{
-		OBSOutput out = main->outputHandler->replayBuffer;
-		obs_output_addref(out);
-		return out;
+		if(main->FirstOutputHandler()) {
+			OBSOutput out = main->FirstOutputHandler()->replayBuffer;
+			obs_output_addref(out);
+			return out;
+		} else {
+			return nullptr;
+		}
 	}
 
 	config_t *obs_frontend_get_profile_config(void) override

@@ -50,6 +50,7 @@ public:
 
     // platform stream info
     live_platform_info_t& GetCurrentPlatformInfo();
+	live_platform_info_t& GetPlatformInfo(LivePlatform p);
 	void SetCurrentPlatformInfo(live_platform_info_t& info);
 
 	// get platform home url
