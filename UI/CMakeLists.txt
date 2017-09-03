@@ -210,7 +210,8 @@ set(obs_SOURCES
 	source-label.cpp
 	remote-text.cpp
 	audio-encoders.cpp
-	qt-wrappers.cpp)
+	qt-wrappers.cpp
+	live-cast.cpp)
 
 set(obs_HEADERS
 	${obs_PLATFORM_HEADERS}
@@ -258,7 +259,8 @@ set(obs_HEADERS
 	source-label.hpp
 	remote-text.hpp
 	audio-encoders.hpp
-	qt-wrappers.hpp)
+	qt-wrappers.hpp
+	live-cast.hpp)
 
 set(obs_UI
 	forms/NameDialog.ui

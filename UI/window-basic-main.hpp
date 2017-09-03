@@ -29,6 +29,7 @@
 #include "window-basic-transform.hpp"
 #include "window-basic-adv-audio.hpp"
 #include "window-basic-filters.hpp"
+#include "live-cast.hpp"
 
 #include <obs-frontend-internal.hpp>
 
@@ -107,6 +108,9 @@ class OBSBasic : public OBSMainWindow {
 	};
 
 private:
+	// for live platform
+	LivePlatformWeb m_lpWeb;
+
 	obs_frontend_callbacks *api = nullptr;
 
 	std::vector<VolControl*> volumes;
@@ -624,6 +628,8 @@ private slots:
 	void on_transitionAdd_clicked();
 	void on_transitionRemove_clicked();
 	void on_transitionProps_clicked();
+
+	void on_liveList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 	void on_modeSwitch_clicked();
 

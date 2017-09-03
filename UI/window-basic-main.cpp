@@ -27,6 +27,8 @@
 #include <QDesktopWidget>
 #include <QRect>
 #include <QScreen>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -286,6 +288,41 @@ OBSBasic::OBSBasic(QWidget *parent)
 	assignDockToggle(ui->mixerDock, ui->toggleMixer);
 	assignDockToggle(ui->transitionsDock, ui->toggleTransitions);
 	assignDockToggle(ui->controlsDock, ui->toggleControls);
+
+	// add live platforms
+	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_HUAJIAO; i++) {
+		QListWidgetItem* item = new QListWidgetItem(QApplication::translate("OBSBasic", LivePlatformNames[i], Q_NULLPTR));
+		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+		item->setCheckState(Qt::Unchecked);
+		ui->liveList->addItem(item);
+	}
+	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
+}
+
+void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
+	// get new platform
+	int idx = ui->liveList->currentRow();
+	LivePlatform plt = (LivePlatform)idx;
+
+	// check changed
+	LivePlatform oldPlt = m_lpWeb.GetCurrentPlatform();
+	bool changed = oldPlt != plt;
+
+	// save old info
+	if(changed) {
+		live_platform_info_t info = {
+			"", ""
+		};
+		strcpy(info.rtmpUrl, ui->rtmpUrlEdit->text().toStdString().c_str());
+		strcpy(info.liveCode, ui->liveCodeEdit->text().toStdString().c_str());
+		m_lpWeb.SetCurrentPlatformInfo(info);
+	}
+
+	// populate selected info
+	m_lpWeb.SetCurrentPlatform(plt);
+	live_platform_info_t& info = m_lpWeb.GetCurrentPlatformInfo();
+	ui->rtmpUrlEdit->setText(info.rtmpUrl);
+	ui->liveCodeEdit->setText(info.liveCode);
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
@@ -5342,6 +5379,7 @@ void OBSBasic::on_lockUI_toggled(bool lock)
 	ui->mixerDock->setFeatures(features);
 	ui->transitionsDock->setFeatures(features);
 	ui->controlsDock->setFeatures(features);
+	ui->liveDock->setFeatures(features);
 }
 
 void OBSBasic::on_toggleListboxToolbars_toggled(bool visible)
