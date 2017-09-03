@@ -296,6 +296,7 @@ OBSBasic::OBSBasic(QWidget *parent)
 		item->setCheckState(Qt::Unchecked);
 		ui->liveList->addItem(item);
 	}
+	ui->liveList->setCurrentRow(0);
 	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
 }
 
