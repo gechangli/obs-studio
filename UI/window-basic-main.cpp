@@ -941,6 +941,7 @@ bool OBSBasic::InitService()
 			ctx.service = service;
 			ctx.outputHandler = CreateSimpleOutputHandler(this);
 			m_outputs.push_back(ctx);
+            obs_service_release(service);
 		}
 	}
 
