@@ -298,6 +298,12 @@ OBSBasic::OBSBasic(QWidget *parent)
 	}
 	ui->liveList->setCurrentRow(0);
 	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
+
+	// hide some button we don't need
+	ui->recordButton->setVisible(false);
+	ui->settingsButton->setVisible(false);
+	ui->modeSwitch->setVisible(false);
+	ui->exitButton->setVisible(false);
 }
 
 void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
