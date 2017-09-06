@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIconFile</key>
-	<string>OBS.icns</string>
+	<string>XiaomeiLive.icns</string>
 	<key>CFBundleName</key>
-	<string>OBS</string>
+	<string>XiaomeiLive</string>
 	<key>CFBundleGetInfoString</key>
-	<string>OBS - Free and Open Source Streaming/Recording Software</string>
+	<string>XiaomeiLive - Free and Open Source Streaming Software</string>
 	<key>CFBundleExecutable</key>
-	<string>OBS</string>
+	<string>XiaomeiLive</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.obsproject.obs-studio</string>
+	<string>com.obsproject.xiaomei-live</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
