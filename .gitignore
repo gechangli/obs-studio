@@ -5,6 +5,7 @@
 *.so
 
 #cmake
+/cmake-build-debug/
 /cmbuild/
 /build/
 /build32/
