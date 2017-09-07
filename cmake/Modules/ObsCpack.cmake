@@ -25,11 +25,11 @@ MESSAGE(STATUS "OBS_VERSION: ${OBS_VERSION}")
 
 if(INSTALLER_RUN)
 	set(CPACK_PACKAGE_EXECUTABLES
-		"xmlive32" "Xiaomei Live (32bit)"
-		"xmlive64" "Xiaomei Live (64bit)")
+		"xiaomeilive32" "Xiaomei Live (32bit)"
+		"xiaomeilive64" "Xiaomei Live (64bit)")
 	set(CPACK_CREATE_DESKTOP_LINKS
-		"xmlive32"
-		"xmlive64")
+		"xiaomeilive32"
+		"xiaomeilive64")
 else()
 	if(WIN32)
 		if(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -41,8 +41,8 @@ else()
 		set(_output_suffix "")
 	endif()
 
-	set(CPACK_PACKAGE_EXECUTABLES "xmlive${_output_suffix}" "Xiaomei Live")
-	set(CPACK_CREATE_DESKTOP_LINKS "xmlive${_output_suffix}")
+	set(CPACK_PACKAGE_EXECUTABLES "xiaomeilive{_output_suffix}" "Xiaomei Live")
+	set(CPACK_CREATE_DESKTOP_LINKS "xiaomeilive{_output_suffix}")
 endif()
 
 set(CPACK_BUNDLE_NAME "XiaomeiLive")
