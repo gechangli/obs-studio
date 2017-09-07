@@ -79,9 +79,9 @@ def prepare_pkg(project, package_id):
 
 
 import argparse
-parser = argparse.ArgumentParser(description='obs-studio package util')
+parser = argparse.ArgumentParser(description='xiaomeilive package util')
 parser.add_argument('-u', '--user', dest='user', default='jp9000')
-parser.add_argument('-p', '--package-id', dest='package_id', default='org.obsproject.pkg.obs-studio')
+parser.add_argument('-p', '--package-id', dest='package_id', default='org.jrutech.pkg.xiaomeilive')
 parser.add_argument('-f', '--project-file', dest='project', default='OBS.pkgproj')
 parser.add_argument('-j', '--jenkins-build', dest='jenkins_build', default='0')
 parser.add_argument('-b', '--branch', dest='branch', default='master')

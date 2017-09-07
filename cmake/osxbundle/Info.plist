@@ -11,7 +11,7 @@
 	<key>CFBundleExecutable</key>
 	<string>XiaomeiLive</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.obsproject.xiaomei-live</string>
+	<string>com.jrutech.xiaomeilive</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>

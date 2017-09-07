@@ -521,7 +521,7 @@ static inline DWORD WaitIfOBS(DWORD id, const wchar_t *expected)
 static bool WaitForOBS()
 {
 	DWORD proc_ids[1024], needed, count;
-	const wchar_t *name = is32bit ? L"obs32" : L"obs64";
+	const wchar_t *name = is32bit ? L"xiaomeilive32" : L"xiaomeilive64";
 
 	if (!EnumProcesses(proc_ids, sizeof(proc_ids), &needed)) {
 		return true;
@@ -1322,8 +1322,8 @@ static void LaunchOBS()
 	StringCbCopy(newCwd, sizeof(newCwd), obsPath);
 
 	StringCbCat(obsPath, sizeof(obsPath), is32bit
-			? L"\\obs32.exe"
-			: L"\\obs64.exe");
+			? L"\\xiaomeilive32.exe"
+			: L"\\xiaomeilive64.exe");
 
 	if (!FileExists(obsPath)) {
 		StringCbCopy(obsPath, sizeof(obsPath), cwd);
@@ -1331,7 +1331,7 @@ static void LaunchOBS()
 		SetCurrentDirectory(obsPath);
 		StringCbCopy(newCwd, sizeof(newCwd), obsPath);
 
-		StringCbCat(obsPath, sizeof(obsPath), L"\\obs32.exe");
+		StringCbCat(obsPath, sizeof(obsPath), L"\\xiaomeilive32.exe");
 
 		if (!FileExists(obsPath)) {
 			/* TODO: give user a message maybe? */
