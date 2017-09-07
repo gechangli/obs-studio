@@ -122,6 +122,9 @@
     <addaction name="actionE_xit"/>
    </widget>
    <widget class="QMenu" name="menuBasic_MainMenu_Help">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
      <string>Basic.MainMenu.Help</string>
     </property>
@@ -1268,6 +1271,9 @@
    <property name="text">
     <string>Basic.MainMenu.File.Settings</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionE_xit">
    <property name="text">
@@ -1436,8 +1442,14 @@
    </property>
   </action>
   <action name="actionWebsite">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Basic.MainMenu.Help.Website</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionNewSceneCollection">
@@ -1504,10 +1516,16 @@
    <property name="text">
     <string>Basic.MainMenu.File.ShowSettingsFolder</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionShowProfileFolder">
    <property name="text">
     <string>Basic.MainMenu.File.ShowProfileFolder</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionAlwaysOnTop">
@@ -1585,6 +1603,9 @@
   <action name="autoConfigure">
    <property name="text">
     <string>Basic.AutoConfig.Beta</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
    </property>
   </action>
   <action name="stats">

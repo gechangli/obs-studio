@@ -304,6 +304,8 @@ OBSBasic::OBSBasic(QWidget *parent)
 	ui->settingsButton->setVisible(false);
 	ui->modeSwitch->setVisible(false);
 	ui->exitButton->setVisible(false);
+    ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
+    ui->menuTools->menuAction()->setVisible(false);
 }
 
 void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
@@ -1506,6 +1508,11 @@ void OBSBasic::OBSInit()
 		on_stats_triggered();
 
 	OBSBasicStats::InitializeValues();
+
+    // hide scenes dock
+    if(ui->scenesDock->isVisible()) {
+        ui->toggleScenes->activate(QAction::Trigger);
+    }
 }
 
 void OBSBasic::InitHotkeys()
@@ -5281,7 +5288,7 @@ void OBSBasic::UpdateTitleBar()
 	const char *sceneCollection = config_get_string(App()->GlobalConfig(),
 			"Basic", "SceneCollection");
 
-	name << "小妹直播 ";
+	name << Str("TitleBar.AppName") << " ";
 
 	name << App()->GetVersionString();
 	if (App()->IsPortableMode())
