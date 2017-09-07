@@ -33,6 +33,9 @@
 #include <QGuiApplication>
 #include <QProxyStyle>
 #include <QScreen>
+#include <QSplashScreen>
+#include <QDateTime>
+#include <QThread>
 
 #include "qt-wrappers.hpp"
 #include "obs-app.hpp"
@@ -948,6 +951,15 @@ bool OBSApp::OBSInit()
 
 		setQuitOnLastWindowClosed(false);
 
+		// splash screen
+		QPixmap pixmap = QPixmap::fromImage(QImage(":/res/images/splash.png"));
+		QSplashScreen screen(pixmap);
+		screen.show();
+		screen.showMessage("", Qt::AlignCenter);
+
+		// delay some while to show splash
+		QThread::sleep(5);
+
 		mainWindow = new OBSBasic();
 
 		mainWindow->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -963,6 +975,7 @@ bool OBSApp::OBSInit()
 				});
 		obs_hotkey_enable_background_press(
 				applicationState() != Qt::ApplicationActive);
+
 		return true;
 	} else {
 		return false;
