@@ -12,7 +12,7 @@ add_subdirectory(obs-frontend-api)
 
 # ----------------------------------------------------------------------------
 
-project(obs)
+project(xiaomeilive)
 
 set(ENABLE_WIN_UPDATER FALSE CACHE BOOL "Enable the windows updater")
 
@@ -62,17 +62,17 @@ if(WIN32)
 	include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 	include_directories(${BLAKE2_INCLUDE_DIR})
 
-	set(obs_PLATFORM_SOURCES
+	set(xiaomeilive_PLATFORM_SOURCES
 		platform-windows.cpp
 		win-update/update-window.cpp
 		win-update/win-update.cpp
 		win-update/win-update-helpers.cpp
 		obs.rc)
-	set(obs_PLATFORM_HEADERS
+	set(xiaomeilive_PLATFORM_HEADERS
 		win-update/update-window.hpp
 		win-update/win-update.hpp
 		win-update/win-update-helpers.hpp)
-	set(obs_PLATFORM_LIBRARIES
+	set(xiaomeilive_PLATFORM_LIBRARIES
 		crypt32
 		blake2
 		${OBS_JANSSON_IMPORT})
@@ -81,7 +81,7 @@ if(WIN32)
 		add_definitions(-DENABLE_WIN_UPDATER)
 	endif()
 elseif(APPLE)
-	set(obs_PLATFORM_SOURCES
+	set(xiaomeilive_PLATFORM_SOURCES
 		platform-osx.mm)
 
 	find_package(AppKit REQUIRED)
@@ -110,7 +110,7 @@ elseif(APPLE)
 	mark_as_advanced(VIDEOTOOLBOX)
 	include_directories(${VIDEOTOOLBOX})
 
-	set(obs_PLATFORM_LIBRARIES
+	set(xiaomeilive_PLATFORM_LIBRARIES
 		bz2
 		z
 		mp3lame
@@ -130,11 +130,11 @@ elseif(APPLE)
 	if(ENABLE_SPARKLE_UPDATER)
 		find_library(SPARKLE Sparkle)
 		include_directories(${SPARKLE})
-		set(obs_PLATFORM_SOURCES
-			${obs_PLATFORM_SOURCES}
+		set(xiaomeilive_PLATFORM_SOURCES
+			${xiaomeilive_PLATFORM_SOURCES}
 			sparkle-updater.mm)
-		set(obs_PLATFORM_LIBRARIES
-			${obs_PLATFORM_LIBRARIES}
+		set(xiaomeilive_PLATFORM_LIBRARIES
+			${xiaomeilive_PLATFORM_LIBRARIES}
 			${SPARKLE})
 		add_definitions(-DUPDATE_SPARKLE=1)
 	endif()
@@ -142,17 +142,17 @@ elseif(APPLE)
 elseif(UNIX)
         find_package(Qt5X11Extras REQUIRED)
 
-	set(obs_PLATFORM_SOURCES
+	set(xiaomeilive_PLATFORM_SOURCES
 		platform-x11.cpp)
 
-        set(obs_PLATFORM_LIBRARIES
+        set(xiaomeilive_PLATFORM_LIBRARIES
                 Qt5::X11Extras)
 endif()
 
-set(obs_libffutil_SOURCES
+set(xiaomeilive_libffutil_SOURCES
 	../deps/libff/libff/ff-util.c
 	)
-set(obs_libffutil_HEADERS
+set(xiaomeilive_libffutil_HEADERS
 	../deps/libff/libff/ff-util.h
 	)
 
@@ -163,9 +163,9 @@ if(MSVC)
 		)
 endif()
 
-set(obs_SOURCES
-	${obs_PLATFORM_SOURCES}
-	${obs_libffutil_SOURCES}
+set(xiaomeilive_SOURCES
+	${xiaomeilive_PLATFORM_SOURCES}
+	${xiaomeilive_libffutil_SOURCES}
 	obs-app.cpp
 	api-interface.cpp
 	window-basic-main.cpp
@@ -213,9 +213,9 @@ set(obs_SOURCES
 	qt-wrappers.cpp
 	live-cast.cpp)
 
-set(obs_HEADERS
-	${obs_PLATFORM_HEADERS}
-	${obs_libffutil_HEADERS}
+set(xiaomeilive_HEADERS
+	${xiaomeilive_PLATFORM_HEADERS}
+	${xiaomeilive_libffutil_HEADERS}
 	obs-app.hpp
 	platform.hpp
 	window-main.hpp
@@ -262,7 +262,7 @@ set(obs_HEADERS
 	qt-wrappers.hpp
 	live-cast.hpp)
 
-set(obs_UI
+set(xiaomeilive_UI
 	forms/NameDialog.ui
 	forms/AutoConfigStartPage.ui
 	forms/AutoConfigVideoPage.ui
@@ -279,17 +279,17 @@ set(obs_UI
 	forms/OBSUpdate.ui
 	forms/OBSRemux.ui)
 
-set(obs_QRC
+set(xiaomeilive_QRC
 	forms/obs.qrc)
 
-qt5_wrap_ui(obs_UI_HEADERS ${obs_UI})
-qt5_add_resources(obs_QRC_SOURCES ${obs_QRC})
+qt5_wrap_ui(xiaomeilive_UI_HEADERS ${xiaomeilive_UI})
+qt5_add_resources(xiaomeilive_QRC_SOURCES ${xiaomeilive_QRC})
 
-add_executable(obs WIN32
-	${obs_SOURCES}
-	${obs_HEADERS}
-	${obs_UI_HEADERS}
-	${obs_QRC_SOURCES})
+add_executable(xiaomeilive WIN32
+	${xiaomeilive_SOURCES}
+	${xiaomeilive_HEADERS}
+	${xiaomeilive_UI_HEADERS}
+	${xiaomeilive_QRC_SOURCES})
 
 if(WIN32)
 	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -298,23 +298,23 @@ if(WIN32)
 		set(_output_suffix "32")
 	endif()
 
-	set_target_properties(obs
+	set_target_properties(xiaomeilive
 		PROPERTIES
-			OUTPUT_NAME "obs${_output_suffix}")
+			OUTPUT_NAME "xiaomeilive{_output_suffix}")
 endif()
 
-target_link_libraries(obs
+target_link_libraries(xiaomeilive
 	libobs
 	Qt5::Widgets
 	obs-frontend-api
 	${FFMPEG_LIBRARIES}
 	${LIBCURL_LIBRARIES}
-	${obs_PLATFORM_LIBRARIES})
+	${xiaomeilive_PLATFORM_LIBRARIES})
 
-define_graphic_modules(obs)
+define_graphic_modules(xiaomeilive)
 
-install_obs_core(obs)
-install_obs_data(obs data obs-studio)
+install_obs_core(xiaomeilive)
+install_obs_data(xiaomeilive data obs-studio)
 
 if (UNIX AND UNIX_STRUCTURE AND NOT APPLE)
 	install(FILES dist/obs.desktop DESTINATION ${CMAKE_INSTALL_FULL_DATAROOTDIR}/applications)
