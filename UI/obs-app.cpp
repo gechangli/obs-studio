@@ -951,6 +951,9 @@ bool OBSApp::OBSInit()
 
     mainWindow = new OBSBasic();
 
+	// remove splash
+	splash.finish((QWidget*)mainWindow);
+
     mainWindow->setAttribute(Qt::WA_DeleteOnClose, true);
     connect(mainWindow, SIGNAL(destroyed()), this, SLOT(quit()));
 
@@ -964,9 +967,6 @@ bool OBSApp::OBSInit()
             });
     obs_hotkey_enable_background_press(
             applicationState() != Qt::ApplicationActive);
-
-	// remove splash
-	splash.finish((QWidget*)mainWindow);
 
     return true;
 }
