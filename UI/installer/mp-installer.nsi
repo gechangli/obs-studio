@@ -3,14 +3,14 @@
 Unicode true
 
 ; Define your application name
-!define APPNAME "OBS Studio"
+!define APPNAME "XiaomeiLive"
 
 !ifndef APPVERSION
-!define APPVERSION "17.0.2"
-!define SHORTVERSION "17.0.2"
+!define APPVERSION "0.0.1"
+!define SHORTVERSION "0.0.1"
 !endif
 
-!define APPNAMEANDVERSION "OBS Studio ${SHORTVERSION}"
+!define APPNAMEANDVERSION "XiaomeiLive ${SHORTVERSION}"
 ; !define FULL
 !define REALSENSE_PLUGIN
 
@@ -20,12 +20,12 @@ Unicode true
 
 ; Main Install settings
 Name "${APPNAMEANDVERSION}"
-InstallDir "$PROGRAMFILES32\obs-studio"
+InstallDir "$PROGRAMFILES32\XiaomeiLive"
 InstallDirRegKey HKLM "Software\${APPNAME}" ""
 !ifdef FULL
-OutFile "OBS-Studio-${SHORTVERSION}-Full-Installer.exe"
+OutFile "XiaomeiLive-${SHORTVERSION}-Full-Installer.exe"
 !else
-OutFile "OBS-Studio-${SHORTVERSION}-Small-Installer.exe"
+OutFile "XiaomeiLive-${SHORTVERSION}-Small-Installer.exe"
 !endif
 
 ; Use compression
@@ -39,8 +39,8 @@ RequestExecutionLevel admin
 
 !define MUI_ABORTWARNING
 !define MUI_FINISHPAGE_RUN
-!define MUI_FINISHPAGE_RUN_TEXT "Launch OBS Studio ${SHORTVERSION}"
-!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchOBS"
+!define MUI_FINISHPAGE_RUN_TEXT "Launch XiaomeiLive ${SHORTVERSION}"
+!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchXiaomeiLive"
 
 !define MUI_PAGE_CUSTOMFUNCTION_LEAVE PreReqCheck
 
@@ -115,11 +115,11 @@ Function PreReqCheck
 
 	; 64 bit Visual Studio 2013 runtime check
 	${if} ${RunningX64}
-		SetOutPath "$TEMP\OBS"
+		SetOutPath "$TEMP\XiaomeiLive"
 		File check_for_64bit_visual_studio_2013_runtimes.exe
-		ExecWait "$TEMP\OBS\check_for_64bit_visual_studio_2013_runtimes.exe" $R0
-		Delete "$TEMP\OBS\check_for_64bit_visual_studio_2013_runtimes.exe"
-		RMDir "$TEMP\OBS"
+		ExecWait "$TEMP\XiaomeiLive\check_for_64bit_visual_studio_2013_runtimes.exe" $R0
+		Delete "$TEMP\XiaomeiLive\check_for_64bit_visual_studio_2013_runtimes.exe"
+		RMDir "$TEMP\XiaomeiLive"
 		IntCmp $R0 126 vs2013Missing vs2013OK2
 		vs2013OK2:
 		ClearErrors
@@ -211,17 +211,17 @@ Function filesInUse
 	MessageBox MB_OK|MB_ICONEXCLAMATION "Some files were not able to be installed. If this is the first time you are installing OBS, please disable any anti-virus or other security software and try again. If you are re-installing or updating OBS, close any applications that may be have been hooked, or reboot and try again."  /SD IDOK
 FunctionEnd
 
-Function LaunchOBS
+Function LaunchXiaomeiLive
 	${if} ${RunningX64}
-		Exec '"$WINDIR\explorer.exe" "$SMPROGRAMS\OBS Studio\OBS Studio (64bit).lnk"'
+		Exec '"$WINDIR\explorer.exe" "$SMPROGRAMS\XiaomeiLive\XiaomeiLive (64bit).lnk"'
 	${else}
-		Exec '"$WINDIR\explorer.exe" "$SMPROGRAMS\OBS Studio\OBS Studio (32bit).lnk"'
+		Exec '"$WINDIR\explorer.exe" "$SMPROGRAMS\XiaomeiLive\XiaomeiLive (32bit).lnk"'
 	${endif}
 FunctionEnd
 
 Var outputErrors
 
-Section "OBS Studio" SecCore
+Section "XiaomeiLive" SecCore
 
 	; Set Section properties
 	SectionIn RO
@@ -255,28 +255,28 @@ Section "OBS Studio" SecCore
 	WriteUninstaller "$INSTDIR\uninstall.exe"
 
 	; Delete Old "Multiplatform" Shortcuts
-	Delete "$DESKTOP\OBS Multiplatform.lnk"
-	Delete "$SMPROGRAMS\OBS Multiplatform\OBS Multiplatform (32bit).lnk"
-	Delete "$SMPROGRAMS\OBS Multiplatform\Uninstall.lnk"
+	Delete "$DESKTOP\XiaomeiLive Multiplatform.lnk"
+	Delete "$SMPROGRAMS\XiaomeiLive Multiplatform\XiaomeiLive Multiplatform (32bit).lnk"
+	Delete "$SMPROGRAMS\XiaomeiLive Multiplatform\Uninstall.lnk"
 	${if} ${RunningX64}
-		Delete "$SMPROGRAMS\OBS Multiplatform\OBS Multiplatform (64bit).lnk"
+		Delete "$SMPROGRAMS\OBS Multiplatform\XiaomeiLive Multiplatform (64bit).lnk"
 	${endif}
 
 	${if} ${RunningX64}
 		SetOutPath "$INSTDIR\bin\64bit"
-		CreateShortCut "$DESKTOP\OBS Studio.lnk" "$INSTDIR\bin\64bit\xiaomeilive64.exe"
+		CreateShortCut "$DESKTOP\XiaomeiLive.lnk" "$INSTDIR\bin\64bit\xiaomeilive64.exe"
 	${else}
 		SetOutPath "$INSTDIR\bin\32bit"
-		CreateShortCut "$DESKTOP\OBS Studio.lnk" "$INSTDIR\bin\32bit\xiaomeilive32.exe"
+		CreateShortCut "$DESKTOP\XiaomeiLive.lnk" "$INSTDIR\bin\32bit\xiaomeilive32.exe"
 	${endif}
 	SetOutPath "$INSTDIR\bin\32bit"
-	CreateDirectory "$SMPROGRAMS\OBS Studio"
-	CreateShortCut "$SMPROGRAMS\OBS Studio\OBS Studio (32bit).lnk" "$INSTDIR\bin\32bit\xiaomeilive32.exe"
-	CreateShortCut "$SMPROGRAMS\OBS Studio\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+	CreateDirectory "$SMPROGRAMS\XiaomeiLive"
+	CreateShortCut "$SMPROGRAMS\XiaomeiLive\XiaomeiLive (32bit).lnk" "$INSTDIR\bin\32bit\xiaomeilive32.exe"
+	CreateShortCut "$SMPROGRAMS\XiaomeiLive\Uninstall.lnk" "$INSTDIR\uninstall.exe"
 
 	${if} ${RunningX64}
 		SetOutPath "$INSTDIR\bin\64bit"
-		CreateShortCut "$SMPROGRAMS\OBS Studio\OBS Studio (64bit).lnk" "$INSTDIR\bin\64bit\xiaomeilive64.exe"
+		CreateShortCut "$SMPROGRAMS\XiaomeiLive\XiaomeiLive (64bit).lnk" "$INSTDIR\bin\64bit\xiaomeilive64.exe"
 	${endif}
 
 	SetOutPath "$INSTDIR\bin\32bit"
@@ -350,15 +350,15 @@ Section -FinishSection
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "UninstallString" "$INSTDIR\uninstall.exe"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "ProductID" "d16d2409-3151-4331-a9b1-dfd8cf3f0d9c"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayIcon" "$INSTDIR\bin\32bit\xiaomeilive32.exe"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "Publisher" "OBS Project"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "HelpLink" "https://obsproject.com"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "Publisher" "XiaomeiLive Project"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "HelpLink" "https://example.com"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}" "DisplayVersion" "${APPVERSION}"
 
 SectionEnd
 
 ; Modern install component descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-	!insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "Core OBS Studio files"
+	!insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "Core XiaomeiLive files"
 	!ifdef FULL
 		!insertmacro MUI_DESCRIPTION_TEXT ${SecPlugins} "Optional Plugins"
 		!insertmacro MUI_DESCRIPTION_TEXT ${SecPlugins_Browser} "Browser plugin (a source you can add to your scenes that displays web pages)"
@@ -369,7 +369,7 @@ SectionEnd
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;Uninstall section
-Section "un.obs-studio Program Files" UninstallSection1
+Section "un.XiaomeiLive Program Files" UninstallSection1
 
 	SectionIn RO
 
@@ -381,11 +381,11 @@ Section "un.obs-studio Program Files" UninstallSection1
 	Delete "$INSTDIR\uninstall.exe"
 
 	; Delete Shortcuts
-	Delete "$DESKTOP\OBS Studio.lnk"
-	Delete "$SMPROGRAMS\OBS Studio\OBS Studio (32bit).lnk"
-	Delete "$SMPROGRAMS\OBS Studio\Uninstall.lnk"
+	Delete "$DESKTOP\XiaomeiLive.lnk"
+	Delete "$SMPROGRAMS\XiaomeiLive\XiaomeiLive (32bit).lnk"
+	Delete "$SMPROGRAMS\XiaomeiLive\Uninstall.lnk"
 	${if} ${RunningX64}
-		Delete "$SMPROGRAMS\OBS Studio\OBS Studio (64bit).lnk"
+		Delete "$SMPROGRAMS\XiaomeiLive\XiaomeiLive (64bit).lnk"
 	${endif}
 
 	IfFileExists "$INSTDIR\data\obs-plugins\win-ivcam\seg_service.exe" UnregisterSegService SkipUnreg
@@ -393,33 +393,33 @@ Section "un.obs-studio Program Files" UninstallSection1
 	ExecWait '"$INSTDIR\data\obs-plugins\win-ivcam\seg_service.exe" /UnregServer'
 	SkipUnreg:
 
-	; Clean up OBS Studio
+	; Clean up XiaomeiLive
 	RMDir /r "$INSTDIR\bin"
 	RMDir /r "$INSTDIR\data"
 	RMDir /r "$INSTDIR\obs-plugins"
 	RMDir "$INSTDIR"
 
 	; Remove remaining directories
-	RMDir "$SMPROGRAMS\OBS Studio"
-	RMDir "$INSTDIR\OBS Studio"
+	RMDir "$SMPROGRAMS\XiaomeiLive"
+	RMDir "$INSTDIR\XiaomeiLive"
 SectionEnd
 
 Section /o "un.User Settings" UninstallSection2
-	RMDir /R "$APPDATA\obs-studio"
+	RMDir /R "$APPDATA\XiaomeiLive"
 SectionEnd
 
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
-	!insertmacro MUI_DESCRIPTION_TEXT ${UninstallSection1} "Remove the OBS program files."
+	!insertmacro MUI_DESCRIPTION_TEXT ${UninstallSection1} "Remove the XiaomeiLive program files."
 	!insertmacro MUI_DESCRIPTION_TEXT ${UninstallSection2} "Removes all settings, plugins, scenes and sources, profiles, log files and other application data."
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 
 ; Version information
 VIProductVersion "${APPVERSION}.0"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "OBS Studio"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "obsproject.com"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "XiaomeiLive"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "example.com"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "(c) 2012-2016"
 ; FileDescription is what shows in the UAC elevation prompt when signed
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "OBS Studio"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "1.0"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "XiaomeiLive"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "0.0.1"
 
 ; eof
