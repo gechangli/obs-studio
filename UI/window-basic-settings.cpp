@@ -719,7 +719,12 @@ void OBSBasicSettings::LoadServiceTypes()
 		ui->streamType->addItem(qName, qType);
 	}
 
-	type = obs_service_get_type(main->GetService());
+	obs_service_t* service = main->GetService();
+	if(service) {
+		type = obs_service_get_type(main->GetService());
+	} else {
+		type = "rtmp_custom";
+	}
 	SetComboByValue(ui->streamType, type);
 }
 
@@ -1045,11 +1050,19 @@ void OBSBasicSettings::LoadStream1Settings()
 {
 	QLayout *layout = ui->streamContainer->layout();
 	obs_service_t *service = main->GetService();
-	const char *type = obs_service_get_type(service);
+	const char *type = "rtmp_custom";
+	if(service) {
+		type = obs_service_get_type(service);
+	}
 
 	loading = true;
 
-	obs_data_t *settings = obs_service_get_settings(service);
+	obs_data_t *settings = nullptr;
+	if(service) {
+		settings = obs_service_get_settings(service);
+	} else {
+		settings = obs_data_create();
+	}
 
 	delete streamProperties;
 	streamProperties = new OBSPropertiesView(settings, type,

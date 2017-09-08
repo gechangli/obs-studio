@@ -2685,7 +2685,11 @@ void OBSBasic::RenderMain(void *data, uint32_t cx, uint32_t cy)
 
 obs_service_t *OBSBasic::GetService()
 {
-	return nullptr;
+    if(m_outputs.empty()) {
+        return nullptr;
+    } else {
+        return m_outputs[0].service;
+    }
 }
 
 void OBSBasic::SetService(obs_service_t *newService)
