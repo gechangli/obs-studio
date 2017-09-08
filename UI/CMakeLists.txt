@@ -300,7 +300,7 @@ if(WIN32)
 
 	set_target_properties(xiaomeilive
 		PROPERTIES
-			OUTPUT_NAME "xiaomeilive{_output_suffix}")
+			OUTPUT_NAME "xiaomeilive${_output_suffix}")
 endif()
 
 target_link_libraries(xiaomeilive

@@ -41,8 +41,8 @@ else()
 		set(_output_suffix "")
 	endif()
 
-	set(CPACK_PACKAGE_EXECUTABLES "xiaomeilive{_output_suffix}" "Xiaomei Live")
-	set(CPACK_CREATE_DESKTOP_LINKS "xiaomeilive{_output_suffix}")
+	set(CPACK_PACKAGE_EXECUTABLES "xiaomeilive${_output_suffix}" "Xiaomei Live")
+	set(CPACK_CREATE_DESKTOP_LINKS "xiaomeilive${_output_suffix}")
 endif()
 
 set(CPACK_BUNDLE_NAME "XiaomeiLive")
