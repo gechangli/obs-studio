@@ -932,54 +932,43 @@ bool OBSApp::OBSInit()
 {
 	ProfileScope("OBSApp::OBSInit");
 
-	bool licenseAccepted = config_get_bool(globalConfig, "General",
-			"LicenseAccepted");
-	OBSLicenseAgreement agreement(nullptr);
+    if (!StartupOBS(locale.c_str(), GetProfilerNameStore()))
+        return false;
 
-	if (licenseAccepted || agreement.exec() == QDialog::Accepted) {
-		if (!licenseAccepted) {
-			config_set_bool(globalConfig, "General",
-					"LicenseAccepted", true);
-			config_save(globalConfig);
-		}
+    blog(LOG_INFO, "Portable mode: %s",
+            portable_mode ? "true" : "false");
 
-		if (!StartupOBS(locale.c_str(), GetProfilerNameStore()))
-			return false;
+    setQuitOnLastWindowClosed(false);
 
-		blog(LOG_INFO, "Portable mode: %s",
-				portable_mode ? "true" : "false");
+    // splash screen
+    QPixmap pixmap = QPixmap::fromImage(QImage(":/res/images/splash.png"));
+    QSplashScreen splash(pixmap);
+	splash.show();
+	splash.showMessage("", Qt::AlignCenter);
 
-		setQuitOnLastWindowClosed(false);
+    // delay some while to show splash
+    QThread::sleep(5);
 
-		// splash screen
-		QPixmap pixmap = QPixmap::fromImage(QImage(":/res/images/splash.png"));
-		QSplashScreen screen(pixmap);
-		screen.show();
-		screen.showMessage("", Qt::AlignCenter);
+    mainWindow = new OBSBasic();
 
-		// delay some while to show splash
-		QThread::sleep(5);
+    mainWindow->setAttribute(Qt::WA_DeleteOnClose, true);
+    connect(mainWindow, SIGNAL(destroyed()), this, SLOT(quit()));
 
-		mainWindow = new OBSBasic();
+    mainWindow->OBSInit();
 
-		mainWindow->setAttribute(Qt::WA_DeleteOnClose, true);
-		connect(mainWindow, SIGNAL(destroyed()), this, SLOT(quit()));
+    connect(this, &QGuiApplication::applicationStateChanged,
+            [](Qt::ApplicationState state)
+            {
+                obs_hotkey_enable_background_press(
+                    state != Qt::ApplicationActive);
+            });
+    obs_hotkey_enable_background_press(
+            applicationState() != Qt::ApplicationActive);
 
-		mainWindow->OBSInit();
+	// remove splash
+	splash.finish((QWidget*)mainWindow);
 
-		connect(this, &QGuiApplication::applicationStateChanged,
-				[](Qt::ApplicationState state)
-				{
-					obs_hotkey_enable_background_press(
-						state != Qt::ApplicationActive);
-				});
-		obs_hotkey_enable_background_press(
-				applicationState() != Qt::ApplicationActive);
-
-		return true;
-	} else {
-		return false;
-	}
+    return true;
 }
 
 string OBSApp::GetVersionString() const
