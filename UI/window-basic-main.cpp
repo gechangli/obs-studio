@@ -29,6 +29,7 @@
 #include <QScreen>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QtWebEngineWidgets/QtWebEngineWidgets>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -337,8 +338,35 @@ void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWid
 
 void OBSBasic::on_liveOpenButton_clicked(bool checked) {
 	// open live platform web site
-	LivePlatform plt = m_lpWeb.GetCurrentPlatform();
-	QDesktopServices::openUrl(QUrl(QString(m_lpWeb.GetPlatformHomeUrl(plt))));
+//	LivePlatform plt = m_lpWeb.GetCurrentPlatform();
+//	QDesktopServices::openUrl(QUrl(QString(m_lpWeb.GetPlatformHomeUrl(plt))));
+	QWebEngineView *view = new QWebEngineView();
+	QWebChannel * channel = new QWebChannel(view->page());
+	channel->registerObject(QStringLiteral("testObj"), this);
+	view->page()->setWebChannel(channel);
+	myIntInCppSide = 100;
+	const QUrl url("https://www.douyu.com/room/my");
+	connect(view, &QWebEngineView::loadFinished, [=]() {
+		string jsPath;
+		GetDataFilePath("js/qwebchannel.js", jsPath);
+		QFile jsFile(QString::fromStdString(jsPath));
+		jsFile.open(QIODevice::ReadOnly | QIODevice::Text);
+		QTextStream in(&jsFile);
+		QString js = in.readAll();
+		view->page()->runJavaScript(js);
+		view->page()->runJavaScript("new QWebChannel(qt.webChannelTransport, function(channel) {\n"
+										"window.testObj = channel.objects.testObj\n"
+										"window.testObj.myIntInCppSide = 444\n"
+										"alert(window.testObj.myIntInCppSide)\n"
+										"})");
+		view->show();
+		blog(LOG_INFO, "my value is %lf", myIntInCppSide);
+	});
+	view->load(url);
+}
+
+double OBSBasic::getInt() {
+	return myIntInCppSide;
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,

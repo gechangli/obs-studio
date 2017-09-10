@@ -114,6 +114,12 @@ class OBSBasic : public OBSMainWindow {
 		DropType_Html
 	};
 
+public:
+	Q_INVOKABLE double getInt();
+	Q_PROPERTY(double myIntInCppSide READ getInt);
+private:
+	double myIntInCppSide;
+
 private:
 	// for live platform
 	LivePlatformWeb m_lpWeb;

@@ -36,6 +36,7 @@ else()
 endif()
 
 find_package(Qt5Widgets ${FIND_MODE})
+find_package(Qt5WebEngineWidgets ${FIND_MODE})
 find_package(FFmpeg REQUIRED COMPONENTS avcodec avutil avformat)
 
 if(NOT Qt5Widgets_FOUND)
@@ -306,6 +307,7 @@ endif()
 target_link_libraries(xiaomeilive
 	libobs
 	Qt5::Widgets
+	Qt5::WebEngineWidgets
 	obs-frontend-api
 	${FFMPEG_LIBRARIES}
 	${LIBCURL_LIBRARIES}
