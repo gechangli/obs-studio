@@ -342,9 +342,9 @@ void OBSBasic::on_liveOpenButton_clicked(bool checked) {
 //	QDesktopServices::openUrl(QUrl(QString(m_lpWeb.GetPlatformHomeUrl(plt))));
 	QWebEngineView *view = new QWebEngineView();
 	QWebChannel * channel = new QWebChannel(view->page());
-	channel->registerObject(QStringLiteral("testObj"), this);
+	channel->registerObject(QStringLiteral("testObj"), &m_lpWeb);
 	view->page()->setWebChannel(channel);
-	myIntInCppSide = 100;
+	m_lpWeb.setInt(101);
 	const QUrl url("https://www.douyu.com/room/my");
 	connect(view, &QWebEngineView::loadFinished, [=]() {
 		string jsPath;
@@ -355,18 +355,15 @@ void OBSBasic::on_liveOpenButton_clicked(bool checked) {
 		QString js = in.readAll();
 		view->page()->runJavaScript(js);
 		view->page()->runJavaScript("new QWebChannel(qt.webChannelTransport, function(channel) {\n"
-										"window.testObj = channel.objects.testObj\n"
-										"window.testObj.myIntInCppSide = 444\n"
-										"alert(window.testObj.myIntInCppSide)\n"
-										"})");
+										"var obj = channel.objects.testObj\n"
+										"obj.myInt = 444\n"
+										"alert(obj.myInt)\n"
+										"})", [=](const QVariant& v) {
+			blog(LOG_INFO, "my value is %lf", m_lpWeb.getInt());
+		});
 		view->show();
-		blog(LOG_INFO, "my value is %lf", myIntInCppSide);
 	});
 	view->load(url);
-}
-
-double OBSBasic::getInt() {
-	return myIntInCppSide;
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,

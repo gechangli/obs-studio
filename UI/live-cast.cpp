@@ -20,6 +20,14 @@ LivePlatformWeb::~LivePlatformWeb() {
 
 }
 
+double LivePlatformWeb::getInt() {
+	return myInt;
+}
+
+void LivePlatformWeb::setInt(double v) {
+	myInt = v;
+}
+
 void LivePlatformWeb::OpenWeb() {
 
 }

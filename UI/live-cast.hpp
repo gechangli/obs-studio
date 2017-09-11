@@ -3,6 +3,7 @@
 
 #include <obs.hpp>
 #include <map>
+#include <QObject>
 
 // live platforms
 typedef enum {
@@ -32,10 +33,20 @@ struct live_platform_info {
 typedef struct live_platform_info live_platform_info_t;
 
 // helper to access live platform web site
-class LivePlatformWeb {
+class LivePlatformWeb : public QObject {
+	Q_OBJECT
+
 private:
     LivePlatform m_curPlatform;
     std::map<int, live_platform_info_t> m_infos;
+
+public:
+	Q_INVOKABLE double getInt();
+	Q_INVOKABLE void setInt(double v);
+	Q_PROPERTY(double myInt READ getInt WRITE setInt);
+
+public:
+	double myInt;
 
 public:
     LivePlatformWeb();
