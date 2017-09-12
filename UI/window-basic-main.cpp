@@ -306,6 +306,9 @@ OBSBasic::OBSBasic(QWidget *parent)
 	ui->exitButton->setVisible(false);
     ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
+
+	// set main
+	m_lpWeb.SetMain(this);
 }
 
 void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
@@ -338,6 +341,11 @@ void OBSBasic::on_liveList_currentItemChanged(QListWidgetItem *current, QListWid
 void OBSBasic::on_liveOpenButton_clicked(bool checked) {
 	// open live platform web site
 	m_lpWeb.OpenWeb();
+}
+
+void OBSBasic::AutoFillLivePlatformInfo(live_platform_info_t& info) {
+	ui->rtmpUrlEdit->setText(info.rtmpUrl);
+	ui->liveCodeEdit->setText(info.liveCode);
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,

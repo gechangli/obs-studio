@@ -700,6 +700,8 @@ public:
 	virtual int GetProfilePath(char *path, size_t size, const char *file)
 		const override;
 
+	void AutoFillLivePlatformInfo(live_platform_info_t& info);
+
 private:
 	std::unique_ptr<Ui::OBSBasic> ui;
 };

@@ -33,6 +33,9 @@ struct live_platform_info {
 };
 typedef struct live_platform_info live_platform_info_t;
 
+// main
+class OBSBasic;
+
 // helper to access live platform web site
 class LivePlatformWeb : public QObject {
 	Q_OBJECT
@@ -40,9 +43,13 @@ class LivePlatformWeb : public QObject {
 private:
     LivePlatform m_curPlatform;
     std::map<int, live_platform_info_t> m_infos;
+	OBSBasic* m_main;
 
 private:
 	QString GetJavascriptFileContent(const char* path);
+
+public slots:
+	Q_INVOKABLE void GrabLivePlatformInfo(const QString& url, const QString& key);
 
 public:
     LivePlatformWeb();
@@ -50,6 +57,9 @@ public:
 
     // open web site
     void OpenWeb();
+
+	// associate main
+	void SetMain(OBSBasic* m);
 
     // set current platform
     inline void SetCurrentPlatform(LivePlatform p) { m_curPlatform = p; }

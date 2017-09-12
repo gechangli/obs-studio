@@ -15,7 +15,8 @@ static const char* s_homeUrls[] = {
 };
 
 LivePlatformWeb::LivePlatformWeb() :
-	m_curPlatform(LIVE_PLATFORM_DOUYU) {
+m_curPlatform(LIVE_PLATFORM_DOUYU),
+m_main(nullptr) {
 }
 
 LivePlatformWeb::~LivePlatformWeb() {
@@ -55,6 +56,14 @@ void LivePlatformWeb::OpenWeb() {
 	// open home
 	const QUrl url(GetPlatformHomeUrl(m_curPlatform));
 	view->load(url);
+}
+
+void LivePlatformWeb::GrabLivePlatformInfo(const QString& url, const QString& key) {
+	live_platform_info_t& info = GetCurrentPlatformInfo();
+}
+
+void LivePlatformWeb::SetMain(OBSBasic* m) {
+	m_main = m;
 }
 
 live_platform_info_t& LivePlatformWeb::GetCurrentPlatformInfo() {
