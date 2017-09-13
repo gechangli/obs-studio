@@ -20,7 +20,9 @@ LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
 m_main(nullptr),
 m_webView(nullptr),
-m_progressDialog(nullptr) {
+m_progressDialog(nullptr),
+m_pageWidth(0),
+m_pageHeight(0) {
 }
 
 LivePlatformWeb::~LivePlatformWeb() {
@@ -36,6 +38,14 @@ QString LivePlatformWeb::GetJavascriptFileContent(const char* path) {
 	jsFile.open(QIODevice::ReadOnly | QIODevice::Text);
 	QTextStream in(&jsFile);
 	return in.readAll();
+}
+
+int LivePlatformWeb::getPageWidth() {
+	return m_pageWidth;
+}
+
+int LivePlatformWeb::getPageHeight() {
+	return m_pageHeight;
 }
 
 void LivePlatformWeb::OpenWeb() {
@@ -62,6 +72,11 @@ void LivePlatformWeb::OpenWeb() {
 	}
 	m_progressDialog->hide();
 
+	// save web view size
+	QSize size = view->size();
+	m_pageWidth = size.width();
+	m_pageHeight = size.height();
+
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
 		view->page()->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
@@ -73,6 +88,7 @@ void LivePlatformWeb::OpenWeb() {
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
 		view->hide();
+
 		m_progressDialog->show();
 	});
 

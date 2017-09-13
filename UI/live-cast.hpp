@@ -5,6 +5,7 @@
 #include <map>
 #include <QObject>
 #include <QVariant>
+#include <QSize>
 
 // live platforms
 typedef enum {
@@ -48,9 +49,17 @@ private:
 	OBSBasic* m_main;
 	QWebEngineView* m_webView;
 	QProgressDialog* m_progressDialog;
+	int m_pageWidth;
+	int m_pageHeight;
 
 private:
 	QString GetJavascriptFileContent(const char* path);
+
+public:
+	Q_INVOKABLE int getPageWidth();
+	Q_INVOKABLE int getPageHeight();
+	Q_PROPERTY(int m_pageWidth READ getPageWidth);
+	Q_PROPERTY(int m_pageHeight READ getPageHeight);
 
 public slots:
 	Q_INVOKABLE void GrabLivePlatformInfo(QString url, QString key);
