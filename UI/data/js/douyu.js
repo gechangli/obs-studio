@@ -22,4 +22,6 @@ if (window.location.href.indexOf("login") > 0) {
     } else {
         // TODO not enabled
     }
+} else {
+    window.location.href = "https://www.douyu.com/room/my"
 }
