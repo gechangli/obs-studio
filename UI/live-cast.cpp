@@ -2,6 +2,7 @@
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
 #include "platform.hpp"
 #include "window-basic-main.hpp"
+#include <QProgressDialog>
 
 using namespace std;
 
@@ -18,11 +19,14 @@ static const char* s_homeUrls[] = {
 LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
 m_main(nullptr),
-m_webView(nullptr) {
+m_webView(nullptr),
+m_progressDialog(nullptr) {
 }
 
 LivePlatformWeb::~LivePlatformWeb() {
-
+	if(m_progressDialog) {
+		delete m_progressDialog;
+	}
 }
 
 QString LivePlatformWeb::GetJavascriptFileContent(const char* path) {
@@ -48,16 +52,28 @@ void LivePlatformWeb::OpenWeb() {
 	// register self
 	channel->registerObject(QStringLiteral("lp"), this);
 
+	// create progress dialog
+	if(!m_progressDialog) {
+		m_progressDialog = new QProgressDialog();
+		m_progressDialog->setWindowModality(Qt::ApplicationModal);
+		m_progressDialog->setWindowTitle("Please wait...");
+		m_progressDialog->setRange(0, 0);
+		m_progressDialog->setCancelButtonText(QString());
+	}
+	m_progressDialog->hide();
+
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
 		view->page()->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
 		if(m_curPlatform == LIVE_PLATFORM_DOUYU) {
 			view->page()->runJavaScript(GetJavascriptFileContent("js/douyu.js"));
 		}
+		m_progressDialog->hide();
 		view->show();
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
 		view->hide();
+		m_progressDialog->show();
 	});
 
 	// open home
