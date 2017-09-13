@@ -33,8 +33,9 @@ struct live_platform_info {
 };
 typedef struct live_platform_info live_platform_info_t;
 
-// main
+// declaration
 class OBSBasic;
+class QWebEngineView;
 
 // helper to access live platform web site
 class LivePlatformWeb : public QObject {
@@ -44,12 +45,14 @@ private:
     LivePlatform m_curPlatform;
     std::map<int, live_platform_info_t> m_infos;
 	OBSBasic* m_main;
+	QWebEngineView* m_webView;
 
 private:
 	QString GetJavascriptFileContent(const char* path);
 
 public slots:
-	Q_INVOKABLE void GrabLivePlatformInfo(const QString& url, const QString& key);
+	Q_INVOKABLE void GrabLivePlatformInfo(QString url, QString key);
+	Q_INVOKABLE void CloseWeb();
 
 public:
     LivePlatformWeb();

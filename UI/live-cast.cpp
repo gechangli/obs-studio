@@ -1,6 +1,7 @@
 #include "live-cast.hpp"
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
 #include "platform.hpp"
+#include "window-basic-main.hpp"
 
 using namespace std;
 
@@ -16,7 +17,8 @@ static const char* s_homeUrls[] = {
 
 LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
-m_main(nullptr) {
+m_main(nullptr),
+m_webView(nullptr) {
 }
 
 LivePlatformWeb::~LivePlatformWeb() {
@@ -33,8 +35,13 @@ QString LivePlatformWeb::GetJavascriptFileContent(const char* path) {
 }
 
 void LivePlatformWeb::OpenWeb() {
-	// create web view and set channel
+	// create web view
 	QWebEngineView* view = new QWebEngineView();
+	m_webView = view;
+	view->setWindowModality(Qt::ApplicationModal);
+	view->setAttribute(Qt::WA_DeleteOnClose);
+
+	// set channel
 	QWebChannel* channel = new QWebChannel(view->page());
 	view->page()->setWebChannel(channel);
 
@@ -58,8 +65,23 @@ void LivePlatformWeb::OpenWeb() {
 	view->load(url);
 }
 
-void LivePlatformWeb::GrabLivePlatformInfo(const QString& url, const QString& key) {
+void LivePlatformWeb::GrabLivePlatformInfo(QString url, QString key) {
+	// save live info
 	live_platform_info_t& info = GetCurrentPlatformInfo();
+	string curl = url.toStdString();
+	string ckey = key.toStdString();
+	memcpy(info.rtmpUrl, curl.c_str(), curl.length());
+	memcpy(info.liveCode, ckey.c_str(), ckey.length());
+
+	// auto fill ui
+	m_main->AutoFillLivePlatformInfo(info);
+}
+
+void LivePlatformWeb::CloseWeb() {
+	if(m_webView) {
+		m_webView->close();
+		m_webView = nullptr;
+	}
 }
 
 void LivePlatformWeb::SetMain(OBSBasic* m) {
