@@ -28,6 +28,22 @@ function simplifyLoginPage() {
     })
 }
 
+function simplifyRoomSettingsPage() {
+    document.getElementById("header").remove()
+    document.querySelector('.u_header').remove()
+    document.querySelector('.u_nav').remove()
+    var controlGroups = document.querySelectorAll('.control_group.clearfix')
+    for(var i = controlGroups.length - 1; i >= 0; i--) {
+        controlGroups[i].remove()
+    }
+    document.querySelectorAll('.primary_button01.btn_big')[1].remove()
+    document.querySelector('.fglo_bg').remove()
+    var mainBody = document.querySelector('.u_mainbody')
+    mainBody.classList.remove('u_mainbody')
+    mainBody.setAttribute('style', 'width:200px;')
+    document.querySelector('.live_wrap.clearfix').setAttribute('style', 'width:200px;')
+}
+
 if (window.location.href.indexOf("login") > 0) {
     // simplify page
     simplifyLoginPage()
@@ -37,7 +53,8 @@ if (window.location.href.indexOf("login") > 0) {
     if (document.cookie.indexOf('acf_own_room=1') != -1) {
         // check if already in living state, we can check rtmp_url selector
         if(document.querySelector('#rtmp_url') == null) {
-            // TODO not in living
+            // simplify page
+            simplifyRoomSettingsPage()
         } else {
             // get rtmp url and push code, set it back
             var url = document.querySelector('#rtmp_url').value;
