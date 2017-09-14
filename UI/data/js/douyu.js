@@ -66,7 +66,12 @@ if (window.location.href.indexOf("login") > 0) {
             })
         }
     } else {
-        // TODO not enabled
+        // close web and prompt user to open live
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+            var lp = channel.objects.lp
+            lp.ShowMessageBox("未开通直播", "请先开通主播权限")
+            lp.CloseWeb()
+        })
     }
 } else {
     window.location.href = "https://www.douyu.com/room/my"

@@ -64,6 +64,7 @@ public:
 public slots:
 	Q_INVOKABLE void GrabLivePlatformInfo(QString url, QString key);
 	Q_INVOKABLE void CloseWeb();
+	Q_INVOKABLE void ShowMessageBox(QString title, QString msg);
 
 public:
     LivePlatformWeb();

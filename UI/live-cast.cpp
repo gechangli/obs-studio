@@ -3,6 +3,7 @@
 #include "platform.hpp"
 #include "window-basic-main.hpp"
 #include <QProgressDialog>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -113,6 +114,10 @@ void LivePlatformWeb::CloseWeb() {
 		m_webView->close();
 		m_webView = nullptr;
 	}
+}
+
+void LivePlatformWeb::ShowMessageBox(QString title, QString msg) {
+	QMessageBox::warning(nullptr, title, msg);
 }
 
 void LivePlatformWeb::SetMain(OBSBasic* m) {
