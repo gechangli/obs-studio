@@ -13,7 +13,7 @@ static const char* s_homeUrls[] = {
     "https://www.panda.tv/setting",
     "http://www.zhanqi.tv/user/follow",
     "http://i.cc.163.com/",
-    "http://i.huya.com/index.php",
+    "http://i.huya.com/index.php?m=ProfileSetting",
     "http://www.huajiao.com/user"
 };
 
@@ -81,8 +81,13 @@ void LivePlatformWeb::OpenWeb() {
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
 		view->page()->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
-		if(m_curPlatform == LIVE_PLATFORM_DOUYU) {
-			view->page()->runJavaScript(GetJavascriptFileContent("js/douyu.js"));
+		switch(m_curPlatform) {
+			case LIVE_PLATFORM_DOUYU:
+				view->page()->runJavaScript(GetJavascriptFileContent("js/douyu.js"));
+				break;
+			case LIVE_PLATFORM_HUYA:
+				view->page()->runJavaScript(GetJavascriptFileContent("js/huya.js"));
+				break;
 		}
 		m_progressDialog->hide();
 		view->show();
