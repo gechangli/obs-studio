@@ -55,13 +55,15 @@ if(document.cookie.indexOf('username=') == -1) {
             // if not done, redo after 1 second
             // if yes, save url
             if(!gotoRTMPDone || !enableRTMPDone) {
-                setTimeout(openRtmp, 1);
+                setTimeout(openRtmp, 1000);
             } else {
                 new QWebChannel(qt.webChannelTransport, function(channel) {
                     var url = document.getElementById('copyLink').value;
-                    var lp = channel.objects.lp;
-                    lp.GrabLivePlatformInfo(url, "");
-                    lp.CloseWeb();
+                    if(url != "/") {
+                        var lp = channel.objects.lp;
+                        lp.GrabLivePlatformInfo(url, "");
+                        lp.CloseWeb();
+                    }
                 })
             }
         };
