@@ -94,6 +94,7 @@ void LivePlatformWeb::OpenWeb() {
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
 		view->hide();
+
 		m_progressDialog->show();
 	});
 
