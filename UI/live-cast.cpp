@@ -96,6 +96,12 @@ void LivePlatformWeb::OpenWeb() {
 		view->hide();
 
 
+
+
+
+
+
+
 		m_progressDialog->show();
 	});
 

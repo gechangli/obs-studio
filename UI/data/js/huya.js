@@ -13,62 +13,81 @@ function queryCss(o, key) {
     return o.currentStyle? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
 }
 
+function amIAnchor() {
+    var list = document.querySelectorAll('.nav-section>.header');
+    for(var i in list) {
+        var text = list[i].innerText;
+        if(text != undefined && text.indexOf('我是主播') != -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function grabUrl() {
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+        var url = document.getElementById('copyLink').value;
+        var lp = channel.objects.lp;
+        lp.GrabLivePlatformInfo(url, "");
+        lp.CloseWeb();
+    })
+}
+
 if(document.cookie.indexOf('username=') == -1) {
     // need login, simplify login page
     simplifyLoginPage();
 } else {
-    // check live is started or not by check getRtmpWrap element style
-    var ele = document.getElementById('getRtmpWrap');
-    var display = queryCss(ele, 'display');
-    if(display == 'none') {
-        // none means stream push url is opened, so we save url
+    // if I am anchor, open rtmp
+    // if I am not, prompt user
+    if(amIAnchor()) {
+        // check live is started or not by check getRtmpWrap element style
+        var ele = document.getElementById('getRtmpWrap');
+        var display = queryCss(ele, 'display');
+        if(display == 'none') {
+            // none means stream push url is opened, so we save url
+            grabUrl();
+        } else {
+            // function to enable rtmp
+            var gotoRTMPDone = false;
+            var enableRTMPDone = false;
+            var openRtmp = function() {
+                if(!gotoRTMPDone) {
+                    var link = document.getElementById('openRTMP');
+                    if (link != null) {
+                        var a = link.children[0];
+                        if(a != null) {
+                            a.click();
+                            gotoRTMPDone = true;
+                        }
+                    }
+                }
+                if(gotoRTMPDone && !enableRTMPDone) {
+                    var link = document.querySelector('.clickstat.get_rtmp.active');
+                    if (link != null) {
+                        link.click();
+                        enableRTMPDone = true;
+                    }
+                }
+
+                // check done or not
+                // if not done, redo after 1 second
+                // if yes, save url
+                if(!gotoRTMPDone || !enableRTMPDone) {
+                    setTimeout(openRtmp, 1000);
+                } else {
+                    grabUrl();
+                }
+            };
+
+            // call first time
+            openRtmp();
+        }
+    } else {
+        // close web and prompt user to open live
         new QWebChannel(qt.webChannelTransport, function(channel) {
-            var url = document.getElementById('copyLink').value;
             var lp = channel.objects.lp;
-            lp.GrabLivePlatformInfo(url, "");
+            lp.ShowMessageBox("未开通直播", "请先开通主播权限");
             lp.CloseWeb();
         })
-    } else {
-        // function to enable rtmp
-        var gotoRTMPDone = false;
-        var enableRTMPDone = false;
-        var openRtmp = function() {
-            if(!gotoRTMPDone) {
-                var link = document.getElementById('openRTMP');
-                if (link != null) {
-                    var a = link.children[0];
-                    if(a != null) {
-                        a.click();
-                        gotoRTMPDone = true;
-                    }
-                }
-            }
-            if(gotoRTMPDone && !enableRTMPDone) {
-                var link = document.querySelector('.clickstat.get_rtmp.active');
-                if (link != null) {
-                    link.click();
-                    enableRTMPDone = true;
-                }
-            }
-
-            // check done or not
-            // if not done, redo after 1 second
-            // if yes, save url
-            if(!gotoRTMPDone || !enableRTMPDone) {
-                setTimeout(openRtmp, 1000);
-            } else {
-                new QWebChannel(qt.webChannelTransport, function(channel) {
-                    var url = document.getElementById('copyLink').value;
-                    if(url != "/") {
-                        var lp = channel.objects.lp;
-                        lp.GrabLivePlatformInfo(url, "");
-                        lp.CloseWeb();
-                    }
-                })
-            }
-        };
-
-        // call first time
-        openRtmp();
     }
 }
