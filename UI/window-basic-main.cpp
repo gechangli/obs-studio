@@ -290,7 +290,7 @@ OBSBasic::OBSBasic(QWidget *parent)
 	assignDockToggle(ui->controlsDock, ui->toggleControls);
 
 	// add live platforms
-	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_HUAJIAO; i++) {
+	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
 		QListWidgetItem* item = new QListWidgetItem(QApplication::translate("OBSBasic", LivePlatformNames[i], Q_NULLPTR));
 		item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
 		item->setCheckState(Qt::Unchecked);

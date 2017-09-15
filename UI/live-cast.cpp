@@ -10,11 +10,11 @@ using namespace std;
 // home page of live platform
 static const char* s_homeUrls[] = {
     "https://www.douyu.com/room/my",
-    "https://www.panda.tv/setting",
-    "http://www.zhanqi.tv/user/follow",
-    "http://i.cc.163.com/",
-    "http://i.huya.com/index.php?m=ProfileSetting",
-    "http://www.huajiao.com/user"
+	"http://i.huya.com/index.php?m=ProfileSetting",
+//    "https://www.panda.tv/setting",
+//    "http://www.zhanqi.tv/user/follow",
+//    "http://i.cc.163.com/",
+//    "http://www.huajiao.com/user"
 };
 
 LivePlatformWeb::LivePlatformWeb() :
