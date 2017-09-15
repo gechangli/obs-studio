@@ -474,9 +474,9 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     
     // ensure video scale is set
     OBSApp* app = (OBSApp*)data;
-    float m_videoScale = app->GetVideoScale();
-    int previewCX = int(m_videoScale * ovi.base_width);
-    int previewCY = int(m_videoScale * ovi.base_height);
+    float videoScale = app->GetVideoScale();
+    int previewCX = int(videoScale * ovi.base_width);
+    int previewCY = int(videoScale * ovi.base_height);
     
     gs_viewport_push();
     gs_projection_push();
