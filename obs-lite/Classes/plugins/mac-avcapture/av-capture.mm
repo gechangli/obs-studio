@@ -174,6 +174,7 @@ static NSString *get_string(obs_data_t *data, char const *name)
 
 static AVCaptureDevice *get_device(obs_data_t *settings)
 {
+    // if device id is "default", then auto pick a matched device
 	auto uid = get_string(settings, "device");
     if([uid isEqualToString:@"default"]) {
         for (AVCaptureDevice* dev in [AVCaptureDevice devices]) {
@@ -1190,6 +1191,7 @@ static bool av_capture_init(av_capture *capture, obs_data_t *settings)
 	if (!init_session(capture))
 		return false;
 
+    // if device id is "default", then auto pick a matched device
 	capture->uid = get_string(settings, "device");
     if([capture->uid isEqualToString:@"default"]) {
         for (AVCaptureDevice* dev in [AVCaptureDevice devices]) {
