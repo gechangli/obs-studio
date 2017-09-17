@@ -477,21 +477,23 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     float videoScale = app->GetVideoScale();
     int previewCX = int(videoScale * ovi.base_width);
     int previewCY = int(videoScale * ovi.base_height);
-    
+
+    // push projection and viewport
     gs_viewport_push();
     gs_projection_push();
     
-    /* --------------------------------------- */
-    
+    // set ortho projection and viewport
     gs_ortho(0.0f, float(ovi.base_width), 0.0f, float(ovi.base_height),
              -100.0f, 100.0f);
     gs_set_viewport(0, 0, previewCX, previewCY);
     
+    // render to main view
     obs_render_main_view();
+    
+    // clear buffer
     gs_load_vertexbuffer(nullptr);
     
-    /* --------------------------------------- */
-    
+    // restore projection and viewport
     gs_projection_pop();
     gs_viewport_pop();
     
