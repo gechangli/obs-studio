@@ -16,8 +16,12 @@
 ******************************************************************************/
 
 #include "format-conversion.h"
+#include <TargetConditionals.h>
+
+#if TARGET_OS_OSX
 #include <xmmintrin.h>
 #include <emmintrin.h>
+#endif
 
 /* ...surprisingly, if I don't use a macro to force inlining, it causes the
  * CPU usage to boost by a tremendous amount in debug builds. */
@@ -94,6 +98,7 @@ void compress_uyvx_to_i420(
 		uint32_t start_y, uint32_t end_y,
 		uint8_t *output[], const uint32_t out_linesize[])
 {
+#if TARGET_OS_OSX
 	uint8_t  *lum_plane   = output[0];
 	uint8_t  *u_plane     = output[1];
 	uint8_t  *v_plane     = output[2];
@@ -125,6 +130,7 @@ void compress_uyvx_to_i420(
 					line1, line2, uv_mask);
 		}
 	}
+#endif // #if TARGET_OS_OSX
 }
 
 void compress_uyvx_to_nv12(
@@ -132,6 +138,7 @@ void compress_uyvx_to_nv12(
 		uint32_t start_y, uint32_t end_y,
 		uint8_t *output[], const uint32_t out_linesize[])
 {
+#if TARGET_OS_OSX
 	uint8_t *lum_plane    = output[0];
 	uint8_t *chroma_plane = output[1];
 	uint32_t width        = min_uint32(in_linesize, out_linesize[0]);
@@ -161,6 +168,7 @@ void compress_uyvx_to_nv12(
 					line1, line2, uv_mask);
 		}
 	}
+#endif // #if TARGET_OS_OSX
 }
 
 void convert_uyvx_to_i444(
@@ -168,6 +176,7 @@ void convert_uyvx_to_i444(
 		uint32_t start_y, uint32_t end_y,
 		uint8_t *output[], const uint32_t out_linesize[])
 {
+#if TARGET_OS_OSX
 	uint8_t  *lum_plane   = output[0];
 	uint8_t  *u_plane     = output[1];
 	uint8_t  *v_plane     = output[2];
@@ -200,6 +209,7 @@ void convert_uyvx_to_i444(
 					line1, line2, v_mask, 2);
 		}
 	}
+#endif // #if TARGET_OS_OSX
 }
 
 void decompress_420(

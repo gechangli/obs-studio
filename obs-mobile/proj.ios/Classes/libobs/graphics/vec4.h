@@ -19,6 +19,8 @@
 
 #include "math-defs.h"
 #include <xmmintrin.h>
+#include <memory.h>
+#include <TargetConditionals.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,24 +35,41 @@ struct vec4 {
 			float x, y, z, w;
 		};
 		float ptr[4];
+#if TARGET_OS_OSX
 		__m128 m;
+#endif
 	};
 };
 
 static inline void vec4_zero(struct vec4 *v)
 {
+#if TARGET_OS_OSX
 	v->m = _mm_setzero_ps();
+#else
+    memset(v->ptr, 0, sizeof(float) * 4);
+#endif
 }
 
 static inline void vec4_set(struct vec4 *dst, float x, float y, float z,
 		float w)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_set_ps(w, z, y, x);
+#else
+    dst->x = x;
+    dst->y = y;
+    dst->z = z;
+    dst->w = w;
+#endif
 }
 
 static inline void vec4_copy(struct vec4 *dst, const struct vec4 *v)
 {
+#if TARGET_OS_OSX
 	dst->m = v->m;
+#else
+    memcpy(dst->ptr, v->ptr, sizeof(float) * 4);
+#endif
 }
 
 EXPORT void vec4_from_vec3(struct vec4 *dst, const struct vec3 *v);
@@ -58,7 +77,14 @@ EXPORT void vec4_from_vec3(struct vec4 *dst, const struct vec3 *v);
 static inline void vec4_add(struct vec4 *dst, const struct vec4 *v1,
 		const struct vec4 *v2)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_add_ps(v1->m, v2->m);
+#else
+    dst->x = v1->x + v2->x;
+    dst->y = v1->y + v2->y;
+    dst->z = v1->z + v2->z;
+    dst->w = v1->w + v2->w;
+#endif
 }
 
 static inline void vec4_sub(struct vec4 *dst, const struct vec4 *v1,
