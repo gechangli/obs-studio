@@ -51,8 +51,6 @@ static void loadStaticModules() {
             sw = 1920;
             sh = 1080;
         }
-        sw = 1280;
-        sh = 720;
         
         // create app
         NSOpenGLView* glView = ((ViewController*)NSApp.mainWindow.contentViewController).glView;
