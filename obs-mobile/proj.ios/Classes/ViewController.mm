@@ -1,14 +1,12 @@
-//
-//  ViewController.m
-//  obs-mobile
-//
-//  Created by maruojie on 2017/9/17.
-//  Copyright © 2017年 shanshan. All rights reserved.
-//
-
 #import "ViewController.h"
+#import <GLKit/GLKit.h>
 
 @interface ViewController ()
+
+@property (weak, nonatomic) IBOutlet GLKView *glView;
+@property (weak, nonatomic) IBOutlet UIButton *pushButton;
+
+- (IBAction)onPushClicked:(id)sender;
 
 @end
 
@@ -25,5 +23,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)onPushClicked:(id)sender {
+}
 
 @end

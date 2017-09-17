@@ -27,6 +27,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOZ-Ve-tre">
                                         <rect key="frame" x="290" y="629" width="72" height="30"/>
                                         <state key="normal" title="Push"/>
+                                        <connections>
+                                            <action selector="onPushClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8c1-6P-LDQ"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -43,6 +46,10 @@
                             <constraint firstItem="ZWt-zF-ojC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="qrT-Ps-eHS"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="glView" destination="ZWt-zF-ojC" id="yED-Dl-Inq"/>
+                        <outlet property="pushButton" destination="dOZ-Ve-tre" id="heb-so-aFn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
