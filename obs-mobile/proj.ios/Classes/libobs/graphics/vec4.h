@@ -25,6 +25,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+#define __v4_min(a,b) (((a)<(b))?(a):(b))
 
 struct vec3;
 struct matrix4;
@@ -90,43 +92,92 @@ static inline void vec4_add(struct vec4 *dst, const struct vec4 *v1,
 static inline void vec4_sub(struct vec4 *dst, const struct vec4 *v1,
 		const struct vec4 *v2)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_sub_ps(v1->m, v2->m);
+#else
+    dst->x = v1->x - v2->x;
+    dst->y = v1->y - v2->y;
+    dst->z = v1->z - v2->z;
+    dst->w = v1->w - v2->w;
+#endif
 }
 
 static inline void vec4_mul(struct vec4 *dst, const struct vec4 *v1,
 		const struct vec4 *v2)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_mul_ps(v1->m, v2->m);
+#else
+    dst->x = v1->x * v2->x;
+    dst->y = v1->y * v2->y;
+    dst->z = v1->z * v2->z;
+    dst->w = v1->w * v2->w;
+#endif
 }
 
 static inline void vec4_div(struct vec4 *dst, const struct vec4 *v1,
 		const struct vec4 *v2)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_div_ps(v1->m, v2->m);
+#else
+    dst->x = v1->x / v2->x;
+    dst->y = v1->y / v2->y;
+    dst->z = v1->z / v2->z;
+    dst->w = v1->w / v2->w;
+#endif
 }
 
 static inline void vec4_addf(struct vec4 *dst, const struct vec4 *v,
 		float f)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_add_ps(v->m, _mm_set1_ps(f));
+#else
+    dst->x += f;
+    dst->y += f;
+    dst->z += f;
+    dst->w += f;
+#endif
 }
 
 static inline void vec4_subf(struct vec4 *dst, const struct vec4 *v,
 		float f)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_sub_ps(v->m, _mm_set1_ps(f));
+#else
+    dst->x -= f;
+    dst->y -= f;
+    dst->z -= f;
+    dst->w -= f;
+#endif
 }
 
 static inline void vec4_mulf(struct vec4 *dst, const struct vec4 *v,
 		float f)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_mul_ps(v->m, _mm_set1_ps(f));
+#else
+    dst->x *= f;
+    dst->y *= f;
+    dst->z *= f;
+    dst->w *= f;
+#endif
 }
 
 static inline void vec4_divf(struct vec4 *dst, const struct vec4 *v,
 		float f)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_div_ps(v->m, _mm_set1_ps(f));
+#else
+    dst->x /= f;
+    dst->y /= f;
+    dst->z /= f;
+    dst->w /= f;
+#endif
 }
 
 static inline float vec4_dot(const struct vec4 *v1, const struct vec4 *v2)
@@ -184,7 +235,14 @@ static inline int vec4_close(const struct vec4 *v1, const struct vec4 *v2,
 static inline void vec4_min(struct vec4 *dst, const struct vec4 *v1,
 		const struct vec4 *v2)
 {
+#if TARGET_OS_OSX
 	dst->m = _mm_min_ps(v1->m, v2->m);
+#else
+    dst->x = __v4_min(v1->x, v2->x);
+    dst->y = __v4_min(v1->y, v2->y);
+    dst->z = __v4_min(v1->z, v2->z);
+    dst->w = __v4_min(v1->w, v2->w);
+#endif
 }
 
 static inline void vec4_minf(struct vec4 *dst, const struct vec4 *v,
