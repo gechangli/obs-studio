@@ -122,6 +122,7 @@ static void *rtmp_stream_create(obs_data_t *settings, obs_output_t *output)
 {
 	struct rtmp_stream *stream = bzalloc(sizeof(struct rtmp_stream));
 	stream->output = output;
+	stream->service_idx = obs_data_get_int(settings, "service_idx");
 	pthread_mutex_init_value(&stream->packets_mutex);
 
 	RTMP_Init(&stream->rtmp);
@@ -159,7 +160,6 @@ static void *rtmp_stream_create(obs_data_t *settings, obs_output_t *output)
 		goto fail;
 	}
 
-	UNUSED_PARAMETER(settings);
 	return stream;
 
 fail:
@@ -858,7 +858,7 @@ static bool init_connect(struct rtmp_stream *stream)
 
 	free_packets(stream);
 
-	service = obs_output_get_service(stream->output);
+	service = obs_output_get_service_at(stream->output, stream->service_idx);
 	if (!service)
 		return false;
 

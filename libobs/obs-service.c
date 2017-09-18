@@ -89,7 +89,7 @@ static void actually_destroy_service(struct obs_service *service)
 		service->info.destroy(service->context.data);
 
 	if (service->output)
-		service->output->service = NULL;
+		obs_output_remove_service(service->output, service);
 
 	blog(LOG_DEBUG, "service '%s' destroyed", service->context.name);
 

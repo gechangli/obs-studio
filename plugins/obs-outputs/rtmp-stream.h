@@ -47,6 +47,9 @@ struct droptest_info {
 struct rtmp_stream {
 	obs_output_t     *output;
 
+	// index of service in output
+	int service_idx;
+
 	pthread_mutex_t  packets_mutex;
 	struct circlebuf packets;
 	bool             sent_headers;

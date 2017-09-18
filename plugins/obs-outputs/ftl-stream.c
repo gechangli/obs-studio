@@ -61,6 +61,9 @@ typedef struct _frame_of_nalus_t {
 struct ftl_stream {
 	obs_output_t     *output;
 
+	// service index in output
+	int service_idx;
+
 	pthread_mutex_t  packets_mutex;
 	struct circlebuf packets;
 	bool             sent_headers;
@@ -220,6 +223,7 @@ static void *ftl_stream_create(obs_data_t *settings, obs_output_t *output)
 	info("ftl_stream_create");
 
 	stream->output = output;
+	stream->service_idx = obs_data_get_int(settings, "service_idx");
 	pthread_mutex_init_value(&stream->packets_mutex);
 
 	stream->peak_kbps = -1;
@@ -1041,7 +1045,7 @@ static int init_connect(struct ftl_stream *stream)
 
 	free_packets(stream);
 
-	service = obs_output_get_service(stream->output);
+	service = obs_output_get_service_at(stream->output, stream->service_idx);
 	if (!service) {
 		return OBS_OUTPUT_ERROR;
 	}

@@ -1,5 +1,6 @@
 #include <chrono>
 
+#include <obs-internal.h>
 #include <QFormLayout>
 
 #include <obs.hpp>
@@ -298,7 +299,12 @@ void AutoConfigTestPage::TestBandwidthThread()
 	obs_output_set_video_encoder(output, vencoder);
 	obs_output_set_audio_encoder(output, aencoder, 0);
 
-	obs_output_set_service(output, service);
+	// add serices to output
+	obs_output_t* pOutput = output;
+	int sc = pOutput->services.num;
+	for(int i = 0; i < sc; i++) {
+		obs_output_add_service(output, pOutput->services.array[i]);
+	}
 
 	/* -----------------------------------*/
 	/* connect signals                    */

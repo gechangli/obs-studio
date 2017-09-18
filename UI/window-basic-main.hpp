@@ -63,13 +63,6 @@ class OBSBasicStats;
 
 struct BasicOutputHandler;
 
-struct output_context {
-	LivePlatform plt;
-	OBSService service;
-	BasicOutputHandler* outputHandler;
-};
-typedef struct output_context output_context_t;
-
 enum class QtDataRole {
 	OBSRef = Qt::UserRole,
 	OBSSignals,
@@ -149,7 +142,7 @@ private:
 	QPointer<QTimer>    cpuUsageTimer;
 	os_cpu_usage_info_t *cpuUsageInfo = nullptr;
 
-	std::vector<output_context_t> m_outputs;
+	BasicOutputHandler* m_outputHandler;
 	bool streamingStopping = false;
 	bool recordingStopping = false;
 	bool replayBufferStopping = false;
@@ -367,9 +360,6 @@ private:
 	obs_data_array_t *SavePreviewProjectors();
 	void LoadSavedPreviewProjectors(
 		obs_data_array_t *savedPreviewProjectors);
-
-public:
-	BasicOutputHandler* FirstOutputHandler();
 
 public slots:
 	void StartStreaming();

@@ -425,7 +425,7 @@ struct obs_context_data {
 	struct obs_context_data         *next;
 	struct obs_context_data         **prev_next;
 
-	bool                            private;
+	bool                            is_private;
 };
 
 extern bool obs_context_data_init(
@@ -434,7 +434,7 @@ extern bool obs_context_data_init(
 		obs_data_t              *settings,
 		const char              *name,
 		obs_data_t              *hotkey_data,
-		bool                    private);
+		bool                    is_private);
 extern void obs_context_data_free(struct obs_context_data *context);
 
 extern void obs_context_data_insert(struct obs_context_data *context,
@@ -685,7 +685,7 @@ struct obs_source {
 extern const struct obs_source_info *get_source_info(const char *id);
 extern bool obs_source_init_context(struct obs_source *source,
 		obs_data_t *settings, const char *name,
-		obs_data_t *hotkey_data, bool private);
+		obs_data_t *hotkey_data, bool is_private);
 
 extern void obs_source_save(obs_source_t *source);
 extern void obs_source_load(obs_source_t *source);
@@ -717,7 +717,7 @@ static inline void obs_source_dosignal(struct obs_source *source,
 
 	calldata_init_fixed(&data, stack, sizeof(stack));
 	calldata_set_ptr(&data, "source", source);
-	if (signal_obs && !source->context.private)
+	if (signal_obs && !source->context.is_private)
 		signal_handler_signal(obs->signals, signal_obs, &data);
 	if (signal_source)
 		signal_handler_signal(source->context.signals, signal_source,
@@ -807,6 +807,7 @@ struct obs_output {
 	struct obs_context_data         context;
 	struct obs_output_info          info;
 	struct obs_weak_output          *control;
+	DARRAY(obs_service_t*)			services;
 
 	/* indicates ownership of the info.id buffer */
 	bool                            owns_info_id;
@@ -845,7 +846,6 @@ struct obs_output {
 	audio_t                         *audio;
 	obs_encoder_t                   *video_encoder;
 	obs_encoder_t                   *audio_encoders[MAX_AUDIO_MIXES];
-	obs_service_t                   *service;
 	size_t                          mixer_idx;
 
 	uint32_t                        scaled_width;

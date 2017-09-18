@@ -183,8 +183,8 @@ void obs_output_destroy(obs_output_t *output)
 		if (data_capture_ending(output))
 			pthread_join(output->end_data_capture_thread, NULL);
 
-		if (output->service)
-			output->service->output = NULL;
+		for(int i = 0; i < output->services.num; i++)
+			output->services.array[i]->output = NULL;
 		if (output->context.data)
 			output->info.destroy(output->context.data);
 
@@ -638,24 +638,45 @@ obs_encoder_t *obs_output_get_audio_encoder(const obs_output_t *output,
 	return output->audio_encoders[idx];
 }
 
-void obs_output_set_service(obs_output_t *output, obs_service_t *service)
+void obs_output_add_service(obs_output_t *output, obs_service_t *service)
 {
-	if (!obs_output_valid(output, "obs_output_set_service"))
+	if (!obs_output_valid(output, "obs_output_add_service"))
 		return;
 	if (active(output) || !service || service->active)
 		return;
 
 	if (service->output)
-		service->output->service = NULL;
+		obs_output_remove_service(service->output, service);
 
-	output->service = service;
+	da_push_back(output->services, service);
 	service->output = output;
 }
 
-obs_service_t *obs_output_get_service(const obs_output_t *output)
+void obs_output_remove_service(obs_output_t *output, obs_service_t *service) {
+	if (!obs_output_valid(output, "obs_output_set_service"))
+		return;
+	da_erase_item(output->services, service);
+}
+
+obs_service_t *obs_output_get_first_service(const obs_output_t *output)
 {
 	return obs_output_valid(output, "obs_output_get_service") ?
-		output->service : NULL;
+		   (output->services.num > 0 ? output->services.array[0] : NULL) : NULL;
+}
+
+struct darray* obs_output_get_services(const obs_output_t* output) {
+	return obs_output_valid(output, "obs_output_get_service") ?
+		   &output->services : NULL;
+}
+
+int obs_output_get_service_count(const obs_output_t* output) {
+	return obs_output_valid(output, "obs_output_get_service") ?
+		   output->services.num : 0;
+}
+
+int obs_output_get_service_at(const obs_output_t* output, int idx) {
+	return obs_output_get_service_count(output) > idx ?
+		   output->services.array[idx] : NULL;
 }
 
 void obs_output_set_reconnect_settings(obs_output_t *output,
@@ -778,7 +799,7 @@ void obs_output_set_audio_conversion(obs_output_t *output,
 
 static inline bool service_supports_multitrack(const struct obs_output *output)
 {
-	const struct obs_service *service = output->service;
+	const struct obs_service *service = obs_output_get_first_service(output);
 
 	if (!service || !service->info.supports_multitrack) {
 		return false;
@@ -850,7 +871,7 @@ static bool can_begin_data_capture(const struct obs_output *output,
 		}
 	}
 
-	if (has_service && !output->service)
+	if (has_service && output->services.num > 0)
 		return false;
 
 	return true;
@@ -1684,8 +1705,13 @@ bool obs_output_initialize_encoders(obs_output_t *output, uint32_t flags)
 
 	if (!encoded)
 		return false;
-	if (has_service && !obs_service_initialize(output->service, output))
-		return false;
+	if (has_service) {
+		for(int i = 0; i < output->services.num; i++) {
+			if(!obs_service_initialize(output->services.array[i], output)) {
+				return false;
+			}
+		}
+	}
 	if (has_video && !obs_encoder_initialize(output->video_encoder))
 		return false;
 	if (has_audio && !initialize_audio_encoders(output, num_mixes))
@@ -1739,8 +1765,11 @@ bool obs_output_begin_data_capture(obs_output_t *output, uint32_t flags)
 	os_atomic_set_bool(&output->data_active, true);
 	hook_data_capture(output, encoded, has_video, has_audio);
 
-	if (has_service)
-		obs_service_activate(output->service);
+	if (has_service) {
+		for(int i = 0; i < output->services.num; i++) {
+			obs_service_activate(output->services.array[i]);
+		}
+	}
 
 	do_output_signal(output, "activate");
 	os_atomic_set_bool(&output->active, true);
@@ -1801,8 +1830,11 @@ static void *end_data_capture_thread(void *data)
 					default_raw_audio_callback, output);
 	}
 
-	if (has_service)
-		obs_service_deactivate(output->service, false);
+	if (has_service) {
+		for(int i = 0; i < output->services.num; i++) {
+			obs_service_deactivate(output->services.array[i], false);
+		}
+	}
 
 	if (output->active_delay_ns)
 		obs_output_cleanup_delay(output);

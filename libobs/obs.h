@@ -1488,12 +1488,18 @@ EXPORT obs_encoder_t *obs_output_get_video_encoder(const obs_output_t *output);
 EXPORT obs_encoder_t *obs_output_get_audio_encoder(const obs_output_t *output,
 		size_t idx);
 
-/** Sets the current service associated with this output. */
-EXPORT void obs_output_set_service(obs_output_t *output,
+/** Adds the current service associated with this output. */
+EXPORT void obs_output_add_service(obs_output_t *output,
 		obs_service_t *service);
 
+/** Remove a service from this output */
+EXPORT void obs_output_remove_service(obs_output_t* output, obs_service_t* service);
+
 /** Gets the current service associated with this output. */
-EXPORT obs_service_t *obs_output_get_service(const obs_output_t *output);
+EXPORT obs_service_t *obs_output_get_first_service(const obs_output_t *output);
+EXPORT struct darray* obs_output_get_services(const obs_output_t* output);
+EXPORT int obs_output_get_service_count(const obs_output_t* output);
+EXPORT int obs_output_get_service_at(const obs_output_t* output, int idx);
 
 /**
  * Sets the reconnect settings.  Set retry_count to 0 to disable reconnecting.

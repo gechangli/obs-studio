@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 class OBSBasic;
 
@@ -15,6 +16,7 @@ struct BasicOutputHandler {
 	OBSBasic               *main;
 
 	std::string            outputType;
+	std::vector<OBSService> m_services;
 
 	OBSSignal              startRecording;
 	OBSSignal              stopRecording;
@@ -31,7 +33,7 @@ struct BasicOutputHandler {
 
 	virtual ~BasicOutputHandler() {};
 
-	virtual bool StartStreaming(obs_service_t *service) = 0;
+	virtual bool StartStreaming() = 0;
 	virtual bool StartRecording() = 0;
 	virtual bool StartReplayBuffer() {return false;}
 	virtual void StopStreaming(bool force = false) = 0;
@@ -40,6 +42,18 @@ struct BasicOutputHandler {
 	virtual bool StreamingActive() const = 0;
 	virtual bool RecordingActive() const = 0;
 	virtual bool ReplayBufferActive() const {return false;}
+
+	inline void AddService(obs_service_t* service) {
+		m_services.push_back(OBSService(service));
+	}
+
+	inline obs_service_t* GetFirstService() {
+		if(m_services.empty()) {
+			return nullptr;
+		} else {
+			return m_services[0];
+		}
+	}
 
 	virtual void Update() = 0;
 

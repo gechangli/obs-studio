@@ -418,7 +418,7 @@ static void duplicate_filters(obs_source_t *dst, obs_source_t *src,
 
 void obs_source_copy_filters(obs_source_t *dst, obs_source_t *src)
 {
-	duplicate_filters(dst, src, dst->context.private ?
+	duplicate_filters(dst, src, dst->context.is_private ?
 					OBS_SCENE_DUP_PRIVATE_COPY :
 					OBS_SCENE_DUP_COPY);
 
@@ -527,7 +527,7 @@ void obs_source_destroy(struct obs_source *source)
 	obs_context_data_remove(&source->context);
 
 	blog(LOG_DEBUG, "%ssource '%s' destroyed",
-			source->context.private ? "private " : "",
+			source->context.is_private ? "private " : "",
 			source->context.name);
 
 	obs_source_dosignal(source, "source_destroy", "destroy");
@@ -2786,7 +2786,7 @@ void obs_source_set_name(obs_source_t *source, const char *name)
 		calldata_set_ptr(&data, "source", source);
 		calldata_set_string(&data, "new_name", source->context.name);
 		calldata_set_string(&data, "prev_name", prev_name);
-		if (!source->context.private)
+		if (!source->context.is_private)
 			signal_handler_signal(obs->signals, "source_rename",
 					&data);
 		signal_handler_signal(source->context.signals, "rename", &data);
@@ -3033,7 +3033,7 @@ void obs_source_set_volume(obs_source_t *source, float volume)
 		calldata_set_float(&data, "volume", volume);
 
 		signal_handler_signal(source->context.signals, "volume", &data);
-		if (!source->context.private)
+		if (!source->context.is_private)
 			signal_handler_signal(obs->signals, "source_volume",
 					&data);
 

@@ -133,9 +133,10 @@ static void AddExtraModulePaths()
 
 static QList<QKeySequence> DeleteKeys;
 
-OBSBasic::OBSBasic(QWidget *parent)
-	: OBSMainWindow  (parent),
-	  ui             (new Ui::OBSBasic)
+OBSBasic::OBSBasic(QWidget *parent) :
+	OBSMainWindow(parent),
+	ui(new Ui::OBSBasic),
+	m_outputHandler(nullptr)
 {
 	setAttribute(Qt::WA_NativeWindow);
 
@@ -921,25 +922,20 @@ void OBSBasic::SaveService()
 {
 }
 
-BasicOutputHandler* OBSBasic::FirstOutputHandler() {
-	if(m_outputs.empty()) {
-		return nullptr;
-	} else {
-		return m_outputs[0].outputHandler;
-	}
-}
-
 void OBSBasic::ClearServices() {
-	for(vector<output_context_t>::iterator itor = m_outputs.begin(); itor != m_outputs.end(); itor++) {
-		delete itor->outputHandler;
+	if(m_outputHandler) {
+		delete m_outputHandler;
 	}
-	m_outputs.clear();
+	m_outputHandler = nullptr;
 }
 
 bool OBSBasic::InitService()
 {
 	// release old services
 	ClearServices();
+
+	// create handler
+	m_outputHandler = CreateSimpleOutputHandler(this);
 
 	// create service for platform
 	for(int i = 0; i < ui->liveList->count(); i++) {
@@ -951,11 +947,7 @@ bool OBSBasic::InitService()
 			obs_data_set_string(settings, "key", info.liveCode);
 			obs_service_t* service = obs_service_create("rtmp_custom", "default_service", settings, nullptr);
 			obs_data_release(settings);
-			output_context_t ctx;
-			ctx.plt = (LivePlatform)i;
-			ctx.service = service;
-			ctx.outputHandler = CreateSimpleOutputHandler(this);
-			m_outputs.push_back(ctx);
+			m_outputHandler->AddService(service);
             obs_service_release(service);
 		}
 	}
@@ -1261,18 +1253,16 @@ void OBSBasic::InitPrimitives()
 
 void OBSBasic::ReplayBufferClicked()
 {
-	if(FirstOutputHandler()) {
-		if (FirstOutputHandler()->ReplayBufferActive())
-			StopReplayBuffer();
-		else
-			StartReplayBuffer();
-	}
+	if (m_outputHandler->ReplayBufferActive())
+		StopReplayBuffer();
+	else
+		StartReplayBuffer();
 };
 
 void OBSBasic::ResetOutputs()
 {
-	for(vector<output_context_t>::iterator itor = m_outputs.begin(); itor != m_outputs.end(); itor++) {
-		itor->outputHandler->Update();
+	if(m_outputHandler) {
+		m_outputHandler->Update();
 	}
 }
 
@@ -2673,11 +2663,7 @@ void OBSBasic::RenderMain(void *data, uint32_t cx, uint32_t cy)
 
 obs_service_t *OBSBasic::GetService()
 {
-    if(m_outputs.empty()) {
-        return nullptr;
-    } else {
-        return m_outputs[0].service;
-    }
+	return m_outputHandler->GetFirstService();
 }
 
 void OBSBasic::SetService(obs_service_t *newService)
@@ -2686,29 +2672,17 @@ void OBSBasic::SetService(obs_service_t *newService)
 
 bool OBSBasic::RecordingActive()
 {
-	if(FirstOutputHandler()) {
-		return FirstOutputHandler()->RecordingActive();
-	} else {
-		return false;
-	}
+	return m_outputHandler ? m_outputHandler->RecordingActive() : false;
 }
 
 bool OBSBasic::StreamingActive()
 {
-	if(FirstOutputHandler()) {
-		return FirstOutputHandler()->StreamingActive();
-	} else {
-		return false;
-	}
+	return m_outputHandler ? m_outputHandler->StreamingActive() : false;
 }
 
 bool OBSBasic::Active()
 {
-	if(FirstOutputHandler()) {
-		return FirstOutputHandler()->Active();
-	} else {
-		return false;
-	}
+	return m_outputHandler ? m_outputHandler->Active() : false;
 }
 
 #ifdef _WIN32
@@ -4054,16 +4028,8 @@ void OBSBasic::StartStreaming()
 	// init outputs
 	InitService();
 
-	// start all output
-	bool startOk = true;
-	for(vector<output_context_t>::iterator itor = m_outputs.begin(); itor != m_outputs.end(); itor++) {
-		output_context_t& ctx = *itor;
-		if(!ctx.outputHandler->StartStreaming(ctx.service)) {
-			startOk = false;
-			break;
-		}
-	}
-
+	// start output
+	bool startOk = m_outputHandler->StartStreaming();
 	if (!startOk) {
 		ui->streamButton->setText(QTStr("Basic.Main.StartStreaming"));
 		ui->streamButton->setEnabled(true);
@@ -4142,9 +4108,7 @@ void OBSBasic::StopStreaming()
 	SaveProject();
 
 	if (StreamingActive()) {
-		for(vector<output_context_t>::iterator itor = m_outputs.begin(); itor != m_outputs.end(); itor++) {
-			itor->outputHandler->StopStreaming(streamingStopping);
-		}
+		m_outputHandler->StopStreaming(streamingStopping);
 	}
 
 	OnDeactivate();
@@ -4169,9 +4133,7 @@ void OBSBasic::ForceStopStreaming()
 	SaveProject();
 
 	if (StreamingActive()) {
-		for(vector<output_context_t>::iterator itor = m_outputs.begin(); itor != m_outputs.end(); itor++) {
-			itor->outputHandler->StopStreaming(true);
-		}
+		m_outputHandler->StopStreaming(true);
 	}
 
 	OnDeactivate();

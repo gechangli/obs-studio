@@ -217,7 +217,7 @@ struct SimpleOutput : BasicOutputHandler {
 	void UpdateRecording();
 	bool ConfigureRecording(bool useReplayBuffer);
 
-	virtual bool StartStreaming(obs_service_t *service) override;
+	virtual bool StartStreaming() override;
 	virtual bool StartRecording() override;
 	virtual bool StartReplayBuffer() override;
 	virtual void StopStreaming(bool force) override;
@@ -644,14 +644,14 @@ const char *FindAudioEncoderFromCodec(const char *type)
 	return nullptr;
 }
 
-bool SimpleOutput::StartStreaming(obs_service_t *service)
+bool SimpleOutput::StartStreaming()
 {
 	if (!Active())
 		SetupOutputs();
 
 	/* --------------------- */
 
-	const char *type = obs_service_get_output_type(service);
+	const char *type = obs_service_get_output_type(GetFirstService());
 	if (!type)
 		type = "rtmp_output";
 
@@ -663,24 +663,24 @@ bool SimpleOutput::StartStreaming(obs_service_t *service)
 		stopStreaming.Disconnect();
 
 		streamOutput = obs_output_create(type, "simple_stream",
-				nullptr, nullptr);
+										 nullptr, nullptr);
 		if (!streamOutput)
 			return false;
 		obs_output_release(streamOutput);
 
 		streamDelayStarting.Connect(
-				obs_output_get_signal_handler(streamOutput),
-				"starting", OBSStreamStarting, this);
+			obs_output_get_signal_handler(streamOutput),
+			"starting", OBSStreamStarting, this);
 		streamStopping.Connect(
-				obs_output_get_signal_handler(streamOutput),
-				"stopping", OBSStreamStopping, this);
+			obs_output_get_signal_handler(streamOutput),
+			"stopping", OBSStreamStopping, this);
 
 		startStreaming.Connect(
-				obs_output_get_signal_handler(streamOutput),
-				"start", OBSStartStreaming, this);
+			obs_output_get_signal_handler(streamOutput),
+			"start", OBSStartStreaming, this);
 		stopStreaming.Connect(
-				obs_output_get_signal_handler(streamOutput),
-				"stop", OBSStopStreaming, this);
+			obs_output_get_signal_handler(streamOutput),
+			"stop", OBSStopStreaming, this);
 
 		const char *codec =
 			obs_output_get_supported_audio_codecs(streamOutput);
@@ -695,7 +695,7 @@ bool SimpleOutput::StartStreaming(obs_service_t *service)
 			obs_data_set_int(settings, "bitrate", audioBitrate);
 
 			aacStreaming = obs_audio_encoder_create(id,
-					"alt_audio_enc", nullptr, 0, nullptr);
+													"alt_audio_enc", nullptr, 0, nullptr);
 			obs_encoder_release(aacStreaming);
 			if (!aacStreaming)
 				return false;
@@ -706,12 +706,19 @@ bool SimpleOutput::StartStreaming(obs_service_t *service)
 			obs_data_release(settings);
 		}
 
+		// save output type
 		outputType = type;
 	}
 
+	// set encoder to output
 	obs_output_set_video_encoder(streamOutput, h264Streaming);
 	obs_output_set_audio_encoder(streamOutput, aacStreaming, 0);
-	obs_output_set_service(streamOutput, service);
+
+	// add serices to output
+	int sc = m_services.size();
+	for(int i = 0; i < sc; i++) {
+		obs_output_add_service(streamOutput, m_services[i]);
+	}
 
 	/* --------------------- */
 
@@ -1007,7 +1014,7 @@ struct AdvancedOutput : BasicOutputHandler {
 	void SetupOutputs();
 	int GetAudioBitrate(size_t i) const;
 
-	virtual bool StartStreaming(obs_service_t *service) override;
+	virtual bool StartStreaming() override;
 	virtual bool StartRecording() override;
 	virtual void StopStreaming(bool force) override;
 	virtual void StopRecording(bool force) override;
@@ -1335,7 +1342,7 @@ int AdvancedOutput::GetAudioBitrate(size_t i) const
 	return FindClosestAvailableAACBitrate(bitrate);
 }
 
-bool AdvancedOutput::StartStreaming(obs_service_t *service)
+bool AdvancedOutput::StartStreaming()
 {
 	if (!useStreamEncoder ||
 	    (!ffmpegOutput && !obs_output_active(fileOutput))) {
@@ -1352,7 +1359,7 @@ bool AdvancedOutput::StartStreaming(obs_service_t *service)
 	int trackIndex = config_get_int(main->Config(), "AdvOut",
 			"TrackIndex");
 
-	const char *type = obs_service_get_output_type(service);
+	const char *type = obs_service_get_output_type(GetFirstService());
 	if (!type)
 		type = "rtmp_output";
 
@@ -1417,7 +1424,11 @@ bool AdvancedOutput::StartStreaming(obs_service_t *service)
 
 	/* --------------------- */
 
-	obs_output_set_service(streamOutput, service);
+	// add serices to output
+	int sc = m_services.size();
+	for(int i = 0; i < sc; i++) {
+		obs_output_add_service(streamOutput, m_services[i]);
+	}
 
 	bool reconnect = config_get_bool(main->Config(), "Output", "Reconnect");
 	int retryDelay = config_get_int(main->Config(), "Output", "RetryDelay");
