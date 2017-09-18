@@ -93,6 +93,7 @@
 		92A7AD811F5918E600D61BD9 /* obs-outputs.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AD601F5918E600D61BD9 /* obs-outputs.c */; };
 		92A7AD821F5918E600D61BD9 /* rtmp-stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AD621F5918E600D61BD9 /* rtmp-stream.c */; };
 		92A7AD831F5918E600D61BD9 /* rtmp-windows.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A7AD641F5918E600D61BD9 /* rtmp-windows.c */; };
+		92A989DB1F6FB8C600F6C5FA /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A989DA1F6FB8C600F6C5FA /* CoreImage.framework */; };
 		92D95FC51F5970FF0070546E /* coreaudio-enum-devices.c in Sources */ = {isa = PBXBuildFile; fileRef = 92D95F7B1F5970FF0070546E /* coreaudio-enum-devices.c */; };
 		92D95FC61F5970FF0070546E /* coreaudio-output.c in Sources */ = {isa = PBXBuildFile; fileRef = 92D95F7C1F5970FF0070546E /* coreaudio-output.c */; };
 		92D95FC71F5970FF0070546E /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92D95F7F1F5970FF0070546E /* calldata.c */; };
@@ -337,6 +338,7 @@
 		92A7AD641F5918E600D61BD9 /* rtmp-windows.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-windows.c"; sourceTree = "<group>"; };
 		92A7AD841F59192400D61BD9 /* obs-outputs-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "obs-outputs-config.h"; sourceTree = "<group>"; };
 		92A7AD851F59195500D61BD9 /* libcommonCrypto.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcommonCrypto.tbd; path = usr/lib/system/libcommonCrypto.tbd; sourceTree = SDKROOT; };
+		92A989DA1F6FB8C600F6C5FA /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		92D586F71F4AF0A90048D381 /* obs-lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "obs-lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92D95F7B1F5970FF0070546E /* coreaudio-enum-devices.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "coreaudio-enum-devices.c"; sourceTree = "<group>"; };
 		92D95F7C1F5970FF0070546E /* coreaudio-output.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "coreaudio-output.c"; sourceTree = "<group>"; };
@@ -496,6 +498,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92A989DB1F6FB8C600F6C5FA /* CoreImage.framework in Frameworks */,
 				921644521F50691900C403A1 /* libcurl.tbd in Frameworks */,
 				92FFDBCC1F4AFA9900AB5892 /* CoreMediaIO.framework in Frameworks */,
 				92FFDAFB1F4AF4D100AB5892 /* libiconv.tbd in Frameworks */,
@@ -1103,6 +1106,7 @@
 		92FFDACC1F4AF31500AB5892 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				92A989DA1F6FB8C600F6C5FA /* CoreImage.framework */,
 				92A7AD851F59195500D61BD9 /* libcommonCrypto.tbd */,
 				921644511F50691900C403A1 /* libcurl.tbd */,
 				92FFDBCB1F4AFA9900AB5892 /* CoreMediaIO.framework */,

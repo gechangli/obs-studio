@@ -3,6 +3,7 @@
 #import <CoreMedia/CoreMedia.h>
 #import <CoreVideo/CoreVideo.h>
 #import <CoreMediaIO/CMIOHardware.h>
+#import <AppKit/AppKit.h>
 
 #include <obs-module.h>
 #include <obs.hpp>
@@ -103,6 +104,7 @@ struct av_capture;
 @public
 	struct av_capture *capture;
 }
+- (void)saveImage:(CVImageBufferRef)image;
 - (void)captureOutput:(AVCaptureOutput *)out
         didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer
         fromConnection:(AVCaptureConnection *)connection;
@@ -633,6 +635,24 @@ static inline bool update_frame(av_capture *capture,
 	UNUSED_PARAMETER(out);
 	UNUSED_PARAMETER(sampleBuffer);
 	UNUSED_PARAMETER(connection);
+}
+
+- (void)saveImage:(CVImageBufferRef)image {
+    // create CIImage from CVImageBuffer
+    NSCIImageRep *imageRep = [NSCIImageRep imageRepWithCIImage:[CIImage imageWithCVImageBuffer:image]];
+    NSImage *_image = [[NSImage alloc] initWithSize:[imageRep size]];
+    [_image addRepresentation:imageRep];
+    
+    // convert to tiff, then convert to jpeg
+    NSData* tiffData = [_image TIFFRepresentation];
+    NSBitmapImageRep *bitmapRep = [NSBitmapImageRep imageRepWithData:tiffData];
+    NSData *imageData = [bitmapRep representationUsingType:NSJPEGFileType properties:@{}];
+    _image = [[NSImage alloc] initWithData:imageData];
+    
+    // finally to png
+    NSBitmapImageRep *imgRep = (NSBitmapImageRep*)[[_image representations] objectAtIndex: 0];
+    NSData *data = [imgRep representationUsingType:NSPNGFileType properties:@{}];
+    [data writeToFile:@"/Users/maruojie/Desktop/a.png" atomically: NO];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
