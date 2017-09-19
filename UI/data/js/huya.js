@@ -86,7 +86,9 @@ if(document.cookie.indexOf('username=') == -1) {
         // close web and prompt user to open live
         new QWebChannel(qt.webChannelTransport, function(channel) {
             var lp = channel.objects.lp;
+            clearAllCookie();
             lp.ShowMessageBox("\u672a\u5f00\u901a\u76f4\u64ad", "\u8bf7\u5148\u5f00\u901a\u4e3b\u64ad\u6743\u9650"); // "未开通直播", "请先开通主播权限"
+            lp.ClearCookies();
             lp.CloseWeb();
         })
     }

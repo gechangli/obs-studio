@@ -121,6 +121,12 @@ void LivePlatformWeb::CloseWeb() {
 	}
 }
 
+void LivePlatformWeb::ClearCookies() {
+	if(m_webView) {
+		m_webView->page()->profile()->cookieStore()->deleteAllCookies();
+	}
+}
+
 void LivePlatformWeb::ShowMessageBox(QString title, QString msg) {
 	QMessageBox::warning(nullptr, title, msg);
 }

@@ -1423,10 +1423,9 @@ bool AdvancedOutput::StartStreaming()
 		outputType = type;
 	}
 
+	// set encoder
 	obs_output_set_video_encoder(streamOutput, h264Streaming);
 	obs_output_set_audio_encoder(streamOutput, streamAudioEnc, 0);
-
-	/* --------------------- */
 
 	// add serices to output
 	int sc = m_services.size();
