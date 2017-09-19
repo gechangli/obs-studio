@@ -148,9 +148,21 @@ obs_output_t *obs_output_create(const char *id, const char *name,
 			&obs->data.outputs_mutex,
 			&obs->data.first_output);
 
-	if (info)
-		output->context.data = info->create(output->context.settings,
-				output);
+	if (info) {
+		// create stream for every service
+		int multiplex = 1;
+		if(settings) {
+			multiplex = obs_data_get_int(settings, "multiplex");
+		}
+		for(int i = 0; i < multiplex; i++) {
+			obs_data_set_int(output->context.settings, "service_idx", i);
+			void* data = info->create(output->context.settings, output);
+			da_push_back(output->datas, &data);
+			if(i == 0) {
+				output->context.data = data;
+			}
+		}
+	}
 	if (!output->context.data)
 		blog(LOG_ERROR, "Failed to create output '%s'!", name);
 
@@ -185,8 +197,11 @@ void obs_output_destroy(obs_output_t *output)
 
 		for(int i = 0; i < output->services.num; i++)
 			output->services.array[i]->output = NULL;
-		if (output->context.data)
-			output->info.destroy(output->context.data);
+		if (output->context.data) {
+			for(int i = 0; i < output->datas.num; i++) {
+				output->info.destroy(output->datas.array[i]);
+			}
+		}
 
 		free_packets(output);
 
@@ -215,6 +230,11 @@ void obs_output_destroy(obs_output_t *output)
 		if (output->last_error_message)
 			bfree(output->last_error_message);
 		bfree(output);
+
+		// release services
+		for(int i = 0; i < output->services.num; i++) {
+			obs_service_release(output->services.array[i]);
+		}
 	}
 }
 
@@ -226,7 +246,7 @@ const char *obs_output_get_name(const obs_output_t *output)
 
 bool obs_output_actual_start(obs_output_t *output)
 {
-	bool success = false;
+	bool success = true;
 
 	os_event_wait(output->stopping_event);
 	output->stop_code = 0;
@@ -235,8 +255,14 @@ bool obs_output_actual_start(obs_output_t *output)
 		output->last_error_message = NULL;
 	}
 
-	if (output->context.data)
-		success = output->info.start(output->context.data);
+	if (output->context.data) {
+		for(int i = 0; i < output->datas.num; i++) {
+			if(!output->info.start(output->datas.array[i])) {
+				success = false;
+				break;
+			}
+		}
+	}
 
 	if (success && output->video) {
 		output->starting_frame_count =
@@ -361,7 +387,9 @@ void obs_output_actual_stop(obs_output_t *output, bool force, uint64_t ts)
 	}
 
 	if (output->context.data && call_stop) {
-		output->info.stop(output->context.data, ts);
+		for(int i = 0; i < output->datas.num; i++) {
+			output->info.stop(output->datas.array[i], ts);
+		}
 
 	} else if (was_reconnecting) {
 		output->stop_code = OBS_OUTPUT_SUCCESS;
@@ -470,9 +498,11 @@ void obs_output_update(obs_output_t *output, obs_data_t *settings)
 
 	obs_data_apply(output->context.settings, settings);
 
-	if (output->info.update)
-		output->info.update(output->context.data,
-				output->context.settings);
+	if (output->info.update) {
+		for(int i = 0; i < output->datas.num; i++) {
+			output->info.update(output->datas.array[i], output->context.settings);
+		}
+	}
 }
 
 obs_data_t *obs_output_get_settings(const obs_output_t *output)
@@ -495,8 +525,11 @@ void obs_output_pause(obs_output_t *output)
 	if (!obs_output_valid(output, "obs_output_pause"))
 		return;
 
-	if (output->info.pause)
-		output->info.pause(output->context.data);
+	if (output->info.pause) {
+		for(int i = 0; i < output->datas.num; i++) {
+			output->info.pause(output->datas.array[i]);
+		}
+	}
 }
 
 signal_handler_t *obs_output_get_signal_handler(const obs_output_t *output)
@@ -648,14 +681,16 @@ void obs_output_add_service(obs_output_t *output, obs_service_t *service)
 	if (service->output)
 		obs_output_remove_service(service->output, service);
 
-	da_push_back(output->services, service);
+	da_push_back(output->services, &service);
+	obs_service_addref(service);
 	service->output = output;
 }
 
 void obs_output_remove_service(obs_output_t *output, obs_service_t *service) {
 	if (!obs_output_valid(output, "obs_output_set_service"))
 		return;
-	da_erase_item(output->services, service);
+	da_erase_item(output->services, &service);
+	obs_service_release(service);
 }
 
 obs_service_t *obs_output_get_first_service(const obs_output_t *output)
@@ -674,7 +709,7 @@ int obs_output_get_service_count(const obs_output_t* output) {
 		   output->services.num : 0;
 }
 
-int obs_output_get_service_at(const obs_output_t* output, int idx) {
+obs_service_t* obs_output_get_service_at(const obs_output_t* output, int idx) {
 	return obs_output_get_service_count(output) > idx ?
 		   output->services.array[idx] : NULL;
 }
@@ -871,7 +906,7 @@ static bool can_begin_data_capture(const struct obs_output *output,
 		}
 	}
 
-	if (has_service && output->services.num > 0)
+	if (has_service && obs_output_get_service_count(output) <= 0)
 		return false;
 
 	return true;
@@ -1070,7 +1105,9 @@ static inline void send_interleaved(struct obs_output *output)
 #endif
 	}
 
-	output->info.encoded_packet(output->context.data, &out);
+	for(int i = 0; i < output->datas.num; i++) {
+		output->info.encoded_packet(output->datas.array[i], &out);
+	}
 	obs_encoder_packet_release(&out);
 }
 
@@ -1463,7 +1500,9 @@ static void default_encoded_callback(void *param, struct encoder_packet *packet)
 		if (packet->type == OBS_ENCODER_AUDIO)
 			packet->track_idx = get_track_index(output, packet);
 
-		output->info.encoded_packet(output->context.data, packet);
+		for(int i = 0; i < output->datas.num; i++) {
+			output->info.encoded_packet(output->datas.array[i], packet);
+		}
 
 		if (packet->type == OBS_ENCODER_VIDEO)
 			output->total_frames++;
@@ -1476,8 +1515,11 @@ static void default_encoded_callback(void *param, struct encoder_packet *packet)
 static void default_raw_video_callback(void *param, struct video_data *frame)
 {
 	struct obs_output *output = param;
-	if (data_active(output))
-		output->info.raw_video(output->context.data, frame);
+	if (data_active(output)) {
+		for(int i = 0; i < output->datas.num; i++) {
+			output->info.raw_video(output->datas.array[i], frame);
+		}
+	}
 	output->total_frames++;
 }
 
@@ -1488,7 +1530,9 @@ static void default_raw_audio_callback(void *param, size_t mix_idx,
 	if (!data_active(output))
 		return;
 
-	output->info.raw_audio(output->context.data, frames);
+	for(int i = 0; i < output->datas.num; i++) {
+		output->info.raw_audio(output->datas.array[i], frames);
+	}
 
 	UNUSED_PARAMETER(mix_idx);
 }

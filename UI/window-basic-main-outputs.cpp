@@ -662,8 +662,12 @@ bool SimpleOutput::StartStreaming()
 		startStreaming.Disconnect();
 		stopStreaming.Disconnect();
 
-		streamOutput = obs_output_create(type, "simple_stream",
-										 nullptr, nullptr);
+		// pass service count as multiplex setting
+		obs_data_t* settings = obs_data_create();
+		obs_data_set_int(settings, "multiplex", m_services.size());
+		streamOutput = obs_output_create(type, "simple_stream", settings, nullptr);
+		obs_data_release(settings);
+
 		if (!streamOutput)
 			return false;
 		obs_output_release(streamOutput);

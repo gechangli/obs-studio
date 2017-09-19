@@ -805,9 +805,10 @@ struct caption_text {
 
 struct obs_output {
 	struct obs_context_data         context;
-	struct obs_output_info          info;
+	struct obs_output_info			info;
 	struct obs_weak_output          *control;
 	DARRAY(obs_service_t*)			services;
+	DARRAY(void*) datas;
 
 	/* indicates ownership of the info.id buffer */
 	bool                            owns_info_id;

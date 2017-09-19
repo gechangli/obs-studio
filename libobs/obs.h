@@ -1499,7 +1499,7 @@ EXPORT void obs_output_remove_service(obs_output_t* output, obs_service_t* servi
 EXPORT obs_service_t *obs_output_get_first_service(const obs_output_t *output);
 EXPORT struct darray* obs_output_get_services(const obs_output_t* output);
 EXPORT int obs_output_get_service_count(const obs_output_t* output);
-EXPORT int obs_output_get_service_at(const obs_output_t* output, int idx);
+EXPORT obs_service_t* obs_output_get_service_at(const obs_output_t* output, int idx);
 
 /**
  * Sets the reconnect settings.  Set retry_count to 0 to disable reconnecting.
