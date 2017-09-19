@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1422</width>
+    <width>1549</width>
     <height>820</height>
    </rect>
   </property>
@@ -102,8 +102,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1422</width>
-     <height>26</height>
+     <width>1549</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -632,7 +632,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>197</width>
+          <width>230</width>
           <height>16</height>
          </rect>
         </property>
@@ -1078,51 +1078,27 @@
       <number>4</number>
      </property>
      <item>
-      <widget class="QListWidget" name="liveList"/>
-     </item>
-     <item>
-      <widget class="QFrame" name="liveFrame">
-       <property name="frameShape">
-        <enum>QFrame::StyledPanel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="rtmpUrlLabel">
-          <property name="text">
-           <string>RTMP.Url</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="rtmpUrlEdit"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="liveCodeLabel">
-          <property name="text">
-           <string>Live.Code</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="liveCodeEdit"/>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="liveOpenButton">
-       <property name="text">
-        <string>Basic.Main.OpenLiveSite</string>
-       </property>
+      <widget class="QTableWidget" name="liveTable">
+       <column>
+        <property name="text">
+         <string>推流</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>平台</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>账号</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>操作</string>
+        </property>
+       </column>
       </widget>
      </item>
     </layout>

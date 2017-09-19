@@ -629,9 +629,6 @@ private slots:
 	void on_transitionRemove_clicked();
 	void on_transitionProps_clicked();
 
-	void on_liveList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-	void on_liveOpenButton_clicked(bool checked);
-
 	void on_modeSwitch_clicked();
 
 	void on_autoConfigure_triggered();
@@ -689,8 +686,6 @@ public:
 
 	virtual int GetProfilePath(char *path, size_t size, const char *file)
 		const override;
-
-	void AutoFillLivePlatformInfo(live_platform_info_t& info);
 
 private:
 	std::unique_ptr<Ui::OBSBasic> ui;

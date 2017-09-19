@@ -109,9 +109,6 @@ void LivePlatformWeb::GrabLivePlatformInfo(QString url, QString key) {
 	string ckey = key.toStdString();
 	memcpy(info.rtmpUrl, curl.c_str(), curl.length());
 	memcpy(info.liveCode, ckey.c_str(), ckey.length());
-
-	// auto fill ui
-	m_main->AutoFillLivePlatformInfo(info);
 }
 
 void LivePlatformWeb::CloseWeb() {
