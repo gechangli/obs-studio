@@ -1,5 +1,13 @@
 "use strict";
 
+function getCookie(name)  {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if(arr = document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+
 function simplifyLoginPage() {
     document.getElementById("header").remove();
     document.getElementById("footer").remove();
@@ -57,11 +65,12 @@ if (window.location.href.indexOf("login") > 0) {
             simplifyRoomSettingsPage();
         } else {
             // get rtmp url and push code, set it back
-            var url = document.querySelector('#rtmp_url').value;
-            var key = document.querySelector('#rtmp_val').value;
             new QWebChannel(qt.webChannelTransport, function(channel) {
+                var url = document.querySelector('#rtmp_url').value;
+                var key = document.querySelector('#rtmp_val').value;
+                var username = getCookie('acf_nickname');
                 var lp = channel.objects.lp;
-                lp.GrabLivePlatformInfo(url, key);
+                lp.SaveLivePlatformInfo(url, key, username);
                 lp.CloseWeb();
             })
         }

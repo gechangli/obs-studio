@@ -49,12 +49,17 @@ int LivePlatformWeb::getPageHeight() {
 	return m_pageHeight;
 }
 
-void LivePlatformWeb::OpenWeb() {
+void LivePlatformWeb::OpenWeb(bool clearSession) {
 	// create web view
 	QWebEngineView* view = new QWebEngineView();
 	m_webView = view;
 	view->setWindowModality(Qt::ApplicationModal);
 	view->setAttribute(Qt::WA_DeleteOnClose);
+
+	// clear session
+	if(clearSession) {
+		ClearCookies();
+	}
 
 	// set channel
 	QWebChannel* channel = new QWebChannel(view->page());
@@ -102,13 +107,17 @@ void LivePlatformWeb::OpenWeb() {
 	view->load(url);
 }
 
-void LivePlatformWeb::GrabLivePlatformInfo(QString url, QString key) {
+void LivePlatformWeb::SaveLivePlatformInfo(QString url, QString key, QString username) {
 	// save live info
 	live_platform_info_t& info = GetCurrentPlatformInfo();
 	string curl = url.toStdString();
 	string ckey = key.toStdString();
 	memcpy(info.rtmpUrl, curl.c_str(), curl.length());
 	memcpy(info.liveCode, ckey.c_str(), ckey.length());
+
+	// show account name
+	m_main->SetLivePlatformState(m_curPlatform, username);
+	m_main->UpdateLivePlatformHint();
 }
 
 void LivePlatformWeb::CloseWeb() {

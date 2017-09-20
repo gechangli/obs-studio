@@ -63,7 +63,7 @@ public:
 	Q_PROPERTY(int m_pageHeight READ getPageHeight);
 
 public slots:
-	Q_INVOKABLE void GrabLivePlatformInfo(QString url, QString key);
+	Q_INVOKABLE void SaveLivePlatformInfo(QString url, QString key, QString username);
 	Q_INVOKABLE void CloseWeb();
 	Q_INVOKABLE void ShowMessageBox(QString title, QString msg);
 	Q_INVOKABLE void ClearCookies();
@@ -73,7 +73,7 @@ public:
     virtual ~LivePlatformWeb();
 
     // open web site
-    void OpenWeb();
+    void OpenWeb(bool clearSession = false);
 
 	// associate main
 	void SetMain(OBSBasic* m);

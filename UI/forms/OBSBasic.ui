@@ -7,7 +7,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1549</width>
+    <width>1440</width>
     <height>820</height>
    </rect>
   </property>
@@ -38,25 +38,6 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QLabel" name="previewDisabledLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::CustomContextMenu</enum>
-        </property>
-        <property name="text">
-         <string>Basic.Main.PreviewDisabled</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="previewLayout">
         <property name="spacing">
          <number>2</number>
@@ -86,6 +67,31 @@
             <property name="contextMenuPolicy">
              <enum>Qt::CustomContextMenu</enum>
             </property>
+            <widget class="QLabel" name="previewDisabledLabel">
+             <property name="geometry">
+              <rect>
+               <x>-20</x>
+               <y>-20</y>
+               <width>702</width>
+               <height>498</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::CustomContextMenu</enum>
+             </property>
+             <property name="text">
+              <string>Basic.Main.PreviewDisabled</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
             <addaction name="actionRemoveSource"/>
            </widget>
           </item>
@@ -102,7 +108,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1549</width>
+     <width>1440</width>
      <height>22</height>
     </rect>
    </property>
@@ -632,7 +638,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>230</width>
+          <width>212</width>
           <height>16</height>
          </rect>
         </property>
@@ -1100,6 +1106,23 @@
         </property>
        </column>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="liveInfoPanel">
+       <item>
+        <widget class="QLabel" name="liveInfoLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>

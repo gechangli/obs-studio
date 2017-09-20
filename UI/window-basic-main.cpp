@@ -320,11 +320,17 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		// operation
 		QWidget* widget = new QWidget();
 		QHBoxLayout* layout = new QHBoxLayout();
+		QSpacerItem* sep1 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
 		QPushButton* btnLogin = new QPushButton(QApplication::translate("OBSBasic", "LogIn", Q_NULLPTR));
+		btnLogin->setProperty("row", QVariant(i));
+		connect(btnLogin, SIGNAL(clicked(bool)), this, SLOT(onLiveLoginClicked(bool)));
 		QPushButton* btnSwitchAccount = new QPushButton(QApplication::translate("OBSBasic", "SwitchAccount", Q_NULLPTR));
-		QSpacerItem* sep1 = new QSpacerItem(5, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
-		layout->addWidget(btnLogin);
+		btnSwitchAccount->setProperty("row", QVariant(i));
+		connect(btnSwitchAccount, SIGNAL(clicked(bool)), this, SLOT(onLiveSwitchAccountClicked(bool)));
+		QSpacerItem* sep2 = new QSpacerItem(5, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
 		layout->addSpacerItem(sep1);
+		layout->addWidget(btnLogin);
+		layout->addSpacerItem(sep2);
 		layout->addWidget(btnSwitchAccount);
 		widget->setLayout(layout);
 		ui->liveTable->setCellWidget(i, 3, widget);
@@ -343,32 +349,46 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	m_lpWeb.SetMain(this);
 }
 
-//void OBSBasic::on_liveTable_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
-//	// get new platform
-//	int idx = ui->liveList->currentRow();
-//	LivePlatform plt = (LivePlatform)idx;
-//
-//	// check changed
-//	LivePlatform oldPlt = m_lpWeb.GetCurrentPlatform();
-//	bool changed = oldPlt != plt;
-//
-//	// save old info
-//	if(changed) {
-//		live_platform_info_t info = {
-//			"",
-//			""
-//		};
-//		strcpy(info.rtmpUrl, ui->rtmpUrlEdit->text().toStdString().c_str());
-//		strcpy(info.liveCode, ui->liveCodeEdit->text().toStdString().c_str());
-//		m_lpWeb.SetCurrentPlatformInfo(info);
-//	}
-//
-//	// populate selected info
-//	m_lpWeb.SetCurrentPlatform(plt);
-//	live_platform_info_t& info = m_lpWeb.GetCurrentPlatformInfo();
-//	ui->rtmpUrlEdit->setText(info.rtmpUrl);
-//	ui->liveCodeEdit->setText(info.liveCode);
-//}
+void OBSBasic::SetLivePlatformState(LivePlatform plt, QString text) {
+	QTableWidgetItem* item = ui->liveTable->item(plt, 2);
+	item->setText(text);
+}
+
+void OBSBasic::UpdateLivePlatformHint() {
+	int row = ui->liveTable->currentRow();
+	live_platform_info_t& info = m_lpWeb.GetPlatformInfo((LivePlatform)row);
+	ui->liveInfoLabel->setText(info.rtmpUrl);
+}
+
+
+void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
+	UpdateLivePlatformHint();
+}
+
+void OBSBasic::onLiveLoginClicked(bool checked) {
+	// get row number
+	UNUSED_PARAMETER(checked);
+	QObject* sender = QObject::sender();
+	int row = sender->property("row").toInt();
+
+	// set current platform and open
+	m_lpWeb.SetCurrentPlatform((LivePlatform)row);
+	m_lpWeb.OpenWeb();
+}
+
+void OBSBasic::onLiveSwitchAccountClicked(bool checked) {
+	// get row number
+	UNUSED_PARAMETER(checked);
+	QObject* sender = QObject::sender();
+	int row = sender->property("row").toInt();
+
+	// set current platform and open, but need to clear cookie first
+	m_lpWeb.SetCurrentPlatform((LivePlatform)row);
+	m_lpWeb.OpenWeb(true);
+
+	// reset state
+	SetLivePlatformState((LivePlatform)row, QApplication::translate("OBSBasic", "NotLogged", Q_NULLPTR));
+}
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
 		vector<OBSSource> &audioSources)

@@ -440,6 +440,9 @@ private slots:
 	void on_actionCopyFilters_triggered();
 	void on_actionPasteFilters_triggered();
 
+	void onLiveLoginClicked(bool checked);
+	void onLiveSwitchAccountClicked(bool checked);
+
 private:
 	/* OBS Callbacks */
 	static void SceneReordered(void *data, calldata_t *params);
@@ -491,6 +494,9 @@ public:
 
 	void NewProject();
 	void LoadProject();
+
+	void SetLivePlatformState(LivePlatform plt, QString text);
+	void UpdateLivePlatformHint();
 
 	inline void GetDisplayRect(int &x, int &y, int &cx, int &cy)
 	{
@@ -636,6 +642,8 @@ private slots:
 
 	void on_resetUI_triggered();
 	void on_lockUI_toggled(bool lock);
+
+	void on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
 
 	void logUploadFinished(const QString &text, const QString &error);
 

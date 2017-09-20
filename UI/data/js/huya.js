@@ -24,12 +24,31 @@ function amIAnchor() {
     return false;
 }
 
+function getCookie(name)  {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if(arr = document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+
 function grabUrl() {
     new QWebChannel(qt.webChannelTransport, function(channel) {
-        var url = document.getElementById('copyLink').value;
-        var lp = channel.objects.lp;
-        lp.GrabLivePlatformInfo(url, "");
-        lp.CloseWeb();
+        var save = function() {
+            var url = document.getElementById('copyLink').value;
+            if(url == '/') {
+                setTimeout(save, 200);
+            } else {
+                var username = getCookie("username");
+                if(username.indexOf('yy') == username.length - 2) {
+                    username = username.substring(0, username.length - 2);
+                }
+                var lp = channel.objects.lp;
+                lp.SaveLivePlatformInfo(url, "", username);
+                lp.CloseWeb();
+            }
+        };
+        save();
     })
 }
 
@@ -40,53 +59,57 @@ if(document.cookie.indexOf('username=') == -1) {
     // if I am anchor, open rtmp
     // if I am not, prompt user
     if(amIAnchor()) {
-        // check live is started or not by check getRtmpWrap element style
-        var ele = document.getElementById('getRtmpWrap');
-        var display = queryCss(ele, 'display');
-        if(display == 'none') {
+        // function to enable rtmp
+        var gotoRTMPDone = false;
+        var enableRTMPDone = false;
+        var openRtmp = function() {
+            // check live is started or not by check getRtmpWrap element style
             // none means stream push url is opened, so we save url
-            grabUrl();
-        } else {
-            // function to enable rtmp
-            var gotoRTMPDone = false;
-            var enableRTMPDone = false;
-            var openRtmp = function() {
-                if(!gotoRTMPDone) {
-                    var link = document.getElementById('openRTMP');
-                    if (link != null) {
-                        var a = link.children[0];
-                        if(a != null) {
-                            a.click();
-                            gotoRTMPDone = true;
-                        }
+            var wrap = document.getElementById('getRtmpWrap');
+            var isWrapInvisible = queryCss(wrap, 'display') == 'none';
+            if(isWrapInvisible) {
+                grabUrl();
+                return;
+            }
+
+            // goto rtmp section
+            if(!gotoRTMPDone) {
+                var link = document.getElementById('openRTMP');
+                if (link != null) {
+                    var a = link.children[0];
+                    if(a != null) {
+                        a.click();
+                        gotoRTMPDone = true;
                     }
                 }
+            }
+
+            // delay for a while to ensure rtmp section is shown
+            setTimeout(function () {
+                // enable rtmp
                 if(gotoRTMPDone && !enableRTMPDone) {
+                    isWrapInvisible = queryCss(wrap, 'display') == 'none';
                     var link = document.querySelector('.clickstat.get_rtmp.active');
-                    if (link != null) {
+                    if (link != null && !isWrapInvisible) {
                         link.click();
                         enableRTMPDone = true;
                     }
                 }
 
                 // check done or not
-                // if not done, redo after 1 second
-                // if yes, save url
+                // if not done, redo after a while
                 if(!gotoRTMPDone || !enableRTMPDone) {
-                    setTimeout(openRtmp, 1000);
-                } else {
-                    grabUrl();
+                    setTimeout(openRtmp, 200);
                 }
-            };
+            }, 1000);
+        };
 
-            // call first time
-            openRtmp();
-        }
+        // call first time
+        openRtmp();
     } else {
         // close web and prompt user to open live
         new QWebChannel(qt.webChannelTransport, function(channel) {
             var lp = channel.objects.lp;
-            clearAllCookie();
             lp.ShowMessageBox("\u672a\u5f00\u901a\u76f4\u64ad", "\u8bf7\u5148\u5f00\u901a\u4e3b\u64ad\u6743\u9650"); // "未开通直播", "请先开通主播权限"
             lp.ClearCookies();
             lp.CloseWeb();
