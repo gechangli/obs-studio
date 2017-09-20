@@ -983,13 +983,15 @@ bool OBSBasic::InitService()
 		QTableWidgetItem* item = ui->liveTable->itemAt(i, 0);
 		if(item->checkState() == Qt::Checked) {
 			live_platform_info_t& info = m_lpWeb.GetPlatformInfo((LivePlatform)i);
-			obs_data_t* settings = obs_data_create();
-			obs_data_set_string(settings, "server", info.rtmpUrl);
-			obs_data_set_string(settings, "key", info.liveCode);
-			obs_service_t* service = obs_service_create("rtmp_custom", "default_service", settings, nullptr);
-			obs_data_release(settings);
-			m_outputHandler->AddService(service);
-            obs_service_release(service);
+			if(strlen(info.rtmpUrl) > 0) {
+				obs_data_t *settings = obs_data_create();
+				obs_data_set_string(settings, "server", info.rtmpUrl);
+				obs_data_set_string(settings, "key", info.liveCode);
+				obs_service_t *service = obs_service_create("rtmp_custom", "default_service", settings, nullptr);
+				obs_data_release(settings);
+				m_outputHandler->AddService(service);
+				obs_service_release(service);
+			}
 		}
 	}
 
