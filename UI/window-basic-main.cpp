@@ -297,6 +297,12 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->liveTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->liveTable->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->liveTable->setRowCount(LIVE_PLATFORM_LAST + 1);
+	QStringList headers;
+	headers << QApplication::translate("OBSBasic", "Basic.Main.Live.Col1", Q_NULLPTR)
+		<< QApplication::translate("OBSBasic", "Basic.Main.Live.Col2", Q_NULLPTR)
+		<< QApplication::translate("OBSBasic", "Basic.Main.Live.Col3", Q_NULLPTR)
+		<< QApplication::translate("OBSBasic", "Basic.Main.Live.Col4", Q_NULLPTR);
+	ui->liveTable->setHorizontalHeaderLabels(headers);
 
 	// add item to live table
 	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
