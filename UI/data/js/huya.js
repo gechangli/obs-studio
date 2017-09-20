@@ -53,13 +53,11 @@ function grabUrl() {
 }
 
 if(document.cookie.indexOf('username=') == -1) {
-    // need login, simplify login page
-    simplifyLoginPage();
-
     // show web view
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
         lp.ShowWeb();
+        simplifyLoginPage();
     })
 } else {
     // if I am anchor, open rtmp

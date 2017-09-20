@@ -53,13 +53,11 @@ function simplifyRoomSettingsPage() {
 }
 
 if (window.location.href.indexOf("login") > 0) {
-    // simplify page
-    simplifyLoginPage();
-
     // show web view
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
         lp.ShowWeb();
+        simplifyLoginPage();
     })
 } else if(window.location.href.indexOf("room/my") > 0) {
     // check cookie to see if user enables broadcast
@@ -70,11 +68,14 @@ if (window.location.href.indexOf("login") > 0) {
             // simplify page
             simplifyRoomSettingsPage();
 
-            // show web view
-            new QWebChannel(qt.webChannelTransport, function(channel) {
-                var lp = channel.objects.lp;
-                lp.ShowWeb();
-            })
+            // auto click open
+            var btnOpenLive = document.getElementById('js_start_show');
+            btnOpenLive.click();
+
+            // reload current page after a while
+            setTimeout(function() {
+                window.location.href = "https://www.douyu.com/room/my";
+            }, 1000);
         } else {
             // get rtmp url and push code, set it back
             new QWebChannel(qt.webChannelTransport, function(channel) {
