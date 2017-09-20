@@ -49,6 +49,20 @@ int LivePlatformWeb::getPageHeight() {
 	return m_pageHeight;
 }
 
+void LivePlatformWeb::HideWeb() {
+	if(m_webView) {
+		m_webView->hide();
+		m_progressDialog->show();
+	}
+}
+
+void LivePlatformWeb::ShowWeb() {
+	if(m_webView) {
+		m_webView->show();
+		m_progressDialog->hide();
+	}
+}
+
 void LivePlatformWeb::OpenWeb(bool clearSession) {
 	// create web view
 	QWebEngineView* view = new QWebEngineView();
@@ -94,12 +108,9 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 				view->page()->runJavaScript(GetJavascriptFileContent("js/huya.js"));
 				break;
 		}
-		m_progressDialog->hide();
-		view->show();
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
-		view->hide();
-		m_progressDialog->show();
+		HideWeb();
 	});
 
 	// open home
@@ -124,6 +135,7 @@ void LivePlatformWeb::CloseWeb() {
 	if(m_webView) {
 		m_webView->close();
 		m_webView = nullptr;
+		m_progressDialog->hide();
 	}
 }
 

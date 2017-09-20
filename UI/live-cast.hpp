@@ -67,6 +67,8 @@ public slots:
 	Q_INVOKABLE void CloseWeb();
 	Q_INVOKABLE void ShowMessageBox(QString title, QString msg);
 	Q_INVOKABLE void ClearCookies();
+	Q_INVOKABLE void HideWeb();
+	Q_INVOKABLE void ShowWeb();
 
 public:
     LivePlatformWeb();

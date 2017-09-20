@@ -55,6 +55,12 @@ function simplifyRoomSettingsPage() {
 if (window.location.href.indexOf("login") > 0) {
     // simplify page
     simplifyLoginPage();
+
+    // show web view
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+        var lp = channel.objects.lp;
+        lp.ShowWeb();
+    })
 } else if(window.location.href.indexOf("room/my") > 0) {
     // check cookie to see if user enables broadcast
     // if acf_own_room is 1, then broadcast is enabled
@@ -63,6 +69,12 @@ if (window.location.href.indexOf("login") > 0) {
         if(document.querySelector('#rtmp_url') == null) {
             // simplify page
             simplifyRoomSettingsPage();
+
+            // show web view
+            new QWebChannel(qt.webChannelTransport, function(channel) {
+                var lp = channel.objects.lp;
+                lp.ShowWeb();
+            })
         } else {
             // get rtmp url and push code, set it back
             new QWebChannel(qt.webChannelTransport, function(channel) {

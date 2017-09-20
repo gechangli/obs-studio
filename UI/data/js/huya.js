@@ -55,6 +55,12 @@ function grabUrl() {
 if(document.cookie.indexOf('username=') == -1) {
     // need login, simplify login page
     simplifyLoginPage();
+
+    // show web view
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+        var lp = channel.objects.lp;
+        lp.ShowWeb();
+    })
 } else {
     // if I am anchor, open rtmp
     // if I am not, prompt user
