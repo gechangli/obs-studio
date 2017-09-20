@@ -325,23 +325,23 @@ OBSBasic::OBSBasic(QWidget *parent) :
 
 		// operation
 		QWidget* widget = new QWidget();
-		QHBoxLayout* layout = new QHBoxLayout();
+		QHBoxLayout* layout = new QHBoxLayout(widget);
+        QMargins margins = layout->contentsMargins();
+        margins.setTop(0);
+        margins.setBottom(0);
+        layout->setContentsMargins(margins);
 		QSpacerItem* sep1 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
 		QPushButton* btnLogin = new QPushButton(QApplication::translate("OBSBasic", "LogIn", Q_NULLPTR));
 		btnLogin->setProperty("row", QVariant(i));
-		btnLogin->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 		connect(btnLogin, SIGNAL(clicked(bool)), this, SLOT(onLiveLoginClicked(bool)));
 		QPushButton* btnSwitchAccount = new QPushButton(QApplication::translate("OBSBasic", "SwitchAccount", Q_NULLPTR));
 		btnSwitchAccount->setProperty("row", QVariant(i));
-		btnSwitchAccount->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 		connect(btnSwitchAccount, SIGNAL(clicked(bool)), this, SLOT(onLiveSwitchAccountClicked(bool)));
 		QSpacerItem* sep2 = new QSpacerItem(5, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
 		layout->addSpacerItem(sep1);
 		layout->addWidget(btnLogin);
 		layout->addSpacerItem(sep2);
 		layout->addWidget(btnSwitchAccount);
-		widget->setLayout(layout);
-		widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 		ui->liveTable->setCellWidget(i, 3, widget);
 	}
 	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
