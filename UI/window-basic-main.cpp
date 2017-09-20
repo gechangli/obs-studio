@@ -329,9 +329,11 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		QSpacerItem* sep1 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
 		QPushButton* btnLogin = new QPushButton(QApplication::translate("OBSBasic", "LogIn", Q_NULLPTR));
 		btnLogin->setProperty("row", QVariant(i));
+		btnLogin->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 		connect(btnLogin, SIGNAL(clicked(bool)), this, SLOT(onLiveLoginClicked(bool)));
 		QPushButton* btnSwitchAccount = new QPushButton(QApplication::translate("OBSBasic", "SwitchAccount", Q_NULLPTR));
 		btnSwitchAccount->setProperty("row", QVariant(i));
+		btnSwitchAccount->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 		connect(btnSwitchAccount, SIGNAL(clicked(bool)), this, SLOT(onLiveSwitchAccountClicked(bool)));
 		QSpacerItem* sep2 = new QSpacerItem(5, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
 		layout->addSpacerItem(sep1);
@@ -339,6 +341,7 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		layout->addSpacerItem(sep2);
 		layout->addWidget(btnSwitchAccount);
 		widget->setLayout(layout);
+		widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 		ui->liveTable->setCellWidget(i, 3, widget);
 	}
 	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
@@ -4345,16 +4348,16 @@ void OBSBasic::StreamingStop(int code, QString last_error)
 
 void OBSBasic::StartRecording()
 {
-//	if (RecordingActive())
-//		return;
-//	if (disableOutputsRef)
-//		return;
-//
-//	if (api)
-//		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTING);
-//
-//	SaveProject();
-//	outputHandler->StartRecording();
+	if (RecordingActive())
+		return;
+	if (disableOutputsRef)
+		return;
+
+	if (api)
+		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTING);
+
+	SaveProject();
+	m_outputHandler->StartRecording();
 }
 
 void OBSBasic::RecordStopping()
@@ -4371,29 +4374,29 @@ void OBSBasic::RecordStopping()
 
 void OBSBasic::StopRecording()
 {
-//	SaveProject();
-//
-//	if (RecordingActive())
-//		outputHandler->StopRecording(recordingStopping);
-//
-//	OnDeactivate();
+	SaveProject();
+
+	if (RecordingActive())
+		m_outputHandler->StopRecording(recordingStopping);
+
+	OnDeactivate();
 }
 
 void OBSBasic::RecordingStart()
 {
-//	ui->statusbar->RecordingStarted(outputHandler->fileOutput);
-//	ui->recordButton->setText(QTStr("Basic.Main.StopRecording"));
-//
-//	if (sysTrayRecord)
-//		sysTrayRecord->setText(ui->recordButton->text());
-//
-//	recordingStopping = false;
-//	if (api)
-//		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTED);
-//
-//	OnActivate();
-//
-//	blog(LOG_INFO, RECORDING_START);
+	ui->statusbar->RecordingStarted(m_outputHandler->fileOutput);
+	ui->recordButton->setText(QTStr("Basic.Main.StopRecording"));
+
+	if (sysTrayRecord)
+		sysTrayRecord->setText(ui->recordButton->text());
+
+	recordingStopping = false;
+	if (api)
+		api->on_event(OBS_FRONTEND_EVENT_RECORDING_STARTED);
+
+	OnActivate();
+
+	blog(LOG_INFO, RECORDING_START);
 }
 
 void OBSBasic::RecordingStop(int code)
@@ -4445,126 +4448,126 @@ void OBSBasic::RecordingStop(int code)
 
 void OBSBasic::StartReplayBuffer()
 {
-//	if (!outputHandler || !outputHandler->replayBuffer)
-//		return;
-//	if (outputHandler->ReplayBufferActive())
-//		return;
-//	if (disableOutputsRef)
-//		return;
-//
-//	obs_output_t *output = outputHandler->replayBuffer;
-//	obs_data_t *hotkeys = obs_hotkeys_save_output(output);
-//	obs_data_array_t *bindings = obs_data_get_array(hotkeys,
-//			"ReplayBuffer.Save");
-//	size_t count = obs_data_array_count(bindings);
-//	obs_data_array_release(bindings);
-//	obs_data_release(hotkeys);
-//
-//	if (!count) {
-//		OBSMessageBox::information(this,
-//				RP_NO_HOTKEY_TITLE,
-//				RP_NO_HOTKEY_TEXT);
-//		return;
-//	}
-//
-//	if (api)
-//		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STARTING);
-//
-//	SaveProject();
-//	outputHandler->StartReplayBuffer();
+	if (!m_outputHandler || !m_outputHandler->replayBuffer)
+		return;
+	if (m_outputHandler->ReplayBufferActive())
+		return;
+	if (disableOutputsRef)
+		return;
+
+	obs_output_t *output = m_outputHandler->replayBuffer;
+	obs_data_t *hotkeys = obs_hotkeys_save_output(output);
+	obs_data_array_t *bindings = obs_data_get_array(hotkeys,
+			"ReplayBuffer.Save");
+	size_t count = obs_data_array_count(bindings);
+	obs_data_array_release(bindings);
+	obs_data_release(hotkeys);
+
+	if (!count) {
+		OBSMessageBox::information(this,
+				RP_NO_HOTKEY_TITLE,
+				RP_NO_HOTKEY_TEXT);
+		return;
+	}
+
+	if (api)
+		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STARTING);
+
+	SaveProject();
+	m_outputHandler->StartReplayBuffer();
 }
 
 void OBSBasic::ReplayBufferStopping()
 {
-//	if (!outputHandler || !outputHandler->replayBuffer)
-//		return;
-//
-//	replayBufferButton->setText(QTStr("Basic.Main.StoppingReplayBuffer"));
-//
-//	if (sysTrayReplayBuffer)
-//		sysTrayReplayBuffer->setText(replayBufferButton->text());
-//
-//	replayBufferStopping = true;
-//	if (api)
-//		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STOPPING);
+	if (!m_outputHandler || !m_outputHandler->replayBuffer)
+		return;
+
+	replayBufferButton->setText(QTStr("Basic.Main.StoppingReplayBuffer"));
+
+	if (sysTrayReplayBuffer)
+		sysTrayReplayBuffer->setText(replayBufferButton->text());
+
+	replayBufferStopping = true;
+	if (api)
+		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STOPPING);
 }
 
 void OBSBasic::StopReplayBuffer()
 {
-//	if (!outputHandler || !outputHandler->replayBuffer)
-//		return;
-//
-//	SaveProject();
-//
-//	if (outputHandler->ReplayBufferActive())
-//		outputHandler->StopReplayBuffer(replayBufferStopping);
-//
-//	OnDeactivate();
+	if (!m_outputHandler || !m_outputHandler->replayBuffer)
+		return;
+
+	SaveProject();
+
+	if (m_outputHandler->ReplayBufferActive())
+		m_outputHandler->StopReplayBuffer(replayBufferStopping);
+
+	OnDeactivate();
 }
 
 void OBSBasic::ReplayBufferStart()
 {
-//	if (!outputHandler || !outputHandler->replayBuffer)
-//		return;
-//
-//	replayBufferButton->setText(QTStr("Basic.Main.StopReplayBuffer"));
-//
-//	if (sysTrayReplayBuffer)
-//		sysTrayReplayBuffer->setText(replayBufferButton->text());
-//
-//	replayBufferStopping = false;
-//	if (api)
-//		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STARTED);
-//
-//	OnActivate();
-//
-//	blog(LOG_INFO, REPLAY_BUFFER_START);
+	if (!m_outputHandler || !m_outputHandler->replayBuffer)
+		return;
+
+	replayBufferButton->setText(QTStr("Basic.Main.StopReplayBuffer"));
+
+	if (sysTrayReplayBuffer)
+		sysTrayReplayBuffer->setText(replayBufferButton->text());
+
+	replayBufferStopping = false;
+	if (api)
+		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STARTED);
+
+	OnActivate();
+
+	blog(LOG_INFO, REPLAY_BUFFER_START);
 }
 
 void OBSBasic::ReplayBufferStop(int code)
 {
-//	if (!outputHandler || !outputHandler->replayBuffer)
-//		return;
-//
-//	replayBufferButton->setText(QTStr("Basic.Main.StartReplayBuffer"));
-//
-//	if (sysTrayReplayBuffer)
-//		sysTrayReplayBuffer->setText(replayBufferButton->text());
-//
-//	blog(LOG_INFO, REPLAY_BUFFER_STOP);
-//
-//	if (code == OBS_OUTPUT_UNSUPPORTED && isVisible()) {
-//		OBSMessageBox::information(this,
-//				QTStr("Output.RecordFail.Title"),
-//				QTStr("Output.RecordFail.Unsupported"));
-//
-//	} else if (code == OBS_OUTPUT_NO_SPACE && isVisible()) {
-//		OBSMessageBox::information(this,
-//				QTStr("Output.RecordNoSpace.Title"),
-//				QTStr("Output.RecordNoSpace.Msg"));
-//
-//	} else if (code != OBS_OUTPUT_SUCCESS && isVisible()) {
-//		OBSMessageBox::information(this,
-//				QTStr("Output.RecordError.Title"),
-//				QTStr("Output.RecordError.Msg"));
-//
-//	} else if (code == OBS_OUTPUT_UNSUPPORTED && !isVisible()) {
-//		SysTrayNotify(QTStr("Output.RecordFail.Unsupported"),
-//			QSystemTrayIcon::Warning);
-//
-//	} else if (code == OBS_OUTPUT_NO_SPACE && !isVisible()) {
-//		SysTrayNotify(QTStr("Output.RecordNoSpace.Msg"),
-//			QSystemTrayIcon::Warning);
-//
-//	} else if (code != OBS_OUTPUT_SUCCESS && !isVisible()) {
-//		SysTrayNotify(QTStr("Output.RecordError.Msg"),
-//			QSystemTrayIcon::Warning);
-//	}
-//
-//	if (api)
-//		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STOPPED);
-//
-//	OnDeactivate();
+	if (!m_outputHandler || !m_outputHandler->replayBuffer)
+		return;
+
+	replayBufferButton->setText(QTStr("Basic.Main.StartReplayBuffer"));
+
+	if (sysTrayReplayBuffer)
+		sysTrayReplayBuffer->setText(replayBufferButton->text());
+
+	blog(LOG_INFO, REPLAY_BUFFER_STOP);
+
+	if (code == OBS_OUTPUT_UNSUPPORTED && isVisible()) {
+		OBSMessageBox::information(this,
+				QTStr("Output.RecordFail.Title"),
+				QTStr("Output.RecordFail.Unsupported"));
+
+	} else if (code == OBS_OUTPUT_NO_SPACE && isVisible()) {
+		OBSMessageBox::information(this,
+				QTStr("Output.RecordNoSpace.Title"),
+				QTStr("Output.RecordNoSpace.Msg"));
+
+	} else if (code != OBS_OUTPUT_SUCCESS && isVisible()) {
+		OBSMessageBox::information(this,
+				QTStr("Output.RecordError.Title"),
+				QTStr("Output.RecordError.Msg"));
+
+	} else if (code == OBS_OUTPUT_UNSUPPORTED && !isVisible()) {
+		SysTrayNotify(QTStr("Output.RecordFail.Unsupported"),
+			QSystemTrayIcon::Warning);
+
+	} else if (code == OBS_OUTPUT_NO_SPACE && !isVisible()) {
+		SysTrayNotify(QTStr("Output.RecordNoSpace.Msg"),
+			QSystemTrayIcon::Warning);
+
+	} else if (code != OBS_OUTPUT_SUCCESS && !isVisible()) {
+		SysTrayNotify(QTStr("Output.RecordError.Msg"),
+			QSystemTrayIcon::Warning);
+	}
+
+	if (api)
+		api->on_event(OBS_FRONTEND_EVENT_REPLAY_BUFFER_STOPPED);
+
+	OnDeactivate();
 }
 
 void OBSBasic::on_streamButton_clicked()

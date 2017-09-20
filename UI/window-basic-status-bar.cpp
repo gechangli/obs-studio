@@ -408,15 +408,15 @@ void OBSBasicStatusBar::UpdateStatusBar()
 
 void OBSBasicStatusBar::StreamDelayStarting(int sec)
 {
-//	OBSBasic *main = qobject_cast<OBSBasic*>(parent());
-//	if (!main || !main->outputHandler)
-//		return;
-//
-//	streamOutput = main->outputHandler->streamOutput;
-//
-//	delaySecTotal = delaySecStarting = sec;
-//	UpdateDelayMsg();
-//	Activate();
+	OBSBasic *main = qobject_cast<OBSBasic*>(parent());
+	if (!main || !main->m_outputHandler)
+		return;
+
+	streamOutput = main->m_outputHandler->streamOutput;
+
+	delaySecTotal = delaySecStarting = sec;
+	UpdateDelayMsg();
+	Activate();
 }
 
 void OBSBasicStatusBar::StreamDelayStopping(int sec)
