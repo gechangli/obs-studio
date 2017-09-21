@@ -216,7 +216,7 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	bool obs_frontend_streaming_active(void) override
 	{
-		return main->m_outputHandler->StreamingActive();
+		return main->outputHandler->StreamingActive();
 	}
 
 	void obs_frontend_recording_start(void) override
@@ -231,7 +231,7 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	bool obs_frontend_recording_active(void) override
 	{
-		return main->m_outputHandler->RecordingActive();
+		return main->outputHandler->RecordingActive();
 	}
 
 	void obs_frontend_replay_buffer_start(void) override
@@ -246,7 +246,7 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	bool obs_frontend_replay_buffer_active(void) override
 	{
-		return main->m_outputHandler->ReplayBufferActive();
+		return main->outputHandler->ReplayBufferActive();
 	}
 
 	void *obs_frontend_add_tools_menu_qaction(const char *name) override
@@ -289,21 +289,21 @@ struct OBSStudioAPI : obs_frontend_callbacks {
 
 	obs_output_t *obs_frontend_get_streaming_output(void) override
 	{
-		OBSOutput output = main->m_outputHandler->streamOutput;
+		OBSOutput output = main->outputHandler->streamOutput;
 		obs_output_addref(output);
 		return output;
 	}
 
 	obs_output_t *obs_frontend_get_recording_output(void) override
 	{
-		OBSOutput out = main->m_outputHandler->fileOutput;
+		OBSOutput out = main->outputHandler->fileOutput;
 		obs_output_addref(out);
 		return out;
 	}
 
 	obs_output_t *obs_frontend_get_replay_buffer_output(void) override
 	{
-		OBSOutput out = main->m_outputHandler->replayBuffer;
+		OBSOutput out = main->outputHandler->replayBuffer;
 		obs_output_addref(out);
 		return out;
 	}

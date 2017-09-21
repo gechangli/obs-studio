@@ -409,10 +409,10 @@ void OBSBasicStatusBar::UpdateStatusBar()
 void OBSBasicStatusBar::StreamDelayStarting(int sec)
 {
 	OBSBasic *main = qobject_cast<OBSBasic*>(parent());
-	if (!main || !main->m_outputHandler)
+	if (!main || !main->outputHandler)
 		return;
 
-	streamOutput = main->m_outputHandler->streamOutput;
+	streamOutput = main->outputHandler->streamOutput;
 
 	delaySecTotal = delaySecStarting = sec;
 	UpdateDelayMsg();

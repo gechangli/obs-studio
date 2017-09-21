@@ -649,6 +649,11 @@ bool SimpleOutput::StartStreaming()
 	if (!Active())
 		SetupOutputs();
 
+	// if no live platform selected, abort
+	if(m_services.empty()) {
+		return false;
+	}
+
 	/* --------------------- */
 
 	const char *type = obs_service_get_output_type(GetFirstService());

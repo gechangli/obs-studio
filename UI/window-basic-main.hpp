@@ -142,7 +142,7 @@ private:
 	QPointer<QTimer>    cpuUsageTimer;
 	os_cpu_usage_info_t *cpuUsageInfo = nullptr;
 
-	BasicOutputHandler* m_outputHandler;
+	std::unique_ptr<BasicOutputHandler> outputHandler;
 	bool streamingStopping = false;
 	bool recordingStopping = false;
 	bool replayBufferStopping = false;
@@ -199,7 +199,6 @@ private:
 	void          ClearHotkeys();
 
 	bool          InitService();
-	void ClearServices();
 
 	bool          InitBasicConfigDefaults();
 	bool          InitBasicConfig();
