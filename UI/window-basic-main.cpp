@@ -355,7 +355,9 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
 
 	// hide some UI we don't need
-    ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
+	ui->settingsButton->setVisible(false);
+	ui->modeSwitch->setVisible(false);
+	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
 
 	// set main
