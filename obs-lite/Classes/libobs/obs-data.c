@@ -26,7 +26,7 @@
 #include "graphics/quat.h"
 #include "obs-data.h"
 
-#include <jansson.h>
+#include "jansson.h"
 
 struct obs_data_item {
 	volatile long        ref;

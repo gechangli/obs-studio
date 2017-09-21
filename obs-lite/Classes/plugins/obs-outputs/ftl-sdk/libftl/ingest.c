@@ -2,7 +2,7 @@
 #include "ftl_private.h"
 #ifndef DISABLE_AUTO_INGEST
 #include <curl/curl.h>
-#include <jansson.h>
+#include "jansson.h"
 #endif
 
 static int _ingest_lookup_ip(const char *ingest_location, char ***ingest_ip);

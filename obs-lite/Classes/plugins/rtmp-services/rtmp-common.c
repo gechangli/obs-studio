@@ -1,7 +1,7 @@
 #include <util/platform.h>
 #include <util/dstr.h>
 #include <obs-module.h>
-#include <jansson.h>
+#include "jansson.h"
 
 #include "rtmp-format-ver.h"
 #include "twitch.h"

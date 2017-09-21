@@ -3,7 +3,7 @@
 #include <util/platform.h>
 #include <obs-module.h>
 #include <util/dstr.h>
-#include <jansson.h>
+#include "jansson.h"
 
 #include "twitch.h"
 
