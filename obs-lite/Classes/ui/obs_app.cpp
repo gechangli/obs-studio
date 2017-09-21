@@ -17,6 +17,7 @@
 #include "obs-internal.h"
 #include "obs_app.hpp"
 #include <TargetConditionals.h>
+#import <OpenGL/gl.h>
 
 using namespace std;
 
@@ -489,6 +490,42 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     
     // render to main view
     obs_render_main_view();
+    
+    // DEBUG: test code for grab opengl buffer
+//    #define WindowWidth ovi.base_width
+//    #define WindowHeight previewCY
+//    FILE*     pWritingFile = 0;
+//    GLubyte   BMP_Header[] = {
+//        0x42, 0x4D, 0xD6, 0x2E, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+//        0x36, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0xD0, 0x02,
+//        0x00, 0x00, 0x4A, 0x03, 0x00, 0x00, 0x01, 0x00, 0x18, 0x00,
+//        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x0B,
+//        0x00, 0x00, 0x40, 0x0B, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+//        0x00, 0x00, 0x00, 0x00
+//    };
+//    GLint     pixelWidth = WindowWidth * 3;
+//    GLint PixelDataLength = pixelWidth * WindowHeight;
+//    GLint FileLength = PixelDataLength + sizeof(BMP_Header);
+//    GLubyte* pPixelData = (GLubyte* )malloc(PixelDataLength);
+//    pWritingFile = fopen("/Users/maruojie/Desktop/a.bmp", "wb");
+//    if( pWritingFile == 0 )
+//        exit(0);
+//    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+//    glReadPixels(0, 0,
+//                 WindowWidth, WindowHeight,
+//                 GL_RGB, GL_UNSIGNED_BYTE, pPixelData);
+//    fwrite(BMP_Header, sizeof(BMP_Header), 1, pWritingFile);
+//    fseek(pWritingFile, 0x2, SEEK_SET);
+//    fwrite(&FileLength, 4, 1, pWritingFile);
+//    fseek(pWritingFile, 0x0012, SEEK_SET);
+//    pixelWidth = WindowWidth;
+//    int j = WindowHeight;
+//    fwrite(&pixelWidth, sizeof(pixelWidth), 1, pWritingFile);
+//    fwrite(&j, sizeof(j), 1, pWritingFile);
+//    fseek(pWritingFile, 0, SEEK_END);
+//    fwrite(pPixelData, PixelDataLength, 1, pWritingFile);
+//    fclose(pWritingFile);
+//    free(pPixelData);
     
     // clear buffer
     gs_load_vertexbuffer(nullptr);
