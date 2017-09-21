@@ -354,11 +354,7 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	}
 	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
 
-	// hide some button we don't need
-	ui->recordButton->setVisible(false);
-	ui->settingsButton->setVisible(false);
-	ui->modeSwitch->setVisible(false);
-	ui->exitButton->setVisible(false);
+	// hide some UI we don't need
     ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
 
@@ -1410,6 +1406,9 @@ void OBSBasic::OBSInit()
 
 	blog(LOG_INFO, STARTUP_SEPARATOR);
 
+	// create output handler
+	m_outputHandler = CreateSimpleOutputHandler(this);
+	
 	ResetOutputs();
 	CreateHotkeys();
 
