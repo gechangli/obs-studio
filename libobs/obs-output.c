@@ -195,8 +195,10 @@ void obs_output_destroy(obs_output_t *output)
 		if (data_capture_ending(output))
 			pthread_join(output->end_data_capture_thread, NULL);
 
-		for(int i = 0; i < output->services.num; i++)
+		for(int i = 0; i < output->services.num; i++) {
 			output->services.array[i]->output = NULL;
+			obs_service_release(output->services.array[i]);
+		}
 		if (output->context.data) {
 			for(int i = 0; i < output->datas.num; i++) {
 				output->info.destroy(output->datas.array[i]);
@@ -204,6 +206,8 @@ void obs_output_destroy(obs_output_t *output)
 		}
 
 		free_packets(output);
+		da_free(output->services);
+		da_free(output->datas);
 
 		if (output->video_encoder) {
 			obs_encoder_remove_output(output->video_encoder,
@@ -230,11 +234,6 @@ void obs_output_destroy(obs_output_t *output)
 		if (output->last_error_message)
 			bfree(output->last_error_message);
 		bfree(output);
-
-		// release services
-		for(int i = 0; i < output->services.num; i++) {
-			obs_service_release(output->services.array[i]);
-		}
 	}
 }
 
