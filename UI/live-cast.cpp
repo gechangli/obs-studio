@@ -100,6 +100,7 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
 		view->page()->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
+		view->page()->runJavaScript(GetJavascriptFileContent("js/util.js"));
 		switch(m_curPlatform) {
 			case LIVE_PLATFORM_DOUYU:
 				view->page()->runJavaScript(GetJavascriptFileContent("js/douyu.js"));

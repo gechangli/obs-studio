@@ -9,10 +9,6 @@ function simplifyLoginPage() {
     document.querySelector('.login-hd').remove();
 }
 
-function queryCss(o, key) {
-    return o.currentStyle? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
-}
-
 function amIAnchor() {
     var list = document.querySelectorAll('.nav-section>.header');
     for(var i in list) {
@@ -22,14 +18,6 @@ function amIAnchor() {
         }
     }
     return false;
-}
-
-function getCookie(name)  {
-    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if(arr = document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
 }
 
 function grabUrl() {
@@ -52,14 +40,15 @@ function grabUrl() {
     })
 }
 
-if(document.cookie.indexOf('username=') == -1) {
-    // show web view
+function onLoginPage() {
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
         lp.ShowWeb();
         simplifyLoginPage();
     })
-} else {
+}
+
+function onSettingsPage() {
     // if I am anchor, open rtmp
     // if I am not, prompt user
     if(amIAnchor()) {
@@ -119,4 +108,17 @@ if(document.cookie.indexOf('username=') == -1) {
             lp.CloseWeb();
         })
     }
+}
+
+function onOtherPage() {
+    window.location.href = 'http://i.huya.com/index.php?m=ProfileSetting';
+}
+
+// dispatch
+if(getCookie('username') == null) {
+    onLoginPage();
+} else if(window.location.href.indexOf('i.huya.com') != -1) {
+    onSettingsPage();
+} else {
+    onOtherPage();
 }

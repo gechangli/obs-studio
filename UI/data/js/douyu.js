@@ -1,13 +1,5 @@
 "use strict";
 
-function getCookie(name)  {
-    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if(arr = document.cookie.match(reg))
-        return unescape(arr[2]);
-    else
-        return null;
-}
-
 function simplifyLoginPage() {
     document.getElementById("header").remove();
     document.getElementById("footer").remove();
@@ -36,7 +28,7 @@ function simplifyLoginPage() {
     })
 }
 
-function simplifyRoomSettingsPage() {
+function simplifySettingsPage() {
     document.getElementById("header").remove();
     document.querySelector('.u_header').remove();
     document.querySelector('.u_nav').remove();
@@ -52,21 +44,23 @@ function simplifyRoomSettingsPage() {
     document.querySelector('.live_wrap.clearfix').setAttribute('style', 'width:200px;');
 }
 
-if (window.location.href.indexOf("login") > 0) {
+function onLoginPage() {
     // show web view
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
         lp.ShowWeb();
         simplifyLoginPage();
     })
-} else if(window.location.href.indexOf("room/my") > 0) {
+}
+
+function onSettingsPage() {
     // check cookie to see if user enables broadcast
     // if acf_own_room is 1, then broadcast is enabled
-    if (document.cookie.indexOf('acf_own_room=1') != -1) {
+    if (getCookie('acf_own_room') == '1') {
         // check if already in living state, we can check rtmp_url selector
         if(document.querySelector('#rtmp_url') == null) {
             // simplify page
-            simplifyRoomSettingsPage();
+            simplifySettingsPage();
 
             // auto click open
             var btnOpenLive = document.getElementById('js_start_show');
@@ -96,6 +90,17 @@ if (window.location.href.indexOf("login") > 0) {
             lp.CloseWeb();
         })
     }
-} else {
+}
+
+function onOtherPage() {
     window.location.href = "https://www.douyu.com/room/my";
+}
+
+// dispatch
+if (window.location.href.indexOf("login") > 0) {
+    onLoginPage();
+} else if(window.location.href.indexOf("room/my") > 0) {
+    onSettingsPage();
+} else {
+    onOtherPage();
 }
