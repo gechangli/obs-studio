@@ -16,6 +16,7 @@
 #include <obs.hpp>
 #include "obs-internal.h"
 #include "obs_app.hpp"
+#import "obs-module.h"
 #include <TargetConditionals.h>
 #import <OpenGL/gl.h>
 
@@ -41,6 +42,26 @@ static const string encoders[] = {
 };
 static const string &fallbackEncoder = encoders[0];
 
+// declare static modules
+OBS_DECLARE_STATIC_MODULE_CREATOR(coreaudio_encoder)
+OBS_DECLARE_STATIC_MODULE_CREATOR(mac_avcapture)
+OBS_DECLARE_STATIC_MODULE_CREATOR(mac_capture)
+OBS_DECLARE_STATIC_MODULE_CREATOR(obs_outputs)
+OBS_DECLARE_STATIC_MODULE_CREATOR(obs_transitions)
+OBS_DECLARE_STATIC_MODULE_CREATOR(obs_x264)
+OBS_DECLARE_STATIC_MODULE_CREATOR(rtmp_services)
+
+// loader for static modules
+static void loadStaticModules() {
+    OBS_OPEN_STATIC_MODULE(coreaudio_encoder);
+    OBS_OPEN_STATIC_MODULE(mac_avcapture);
+    OBS_OPEN_STATIC_MODULE(mac_capture);
+    OBS_OPEN_STATIC_MODULE(obs_outputs);
+    OBS_OPEN_STATIC_MODULE(obs_transitions);
+    OBS_OPEN_STATIC_MODULE(obs_x264);
+    OBS_OPEN_STATIC_MODULE(rtmp_services);
+}
+
 OBSApp::OBSApp(int baseWidth, int baseHeight, int w, int h) :
 m_baseWidth(baseWidth),
 m_baseHeight(baseHeight),
@@ -50,6 +71,7 @@ m_videoScale(0),
 m_delayActive(false),
 m_streamingActive(false) {
     sharedInstance = this;
+    RegisterStaticModuleLoader(loadStaticModules);
 }
 
 OBSApp::~OBSApp() {

@@ -117,6 +117,9 @@ private:
     static const char* EncoderName(const char *id);
     static const char* GetCodec(const char *id);
     
+    // load modules
+    void RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader);
+    
 public:
     // get config file path
     int GetConfigPath(char* path, size_t size, const char* name);
@@ -128,7 +131,6 @@ public:
     static OBSApp* sharedApp();
     
     // startup
-    void RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader);
     bool StartupOBS(const char* locale);
     
     // scene
