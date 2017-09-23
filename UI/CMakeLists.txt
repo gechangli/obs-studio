@@ -213,7 +213,8 @@ set(xiaomeilive_SOURCES
 	audio-encoders.cpp
 	qt-wrappers.cpp
 	live-cast.cpp
-	xl-register-dialog.cpp)
+	xl-register-dialog.cpp
+	xl-login-dialog.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -263,7 +264,8 @@ set(xiaomeilive_HEADERS
 	audio-encoders.hpp
 	qt-wrappers.hpp
 	live-cast.hpp
-	xl-register-dialog.hpp)
+	xl-register-dialog.hpp
+	xl-login-dialog.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui
@@ -281,7 +283,8 @@ set(xiaomeilive_UI
 	forms/OBSBasicInteraction.ui
 	forms/OBSUpdate.ui
 	forms/OBSRemux.ui
-	forms/XLRegisterDialog.ui)
+	forms/XLRegisterDialog.ui
+	forms/XLLoginDialog.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)
