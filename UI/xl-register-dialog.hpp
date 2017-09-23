@@ -28,6 +28,11 @@ class XLRegisterDialog : public QDialog {
 
 private:
 	std::unique_ptr<Ui::XLRegisterDialog> ui;
+	OBSBasic* m_main;
+
+private slots:
+	void on_buttonBox_accepted();
+	void on_buttonBox_rejected();
 
 public:
 	XLRegisterDialog(OBSBasic *parent);

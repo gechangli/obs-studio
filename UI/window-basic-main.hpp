@@ -61,6 +61,9 @@ class OBSBasicStats;
 
 #define PREVIEW_EDGE_SIZE 10
 
+// simple macro to load a string
+#define L(key) QApplication::translate("OBSBasic", key, Q_NULLPTR)
+
 struct BasicOutputHandler;
 
 enum class QtDataRole {
@@ -494,6 +497,9 @@ public:
 	void NewProject();
 	void LoadProject();
 
+	// login to xiguamei
+	void Login();
+
 	void SetLivePlatformState(LivePlatform plt, QString text);
 	void UpdateLivePlatformHint();
 
@@ -643,6 +649,7 @@ private slots:
 	void on_lockUI_toggled(bool lock);
 
 	void on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
+	void on_logOutButton_clicked();
 
 	void logUploadFinished(const QString &text, const QString &error);
 

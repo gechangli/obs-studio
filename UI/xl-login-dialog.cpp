@@ -20,8 +20,17 @@
 
 XLLoginDialog::XLLoginDialog(OBSBasic *parent) :
 	QDialog (parent),
-	ui(new Ui::XLLoginDialog)
+	ui(new Ui::XLLoginDialog),
+	m_main(parent)
 {
 	// init ui
 	ui->setupUi(this);
+}
+
+void XLLoginDialog::on_buttonBox_accepted() {
+
+}
+
+void XLLoginDialog::on_buttonBox_rejected() {
+
 }

@@ -20,8 +20,17 @@
 
 XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	QDialog (parent),
-	ui(new Ui::XLRegisterDialog)
+	ui(new Ui::XLRegisterDialog),
+	m_main(parent)
 {
 	// init ui
 	ui->setupUi(this);
+}
+
+void XLRegisterDialog::on_buttonBox_accepted() {
+
+}
+
+void XLRegisterDialog::on_buttonBox_rejected() {
+
 }

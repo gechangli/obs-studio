@@ -99,6 +99,7 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
+		UNUSED_PARAMETER(ok);
 		view->page()->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
 		view->page()->runJavaScript(GetJavascriptFileContent("js/util.js"));
 		switch(m_curPlatform) {

@@ -58,6 +58,7 @@
 #include "volume-control.hpp"
 #include "remote-text.hpp"
 #include "xl-register-dialog.hpp"
+#include "xl-login-dialog.hpp"
 
 #if defined(_WIN32) && defined(ENABLE_WIN_UPDATER)
 #include "win-update/win-update.hpp"
@@ -307,10 +308,10 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->liveTable->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->liveTable->setRowCount(LIVE_PLATFORM_LAST + 1);
 	QStringList headers;
-	headers << QApplication::translate("OBSBasic", "Basic.Main.Live.Col1", Q_NULLPTR)
-		<< QApplication::translate("OBSBasic", "Basic.Main.Live.Col2", Q_NULLPTR)
-		<< QApplication::translate("OBSBasic", "Basic.Main.Live.Col3", Q_NULLPTR)
-		<< QApplication::translate("OBSBasic", "Basic.Main.Live.Col4", Q_NULLPTR);
+	headers << L("Basic.Main.Live.Col1")
+		<< L("Basic.Main.Live.Col2")
+		<< L("Basic.Main.Live.Col3")
+		<< L("Basic.Main.Live.Col4");
 	ui->liveTable->setHorizontalHeaderLabels(headers);
 
 	// add item to live table
@@ -322,13 +323,13 @@ OBSBasic::OBSBasic(QWidget *parent) :
 
 		// platform name
 		QTableWidgetItem* itemName = new QTableWidgetItem();
-		itemName->setText(QApplication::translate("OBSBasic", LivePlatformNames[i], Q_NULLPTR));
+		itemName->setText(L(LivePlatformNames[i]));
 		itemName->setFlags(itemName->flags() & (~Qt::ItemIsEditable));
 		ui->liveTable->setItem(i, 1, itemName);
 
 		// status
 		QTableWidgetItem* itemState = new QTableWidgetItem();
-		itemState->setText(QApplication::translate("OBSBasic", "NotLogged", Q_NULLPTR));
+		itemState->setText(L("NotLogged"));
 		itemState->setFlags(itemName->flags() & (~Qt::ItemIsEditable));
 		ui->liveTable->setItem(i, 2, itemState);
 
@@ -340,10 +341,10 @@ OBSBasic::OBSBasic(QWidget *parent) :
         margins.setBottom(0);
         layout->setContentsMargins(margins);
 		QSpacerItem* sep1 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
-		QPushButton* btnLogin = new QPushButton(QApplication::translate("OBSBasic", "LogIn", Q_NULLPTR));
+		QPushButton* btnLogin = new QPushButton(L("LogIn"));
 		btnLogin->setProperty("row", QVariant(i));
 		connect(btnLogin, SIGNAL(clicked(bool)), this, SLOT(onLiveLoginClicked(bool)));
-		QPushButton* btnSwitchAccount = new QPushButton(QApplication::translate("OBSBasic", "SwitchAccount", Q_NULLPTR));
+		QPushButton* btnSwitchAccount = new QPushButton(L("SwitchAccount"));
 		btnSwitchAccount->setProperty("row", QVariant(i));
 		connect(btnSwitchAccount, SIGNAL(clicked(bool)), this, SLOT(onLiveSwitchAccountClicked(bool)));
 		QSpacerItem* sep2 = new QSpacerItem(5, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -381,6 +382,27 @@ void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTable
 	UpdateLivePlatformHint();
 }
 
+void OBSBasic::on_logOutButton_clicked() {
+	// if in live, prompt to end it
+	if(StreamingActive()) {
+		if (QMessageBox::question(nullptr, L("LogOut"), L("XL.Question.Confirm.End.Live")) == QMessageBox::NoButton) {
+			return;
+		} else {
+			ForceStopStreaming();
+		}
+	}
+
+	// remove current account settings
+	config_remove_value(basicConfig, "XiaomeiLive", "Username");
+	config_remove_value(basicConfig, "XiaomeiLive", "Password");
+	config_remove_value(basicConfig, "XiaomeiLive", "RememberPassword");
+	config_remove_value(basicConfig, "XiaomeiLive", "AutoLogin");
+
+	// re-show login dialog
+	XLLoginDialog login(this);
+	login.exec();
+}
+
 void OBSBasic::onLiveLoginClicked(bool checked) {
 	// get row number
 	UNUSED_PARAMETER(checked);
@@ -403,7 +425,7 @@ void OBSBasic::onLiveSwitchAccountClicked(bool checked) {
 	m_lpWeb.OpenWeb(true);
 
 	// reset state
-	SetLivePlatformState((LivePlatform)row, QApplication::translate("OBSBasic", "NotLogged", Q_NULLPTR));
+	SetLivePlatformState((LivePlatform)row, L("NotLogged"));
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
@@ -1568,12 +1590,26 @@ void OBSBasic::OBSInit()
     }
 
 	// check current user, if has not, show register dialog
-	const char * username = config_get_string(basicConfig, "Backend", "Username");
+	// if has, check auto login flag
+	const char * username = config_get_string(basicConfig, "XiaomeiLive", "Username");
 	if(username == nullptr) {
 		XLRegisterDialog reg(this);
-		reg.setWindowTitle(QApplication::translate("OBSBasic", "XL.Register.Title", Q_NULLPTR));
+		reg.setWindowTitle(L("XL.Register.Title"));
 		reg.exec();
+	} else {
+		bool autoLogin = config_get_bool(basicConfig, "XiaomeiLive", "AutoLogin");
+		const char* pwd = config_get_string(basicConfig, "XiaomeiLive", "Password");
+		if(autoLogin && pwd != nullptr) {
+			Login();
+		} else {
+			XLLoginDialog login(this);
+			login.exec();
+		}
 	}
+}
+
+void OBSBasic::Login() {
+	// TODO login
 }
 
 void OBSBasic::InitHotkeys()

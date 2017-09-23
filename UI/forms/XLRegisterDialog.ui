@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>418</width>
-    <height>204</height>
+    <width>490</width>
+    <height>214</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,9 +66,9 @@
        </widget>
       </item>
       <item row="7" column="0">
-       <widget class="QLabel" name="verifyCodeLabel">
+       <widget class="QLabel" name="smsCodeLabel">
         <property name="text">
-         <string>XL.Register.Verify.Code</string>
+         <string>XL.Register.Sms.Code</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -99,19 +99,16 @@
       <item row="7" column="1">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QLineEdit" name="verifyCodeEdit">
+         <widget class="QLineEdit" name="smsCodeEdit">
           <property name="inputMethodHints">
            <set>Qt::ImhNoAutoUppercase|Qt::ImhPreferNumbers</set>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="verifyCodeFrame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
+         <widget class="QPushButton" name="refreshSmsCodeButton">
+          <property name="text">
+           <string>XL.Register.Refresh.Sms.Code</string>
           </property>
          </widget>
         </item>
