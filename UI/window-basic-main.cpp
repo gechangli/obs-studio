@@ -57,6 +57,7 @@
 #include "display-helpers.hpp"
 #include "volume-control.hpp"
 #include "remote-text.hpp"
+#include "xl-register-dialog.hpp"
 
 #if defined(_WIN32) && defined(ENABLE_WIN_UPDATER)
 #include "win-update/win-update.hpp"
@@ -1565,6 +1566,14 @@ void OBSBasic::OBSInit()
     if(ui->scenesDock->isVisible()) {
         ui->toggleScenes->activate(QAction::Trigger);
     }
+
+	// check current user, if has not, show register dialog
+	const char * username = config_get_string(basicConfig, "Backend", "Username");
+	if(username == nullptr) {
+		XLRegisterDialog reg(this);
+		reg.setWindowTitle(QApplication::translate("OBSBasic", "XL.Register.Title", Q_NULLPTR));
+		reg.exec();
+	}
 }
 
 void OBSBasic::InitHotkeys()

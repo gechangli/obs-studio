@@ -28,10 +28,22 @@ static const char* LivePlatformNames[] = {
     "Basic.Live.HuaJiao"
 };
 
+// string id of live platform
+static const char* LivePlatformIds[] = {
+	"douyu",
+	"huya",
+	"xiongmao",
+	"zhanqi",
+	"wangyi",
+	"huajiao"
+};
+
 // info to push stream
 struct live_platform_info {
     char rtmpUrl[256];
     char liveCode[256];
+	char username[128];
+	char password[128];
 };
 typedef struct live_platform_info live_platform_info_t;
 
