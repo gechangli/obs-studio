@@ -214,7 +214,8 @@ set(xiaomeilive_SOURCES
 	qt-wrappers.cpp
 	live-cast.cpp
 	xl-register-dialog.cpp
-	xl-login-dialog.cpp)
+	xl-login-dialog.cpp
+	xiguamei-oa.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -265,7 +266,8 @@ set(xiaomeilive_HEADERS
 	qt-wrappers.hpp
 	live-cast.hpp
 	xl-register-dialog.hpp
-	xl-login-dialog.hpp)
+	xl-login-dialog.hpp
+	xiguamei-oa.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui
