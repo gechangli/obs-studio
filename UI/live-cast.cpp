@@ -11,7 +11,7 @@ using namespace std;
 static const char* s_homeUrls[] = {
     "https://www.douyu.com/room/my",
 	"http://i.huya.com/index.php?m=ProfileSetting",
-//    "https://www.panda.tv/setting",
+    "https://www.panda.tv/setting",
 //    "http://www.zhanqi.tv/user/follow",
 //    "http://i.cc.163.com/",
 //    "http://www.huajiao.com/user"
@@ -76,8 +76,9 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 	}
 
 	// set channel
-	QWebChannel* channel = new QWebChannel(view->page());
-	view->page()->setWebChannel(channel);
+	QWebEnginePage* page = view->page();
+	QWebChannel* channel = new QWebChannel(page);
+	page->setWebChannel(channel);
 
 	// register self
 	channel->registerObject(QStringLiteral("lp"), this);
@@ -100,14 +101,17 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
 		UNUSED_PARAMETER(ok);
-		view->page()->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
-		view->page()->runJavaScript(GetJavascriptFileContent("js/util.js"));
+		page->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
+		page->runJavaScript(GetJavascriptFileContent("js/util.js"));
 		switch(m_curPlatform) {
 			case LIVE_PLATFORM_DOUYU:
-				view->page()->runJavaScript(GetJavascriptFileContent("js/douyu.js"));
+				page->runJavaScript(GetJavascriptFileContent("js/douyu.js"));
 				break;
 			case LIVE_PLATFORM_HUYA:
-				view->page()->runJavaScript(GetJavascriptFileContent("js/huya.js"));
+				page->runJavaScript(GetJavascriptFileContent("js/huya.js"));
+				break;
+			case LIVE_PLATFORM_PANDA:
+				page->runJavaScript(GetJavascriptFileContent("js/panda.js"));
 				break;
 		}
 	});
@@ -146,6 +150,11 @@ void LivePlatformWeb::SaveLivePlatformUserInfo(QString username, QString passwor
 
 	// show account name
 	m_main->SetLivePlatformState(m_curPlatform, username);
+}
+
+bool LivePlatformWeb::IsLoggedIn() {
+	live_platform_info_t& info = GetCurrentPlatformInfo();
+	return strlen(info.username) > 0;
 }
 
 void LivePlatformWeb::CloseWeb() {

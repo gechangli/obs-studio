@@ -11,11 +11,11 @@
 typedef enum {
     LIVE_PLATFORM_DOUYU = 0,
 	LIVE_PLATFORM_HUYA = 1,
+	LIVE_PLATFORM_PANDA = 2,
 //    LIVE_PLATFORM_ZHANQI = 2,
 //    LIVE_PLATFORM_NETEASE = 3,
-//	LIVE_PLATFORM_PANDA = 4,
 //    LIVE_PLATFORM_HUAJIAO = 5
-	LIVE_PLATFORM_LAST = LIVE_PLATFORM_HUYA
+	LIVE_PLATFORM_LAST = LIVE_PLATFORM_PANDA
 } LivePlatform;
 
 // name key of live platform
@@ -64,6 +64,7 @@ private:
 	QProgressDialog* m_progressDialog;
 	int m_pageWidth;
 	int m_pageHeight;
+	bool m_loggedIn;
 
 private:
 	QString GetJavascriptFileContent(const char* path);
@@ -73,6 +74,8 @@ public:
 	Q_INVOKABLE int getPageHeight();
 	Q_PROPERTY(int m_pageWidth READ getPageWidth);
 	Q_PROPERTY(int m_pageHeight READ getPageHeight);
+	Q_INVOKABLE bool IsLoggedIn();
+	Q_PROPERTY(bool m_loggedIn READ IsLoggedIn);
 
 public slots:
 	Q_INVOKABLE void SaveLivePlatformRtmpInfo(QString url, QString key);

@@ -377,7 +377,6 @@ void OBSBasic::UpdateLivePlatformHint() {
 	ui->liveInfoLabel->setText(info.rtmpUrl);
 }
 
-
 void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
 	UpdateLivePlatformHint();
 }

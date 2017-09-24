@@ -55,7 +55,7 @@ function onLoginPage() {
 
         // hook login button to save username/password when click
         var btnLogin = document.querySelector('.loginbox-sbt.btn-sub[type="submit"]');
-        btnLogin.onclick = function (event) {
+        btnLogin.onclick = function (e) {
             // check login by phone or nickname
             var tabPhone = document.querySelector('.l-stype.js-l-stype[data-subtype="sub.phonenum"]');
             var phoneLogin = tabPhone.classList.contains('active');
@@ -71,7 +71,7 @@ function onLoginPage() {
             // save to c++ side
             lp.SaveLivePlatformUserInfo(username, password);
         };
-    })
+    });
 }
 
 function onSettingsPage() {
@@ -99,7 +99,7 @@ function onSettingsPage() {
                 var lp = channel.objects.lp;
                 lp.SaveLivePlatformRtmpInfo(url, key);
                 lp.CloseWeb();
-            })
+            });
         }
     } else {
         // close web and prompt user to open live
