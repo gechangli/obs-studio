@@ -75,12 +75,14 @@ public:
 	Q_PROPERTY(int m_pageHeight READ getPageHeight);
 
 public slots:
-	Q_INVOKABLE void SaveLivePlatformInfo(QString url, QString key, QString username);
+	Q_INVOKABLE void SaveLivePlatformRtmpInfo(QString url, QString key);
+	Q_INVOKABLE void SaveLivePlatformUserInfo(QString username, QString password);
 	Q_INVOKABLE void CloseWeb();
 	Q_INVOKABLE void ShowMessageBox(QString title, QString msg);
 	Q_INVOKABLE void ClearCookies();
 	Q_INVOKABLE void HideWeb();
 	Q_INVOKABLE void ShowWeb();
+	Q_INVOKABLE void JSLog(QString t);
 
 public:
     LivePlatformWeb();

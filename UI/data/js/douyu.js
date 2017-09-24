@@ -45,11 +45,32 @@ function simplifySettingsPage() {
 }
 
 function onLoginPage() {
-    // show web view
     new QWebChannel(qt.webChannelTransport, function(channel) {
+        // show web view
         var lp = channel.objects.lp;
         lp.ShowWeb();
+
+        // simplify html
         simplifyLoginPage();
+
+        // hook login button to save username/password when click
+        var btnLogin = document.querySelector('.loginbox-sbt.btn-sub[type="submit"]');
+        btnLogin.onclick = function (event) {
+            // check login by phone or nickname
+            var tabPhone = document.querySelector('.l-stype.js-l-stype[data-subtype="sub.phonenum"]');
+            var phoneLogin = tabPhone.classList.contains('active');
+            var username = "";
+            var password = "";
+            if(phoneLogin) {
+                username = document.querySelector('.ipt[name="phoneNum"]').value;
+            } else {
+                username = document.querySelector('.ipt[name="username"]').value;
+            }
+            password = document.querySelector('.ipt[name="password"]').value;
+
+            // save to c++ side
+            lp.SaveLivePlatformUserInfo(username, password);
+        };
     })
 }
 
@@ -75,9 +96,8 @@ function onSettingsPage() {
             new QWebChannel(qt.webChannelTransport, function(channel) {
                 var url = document.querySelector('#rtmp_url').value;
                 var key = document.querySelector('#rtmp_val').value;
-                var username = getCookie('acf_nickname');
                 var lp = channel.objects.lp;
-                lp.SaveLivePlatformInfo(url, key, username);
+                lp.SaveLivePlatformRtmpInfo(url, key);
                 lp.CloseWeb();
             })
         }

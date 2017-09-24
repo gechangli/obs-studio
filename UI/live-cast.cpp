@@ -120,17 +120,32 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 	view->load(url);
 }
 
-void LivePlatformWeb::SaveLivePlatformInfo(QString url, QString key, QString username) {
-	// save live info
+void LivePlatformWeb::JSLog(QString t) {
+	blog(LOG_INFO, "JSLog: %s", t.toStdString().c_str());
+}
+
+void LivePlatformWeb::SaveLivePlatformRtmpInfo(QString url, QString key) {
+	// save rtmp info
 	live_platform_info_t& info = GetCurrentPlatformInfo();
 	string curl = url.toStdString();
 	string ckey = key.toStdString();
 	memcpy(info.rtmpUrl, curl.c_str(), curl.length());
 	memcpy(info.liveCode, ckey.c_str(), ckey.length());
 
+	// show hint
+	m_main->UpdateLivePlatformHint();
+}
+
+void LivePlatformWeb::SaveLivePlatformUserInfo(QString username, QString password) {
+	// save user info
+	live_platform_info_t& info = GetCurrentPlatformInfo();
+	string cuser = username.toStdString();
+	string cpwd = password.toStdString();
+	memcpy(info.username, cuser.c_str(), cuser.length());
+	memcpy(info.password, cpwd.c_str(), cpwd.length());
+
 	// show account name
 	m_main->SetLivePlatformState(m_curPlatform, username);
-	m_main->UpdateLivePlatformHint();
 }
 
 void LivePlatformWeb::CloseWeb() {

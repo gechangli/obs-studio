@@ -11,3 +11,14 @@ function getCookie(name)  {
 function queryCss(o, key) {
     return o.currentStyle? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
 }
+
+// find first parent with tagName [tagname]
+function findParent(tagname, el) {
+    while (el){
+        if ((el.nodeName || el.tagName).toLowerCase() === tagname.toLowerCase()) {
+            return el;
+        }
+        el = el.parentNode;
+    }
+    return null;
+}

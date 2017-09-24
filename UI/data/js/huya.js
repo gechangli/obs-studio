@@ -32,7 +32,8 @@ function grabUrl() {
                     username = username.substring(0, username.length - 2);
                 }
                 var lp = channel.objects.lp;
-                lp.SaveLivePlatformInfo(url, "", username);
+                lp.SaveLivePlatformRtmpInfo(url, "");
+                lp.SaveLivePlatformUserInfo(username, "");
                 lp.CloseWeb();
             }
         };
