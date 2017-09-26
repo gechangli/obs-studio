@@ -20,7 +20,7 @@
 
 using namespace std;
 
-// endpoints
+// endpoints, documentation: http://doc.1tsdk.com/69?page_id=2101
 #define TEST_URL string("http://101.201.253.175:8000")
 #define PRODUCT_URL string("http://oa.xiguamei.com")
 #define SERVER_URL TEST_URL
@@ -108,7 +108,7 @@ void XgmOA::httpReadyRead() {
 	m_respMap.insert(reply, doc);
 }
 
-void XgmOA::GetAuthCode(string phone) {
+void XgmOA::getAuthCode(string phone) {
 	// create json data
 	QVariantMap map;
 	map["telephone"] = QVariant(phone.c_str());
@@ -119,7 +119,7 @@ void XgmOA::GetAuthCode(string phone) {
 	doPost(SERVER_URL + PATH_GET_AUTH_CODE, json);
 }
 
-void XgmOA::Register(string acc, string pwd, string authCode) {
+void XgmOA::registerUser(string acc, string pwd, string authCode) {
 	// create json data
 	QVariantMap map;
 	map["account"] = QVariant(acc.c_str());

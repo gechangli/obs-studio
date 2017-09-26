@@ -61,8 +61,8 @@ public:
 	virtual ~XgmOA();
 
 	// rest api
-	void Register(std::string acc, std::string pwd, std::string authCode);
-	void GetAuthCode(std::string phone);
+	void registerUser(std::string acc, std::string pwd, std::string authCode);
+	void getAuthCode(std::string phone);
 
 public slots:
 	void httpFinished();

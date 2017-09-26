@@ -31,9 +31,20 @@ private:
 	std::unique_ptr<Ui::XLRegisterDialog> ui;
 	OBSBasic* m_main;
 	XgmOA m_client;
+	int m_smsRefreshTimerId;
+	int m_smsRefreshSeconds;
+
+private:
+	void updateSmsRefreshButtonText();
+
+private slots:
+	void on_refreshSmsCodeButton_clicked();
+	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
+	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 
 protected:
 	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
+	void timerEvent(QTimerEvent *event);
 
 public:
 	XLRegisterDialog(OBSBasic *parent);

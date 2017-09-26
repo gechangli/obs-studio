@@ -111,7 +111,7 @@
         <item>
          <widget class="QPushButton" name="refreshSmsCodeButton">
           <property name="text">
-           <string>XL.Register.Refresh.Sms.Code</string>
+           <string>XL.Register.Get.Sms.Code</string>
           </property>
          </widget>
         </item>

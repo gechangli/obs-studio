@@ -19,13 +19,16 @@
 #include "window-basic-main.hpp"
 #include "xl-login-dialog.hpp"
 #include <QKeyEvent>
+#include <QMessageBox>
+#include <QJsonObject>
 
 using namespace std;
 
 XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	QDialog (parent),
 	ui(new Ui::XLRegisterDialog),
-	m_main(parent)
+	m_main(parent),
+	m_smsRefreshTimerId(-1)
 {
 	// init ui
 	ui->setupUi(this);
@@ -36,6 +39,10 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	// update button text
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setText(L("Register"));
 	ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(L("XL.Register.Already.Has.Account"));
+
+	// listen xgm event
+	connect(&m_client, &XgmOA::restOpDone, this, &XLRegisterDialog::onXgmOAResponse);
+	connect(&m_client, &XgmOA::restOpFailed, this, &XLRegisterDialog::onXgmOAResponseFailed);
 }
 
 void XLRegisterDialog::accept() {
@@ -58,5 +65,63 @@ void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
 		default:
 			QDialog::keyPressEvent(event);
 			break;
+	}
+}
+
+void XLRegisterDialog::on_refreshSmsCodeButton_clicked() {
+	// validate phone number
+	QString mobile = ui->mobileEdit->text().trimmed();
+	QRegExp regExp("1\\d{10}");
+	if(regExp.indexIn(mobile, 0) == -1) {
+		QMessageBox::warning(nullptr, L("Warning"), L("XL.Register.Please.Fill.Mobile"));
+		return;
+	}
+
+	// request auth code
+	m_client.getAuthCode(mobile.toStdString());
+
+	// start refresh timer
+	m_smsRefreshSeconds = 60;
+	m_smsRefreshTimerId = startTimer(1000);
+	updateSmsRefreshButtonText();
+	ui->refreshSmsCodeButton->setEnabled(false);
+}
+
+void XLRegisterDialog::updateSmsRefreshButtonText() {
+	if(m_smsRefreshSeconds <= 0) {
+		ui->refreshSmsCodeButton->setText(L("XL.Register.Get.Sms.Code"));
+	} else {
+		ui->refreshSmsCodeButton->setText(QString::asprintf("%s(%ds)", LC("XL.Register.Get.Sms.Code"), m_smsRefreshSeconds));
+	}
+}
+
+void XLRegisterDialog::timerEvent(QTimerEvent *event) {
+	if(event->timerId() == m_smsRefreshTimerId) {
+		// if times up, re-enable refresh button
+		m_smsRefreshSeconds--;
+		if(m_smsRefreshSeconds <= 0) {
+			ui->refreshSmsCodeButton->setEnabled(true);
+			killTimer(m_smsRefreshTimerId);
+			m_smsRefreshTimerId = -1;
+		}
+		updateSmsRefreshButtonText();
+	}
+}
+
+void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
+	if(op == XgmOA::OP_REGISTER) {
+
+	}
+}
+
+void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg) {
+	if(op == XgmOA::OP_GET_AUTO_CODE) {
+		// if failed, immediately re-enable refresh button
+		ui->refreshSmsCodeButton->setEnabled(true);
+		killTimer(m_smsRefreshTimerId);
+		m_smsRefreshTimerId = -1;
+		m_smsRefreshSeconds = 0;
+		updateSmsRefreshButtonText();
+	} else if(op == XgmOA::OP_REGISTER) {
 	}
 }
