@@ -16,6 +16,7 @@
 ******************************************************************************/
 
 #include "xl-login-dialog.hpp"
+#include "xl-register-dialog.hpp"
 #include "window-basic-main.hpp"
 
 XLLoginDialog::XLLoginDialog(OBSBasic *parent) :
@@ -25,12 +26,24 @@ XLLoginDialog::XLLoginDialog(OBSBasic *parent) :
 {
 	// init ui
 	ui->setupUi(this);
+
+	// set title
+	setWindowTitle(L("LogIn"));
+
+	// update button text
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setText(L("LogIn"));
+	ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(L("Register"));
 }
 
-void XLLoginDialog::on_buttonBox_accepted() {
+void XLLoginDialog::accept() {
 
 }
 
-void XLLoginDialog::on_buttonBox_rejected() {
+void XLLoginDialog::reject() {
+	// close self
+	QDialog::reject();
 
+	// show login dialog
+	XLRegisterDialog reg(m_main);
+	reg.exec();
 }

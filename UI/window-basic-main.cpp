@@ -361,6 +361,8 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->modeSwitch->setVisible(false);
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
+	ui->logOutButton->setVisible(false);
+	ui->userLabel->setText(L("NotLogged"));
 
 	// set main
 	m_lpWeb.SetMain(this);
@@ -1593,7 +1595,6 @@ void OBSBasic::OBSInit()
 	const char * username = config_get_string(basicConfig, "XiaomeiLive", "Username");
 	if(username == nullptr) {
 		XLRegisterDialog reg(this);
-		reg.setWindowTitle(L("XL.Register.Title"));
 		reg.exec();
 	} else {
 		bool autoLogin = config_get_bool(basicConfig, "XiaomeiLive", "AutoLogin");

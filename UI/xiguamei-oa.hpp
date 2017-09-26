@@ -22,6 +22,9 @@
 #include <QObject>
 #include <QVariant>
 #include <QSize>
+#include <string>
+#include <QJsonDocument>
+#include <QNetworkReply>
 
 class QNetworkAccessManager;
 
@@ -29,18 +32,43 @@ class QNetworkAccessManager;
 class XgmOA : public QObject {
 	Q_OBJECT
 
-private:
-	QNetworkAccessManager* m_netMgr;
+public:
+	// rest api id
+	typedef enum {
+		OP_INVALID,
+		OP_GET_AUTO_CODE,
+		OP_REGISTER,
+		OP_LOGIN_BY_PASSWORD,
+		OP_LOGIN_BY_AUTHCODE,
+		OP_LOGOUT,
+		OP_GET_LIVE_PLATFORM_ACCOUNTS,
+		OP_ADD_LIVE_PLATFORM_ACCOUNT
+	} XgmRestOp;
 
 private:
-	void doPost(const char* url, const char* json);
-	void doGet(const char* url);
+	QNetworkAccessManager* m_netMgr;
+	QMap<QNetworkReply*, QJsonDocument> m_respMap;
+
+public:
+	static XgmRestOp urlToOp(QUrl& url);
+
+private:
+	void doPost(std::string url, QByteArray json);
+	void doGet(std::string url);
 
 public:
 	XgmOA();
 	virtual ~XgmOA();
 
+	// rest api
+	void Register(std::string acc, std::string pwd, std::string authCode);
+	void GetAuthCode(std::string phone);
+
 public slots:
 	void httpFinished();
 	void httpReadyRead();
+
+signals:
+	void restOpDone(XgmRestOp op, QJsonDocument doc);
+	void restOpFailed(XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 };

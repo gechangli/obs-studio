@@ -19,6 +19,7 @@
 
 #include <obs.hpp>
 #include "ui_XLRegisterDialog.h"
+#include "xiguamei-oa.hpp"
 #include <QDialog>
 
 class OBSBasic;
@@ -29,11 +30,15 @@ class XLRegisterDialog : public QDialog {
 private:
 	std::unique_ptr<Ui::XLRegisterDialog> ui;
 	OBSBasic* m_main;
+	XgmOA m_client;
 
-private slots:
-	void on_buttonBox_accepted();
-	void on_buttonBox_rejected();
+protected:
+	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
 
 public:
 	XLRegisterDialog(OBSBasic *parent);
+
+	// slot override
+	void accept() Q_DECL_OVERRIDE;
+	void reject() Q_DECL_OVERRIDE;
 };

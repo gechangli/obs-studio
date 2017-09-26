@@ -17,6 +17,10 @@
 
 #include "xl-register-dialog.hpp"
 #include "window-basic-main.hpp"
+#include "xl-login-dialog.hpp"
+#include <QKeyEvent>
+
+using namespace std;
 
 XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	QDialog (parent),
@@ -25,12 +29,34 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 {
 	// init ui
 	ui->setupUi(this);
+
+	// set title
+	setWindowTitle(L("XL.Register.Title"));
+
+	// update button text
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setText(L("Register"));
+	ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(L("XL.Register.Already.Has.Account"));
 }
 
-void XLRegisterDialog::on_buttonBox_accepted() {
+void XLRegisterDialog::accept() {
 
 }
 
-void XLRegisterDialog::on_buttonBox_rejected() {
+void XLRegisterDialog::reject() {
+	// close self
+	QDialog::reject();
 
+	// show login dialog
+	XLLoginDialog login(m_main);
+	login.exec();
+}
+
+void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
+	switch (event->key()) {
+		case Qt::Key_Escape:
+			break;
+		default:
+			QDialog::keyPressEvent(event);
+			break;
+	}
 }

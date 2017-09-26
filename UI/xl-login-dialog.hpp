@@ -30,10 +30,10 @@ private:
 	std::unique_ptr<Ui::XLLoginDialog> ui;
 	OBSBasic* m_main;
 
-private slots:
-	void on_buttonBox_accepted();
-	void on_buttonBox_rejected();
-
 public:
 	XLLoginDialog(OBSBasic *parent);
+
+	// slot override
+	void accept() Q_DECL_OVERRIDE;
+	void reject() Q_DECL_OVERRIDE;
 };
