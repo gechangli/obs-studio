@@ -132,7 +132,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="obs.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

@@ -17,39 +17,32 @@
 
 #pragma once
 
-#include <obs.hpp>
-#include "ui_XLRegisterDialog.h"
-#include "xiguamei-oa.hpp"
+#include "ui_XLProgressDialog.h"
 #include <QDialog>
+#include <QWidget>
 
-class OBSBasic;
+class QPropertyAnimation;
 
-class XLRegisterDialog : public QDialog {
+class XLProgressDialog : public QDialog {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::XLRegisterDialog> ui;
-	OBSBasic* m_main;
-	XgmOA m_client;
-	int m_smsRefreshTimerId;
-	int m_smsRefreshSeconds;
-
-private:
-	void updateSmsRefreshButtonText();
-
-private slots:
-	void on_refreshSmsCodeButton_clicked();
-	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
-	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
-
-protected:
-	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
-	void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
+	std::unique_ptr<Ui::XLProgressDialog> ui;
+	QPropertyAnimation* m_animation;
+	int m_index;
 
 public:
-	XLRegisterDialog(OBSBasic *parent);
+	Q_PROPERTY(int pixmap READ pixmap WRITE setPixmap);
 
-	// slot override
-	void accept() Q_DECL_OVERRIDE;
-	void reject() Q_DECL_OVERRIDE;
+private:
+	int pixmap() const;
+	void setPixmap(const int index);
+
+protected:
+	void keyPressEvent(QKeyEvent*) Q_DECL_OVERRIDE;
+	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+	void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
+
+public:
+	XLProgressDialog(QWidget* parent);
 };

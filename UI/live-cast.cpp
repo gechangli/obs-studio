@@ -19,7 +19,7 @@
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
 #include "platform.hpp"
 #include "window-basic-main.hpp"
-#include <QProgressDialog>
+#include "xl-progress-dialog.hpp"
 #include <QMessageBox>
 
 using namespace std;
@@ -102,11 +102,7 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 
 	// create progress dialog
 	if(!m_progressDialog) {
-		m_progressDialog = new QProgressDialog();
-		m_progressDialog->setWindowModality(Qt::ApplicationModal);
-		m_progressDialog->setWindowTitle("Please wait...");
-		m_progressDialog->setRange(0, 0);
-		m_progressDialog->setCancelButtonText(QString());
+		m_progressDialog = new XLProgressDialog(m_main);
 	}
 	m_progressDialog->hide();
 

@@ -18,6 +18,7 @@
 #include "xl-register-dialog.hpp"
 #include "window-basic-main.hpp"
 #include "xl-login-dialog.hpp"
+#include "xl-progress-dialog.hpp"
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QJsonObject>
@@ -46,7 +47,6 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 }
 
 void XLRegisterDialog::accept() {
-
 }
 
 void XLRegisterDialog::reject() {

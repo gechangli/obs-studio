@@ -215,7 +215,8 @@ set(xiaomeilive_SOURCES
 	live-cast.cpp
 	xl-register-dialog.cpp
 	xl-login-dialog.cpp
-	xiguamei-oa.cpp)
+	xiguamei-oa.cpp
+	xl-progress-dialog.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -267,7 +268,8 @@ set(xiaomeilive_HEADERS
 	live-cast.hpp
 	xl-register-dialog.hpp
 	xl-login-dialog.hpp
-	xiguamei-oa.hpp)
+	xiguamei-oa.hpp
+	xl-progress-dialog.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui
@@ -286,7 +288,8 @@ set(xiaomeilive_UI
 	forms/OBSUpdate.ui
 	forms/OBSRemux.ui
 	forms/XLRegisterDialog.ui
-	forms/XLLoginDialog.ui)
+	forms/XLLoginDialog.ui
+	forms/XLProgressDialog.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)
