@@ -447,6 +447,8 @@ private slots:
 	void onLiveLoginClicked(bool checked);
 	void onLiveSwitchAccountClicked(bool checked);
 
+	void xgmUserRegistered(QString username);
+
 private:
 	/* OBS Callbacks */
 	static void SceneReordered(void *data, calldata_t *params);
@@ -498,9 +500,6 @@ public:
 
 	void NewProject();
 	void LoadProject();
-
-	// login to xiguamei
-	void Login();
 
 	void SetLivePlatformState(LivePlatform plt, QString text);
 	void UpdateLivePlatformHint();

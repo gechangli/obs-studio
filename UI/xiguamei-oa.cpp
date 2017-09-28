@@ -131,3 +131,27 @@ void XgmOA::registerUser(string acc, string pwd, string authCode) {
 	// post it
 	doPost(SERVER_URL + PATH_REGISTER, json);
 }
+
+void XgmOA::loginByPassword(std::string acc, std::string pwd) {
+	// create json data
+	QVariantMap map;
+	map["account"] = QVariant(acc.c_str());
+	map["passwd"] = QVariant(pwd.c_str());
+	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
+	QByteArray json = doc.toJson(QJsonDocument::Compact);
+
+	// post it
+	doPost(SERVER_URL + PATH_LOGIN_BY_PASSWORD, json);
+}
+
+void XgmOA::loginByAuthCode(std::string acc, std::string authCode) {
+	// create json data
+	QVariantMap map;
+	map["account"] = QVariant(acc.c_str());
+	map["authcode"] = QVariant(authCode.c_str());
+	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
+	QByteArray json = doc.toJson(QJsonDocument::Compact);
+
+	// post it
+	doPost(SERVER_URL + PATH_LOGIN_BY_AUTHCODE, json);
+}

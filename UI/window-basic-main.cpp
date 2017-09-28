@@ -394,10 +394,11 @@ void OBSBasic::on_logOutButton_clicked() {
 	}
 
 	// remove current account settings
-	config_remove_value(basicConfig, "XiaomeiLive", "Username");
-	config_remove_value(basicConfig, "XiaomeiLive", "Password");
-	config_remove_value(basicConfig, "XiaomeiLive", "RememberPassword");
-	config_remove_value(basicConfig, "XiaomeiLive", "AutoLogin");
+	config_t* globalConfig = GetGlobalConfig();
+	config_remove_value(globalConfig, "XiaomeiLive", "Username");
+	config_remove_value(globalConfig, "XiaomeiLive", "Password");
+	config_remove_value(globalConfig, "XiaomeiLive", "RememberPassword");
+	config_remove_value(globalConfig, "XiaomeiLive", "AutoLogin");
 
 	// re-show login dialog
 	XLLoginDialog login(this);
@@ -1592,15 +1593,17 @@ void OBSBasic::OBSInit()
 
 	// check current user, if has not, show register dialog
 	// if has, check auto login flag
-	const char * username = config_get_string(basicConfig, "XiaomeiLive", "Username");
+	config_t* globalConfig = GetGlobalConfig();
+	const char * username = config_get_string(globalConfig, "XiaomeiLive", "Username");
 	if(username == nullptr) {
 		XLRegisterDialog reg(this);
+		connect(&reg, &XLRegisterDialog::xgmUserRegistered, this, &OBSBasic::xgmUserRegistered);
 		reg.exec();
 	} else {
-		bool autoLogin = config_get_bool(basicConfig, "XiaomeiLive", "AutoLogin");
-		const char* pwd = config_get_string(basicConfig, "XiaomeiLive", "Password");
+		bool autoLogin = config_get_bool(globalConfig, "XiaomeiLive", "AutoLogin");
+		const char* pwd = config_get_string(globalConfig, "XiaomeiLive", "Password");
 		if(autoLogin && pwd != nullptr) {
-			Login();
+			// TODO login
 		} else {
 			XLLoginDialog login(this);
 			login.exec();
@@ -1608,8 +1611,9 @@ void OBSBasic::OBSInit()
 	}
 }
 
-void OBSBasic::Login() {
-	// TODO login
+void OBSBasic::xgmUserRegistered(QString username) {
+	ui->userLabel->setText(username);
+	ui->logOutButton->setVisible(true);
 }
 
 void OBSBasic::InitHotkeys()

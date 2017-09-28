@@ -19,6 +19,8 @@
 #include "window-basic-main.hpp"
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
+#include "obs.hpp"
+#include "obs-app.hpp"
 #include <QKeyEvent>
 #include <QMessageBox>
 #include <QJsonObject>
@@ -29,7 +31,9 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	QDialog (parent),
 	ui(new Ui::XLRegisterDialog),
 	m_main(parent),
-	m_smsRefreshTimerId(-1)
+	m_smsRefreshTimerId(-1),
+	m_progressDialog(Q_NULLPTR),
+	m_registeredOk(false)
 {
 	// init ui
 	ui->setupUi(this);
@@ -47,6 +51,29 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 }
 
 void XLRegisterDialog::accept() {
+	// validate mobile
+	if(!validateMobile()) {
+		return;
+	}
+
+	// validate password
+	if(!validatePassword()) {
+		return;
+	}
+
+	// validate sms code
+	if(!validateSmsCode()) {
+		return;
+	}
+
+	// register
+	m_client.registerUser(ui->mobileEdit->text().trimmed().toStdString(),
+						  ui->passwordEdit->text().toStdString(),
+						  ui->smsCodeEdit->text().toStdString());
+
+	// show progress dialog
+	m_progressDialog = new XLProgressDialog(m_main);
+	m_progressDialog->exec();
 }
 
 void XLRegisterDialog::reject() {
@@ -54,8 +81,10 @@ void XLRegisterDialog::reject() {
 	QDialog::reject();
 
 	// show login dialog
-	XLLoginDialog login(m_main);
-	login.exec();
+	if(!m_registeredOk) {
+		XLLoginDialog login(m_main);
+		login.exec();
+	}
 }
 
 void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
@@ -68,17 +97,49 @@ void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
 	}
 }
 
-void XLRegisterDialog::on_refreshSmsCodeButton_clicked() {
-	// validate phone number
+bool XLRegisterDialog::validatePassword() {
+	QString pwd = ui->passwordEdit->text();
+	QString pwd2 = ui->confirmPasswordEdit->text();
+	if(pwd.length() <= 0 && pwd2.length() <= 0) {
+		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Password.Is.Empty"));
+		return false;
+	} else if(pwd != pwd2) {
+		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Password.Not.Consensus"));
+		return false;
+	} else {
+		return true;
+	}
+}
+
+bool XLRegisterDialog::validateMobile() {
 	QString mobile = ui->mobileEdit->text().trimmed();
 	QRegExp regExp("1\\d{10}");
-	if(regExp.indexIn(mobile, 0) == -1) {
-		QMessageBox::warning(nullptr, L("Warning"), L("XL.Register.Please.Fill.Mobile"));
+	if(regExp.indexIn(mobile, 0) != -1 && regExp.matchedLength() == mobile.length()) {
+		return true;
+	} else {
+		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Please.Fill.Mobile"));
+		return false;
+	}
+}
+
+bool XLRegisterDialog::validateSmsCode() {
+	QString smsCode = ui->smsCodeEdit->text();
+	if(smsCode.length() != 4) {
+		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Sms.Code.Wrong"));
+		return false;
+	} else {
+		return true;
+	}
+}
+
+void XLRegisterDialog::on_refreshSmsCodeButton_clicked() {
+	// validate mobile
+	if(!validateMobile()) {
 		return;
 	}
 
 	// request auth code
-	m_client.getAuthCode(mobile.toStdString());
+	m_client.getAuthCode(ui->mobileEdit->text().trimmed().toStdString());
 
 	// start refresh timer
 	m_smsRefreshSeconds = 60;
@@ -110,7 +171,28 @@ void XLRegisterDialog::timerEvent(QTimerEvent *event) {
 
 void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 	if(op == XgmOA::OP_REGISTER) {
+		// perform login if register ok
+		m_client.loginByPassword(ui->mobileEdit->text().trimmed().toStdString(),
+								 ui->passwordEdit->text().toStdString());
+	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
+		// close progress dialog
+		m_progressDialog->close();
+		delete m_progressDialog;
+		m_progressDialog = Q_NULLPTR;
 
+		// save user name and password
+		config_t* globalConfig = GetGlobalConfig();
+		config_set_string(globalConfig, "XiaomeiLive", "Username", ui->mobileEdit->text().trimmed().toStdString().c_str());
+		config_set_string(globalConfig, "XiaomeiLive", "Password", ui->passwordEdit->text().toStdString().c_str());
+		config_set_bool(globalConfig, "XiaomeiLive", "RememberPassword", true);
+		config_set_bool(globalConfig, "XiaomeiLive", "AutoLogin", true);
+
+		// signal
+		m_registeredOk = true;
+		emit xgmUserRegistered(ui->mobileEdit->text().trimmed());
+
+		// close self
+		close();
 	}
 }
 
@@ -123,5 +205,23 @@ void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply:
 		m_smsRefreshSeconds = 0;
 		updateSmsRefreshButtonText();
 	} else if(op == XgmOA::OP_REGISTER) {
+		// close progress dialog
+		m_progressDialog->close();
+		delete m_progressDialog;
+		m_progressDialog = Q_NULLPTR;
+
+		// error
+		QMessageBox::critical(Q_NULLPTR, L("Error"), QString("%1: %2").arg(L("XL.Register.Failed"), errMsg));
+	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
+		// close progress dialog
+		m_progressDialog->close();
+		delete m_progressDialog;
+		m_progressDialog = Q_NULLPTR;
+
+		// log
+		blog(LOG_ERROR, "Failed to login: %s", errMsg.toStdString().c_str());
+
+		// show login dialog
+		reject();
 	}
 }

@@ -17,12 +17,12 @@
 
 #pragma once
 
-#include <obs.hpp>
 #include "ui_XLRegisterDialog.h"
 #include "xiguamei-oa.hpp"
 #include <QDialog>
 
 class OBSBasic;
+class XLProgressDialog;
 
 class XLRegisterDialog : public QDialog {
 	Q_OBJECT
@@ -33,14 +33,22 @@ private:
 	XgmOA m_client;
 	int m_smsRefreshTimerId;
 	int m_smsRefreshSeconds;
+	XLProgressDialog* m_progressDialog;
+	bool m_registeredOk;
 
 private:
 	void updateSmsRefreshButtonText();
+	bool validateMobile();
+	bool validatePassword();
+	bool validateSmsCode();
 
 private slots:
 	void on_refreshSmsCodeButton_clicked();
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
+
+signals:
+	void xgmUserRegistered(QString username);
 
 protected:
 	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
