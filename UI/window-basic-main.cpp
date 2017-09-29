@@ -400,10 +400,17 @@ void OBSBasic::on_logOutButton_clicked() {
 	config_remove_value(globalConfig, "XiaomeiLive", "Password");
 	config_remove_value(globalConfig, "XiaomeiLive", "RememberPassword");
 	config_remove_value(globalConfig, "XiaomeiLive", "AutoLogin");
+	config_save_safe(globalConfig, "tmp", Q_NULLPTR);
 
-	// re-show login dialog
-	XLLoginDialog login(this);
-	login.exec();
+	// clear user, hide logout
+	ui->userLabel->setText(L("NotLogged"));
+	ui->logOutButton->setVisible(false);
+
+	// logout
+	m_client.logout();
+
+	// show progress
+	showProgressDialog();
 }
 
 void OBSBasic::onLiveLoginClicked(bool checked) {
@@ -1592,6 +1599,10 @@ void OBSBasic::OBSInit()
         ui->toggleScenes->activate(QAction::Trigger);
     }
 
+	// rest api event
+	connect(&m_client, &XgmOA::restOpDone, this, &OBSBasic::onXgmOAResponse);
+	connect(&m_client, &XgmOA::restOpFailed, this, &OBSBasic::onXgmOAResponseFailed);
+
 	// check current user, if has not, show register dialog
 	// if has, check auto login flag
 	config_t* globalConfig = GetGlobalConfig();
@@ -1606,8 +1617,6 @@ void OBSBasic::OBSInit()
 		if(autoLogin && rememberPassword) {
 			QString username = config_get_string(globalConfig, "XiaomeiLive", "Username");
 			QString password = config_get_string(globalConfig, "XiaomeiLive", "Password");
-			connect(&m_client, &XgmOA::restOpDone, this, &OBSBasic::onXgmOAResponse);
-			connect(&m_client, &XgmOA::restOpFailed, this, &OBSBasic::onXgmOAResponseFailed);
 			m_client.loginByPassword(username.toStdString(), password.toStdString());
 			showProgressDialog();
 		} else {
@@ -1635,27 +1644,37 @@ void OBSBasic::xgmUserLoggedIn(QString username) {
 }
 
 void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
-	if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
+	if(QObject::sender() != &m_client) {
+		return;
+	}
+
+	if (op == XgmOA::OP_LOGIN_BY_PASSWORD) {
 		// close progress dialog
 		hideProgressDialog();
 
 		// update ui
-		config_t* globalConfig = GetGlobalConfig();
-		const char * username = config_get_string(globalConfig, "XiaomeiLive", "Username");
+		config_t *globalConfig = GetGlobalConfig();
+		const char *username = config_get_string(globalConfig, "XiaomeiLive", "Username");
 		xgmUserLoggedIn(username);
+	} else if(op == XgmOA::OP_LOGOUT) {
+		// close progress dialog
+		hideProgressDialog();
 
-		// disconnect
-		disconnect(&m_client, 0, 0, 0);
+		// re-show login dialog
+		XLLoginDialog login(this);
+		connect(&login, &XLLoginDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
+		login.exec();
 	}
 }
 
 void OBSBasic::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg) {
-	if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
+	if(QObject::sender() != &m_client) {
+		return;
+	}
+
+	if (op == XgmOA::OP_LOGIN_BY_PASSWORD) {
 		// close progress dialog
 		hideProgressDialog();
-
-		// disconnect
-		disconnect(&m_client, 0, 0, 0);
 
 		// warning
 		QMessageBox::critical(Q_NULLPTR, L("Error"), errMsg);
@@ -1664,6 +1683,12 @@ void OBSBasic::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Network
 		XLLoginDialog login(this);
 		connect(&login, &XLLoginDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
 		login.exec();
+	} else if(op == XgmOA::OP_LOGOUT) {
+		// close progress dialog
+		hideProgressDialog();
+
+		// warning
+		QMessageBox::critical(Q_NULLPTR, L("Error"), errMsg);
 	}
 }
 

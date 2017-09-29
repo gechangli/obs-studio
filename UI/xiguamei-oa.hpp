@@ -65,6 +65,8 @@ public:
 	void getAuthCode(std::string phone);
 	void loginByPassword(std::string acc, std::string pwd);
 	void loginByAuthCode(std::string acc, std::string authCode);
+	void logout();
+	void getLivePlatformUsers();
 
 public slots:
 	void httpFinished();

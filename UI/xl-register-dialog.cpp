@@ -178,6 +178,10 @@ void XLRegisterDialog::timerEvent(QTimerEvent *event) {
 }
 
 void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
+	if(QObject::sender() != &m_client) {
+		return;
+	}
+
 	if(op == XgmOA::OP_GET_AUTO_CODE) {
 		// close progress dialog
 		hideProgressDialog();
@@ -216,6 +220,10 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 }
 
 void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg) {
+	if(QObject::sender() != &m_client) {
+		return;
+	}
+
 	if(op == XgmOA::OP_GET_AUTO_CODE) {
 		// hide progress dialog
 		hideProgressDialog();

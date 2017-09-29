@@ -169,3 +169,11 @@ void XgmOA::loginByAuthCode(std::string acc, std::string authCode) {
 	// post it
 	doPost(SERVER_URL + PATH_LOGIN_BY_AUTHCODE, json);
 }
+
+void XgmOA::logout() {
+	doPost(SERVER_URL + PATH_LOGOUT, QByteArray());
+}
+
+void XgmOA::getLivePlatformUsers() {
+	doGet(SERVER_URL + PATH_GET_LIVE_PLATFORM_ACCOUNTS);
+}

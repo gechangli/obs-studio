@@ -187,6 +187,10 @@ void XLLoginDialog::updateSmsRefreshButtonText() {
 }
 
 void XLLoginDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
+	if(QObject::sender() != &m_client) {
+		return;
+	}
+
 	if(op == XgmOA::OP_GET_AUTO_CODE) {
 		// close progress dialog
 		hideProgressDialog();
@@ -218,6 +222,10 @@ void XLLoginDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 }
 
 void XLLoginDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg) {
+	if(QObject::sender() != &m_client) {
+		return;
+	}
+
 	if(op == XgmOA::OP_GET_AUTO_CODE) {
 		// hide progress dialog
 		hideProgressDialog();
