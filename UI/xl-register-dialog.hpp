@@ -41,6 +41,8 @@ private:
 	bool validateMobile();
 	bool validatePassword();
 	bool validateSmsCode();
+	void showProgressDialog();
+	void hideProgressDialog();
 
 private slots:
 	void on_refreshSmsCodeButton_clicked();

@@ -16,7 +16,9 @@
 ******************************************************************************/
 
 #include "xiguamei-oa.hpp"
+#include "window-basic-main.hpp"
 #include <QNetworkAccessManager>
+#include <QJsonObject>
 
 using namespace std;
 
@@ -89,7 +91,19 @@ void XgmOA::httpFinished() {
 	// check error, trigger
 	if(reply->error() == QNetworkReply::NoError) {
 		if(m_respMap.find(reply) != m_respMap.end()) {
-			emit restOpDone(op, m_respMap[reply]);
+			// need check reply code in json body, if not 200, failed
+			QJsonDocument doc = m_respMap[reply];
+			QJsonObject json = doc.object();
+			int code = json.value("code").toInt(200);
+			if(code != 200) {
+				QString errMsg = json.value("msg").toString();
+				if(errMsg == Q_NULLPTR || errMsg.length() <= 0) {
+					errMsg = L("Internal.Server.Error");
+				}
+				emit restOpFailed(op, QNetworkReply::InternalServerError, errMsg);
+			} else {
+				emit restOpDone(op, m_respMap[reply]);
+			}
 		} else {
 			emit restOpDone(op, QJsonDocument());
 		}

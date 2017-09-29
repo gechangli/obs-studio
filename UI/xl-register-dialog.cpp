@@ -72,8 +72,7 @@ void XLRegisterDialog::accept() {
 						  ui->smsCodeEdit->text().toStdString());
 
 	// show progress dialog
-	m_progressDialog = new XLProgressDialog(m_main);
-	m_progressDialog->exec();
+	showProgressDialog();
 }
 
 void XLRegisterDialog::reject() {
@@ -85,6 +84,17 @@ void XLRegisterDialog::reject() {
 		XLLoginDialog login(m_main);
 		login.exec();
 	}
+}
+
+void XLRegisterDialog::showProgressDialog() {
+	m_progressDialog = new XLProgressDialog(m_main);
+	m_progressDialog->exec();
+}
+
+void XLRegisterDialog::hideProgressDialog() {
+	m_progressDialog->close();
+	delete m_progressDialog;
+	m_progressDialog = Q_NULLPTR;
 }
 
 void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
@@ -141,11 +151,8 @@ void XLRegisterDialog::on_refreshSmsCodeButton_clicked() {
 	// request auth code
 	m_client.getAuthCode(ui->mobileEdit->text().trimmed().toStdString());
 
-	// start refresh timer
-	m_smsRefreshSeconds = 60;
-	m_smsRefreshTimerId = startTimer(1000);
-	updateSmsRefreshButtonText();
-	ui->refreshSmsCodeButton->setEnabled(false);
+	// show progress
+	showProgressDialog();
 }
 
 void XLRegisterDialog::updateSmsRefreshButtonText() {
@@ -170,15 +177,22 @@ void XLRegisterDialog::timerEvent(QTimerEvent *event) {
 }
 
 void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
-	if(op == XgmOA::OP_REGISTER) {
+	if(op == XgmOA::OP_GET_AUTO_CODE) {
+		// close progress dialog
+		hideProgressDialog();
+
+		// start refresh timer
+		m_smsRefreshSeconds = 60;
+		m_smsRefreshTimerId = startTimer(1000);
+		updateSmsRefreshButtonText();
+		ui->refreshSmsCodeButton->setEnabled(false);
+	} else if(op == XgmOA::OP_REGISTER) {
 		// perform login if register ok
 		m_client.loginByPassword(ui->mobileEdit->text().trimmed().toStdString(),
 								 ui->passwordEdit->text().toStdString());
 	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
 		// close progress dialog
-		m_progressDialog->close();
-		delete m_progressDialog;
-		m_progressDialog = Q_NULLPTR;
+		hideProgressDialog();
 
 		// save user name and password
 		config_t* globalConfig = GetGlobalConfig();
@@ -198,6 +212,9 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 
 void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg) {
 	if(op == XgmOA::OP_GET_AUTO_CODE) {
+		// hide progress dialog
+		hideProgressDialog();
+
 		// if failed, immediately re-enable refresh button
 		ui->refreshSmsCodeButton->setEnabled(true);
 		killTimer(m_smsRefreshTimerId);
@@ -206,17 +223,13 @@ void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply:
 		updateSmsRefreshButtonText();
 	} else if(op == XgmOA::OP_REGISTER) {
 		// close progress dialog
-		m_progressDialog->close();
-		delete m_progressDialog;
-		m_progressDialog = Q_NULLPTR;
+		hideProgressDialog();
 
 		// error
 		QMessageBox::critical(Q_NULLPTR, L("Error"), QString("%1: %2").arg(L("XL.Register.Failed"), errMsg));
 	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
 		// close progress dialog
-		m_progressDialog->close();
-		delete m_progressDialog;
-		m_progressDialog = Q_NULLPTR;
+		hideProgressDialog();
 
 		// log
 		blog(LOG_ERROR, "Failed to login: %s", errMsg.toStdString().c_str());
