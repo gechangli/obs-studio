@@ -399,6 +399,8 @@ public slots:
 	void TransitionToScene(OBSSource scene, bool force = false);
 	void SetCurrentScene(OBSSource scene, bool force = false);
 
+	void xgmUserLoggedIn(QString username);
+
 private slots:
 	void AddSceneItem(OBSSceneItem item);
 	void RemoveSceneItem(OBSSceneItem item);
@@ -446,8 +448,6 @@ private slots:
 
 	void onLiveLoginClicked(bool checked);
 	void onLiveSwitchAccountClicked(bool checked);
-
-	void xgmUserRegistered(QString username);
 
 private:
 	/* OBS Callbacks */

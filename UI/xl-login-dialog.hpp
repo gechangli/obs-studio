@@ -19,9 +19,11 @@
 
 #include <obs.hpp>
 #include "ui_XLLoginDialog.h"
+#include "xiguamei-oa.hpp"
 #include <QDialog>
 
 class OBSBasic;
+class XLProgressDialog;
 
 class XLLoginDialog : public QDialog {
 	Q_OBJECT
@@ -29,6 +31,31 @@ class XLLoginDialog : public QDialog {
 private:
 	std::unique_ptr<Ui::XLLoginDialog> ui;
 	OBSBasic* m_main;
+	XgmOA m_client;
+	int m_smsRefreshTimerId;
+	int m_smsRefreshSeconds;
+	XLProgressDialog* m_progressDialog;
+	bool m_loggedIn;
+
+private:
+	void updateSmsRefreshButtonText();
+	bool validateMobile();
+	bool validatePassword();
+	bool validateSmsCode();
+	void showProgressDialog();
+	void hideProgressDialog();
+
+protected:
+	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
+	void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
+
+private slots:
+	void on_refreshSmsCodeButton_clicked();
+	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
+	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
+
+signals:
+	void xgmUserLoggedIn(QString username);
 
 public:
 	XLLoginDialog(OBSBasic *parent);

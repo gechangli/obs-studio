@@ -1597,7 +1597,7 @@ void OBSBasic::OBSInit()
 	const char * username = config_get_string(globalConfig, "XiaomeiLive", "Username");
 	if(username == nullptr) {
 		XLRegisterDialog reg(this);
-		connect(&reg, &XLRegisterDialog::xgmUserRegistered, this, &OBSBasic::xgmUserRegistered);
+		connect(&reg, &XLRegisterDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
 		reg.exec();
 	} else {
 		bool autoLogin = config_get_bool(globalConfig, "XiaomeiLive", "AutoLogin");
@@ -1606,12 +1606,13 @@ void OBSBasic::OBSInit()
 			// TODO login
 		} else {
 			XLLoginDialog login(this);
+			connect(&login, &XLLoginDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
 			login.exec();
 		}
 	}
 }
 
-void OBSBasic::xgmUserRegistered(QString username) {
+void OBSBasic::xgmUserLoggedIn(QString username) {
 	ui->userLabel->setText(username);
 	ui->logOutButton->setVisible(true);
 }

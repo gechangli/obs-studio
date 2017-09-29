@@ -82,6 +82,7 @@ void XLRegisterDialog::reject() {
 	// show login dialog
 	if(!m_registeredOk) {
 		XLLoginDialog login(m_main);
+		connect(&login, &XLLoginDialog::xgmUserLoggedIn, m_main, &OBSBasic::xgmUserLoggedIn);
 		login.exec();
 	}
 }
@@ -187,6 +188,10 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		updateSmsRefreshButtonText();
 		ui->refreshSmsCodeButton->setEnabled(false);
 	} else if(op == XgmOA::OP_REGISTER) {
+		// signal
+		m_registeredOk = true;
+		emit xgmUserRegistered(ui->mobileEdit->text().trimmed());
+
 		// perform login if register ok
 		m_client.loginByPassword(ui->mobileEdit->text().trimmed().toStdString(),
 								 ui->passwordEdit->text().toStdString());
@@ -200,10 +205,10 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		config_set_string(globalConfig, "XiaomeiLive", "Password", ui->passwordEdit->text().toStdString().c_str());
 		config_set_bool(globalConfig, "XiaomeiLive", "RememberPassword", true);
 		config_set_bool(globalConfig, "XiaomeiLive", "AutoLogin", true);
+		config_save_safe(globalConfig, "tmp", Q_NULLPTR);
 
 		// signal
-		m_registeredOk = true;
-		emit xgmUserRegistered(ui->mobileEdit->text().trimmed());
+		emit xgmUserLoggedIn(ui->mobileEdit->text().trimmed());
 
 		// close self
 		close();
