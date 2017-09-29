@@ -48,7 +48,7 @@ function onLoginPage() {
     new QWebChannel(qt.webChannelTransport, function(channel) {
         // show web view
         var lp = channel.objects.lp;
-        lp.ShowWeb();
+        lp.showWeb();
 
         // simplify html
         simplifyLoginPage();
@@ -69,7 +69,7 @@ function onLoginPage() {
             password = document.querySelector('.ipt[name="password"]').value;
 
             // save to c++ side
-            lp.SaveLivePlatformUserInfo(username, password);
+            lp.saveLivePlatformUserInfo(username, password);
         };
     });
 }
@@ -97,17 +97,17 @@ function onSettingsPage() {
                 var url = document.querySelector('#rtmp_url').value;
                 var key = document.querySelector('#rtmp_val').value;
                 var lp = channel.objects.lp;
-                lp.SaveLivePlatformRtmpInfo(url, key);
-                lp.CloseWeb();
+                lp.saveLivePlatformRtmpInfo(url, key);
+                lp.closeWeb();
             });
         }
     } else {
         // close web and prompt user to open live
         new QWebChannel(qt.webChannelTransport, function(channel) {
             var lp = channel.objects.lp;
-            lp.ShowMessageBox("\u672a\u5f00\u901a\u76f4\u64ad", "\u8bf7\u5148\u5f00\u901a\u4e3b\u64ad\u6743\u9650"); // "未开通直播", "请先开通主播权限"
-            lp.ClearCookies();
-            lp.CloseWeb();
+            lp.showMessageBox("\u672a\u5f00\u901a\u76f4\u64ad", "\u8bf7\u5148\u5f00\u901a\u4e3b\u64ad\u6743\u9650"); // "未开通直播", "请先开通主播权限"
+            lp.clearCookies();
+            lp.closeWeb();
         })
     }
 }

@@ -32,9 +32,9 @@ function grabUrl() {
                     username = username.substring(0, username.length - 2);
                 }
                 var lp = channel.objects.lp;
-                lp.SaveLivePlatformRtmpInfo(url, "");
-                lp.SaveLivePlatformUserInfo(username, "");
-                lp.CloseWeb();
+                lp.saveLivePlatformRtmpInfo(url, "");
+                lp.saveLivePlatformUserInfo(username, "");
+                lp.closeWeb();
             }
         };
         save();
@@ -44,7 +44,7 @@ function grabUrl() {
 function onLoginPage() {
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
-        lp.ShowWeb();
+        lp.showWeb();
         simplifyLoginPage();
     });
 }
@@ -104,9 +104,9 @@ function onSettingsPage() {
         // close web and prompt user to open live
         new QWebChannel(qt.webChannelTransport, function(channel) {
             var lp = channel.objects.lp;
-            lp.ShowMessageBox("\u672a\u5f00\u901a\u76f4\u64ad", "\u8bf7\u5148\u5f00\u901a\u4e3b\u64ad\u6743\u9650"); // "未开通直播", "请先开通主播权限"
-            lp.ClearCookies();
-            lp.CloseWeb();
+            lp.showMessageBox("\u672a\u5f00\u901a\u76f4\u64ad", "\u8bf7\u5148\u5f00\u901a\u4e3b\u64ad\u6743\u9650"); // "未开通直播", "请先开通主播权限"
+            lp.clearCookies();
+            lp.closeWeb();
         });
     }
 }

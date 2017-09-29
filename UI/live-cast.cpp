@@ -34,6 +34,16 @@ static const char* s_homeUrls[] = {
 //    "http://www.huajiao.com/user"
 };
 
+// string id of live platform
+static const char* s_livePlatformIds[] = {
+	"douyu",
+	"huya",
+	"xiongmao",
+	"zhanqi",
+	"wangyi",
+	"huajiao"
+};
+
 LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
 m_main(nullptr),
@@ -49,7 +59,7 @@ LivePlatformWeb::~LivePlatformWeb() {
 	}
 }
 
-QString LivePlatformWeb::GetJavascriptFileContent(const char* path) {
+QString LivePlatformWeb::getJavascriptFileContent(const char* path) {
 	string jsPath;
 	GetDataFilePath(path, jsPath);
 	QFile jsFile(QString::fromStdString(jsPath));
@@ -66,21 +76,21 @@ int LivePlatformWeb::getPageHeight() {
 	return m_pageHeight;
 }
 
-void LivePlatformWeb::HideWeb() {
+void LivePlatformWeb::hideWeb() {
 	if(m_webView) {
 		m_webView->hide();
 		m_progressDialog->show();
 	}
 }
 
-void LivePlatformWeb::ShowWeb() {
+void LivePlatformWeb::showWeb() {
 	if(m_webView) {
 		m_webView->show();
 		m_progressDialog->hide();
 	}
 }
 
-void LivePlatformWeb::OpenWeb(bool clearSession) {
+void LivePlatformWeb::openWeb(bool clearSession) {
 	// create web view
 	QWebEngineView* view = new QWebEngineView();
 	m_webView = view;
@@ -89,7 +99,7 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 
 	// clear session
 	if(clearSession) {
-		ClearCookies();
+		clearCookies();
 	}
 
 	// set channel
@@ -114,63 +124,63 @@ void LivePlatformWeb::OpenWeb(bool clearSession) {
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
 		UNUSED_PARAMETER(ok);
-		page->runJavaScript(GetJavascriptFileContent("js/qwebchannel.js"));
-		page->runJavaScript(GetJavascriptFileContent("js/util.js"));
+		page->runJavaScript(getJavascriptFileContent("js/qwebchannel.js"));
+		page->runJavaScript(getJavascriptFileContent("js/util.js"));
 		switch(m_curPlatform) {
 			case LIVE_PLATFORM_DOUYU:
-				page->runJavaScript(GetJavascriptFileContent("js/douyu.js"));
+				page->runJavaScript(getJavascriptFileContent("js/douyu.js"));
 				break;
 			case LIVE_PLATFORM_HUYA:
-				page->runJavaScript(GetJavascriptFileContent("js/huya.js"));
+				page->runJavaScript(getJavascriptFileContent("js/huya.js"));
 				break;
 			case LIVE_PLATFORM_PANDA:
-				page->runJavaScript(GetJavascriptFileContent("js/panda.js"));
+				page->runJavaScript(getJavascriptFileContent("js/panda.js"));
 				break;
 		}
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
-		HideWeb();
+		hideWeb();
 	});
 
 	// open home
-	const QUrl url(GetPlatformHomeUrl(m_curPlatform));
+	const QUrl url(getPlatformHomeUrl(m_curPlatform));
 	view->load(url);
 }
 
-void LivePlatformWeb::JSLog(QString t) {
-	blog(LOG_INFO, "JSLog: %s", t.toStdString().c_str());
+void LivePlatformWeb::jsLog(QString t) {
+	blog(LOG_INFO, "jsLog: %s", t.toStdString().c_str());
 }
 
-void LivePlatformWeb::SaveLivePlatformRtmpInfo(QString url, QString key) {
+void LivePlatformWeb::saveLivePlatformRtmpInfo(QString url, QString key) {
 	// save rtmp info
-	live_platform_info_t& info = GetCurrentPlatformInfo();
+	live_platform_info_t& info = getCurrentPlatformInfo();
 	string curl = url.toStdString();
 	string ckey = key.toStdString();
 	memcpy(info.rtmpUrl, curl.c_str(), curl.length());
 	memcpy(info.liveCode, ckey.c_str(), ckey.length());
 
 	// show hint
-	m_main->UpdateLivePlatformHint();
+	m_main->updateLivePlatformHint();
 }
 
-void LivePlatformWeb::SaveLivePlatformUserInfo(QString username, QString password) {
+void LivePlatformWeb::saveLivePlatformUserInfo(QString username, QString password) {
 	// save user info
-	live_platform_info_t& info = GetCurrentPlatformInfo();
+	live_platform_info_t& info = getCurrentPlatformInfo();
 	string cuser = username.toStdString();
 	string cpwd = password.toStdString();
 	memcpy(info.username, cuser.c_str(), cuser.length());
 	memcpy(info.password, cpwd.c_str(), cpwd.length());
 
 	// show account name
-	m_main->SetLivePlatformState(m_curPlatform, username);
+	m_main->setLivePlatformState(m_curPlatform, username);
 }
 
-bool LivePlatformWeb::IsLoggedIn() {
-	live_platform_info_t& info = GetCurrentPlatformInfo();
+bool LivePlatformWeb::isLoggedIn() {
+	live_platform_info_t& info = getCurrentPlatformInfo();
 	return strlen(info.username) > 0;
 }
 
-void LivePlatformWeb::CloseWeb() {
+void LivePlatformWeb::closeWeb() {
 	if(m_webView) {
 		m_webView->close();
 		m_webView = nullptr;
@@ -178,25 +188,25 @@ void LivePlatformWeb::CloseWeb() {
 	}
 }
 
-void LivePlatformWeb::ClearCookies() {
+void LivePlatformWeb::clearCookies() {
 	if(m_webView) {
 		m_webView->page()->profile()->cookieStore()->deleteAllCookies();
 	}
 }
 
-void LivePlatformWeb::ShowMessageBox(QString title, QString msg) {
+void LivePlatformWeb::showMessageBox(QString title, QString msg) {
 	QMessageBox::warning(nullptr, title, msg);
 }
 
-void LivePlatformWeb::SetMain(OBSBasic* m) {
+void LivePlatformWeb::setMain(OBSBasic *m) {
 	m_main = m;
 }
 
-live_platform_info_t& LivePlatformWeb::GetCurrentPlatformInfo() {
-	return GetPlatformInfo(m_curPlatform);
+live_platform_info_t& LivePlatformWeb::getCurrentPlatformInfo() {
+	return getPlatformInfo(m_curPlatform);
 }
 
-live_platform_info_t& LivePlatformWeb::GetPlatformInfo(LivePlatform p) {
+live_platform_info_t& LivePlatformWeb::getPlatformInfo(LivePlatform p) {
 	map<int, live_platform_info_t>::iterator itor = m_infos.find(p);
 	if(itor == m_infos.end()) {
 		m_infos[p] = {
@@ -207,10 +217,29 @@ live_platform_info_t& LivePlatformWeb::GetPlatformInfo(LivePlatform p) {
 	return m_infos[p];
 }
 
-void LivePlatformWeb::SetCurrentPlatformInfo(live_platform_info_t& info) {
+live_platform_info_t& LivePlatformWeb::getPlatformInfo(QString name) {
+	LivePlatform plt = id2Type(name);
+	return getPlatformInfo(plt);
+}
+
+void LivePlatformWeb::setCurrentPlatformInfo(live_platform_info_t &info) {
 	m_infos[m_curPlatform] = info;
 }
 
-const char* LivePlatformWeb::GetPlatformHomeUrl(LivePlatform p) {
+const char* LivePlatformWeb::getPlatformHomeUrl(LivePlatform p) {
 	return s_homeUrls[p];
+}
+
+LivePlatform LivePlatformWeb::id2Type(QString id) {
+	int len = sizeof(s_livePlatformIds) / sizeof(const char*);
+	for(int i = 0; i < len; i++) {
+		if(id == s_livePlatformIds[i]) {
+			return (LivePlatform)i;
+		}
+	}
+	return LIVE_PLATFORM_DOUYU;
+}
+
+QString LivePlatformWeb::type2Id(LivePlatform plt) {
+	return s_livePlatformIds[(int)plt];
 }

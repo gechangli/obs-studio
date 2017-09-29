@@ -15,7 +15,7 @@ function onLoginPage() {
     new QWebChannel(qt.webChannelTransport, function(channel) {
         // show web view
         var lp = channel.objects.lp;
-        lp.ShowWeb();
+        lp.showWeb();
 
         // click login button to show login ui
         document.querySelector('.tool-user-info-login.header-login-btn').click();
@@ -31,7 +31,7 @@ function onLoginPage() {
             var password = document.querySelector('.ruc-input-login-passport[name="password"]').value;
 
             // save to c++ side
-            lp.SaveLivePlatformUserInfo(username, password);
+            lp.saveLivePlatformUserInfo(username, password);
         }
     });
 }
@@ -51,8 +51,8 @@ function onSettingsPage() {
             // get rtmp info
             var url = document.getElementById('rtmp-address').value;
             var key = document.getElementById('live-code').value;
-            lp.SaveLivePlatformRtmpInfo(url, key);
-            lp.CloseWeb();
+            lp.saveLivePlatformRtmpInfo(url, key);
+            lp.closeWeb();
         }
 
         // first time call

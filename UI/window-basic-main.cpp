@@ -30,6 +30,8 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QPushButton>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -355,7 +357,7 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		layout->addWidget(btnSwitchAccount);
 		ui->liveTable->setCellWidget(i, 3, widget);
 	}
-	m_lpWeb.SetCurrentPlatform(LIVE_PLATFORM_DOUYU);
+	m_lpWeb.setCurrentPlatform(LIVE_PLATFORM_DOUYU);
 
 	// hide some UI we don't need
 	ui->settingsButton->setVisible(false);
@@ -366,22 +368,22 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->userLabel->setText(L("NotLogged"));
 
 	// set main
-	m_lpWeb.SetMain(this);
+	m_lpWeb.setMain(this);
 }
 
-void OBSBasic::SetLivePlatformState(LivePlatform plt, QString text) {
+void OBSBasic::setLivePlatformState(LivePlatform plt, QString text) {
 	QTableWidgetItem* item = ui->liveTable->item(plt, 2);
 	item->setText(text);
 }
 
-void OBSBasic::UpdateLivePlatformHint() {
+void OBSBasic::updateLivePlatformHint() {
 	int row = ui->liveTable->currentRow();
-	live_platform_info_t& info = m_lpWeb.GetPlatformInfo((LivePlatform)row);
+	live_platform_info_t& info = m_lpWeb.getPlatformInfo((LivePlatform) row);
 	ui->liveInfoLabel->setText(info.rtmpUrl);
 }
 
 void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
-	UpdateLivePlatformHint();
+	updateLivePlatformHint();
 }
 
 void OBSBasic::on_logOutButton_clicked() {
@@ -420,8 +422,8 @@ void OBSBasic::onLiveLoginClicked(bool checked) {
 	int row = sender->property("row").toInt();
 
 	// set current platform and open
-	m_lpWeb.SetCurrentPlatform((LivePlatform)row);
-	m_lpWeb.OpenWeb();
+	m_lpWeb.setCurrentPlatform((LivePlatform) row);
+	m_lpWeb.openWeb();
 }
 
 void OBSBasic::onLiveSwitchAccountClicked(bool checked) {
@@ -431,11 +433,11 @@ void OBSBasic::onLiveSwitchAccountClicked(bool checked) {
 	int row = sender->property("row").toInt();
 
 	// set current platform and open, but need to clear cookie first
-	m_lpWeb.SetCurrentPlatform((LivePlatform)row);
-	m_lpWeb.OpenWeb(true);
+	m_lpWeb.setCurrentPlatform((LivePlatform) row);
+	m_lpWeb.openWeb(true);
 
 	// reset state
-	SetLivePlatformState((LivePlatform)row, L("NotLogged"));
+	setLivePlatformState((LivePlatform)row, L("NotLogged"));
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
@@ -1017,7 +1019,7 @@ bool OBSBasic::InitService()
 	for(int i = 0; i < ui->liveTable->rowCount(); i++) {
 		QTableWidgetItem* item = ui->liveTable->itemAt(i, 0);
 		if(item->checkState() == Qt::Checked) {
-			live_platform_info_t& info = m_lpWeb.GetPlatformInfo((LivePlatform)i);
+			live_platform_info_t& info = m_lpWeb.getPlatformInfo((LivePlatform) i);
 			if(strlen(info.rtmpUrl) > 0) {
 				obs_data_t *settings = obs_data_create();
 				obs_data_set_string(settings, "server", info.rtmpUrl);
@@ -1639,8 +1641,15 @@ void OBSBasic::hideProgressDialog() {
 }
 
 void OBSBasic::xgmUserLoggedIn(QString username) {
+	// show user name and logout button
 	ui->userLabel->setText(username);
 	ui->logOutButton->setVisible(true);
+
+	// get live platform users
+	m_client.getLivePlatformUsers();
+
+	// show progress
+	showProgressDialog();
 }
 
 void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
@@ -1664,6 +1673,21 @@ void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		XLLoginDialog login(this);
 		connect(&login, &XLLoginDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
 		login.exec();
+	} else if(op == XgmOA::OP_GET_LIVE_PLATFORM_ACCOUNTS) {
+		// save user name for live platforms
+		QJsonObject json = doc.object();
+		QJsonArray users = json.value("live_list").toArray();
+		int c = users.count();
+		for(int i = 0; i < c; i++) {
+			QJsonObject user = users[i].toObject();
+			QString pltName = user.value("name").toString();
+			QString acc = user.value("account").toString();
+			live_platform_info_t& info = m_lpWeb.getPlatformInfo(pltName);
+			memcpy(info.username, acc.toStdString().c_str(), acc.length());
+		}
+
+		// close progress dialog
+		hideProgressDialog();
 	}
 }
 
@@ -1689,6 +1713,9 @@ void OBSBasic::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Network
 
 		// warning
 		QMessageBox::critical(Q_NULLPTR, L("Error"), errMsg);
+	} else if(op == XgmOA::OP_GET_LIVE_PLATFORM_ACCOUNTS) {
+		// close progress dialog
+		hideProgressDialog();
 	}
 }
 

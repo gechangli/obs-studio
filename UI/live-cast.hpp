@@ -44,16 +44,6 @@ static const char* LivePlatformNames[] = {
     "Basic.Live.HuaJiao"
 };
 
-// string id of live platform
-static const char* LivePlatformIds[] = {
-	"douyu",
-	"huya",
-	"xiongmao",
-	"zhanqi",
-	"wangyi",
-	"huajiao"
-};
-
 // info to push stream
 struct live_platform_info {
     char rtmpUrl[256];
@@ -83,45 +73,48 @@ private:
 	bool m_loggedIn;
 
 private:
-	QString GetJavascriptFileContent(const char* path);
+	QString getJavascriptFileContent(const char* path);
 
 public:
 	Q_INVOKABLE int getPageWidth();
 	Q_INVOKABLE int getPageHeight();
 	Q_PROPERTY(int m_pageWidth READ getPageWidth);
 	Q_PROPERTY(int m_pageHeight READ getPageHeight);
-	Q_INVOKABLE bool IsLoggedIn();
-	Q_PROPERTY(bool m_loggedIn READ IsLoggedIn);
+	Q_INVOKABLE bool isLoggedIn();
+	Q_PROPERTY(bool m_loggedIn READ isLoggedIn);
 
 public slots:
-	Q_INVOKABLE void SaveLivePlatformRtmpInfo(QString url, QString key);
-	Q_INVOKABLE void SaveLivePlatformUserInfo(QString username, QString password);
-	Q_INVOKABLE void CloseWeb();
-	Q_INVOKABLE void ShowMessageBox(QString title, QString msg);
-	Q_INVOKABLE void ClearCookies();
-	Q_INVOKABLE void HideWeb();
-	Q_INVOKABLE void ShowWeb();
-	Q_INVOKABLE void JSLog(QString t);
+	Q_INVOKABLE void saveLivePlatformRtmpInfo(QString url, QString key);
+	Q_INVOKABLE void saveLivePlatformUserInfo(QString username, QString password);
+	Q_INVOKABLE void closeWeb();
+	Q_INVOKABLE void showMessageBox(QString title, QString msg);
+	Q_INVOKABLE void clearCookies();
+	Q_INVOKABLE void hideWeb();
+	Q_INVOKABLE void showWeb();
+	Q_INVOKABLE void jsLog(QString t);
 
 public:
     LivePlatformWeb();
     virtual ~LivePlatformWeb();
 
     // open web site
-    void OpenWeb(bool clearSession = false);
+    void openWeb(bool clearSession = false);
 
 	// associate main
-	void SetMain(OBSBasic* m);
+	void setMain(OBSBasic *m);
 
     // set current platform
-    inline void SetCurrentPlatform(LivePlatform p) { m_curPlatform = p; }
-	inline LivePlatform GetCurrentPlatform() { return m_curPlatform; }
+    inline void setCurrentPlatform(LivePlatform p) { m_curPlatform = p; }
+	inline LivePlatform getCurrentPlatform() { return m_curPlatform; }
 
-    // platform stream info
-    live_platform_info_t& GetCurrentPlatformInfo();
-	live_platform_info_t& GetPlatformInfo(LivePlatform p);
-	void SetCurrentPlatformInfo(live_platform_info_t& info);
+    // platform info
+	LivePlatform id2Type(QString id);
+	QString type2Id(LivePlatform plt);
+    live_platform_info_t& getCurrentPlatformInfo();
+	live_platform_info_t& getPlatformInfo(LivePlatform p);
+	live_platform_info_t& getPlatformInfo(QString name);
+	void setCurrentPlatformInfo(live_platform_info_t &info);
 
 	// get platform home url
-	const char* GetPlatformHomeUrl(LivePlatform p);
+	const char* getPlatformHomeUrl(LivePlatform p);
 };

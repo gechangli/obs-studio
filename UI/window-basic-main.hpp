@@ -511,8 +511,8 @@ public:
 	void NewProject();
 	void LoadProject();
 
-	void SetLivePlatformState(LivePlatform plt, QString text);
-	void UpdateLivePlatformHint();
+	void setLivePlatformState(LivePlatform plt, QString text);
+	void updateLivePlatformHint();
 
 	inline void GetDisplayRect(int &x, int &y, int &cx, int &cy)
 	{
