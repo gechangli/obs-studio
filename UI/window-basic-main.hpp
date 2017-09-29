@@ -30,6 +30,7 @@
 #include "window-basic-adv-audio.hpp"
 #include "window-basic-filters.hpp"
 #include "live-cast.hpp"
+#include "xiguamei-oa.hpp"
 
 #include <obs-frontend-internal.hpp>
 
@@ -44,6 +45,7 @@ class QListWidgetItem;
 class VolControl;
 class QNetworkReply;
 class OBSBasicStats;
+class XLProgressDialog;
 
 #include "ui_OBSBasic.h"
 
@@ -115,6 +117,8 @@ class OBSBasic : public OBSMainWindow {
 private:
 	// for live platform
 	LivePlatformWeb m_lpWeb;
+	XgmOA m_client;
+	XLProgressDialog* m_progressDialog;
 
 	obs_frontend_callbacks *api = nullptr;
 
@@ -266,6 +270,9 @@ private:
 	void DeleteProfile(const char *profile_name, const char *profile_dir);
 	void RefreshProfiles();
 	void ChangeProfile();
+
+	void showProgressDialog();
+	void hideProgressDialog();
 
 	void SaveProjectNow();
 
@@ -448,6 +455,9 @@ private slots:
 
 	void onLiveLoginClicked(bool checked);
 	void onLiveSwitchAccountClicked(bool checked);
+
+	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
+	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 
 private:
 	/* OBS Callbacks */
