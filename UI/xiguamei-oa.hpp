@@ -67,6 +67,7 @@ public:
 	void loginByAuthCode(std::string acc, std::string authCode);
 	void logout();
 	void getLivePlatformUsers();
+	void addLivePlatformUser(std::string pltName, std::string acc);
 
 public slots:
 	void httpFinished();

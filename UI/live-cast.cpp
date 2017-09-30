@@ -68,6 +68,17 @@ QString LivePlatformWeb::getJavascriptFileContent(const char* path) {
 	return in.readAll();
 }
 
+void LivePlatformWeb::loadLivePlatformInfos() {
+	config_t* globalConfig = GetGlobalConfig();
+	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
+
+	}
+}
+
+void LivePlatformWeb::saveLivePlatformInfo(live_platform_info_t& info) {
+
+}
+
 int LivePlatformWeb::getPageWidth() {
 	return m_pageWidth;
 }
@@ -159,20 +170,24 @@ void LivePlatformWeb::saveLivePlatformRtmpInfo(QString url, QString key) {
 	memcpy(info.rtmpUrl, curl.c_str(), curl.length());
 	memcpy(info.liveCode, ckey.c_str(), ckey.length());
 
-	// show hint
-	m_main->updateLivePlatformHint();
+	// signal
+	emit liveRtmpGot(type2Id(m_curPlatform));
 }
 
 void LivePlatformWeb::saveLivePlatformUserInfo(QString username, QString password) {
 	// save user info
 	live_platform_info_t& info = getCurrentPlatformInfo();
-	string cuser = username.toStdString();
-	string cpwd = password.toStdString();
-	memcpy(info.username, cuser.c_str(), cuser.length());
-	memcpy(info.password, cpwd.c_str(), cpwd.length());
+	if(username.length() > 0) {
+		string cuser = username.toStdString();
+		memcpy(info.username, cuser.c_str(), cuser.length());
+	}
+	if(password.length() > 0) {
+		string cpwd = password.toStdString();
+		memcpy(info.password, cpwd.c_str(), cpwd.length());
+	}
 
-	// show account name
-	m_main->setLivePlatformState(m_curPlatform, username);
+	// logged in signal
+	emit liveUserLoggedIn(type2Id(m_curPlatform));
 }
 
 bool LivePlatformWeb::isLoggedIn() {
@@ -210,6 +225,8 @@ live_platform_info_t& LivePlatformWeb::getPlatformInfo(LivePlatform p) {
 	map<int, live_platform_info_t>::iterator itor = m_infos.find(p);
 	if(itor == m_infos.end()) {
 		m_infos[p] = {
+			"",
+			"",
 			"",
 			""
 		};

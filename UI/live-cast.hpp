@@ -74,6 +74,8 @@ private:
 
 private:
 	QString getJavascriptFileContent(const char* path);
+	void loadLivePlatformInfos();
+	void saveLivePlatformInfo(live_platform_info_t& info);
 
 public:
 	Q_INVOKABLE int getPageWidth();
@@ -92,6 +94,10 @@ public slots:
 	Q_INVOKABLE void hideWeb();
 	Q_INVOKABLE void showWeb();
 	Q_INVOKABLE void jsLog(QString t);
+
+signals:
+	void liveUserLoggedIn(QString pltName);
+	void liveRtmpGot(QString pltName);
 
 public:
     LivePlatformWeb();

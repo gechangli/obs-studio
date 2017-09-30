@@ -458,6 +458,8 @@ private slots:
 
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
+	void liveUserLoggedIn(QString pltName);
+	void liveRtmpGot(QString pltName);
 
 private:
 	/* OBS Callbacks */
@@ -510,9 +512,6 @@ public:
 
 	void NewProject();
 	void LoadProject();
-
-	void setLivePlatformState(LivePlatform plt, QString text);
-	void updateLivePlatformHint();
 
 	inline void GetDisplayRect(int &x, int &y, int &cx, int &cy)
 	{

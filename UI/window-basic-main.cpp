@@ -371,19 +371,11 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	m_lpWeb.setMain(this);
 }
 
-void OBSBasic::setLivePlatformState(LivePlatform plt, QString text) {
-	QTableWidgetItem* item = ui->liveTable->item(plt, 2);
-	item->setText(text);
-}
-
-void OBSBasic::updateLivePlatformHint() {
+void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
+	// show rtmp url
 	int row = ui->liveTable->currentRow();
 	live_platform_info_t& info = m_lpWeb.getPlatformInfo((LivePlatform) row);
 	ui->liveInfoLabel->setText(info.rtmpUrl);
-}
-
-void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
-	updateLivePlatformHint();
 }
 
 void OBSBasic::on_logOutButton_clicked() {
@@ -437,7 +429,7 @@ void OBSBasic::onLiveSwitchAccountClicked(bool checked) {
 	m_lpWeb.openWeb(true);
 
 	// reset state
-	setLivePlatformState((LivePlatform)row, L("NotLogged"));
+	ui->liveTable->item(row, 2)->setText(L("NotLogged"));
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
@@ -1601,9 +1593,11 @@ void OBSBasic::OBSInit()
         ui->toggleScenes->activate(QAction::Trigger);
     }
 
-	// rest api event
+	// signals
 	connect(&m_client, &XgmOA::restOpDone, this, &OBSBasic::onXgmOAResponse);
 	connect(&m_client, &XgmOA::restOpFailed, this, &OBSBasic::onXgmOAResponseFailed);
+	connect(&m_lpWeb, &LivePlatformWeb::liveUserLoggedIn, this, &OBSBasic::liveUserLoggedIn);
+	connect(&m_lpWeb, &LivePlatformWeb::liveRtmpGot, this, &OBSBasic::liveRtmpGot);
 
 	// check current user, if has not, show register dialog
 	// if has, check auto login flag
@@ -1716,6 +1710,26 @@ void OBSBasic::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Network
 	} else if(op == XgmOA::OP_GET_LIVE_PLATFORM_ACCOUNTS) {
 		// close progress dialog
 		hideProgressDialog();
+	}
+}
+
+void OBSBasic::liveUserLoggedIn(QString pltName) {
+	// get platform info, set user name to table widget
+	LivePlatform plt = m_lpWeb.id2Type(pltName);
+	live_platform_info_t& info = m_lpWeb.getPlatformInfo(plt);
+	QTableWidgetItem* item = ui->liveTable->item(plt, 2);
+	item->setText(info.username);
+
+	// add user to server
+	m_client.addLivePlatformUser(pltName.toStdString(), info.username);
+}
+
+void OBSBasic::liveRtmpGot(QString pltName) {
+	// update rtmp url if current row is equal to this platform
+	LivePlatform plt = m_lpWeb.id2Type(pltName);
+	if(ui->liveTable->currentRow() == plt) {
+		live_platform_info_t &info = m_lpWeb.getPlatformInfo(plt);
+		ui->liveInfoLabel->setText(info.rtmpUrl);
 	}
 }
 

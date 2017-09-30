@@ -177,3 +177,15 @@ void XgmOA::logout() {
 void XgmOA::getLivePlatformUsers() {
 	doGet(SERVER_URL + PATH_GET_LIVE_PLATFORM_ACCOUNTS);
 }
+
+void XgmOA::addLivePlatformUser(std::string pltName, std::string acc) {
+	// create json data
+	QVariantMap map;
+	map["account"] = QVariant(acc.c_str());
+	map["live_name"] = QVariant(pltName.c_str());
+	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
+	QByteArray json = doc.toJson(QJsonDocument::Compact);
+
+	// post it
+	doPost(SERVER_URL + PATH_ADD_LIVE_PLATFORM_ACCOUNT, json);
+}
