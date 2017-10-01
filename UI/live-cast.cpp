@@ -51,6 +51,8 @@ m_webView(nullptr),
 m_progressDialog(nullptr),
 m_pageWidth(0),
 m_pageHeight(0) {
+	// load info from config
+	loadLivePlatformInfos();
 }
 
 LivePlatformWeb::~LivePlatformWeb() {
@@ -69,14 +71,38 @@ QString LivePlatformWeb::getJavascriptFileContent(const char* path) {
 }
 
 void LivePlatformWeb::loadLivePlatformInfos() {
+	// load platform info, use platform name as section name
 	config_t* globalConfig = GetGlobalConfig();
-	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
-
+	const char* xgmUser = config_get_string(globalConfig, "XiaomeiLive", "Username");
+	if(xgmUser != Q_NULLPTR && strlen(xgmUser) > 0) {
+		for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
+			const char* pltName = s_livePlatformIds[i];
+			QString key = QString("%1.%2").arg(xgmUser, pltName);
+			const char* pltUser = config_get_string(globalConfig, key.toStdString().c_str(), "Username");
+			if(pltUser != Q_NULLPTR) {
+				live_platform_info_t& info = getPlatformInfo((LivePlatform)i);
+				memcpy(info.username, pltUser, strlen(pltUser));
+			}
+		}
 	}
 }
 
-void LivePlatformWeb::saveLivePlatformInfo(live_platform_info_t& info) {
+void LivePlatformWeb::saveLivePlatformInfo(LivePlatform plt) {
+	live_platform_info_t& info = getPlatformInfo(plt);
+	if(strlen(info.username) > 0) {
+		config_t* globalConfig = GetGlobalConfig();
+		const char* xgmUser = config_get_string(globalConfig, "XiaomeiLive", "Username");
+		if(xgmUser != Q_NULLPTR && strlen(xgmUser) > 0) {
+			const char *pltName = s_livePlatformIds[plt];
+			QString key = QString("%1.%2").arg(xgmUser, pltName);
+			config_set_string(globalConfig, key.toStdString().c_str(), "Username", info.username);
+			config_save_safe(globalConfig, "tmp", Q_NULLPTR);
+		}
+	}
+}
 
+void LivePlatformWeb::saveLivePlatformInfo(QString pltName) {
+	saveLivePlatformInfo(id2Type(pltName));
 }
 
 int LivePlatformWeb::getPageWidth() {
@@ -186,6 +212,9 @@ void LivePlatformWeb::saveLivePlatformUserInfo(QString username, QString passwor
 		memcpy(info.password, cpwd.c_str(), cpwd.length());
 	}
 
+	// save
+	saveLivePlatformInfo(m_curPlatform);
+
 	// logged in signal
 	emit liveUserLoggedIn(type2Id(m_curPlatform));
 }
@@ -225,6 +254,7 @@ live_platform_info_t& LivePlatformWeb::getPlatformInfo(LivePlatform p) {
 	map<int, live_platform_info_t>::iterator itor = m_infos.find(p);
 	if(itor == m_infos.end()) {
 		m_infos[p] = {
+			false,
 			"",
 			"",
 			"",

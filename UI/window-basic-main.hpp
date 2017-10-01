@@ -453,7 +453,6 @@ private slots:
 	void on_actionCopyFilters_triggered();
 	void on_actionPasteFilters_triggered();
 
-	void onLiveLoginClicked(bool checked);
 	void onLiveSwitchAccountClicked(bool checked);
 
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
@@ -659,6 +658,7 @@ private slots:
 	void on_lockUI_toggled(bool lock);
 
 	void on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
+	void on_liveTable_itemClicked(QTableWidgetItem *item);
 	void on_logOutButton_clicked();
 
 	void logUploadFinished(const QString &text, const QString &error);

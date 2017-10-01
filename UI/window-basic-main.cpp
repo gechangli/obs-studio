@@ -330,11 +330,10 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		itemName->setFlags(itemName->flags() & (~Qt::ItemIsEditable));
 		ui->liveTable->setItem(i, 1, itemName);
 
-		// status
-		QTableWidgetItem* itemState = new QTableWidgetItem();
-		itemState->setText(L("NotLogged"));
-		itemState->setFlags(itemName->flags() & (~Qt::ItemIsEditable));
-		ui->liveTable->setItem(i, 2, itemState);
+		// account
+		QTableWidgetItem* itemAccount = new QTableWidgetItem();
+		itemAccount->setFlags(itemName->flags() & (~Qt::ItemIsEditable));
+		ui->liveTable->setItem(i, 2, itemAccount);
 
 		// operation
 		QWidget* widget = new QWidget();
@@ -344,16 +343,10 @@ OBSBasic::OBSBasic(QWidget *parent) :
         margins.setBottom(0);
         layout->setContentsMargins(margins);
 		QSpacerItem* sep1 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
-		QPushButton* btnLogin = new QPushButton(L("LogIn"));
-		btnLogin->setProperty("row", QVariant(i));
-		connect(btnLogin, SIGNAL(clicked(bool)), this, SLOT(onLiveLoginClicked(bool)));
 		QPushButton* btnSwitchAccount = new QPushButton(L("SwitchAccount"));
 		btnSwitchAccount->setProperty("row", QVariant(i));
 		connect(btnSwitchAccount, SIGNAL(clicked(bool)), this, SLOT(onLiveSwitchAccountClicked(bool)));
-		QSpacerItem* sep2 = new QSpacerItem(5, 1, QSizePolicy::Fixed, QSizePolicy::Fixed);
 		layout->addSpacerItem(sep1);
-		layout->addWidget(btnLogin);
-		layout->addSpacerItem(sep2);
 		layout->addWidget(btnSwitchAccount);
 		ui->liveTable->setCellWidget(i, 3, widget);
 	}
@@ -376,6 +369,24 @@ void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTable
 	int row = ui->liveTable->currentRow();
 	live_platform_info_t& info = m_lpWeb.getPlatformInfo((LivePlatform) row);
 	ui->liveInfoLabel->setText(info.rtmpUrl);
+}
+
+void OBSBasic::on_liveTable_itemClicked(QTableWidgetItem *item) {
+	if(item->column() == 0) {
+		// if check state changed, we need to do something
+		LivePlatform plt = (LivePlatform)item->row();
+		live_platform_info_t& info = m_lpWeb.getPlatformInfo(plt);
+		bool checked = item->checkState() == Qt::Checked;
+		if(checked != info.selected) {
+			info.selected = checked;
+
+			// if checked, and not logged in, start to login
+			if(checked && strlen(info.rtmpUrl) <= 0) {
+				m_lpWeb.setCurrentPlatform(plt);
+				m_lpWeb.openWeb();
+			}
+		}
+	}
 }
 
 void OBSBasic::on_logOutButton_clicked() {
@@ -407,29 +418,18 @@ void OBSBasic::on_logOutButton_clicked() {
 	showProgressDialog();
 }
 
-void OBSBasic::onLiveLoginClicked(bool checked) {
-	// get row number
-	UNUSED_PARAMETER(checked);
-	QObject* sender = QObject::sender();
-	int row = sender->property("row").toInt();
-
-	// set current platform and open
-	m_lpWeb.setCurrentPlatform((LivePlatform) row);
-	m_lpWeb.openWeb();
-}
-
 void OBSBasic::onLiveSwitchAccountClicked(bool checked) {
 	// get row number
 	UNUSED_PARAMETER(checked);
 	QObject* sender = QObject::sender();
-	int row = sender->property("row").toInt();
+	LivePlatform plt = (LivePlatform)sender->property("row").toInt();
 
 	// set current platform and open, but need to clear cookie first
-	m_lpWeb.setCurrentPlatform((LivePlatform) row);
+	m_lpWeb.setCurrentPlatform(plt);
 	m_lpWeb.openWeb(true);
 
 	// reset state
-	ui->liveTable->item(row, 2)->setText(L("NotLogged"));
+	ui->liveTable->item(plt, 2)->setText("");
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
@@ -1672,16 +1672,28 @@ void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		QJsonObject json = doc.object();
 		QJsonArray users = json.value("live_list").toArray();
 		int c = users.count();
-		for(int i = 0; i < c; i++) {
+		for (int i = 0; i < c; i++) {
 			QJsonObject user = users[i].toObject();
 			QString pltName = user.value("name").toString();
 			QString acc = user.value("account").toString();
-			live_platform_info_t& info = m_lpWeb.getPlatformInfo(pltName);
-			memcpy(info.username, acc.toStdString().c_str(), acc.length());
+			blog(LOG_INFO, "Get account %s for platform %s", acc.toStdString().c_str(), pltName.toStdString().c_str());
+			live_platform_info_t &info = m_lpWeb.getPlatformInfo(pltName);
+			if (acc != info.username) {
+				memcpy(info.username, acc.toStdString().c_str(), acc.length());
+				m_lpWeb.saveLivePlatformInfo(pltName);
+			}
 		}
 
 		// close progress dialog
 		hideProgressDialog();
+
+		// set username in table widget
+		for (int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
+			live_platform_info_t &info = m_lpWeb.getPlatformInfo((LivePlatform) i);
+			ui->liveTable->item(i, 2)->setText(info.username);
+		}
+	} else if(op == XgmOA::OP_ADD_LIVE_PLATFORM_ACCOUNT) {
+		blog(LOG_INFO, "Add live account ok!!");
 	}
 }
 

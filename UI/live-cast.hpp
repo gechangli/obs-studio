@@ -46,6 +46,7 @@ static const char* LivePlatformNames[] = {
 
 // info to push stream
 struct live_platform_info {
+	bool selected; // true means it is selected to push
     char rtmpUrl[256];
     char liveCode[256];
 	char username[128];
@@ -75,7 +76,6 @@ private:
 private:
 	QString getJavascriptFileContent(const char* path);
 	void loadLivePlatformInfos();
-	void saveLivePlatformInfo(live_platform_info_t& info);
 
 public:
 	Q_INVOKABLE int getPageWidth();
@@ -120,6 +120,8 @@ public:
 	live_platform_info_t& getPlatformInfo(LivePlatform p);
 	live_platform_info_t& getPlatformInfo(QString name);
 	void setCurrentPlatformInfo(live_platform_info_t &info);
+	void saveLivePlatformInfo(LivePlatform plt);
+	void saveLivePlatformInfo(QString pltName);
 
 	// get platform home url
 	const char* getPlatformHomeUrl(LivePlatform p);
