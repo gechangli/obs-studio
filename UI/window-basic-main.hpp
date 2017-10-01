@@ -46,6 +46,7 @@ class VolControl;
 class QNetworkReply;
 class OBSBasicStats;
 class XLProgressDialog;
+class XLTitleBar;
 
 #include "ui_OBSBasic.h"
 
@@ -119,6 +120,7 @@ private:
 	LivePlatformWeb m_lpWeb;
 	XgmOA m_client;
 	XLProgressDialog* m_progressDialog;
+	XLTitleBar* m_titleBar;
 
 	obs_frontend_callbacks *api = nullptr;
 

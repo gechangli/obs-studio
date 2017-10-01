@@ -216,7 +216,8 @@ set(xiaomeilive_SOURCES
 	xl-register-dialog.cpp
 	xl-login-dialog.cpp
 	xiguamei-oa.cpp
-	xl-progress-dialog.cpp)
+	xl-progress-dialog.cpp
+	xl-title-bar.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -269,7 +270,8 @@ set(xiaomeilive_HEADERS
 	xl-register-dialog.hpp
 	xl-login-dialog.hpp
 	xiguamei-oa.hpp
-	xl-progress-dialog.hpp)
+	xl-progress-dialog.hpp
+	xl-title-bar.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui

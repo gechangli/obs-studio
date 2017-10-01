@@ -30,7 +30,7 @@
 
 /* General style, we override only what is needed. */
 QWidget {
-    background-color: rgb(58,57,58); /* dark */
+    background-color: rgb(49,50,65); /* dark */
     alternate-background-color: rgb(31,30,31); /* veryDark */
     color: rgb(225,224,225); /* veryLight */
     selection-background-color: rgb(42,130,218); /* blue */

@@ -62,6 +62,7 @@
 #include "xl-register-dialog.hpp"
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
+#include "xl-title-bar.hpp"
 
 #if defined(_WIN32) && defined(ENABLE_WIN_UPDATER)
 #include "win-update/win-update.hpp"
@@ -145,6 +146,9 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	outputHandler(nullptr)
 {
 	setAttribute(Qt::WA_NativeWindow);
+	setAttribute(Qt::WA_TranslucentBackground);
+	setAttribute(Qt::WA_DeleteOnClose);
+	setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
 
 	projectorArray.resize(10, "");
 	previewProjectorArray.resize(10, 0);
@@ -362,6 +366,10 @@ OBSBasic::OBSBasic(QWidget *parent) :
 
 	// set main
 	m_lpWeb.setMain(this);
+
+	// title bar
+	m_titleBar = new XLTitleBar(this);
+	m_titleBar->move(0, 0);
 }
 
 void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
