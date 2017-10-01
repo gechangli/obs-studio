@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
     Copyright (C) 2014 by Luma <stubma@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,7 @@
 #include "ui_XLProgressDialog.h"
 #include <QDialog>
 #include <QWidget>
+#include <memory>
 
 class QPropertyAnimation;
 
