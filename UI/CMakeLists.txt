@@ -68,6 +68,7 @@ if(WIN32)
 		win-update/update-window.cpp
 		win-update/win-update.cpp
 		win-update/win-update-helpers.cpp
+		xl-frameless-window-util-win.cpp
 		obs.rc)
 	set(xiaomeilive_PLATFORM_HEADERS
 		win-update/update-window.hpp
@@ -83,7 +84,9 @@ if(WIN32)
 	endif()
 elseif(APPLE)
 	set(xiaomeilive_PLATFORM_SOURCES
-		platform-osx.mm)
+		platform-osx.mm
+		xl-frameless-window-util-osx.mm)
+	set_source_files_properties(xl-frameless-window-util-osx.mm PROPERTIES COMPILE_FLAGS -fno-objc-arc)
 
 	find_package(AppKit REQUIRED)
 
@@ -271,7 +274,8 @@ set(xiaomeilive_HEADERS
 	xl-login-dialog.hpp
 	xiguamei-oa.hpp
 	xl-progress-dialog.hpp
-	xl-title-bar.hpp)
+	xl-title-bar.hpp
+	xl-frameless-window-util-osx.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui

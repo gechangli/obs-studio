@@ -63,6 +63,7 @@
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
 #include "xl-title-bar.hpp"
+#include "xl-frameless-window-util-osx.hpp"
 
 #if defined(_WIN32) && defined(ENABLE_WIN_UPDATER)
 #include "win-update/win-update.hpp"
@@ -146,18 +147,20 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	outputHandler(nullptr)
 {
 	setAttribute(Qt::WA_NativeWindow);
-	setAttribute(Qt::WA_TranslucentBackground);
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowFlags(Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
 
 	projectorArray.resize(10, "");
 	previewProjectorArray.resize(10, 0);
 
 	setAcceptDrops(true);
 
+	// set up
 	ui->setupUi(this);
 	ui->previewDisabledLabel->setVisible(false);
 
+	// setup frameless ui
+	XLFramelessWindowUtil::setupUI(this);
+
+	// get saved dock layout
 	startingDockLayout = saveState();
 
 	copyActionsDynamicProperties();
