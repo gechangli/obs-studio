@@ -555,9 +555,9 @@ public:
 	void RemoveSavedProjectors(int monitor);
 
 protected:
-	virtual void closeEvent(QCloseEvent *event) override;
-	virtual void changeEvent(QEvent *event) override;
-	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
+	void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+	void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
+	bool nativeEvent(const QByteArray& eventType, void* message, long* result) Q_DECL_OVERRIDE;
 
 private slots:
 	void on_actionFullscreenInterface_triggered();
@@ -663,6 +663,10 @@ private slots:
 	void on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
 	void on_liveTable_itemClicked(QTableWidgetItem *item);
 	void on_logOutButton_clicked();
+	void windowRequestMinimize();
+	void windowRequestRestore();
+	void windowRequestMaximize();
+	void windowRequestClose();
 
 	void logUploadFinished(const QString &text, const QString &error);
 

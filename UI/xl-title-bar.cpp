@@ -28,7 +28,8 @@
 
 XLTitleBar::XLTitleBar(QWidget *parent) :
 	QWidget(parent),
-	m_windowBorderWidth(0) {
+	m_windowBorderWidth(0),
+	m_pressed(false) {
 	// create controls
 	m_icon = new QLabel;
 	m_titleLabel = new QLabel;
@@ -42,6 +43,16 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	m_restoreButton->setFixedSize(QSize(BUTTON_WIDTH, BUTTON_HEIGHT));
 	m_maxButton->setFixedSize(QSize(BUTTON_WIDTH, BUTTON_HEIGHT));
 	m_closeButton->setFixedSize(QSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+
+	// set button ui
+	m_minButton->setFlat(true);
+	m_restoreButton->setFlat(true);
+	m_maxButton->setFlat(true);
+	m_closeButton->setFlat(true);
+	m_minButton->setIcon(QIcon(QPixmap(QString(":/res/images/minimize.png"))));
+	m_restoreButton->setIcon(QIcon(QPixmap(QString(":/res/images/restore.png"))));
+	m_maxButton->setIcon(QIcon(QPixmap(QString(":/res/images/maximize.png"))));
+	m_closeButton->setIcon(QIcon(QPixmap(QString(":/res/images/close.png"))));
 
 	// set widget name
 	m_titleLabel->setObjectName("titleLabel");
@@ -58,15 +69,35 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	layout->addWidget(m_restoreButton);
 	layout->addWidget(m_maxButton);
 	layout->addWidget(m_closeButton);
-	layout->setContentsMargins(5, 0, 0, 0);
+	layout->setContentsMargins(5, 0, 5, 0);
 	layout->setSpacing(0);
 	m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setFixedHeight(TITLE_HEIGHT);
 	setWindowFlags(Qt::FramelessWindowHint);
+
+	// connect slots
+	connect(m_minButton, &QPushButton::clicked, this, &XLTitleBar::onMinClicked);
+	connect(m_restoreButton, &QPushButton::clicked, this, &XLTitleBar::onRestoreClicked);
+	connect(m_maxButton, &QPushButton::clicked, this, &XLTitleBar::onMaxClicked);
+	connect(m_closeButton, &QPushButton::clicked, this, &XLTitleBar::onCloseClicked);
+
+	// button visibility
+	m_maxButton->setVisible(!parent->isMaximized() && hasMaxButton());
+	m_restoreButton->setVisible(parent->isMaximized() && hasMaxButton());
+	m_minButton->setVisible(hasMinButton());
 }
 
 XLTitleBar::~XLTitleBar() {
+}
 
+bool XLTitleBar::hasMaxButton() {
+	Qt::WindowFlags flags = parentWidget()->windowFlags();
+	return (flags & Qt::WindowMaximizeButtonHint) != 0;
+}
+
+bool XLTitleBar::hasMinButton() {
+	Qt::WindowFlags flags = parentWidget()->windowFlags();
+	return (flags & Qt::WindowMinimizeButtonHint) != 0;
 }
 
 void XLTitleBar::paintEvent(QPaintEvent *event) {
@@ -85,4 +116,80 @@ void XLTitleBar::paintEvent(QPaintEvent *event) {
 
 	// super
 	QWidget::paintEvent(event);
+}
+
+void XLTitleBar::mouseDoubleClickEvent(QMouseEvent *event) {
+	if (hasMaxButton()) {
+		if (m_maxButton->isVisible()) {
+			onMaxClicked();
+		} else {
+			onRestoreClicked();
+		}
+	}
+
+	return QWidget::mouseDoubleClickEvent(event);
+}
+
+void XLTitleBar::mousePressEvent(QMouseEvent *event)  {
+	if (hasMaxButton()) {
+		// disable drag when it is maximized
+		if (m_maxButton->isVisible()) {
+			m_pressed = true;
+			m_startMovePos = event->globalPos();
+		}
+	} else {
+		m_pressed = true;
+		m_startMovePos = event->globalPos();
+	}
+
+	return QWidget::mousePressEvent(event);
+}
+
+void XLTitleBar::mouseMoveEvent(QMouseEvent *event)  {
+	if (m_pressed) {
+		QPoint movePoint = event->globalPos() - m_startMovePos;
+		QPoint widgetPos = this->parentWidget()->pos();
+		m_startMovePos = event->globalPos();
+		parentWidget()->move(widgetPos.x() + movePoint.x(), widgetPos.y() + movePoint.y());
+	}
+	return QWidget::mouseMoveEvent(event);
+}
+
+void XLTitleBar::mouseReleaseEvent(QMouseEvent *event)  {
+	m_pressed = false;
+	return QWidget::mouseReleaseEvent(event);
+}
+
+void XLTitleBar::onMinClicked() {
+	emit windowRequestMinimize();
+}
+
+void XLTitleBar::onRestoreClicked() {
+	m_restoreButton->setVisible(false);
+	m_maxButton->setVisible(true);
+	emit windowRequestRestore();
+}
+
+void XLTitleBar::onMaxClicked() {
+	m_maxButton->setVisible(false);
+	m_restoreButton->setVisible(true);
+	emit windowRequestMaximize();
+}
+
+void XLTitleBar::onCloseClicked() {
+	emit windowRequestClose();
+}
+
+void XLTitleBar::saveRestoreInfo(const QPoint point, const QSize size)  {
+	m_restorePos = point;
+	m_restoreSize = size;
+}
+
+void XLTitleBar::getRestoreInfo(QPoint& point, QSize& size)  {
+	point = m_restorePos;
+	size = m_restoreSize;
+}
+
+void XLTitleBar::setWindowTitle(QString title) {
+	m_titleLabel->setText(title);
 }

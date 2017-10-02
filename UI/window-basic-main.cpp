@@ -213,8 +213,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	blog(LOG_INFO, "%s", name.str().c_str());
 	blog(LOG_INFO, "---------------------------------");
 
-	UpdateTitleBar();
-
 	connect(ui->scenes->itemDelegate(),
 			SIGNAL(closeEditor(QWidget*,
 					QAbstractItemDelegate::EndEditHint)),
@@ -377,6 +375,36 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	// title bar
 	m_titleBar = new XLTitleBar(this);
 	m_titleBar->move(0, 0);
+	connect(m_titleBar, &XLTitleBar::windowRequestMinimize, this, &OBSBasic::windowRequestMinimize);
+	connect(m_titleBar, &XLTitleBar::windowRequestRestore, this, &OBSBasic::windowRequestRestore);
+	connect(m_titleBar, &XLTitleBar::windowRequestMaximize, this, &OBSBasic::windowRequestMaximize);
+	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &OBSBasic::windowRequestClose);
+
+	// set title
+	setWindowTitle("");
+	UpdateTitleBar();
+}
+
+void OBSBasic::windowRequestMinimize() {
+	showMinimized();
+}
+
+void OBSBasic::windowRequestRestore() {
+	QPoint windowPos;
+	QSize windowSize;
+	m_titleBar->getRestoreInfo(windowPos, windowSize);
+	setGeometry(QRect(windowPos, windowSize));
+}
+
+void OBSBasic::windowRequestMaximize() {
+	m_titleBar->saveRestoreInfo(pos(), QSize(width(), height()));
+	QRect desktopRect = QApplication::desktop()->availableGeometry();
+	QRect FactRect = QRect(desktopRect.x() - 3, desktopRect.y() - 3, desktopRect.width() + 6, desktopRect.height() + 6);
+	setGeometry(FactRect);
+}
+
+void OBSBasic::windowRequestClose() {
+	close();
 }
 
 void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
@@ -5591,7 +5619,7 @@ void OBSBasic::UpdateTitleBar()
 	name << " - " << Str("TitleBar.Profile") << ": " << profile;
 	name << " - " << Str("TitleBar.Scenes") << ": " << sceneCollection;
 
-	setWindowTitle(QT_UTF8(name.str().c_str()));
+	m_titleBar->setWindowTitle(QT_UTF8(name.str().c_str()));
 }
 
 int OBSBasic::GetProfilePath(char *path, size_t size, const char *file) const

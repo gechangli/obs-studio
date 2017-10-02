@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/close.png</file>
+    <file>images/maximize.png</file>
+    <file>images/minimize.png</file>
+    <file>images/restore.png</file>
     <file>images/anims/loading_20.png</file>
     <file>images/anims/loading_1.png</file>
     <file>images/anims/loading_2.png</file>

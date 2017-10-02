@@ -34,11 +34,42 @@ private:
 	QPushButton* m_restoreButton;
 	QPushButton* m_maxButton;
 	QPushButton* m_closeButton;
+	QPoint m_restorePos;
+	QSize m_restoreSize;
+	bool m_pressed;
+	QPoint m_startMovePos;
+
+private:
+	bool hasMaxButton();
+	bool hasMinButton();
 
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+	void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+
+signals:
+	void windowRequestMinimize();
+	void windowRequestRestore();
+	void windowRequestMaximize();
+	void windowRequestClose();
+
+private slots:
+	void onMinClicked();
+	void onRestoreClicked();
+	void onMaxClicked();
+	void onCloseClicked();
 
 public:
 	XLTitleBar(QWidget *parent);
 	virtual ~XLTitleBar();
+
+	// save/load window position and size
+	void saveRestoreInfo(const QPoint point, const QSize size);
+	void getRestoreInfo(QPoint& point, QSize& size);
+
+	// set window title
+	void setWindowTitle(QString title);
 };
