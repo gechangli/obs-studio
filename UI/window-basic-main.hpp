@@ -557,6 +557,7 @@ public:
 protected:
 	virtual void closeEvent(QCloseEvent *event) override;
 	virtual void changeEvent(QEvent *event) override;
+	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 
 private slots:
 	void on_actionFullscreenInterface_triggered();
