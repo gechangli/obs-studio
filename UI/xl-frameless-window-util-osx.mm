@@ -20,7 +20,7 @@ void XLFramelessWindowUtil::setupUI(QMainWindow* w) {
     // set central widget top margin based on menu property
     QWidget* centralWidget = w->centralWidget();
     QMenuBar* menuBar = w->menuBar();
-    if(menuBar->isNativeMenuBar()) {
+    if(menuBar && menuBar->isNativeMenuBar()) {
         QMargins m = centralWidget->contentsMargins();
         m.setTop(36);
         centralWidget->setContentsMargins(m);
