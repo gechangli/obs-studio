@@ -74,7 +74,7 @@ private:
 	bool m_loggedIn;
 
 private:
-	QString getJavascriptFileContent(const char* path);
+	QString getJavascriptFileContent(QString path);
 	void loadLivePlatformInfos();
 
 public:

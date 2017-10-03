@@ -61,9 +61,9 @@ LivePlatformWeb::~LivePlatformWeb() {
 	}
 }
 
-QString LivePlatformWeb::getJavascriptFileContent(const char* path) {
+QString LivePlatformWeb::getJavascriptFileContent(QString path) {
 	string jsPath;
-	GetDataFilePath(path, jsPath);
+	GetDataFilePath(path.toStdString().c_str(), jsPath);
 	QFile jsFile(QString::fromStdString(jsPath));
 	jsFile.open(QIODevice::ReadOnly | QIODevice::Text);
 	QTextStream in(&jsFile);
@@ -163,17 +163,8 @@ void LivePlatformWeb::openWeb(bool clearSession) {
 		UNUSED_PARAMETER(ok);
 		page->runJavaScript(getJavascriptFileContent("js/qwebchannel.js"));
 		page->runJavaScript(getJavascriptFileContent("js/util.js"));
-		switch(m_curPlatform) {
-			case LIVE_PLATFORM_DOUYU:
-				page->runJavaScript(getJavascriptFileContent("js/douyu.js"));
-				break;
-			case LIVE_PLATFORM_HUYA:
-				page->runJavaScript(getJavascriptFileContent("js/huya.js"));
-				break;
-			case LIVE_PLATFORM_PANDA:
-				page->runJavaScript(getJavascriptFileContent("js/panda.js"));
-				break;
-		}
+		QString jsFile = QString("js/%1.js").arg(type2Id(m_curPlatform));
+		page->runJavaScript(getJavascriptFileContent(jsFile));
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
 		hideWeb();
