@@ -182,6 +182,7 @@ void XgmOA::addLivePlatformUser(std::string pltName, std::string acc) {
 	// create json data
 	QVariantMap map;
 	map["account"] = QVariant(acc.c_str());
+	map["passwd"] = QVariant("");
 	map["live_name"] = QVariant(pltName.c_str());
 	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
 	QByteArray json = doc.toJson(QJsonDocument::Compact);

@@ -1713,11 +1713,11 @@ void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 	} else if(op == XgmOA::OP_GET_LIVE_PLATFORM_ACCOUNTS) {
 		// save user name for live platforms
 		QJsonObject json = doc.object();
-		QJsonArray users = json.value("live_list").toArray();
+		QJsonArray users = json.value("data").toArray();
 		int c = users.count();
 		for (int i = 0; i < c; i++) {
 			QJsonObject user = users[i].toObject();
-			QString pltName = user.value("name").toString();
+			QString pltName = user.value("live_name").toString();
 			QString acc = user.value("account").toString();
 			blog(LOG_INFO, "Get account %s for platform %s", acc.toStdString().c_str(), pltName.toStdString().c_str());
 			live_platform_info_t &info = m_lpWeb.getPlatformInfo(pltName);
