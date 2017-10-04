@@ -1719,7 +1719,6 @@ void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 			QJsonObject user = users[i].toObject();
 			QString pltName = user.value("live_name").toString();
 			QString acc = user.value("account").toString();
-			blog(LOG_INFO, "Get account %s for platform %s", acc.toStdString().c_str(), pltName.toStdString().c_str());
 			live_platform_info_t &info = m_lpWeb.getPlatformInfo(pltName);
 			if (acc != info.username) {
 				memcpy(info.username, acc.toStdString().c_str(), acc.length());
