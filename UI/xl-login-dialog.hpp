@@ -19,7 +19,7 @@
 
 #include <obs.hpp>
 #include "ui_XLLoginDialog.h"
-#include "xiguamei-oa.hpp"
+#include "xl-xiguamei-oa.hpp"
 #include <QDialog>
 
 class OBSBasic;

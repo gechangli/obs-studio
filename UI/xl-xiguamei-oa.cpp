@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "xiguamei-oa.hpp"
+#include "xl-xiguamei-oa.hpp"
 #include "window-basic-main.hpp"
 #include <QNetworkAccessManager>
 #include <QJsonObject>

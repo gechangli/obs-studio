@@ -18,7 +18,7 @@
 #pragma once
 
 #include "ui_XLRegisterDialog.h"
-#include "xiguamei-oa.hpp"
+#include "xl-xiguamei-oa.hpp"
 #include <QDialog>
 #include <memory>
 

@@ -29,8 +29,8 @@
 #include "window-basic-transform.hpp"
 #include "window-basic-adv-audio.hpp"
 #include "window-basic-filters.hpp"
-#include "live-cast.hpp"
-#include "xiguamei-oa.hpp"
+#include "xl-live-cast.hpp"
+#include "xl-xiguamei-oa.hpp"
 
 #include <obs-frontend-internal.hpp>
 

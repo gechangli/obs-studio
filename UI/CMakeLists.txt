@@ -215,10 +215,10 @@ set(xiaomeilive_SOURCES
 	remote-text.cpp
 	audio-encoders.cpp
 	qt-wrappers.cpp
-	live-cast.cpp
+	xl-live-cast.cpp
 	xl-register-dialog.cpp
 	xl-login-dialog.cpp
-	xiguamei-oa.cpp
+	xl-xiguamei-oa.cpp
 	xl-progress-dialog.cpp
 	xl-title-bar.cpp)
 
@@ -269,10 +269,10 @@ set(xiaomeilive_HEADERS
 	remote-text.hpp
 	audio-encoders.hpp
 	qt-wrappers.hpp
-	live-cast.hpp
+	xl-live-cast.hpp
 	xl-register-dialog.hpp
 	xl-login-dialog.hpp
-	xiguamei-oa.hpp
+	xl-xiguamei-oa.hpp
 	xl-progress-dialog.hpp
 	xl-title-bar.hpp
 	xl-frameless-window-util-osx.hpp)

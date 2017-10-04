@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "live-cast.hpp"
+#include "xl-live-cast.hpp"
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
 #include "platform.hpp"
 #include "window-basic-main.hpp"
