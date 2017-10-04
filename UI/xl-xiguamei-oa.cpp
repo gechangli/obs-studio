@@ -70,6 +70,11 @@ void XgmOA::doPost(string url, QByteArray json) {
 	QNetworkReply* reply = m_netMgr->post(req, json);
 	connect(reply, &QNetworkReply::finished, this, &XgmOA::httpFinished);
 	connect(reply, &QIODevice::readyRead, this, &XgmOA::httpReadyRead);
+
+	// log
+#ifndef QT_NO_DEBUG
+	blog(LOG_INFO, "POST: %s:\nbody: %s", url.c_str(), QString(json).toStdString().c_str());
+#endif
 }
 
 void XgmOA::doGet(string url) {
@@ -79,6 +84,11 @@ void XgmOA::doGet(string url) {
 	QNetworkReply* reply = m_netMgr->get(req);
 	connect(reply, &QNetworkReply::finished, this, &XgmOA::httpFinished);
 	connect(reply, &QIODevice::readyRead, this, &XgmOA::httpReadyRead);
+
+	// log
+#ifndef QT_NO_DEBUG
+	blog(LOG_INFO, "GET: %s", url.c_str());
+#endif
 }
 
 void XgmOA::httpFinished() {
@@ -94,6 +104,13 @@ void XgmOA::httpFinished() {
 			// need check reply code in json body, if not 200, failed
 			QJsonDocument doc = m_respMap[reply];
 			QJsonObject json = doc.object();
+
+			// log
+#ifndef QT_NO_DEBUG
+			blog(LOG_INFO, "RESPONSE: %s:\nbody: %s", url.toString().toStdString().c_str(),
+				 QString(doc.toJson()).toStdString().c_str());
+#endif
+
 			int code = json.value("code").toInt(200);
 			if(code != 200) {
 				QString errMsg = json.value("msg").toString();
