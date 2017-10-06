@@ -29,6 +29,7 @@
 #define TITLE_HEIGHT_MAIN_WINDOW 48
 #define TITLE_HEIGHT_SUB_WINDOW 32
 
+
 XLTitleBar::XLTitleBar(QWidget *parent) :
 	QWidget(parent),
 	m_windowBorderWidth(0),
