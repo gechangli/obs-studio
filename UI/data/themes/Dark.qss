@@ -41,6 +41,19 @@ QWidget {
     border: 1px solid rgb(31,30,31);
 }
 
+/* title bar */
+XLTitleBar {
+    background-color: rgb(100,193,18); /* green */
+}
+XLTitleBar>* {
+    background-color: transparent;
+}
+XLTitleBar>QPushButton::flat {
+    background-color: transparent;
+}
+XLTitleBar>QPushButton:hover {
+    background-color: red;
+}
 
 /* Misc */
 

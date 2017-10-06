@@ -21,10 +21,13 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QStyle>
+#include <QStyleOption>
 
 #define BUTTON_HEIGHT 30
 #define BUTTON_WIDTH 30
-#define TITLE_HEIGHT 36
+#define TITLE_HEIGHT_MAIN_WINDOW 48
+#define TITLE_HEIGHT_SUB_WINDOW 32
 
 XLTitleBar::XLTitleBar(QWidget *parent) :
 	QWidget(parent),
@@ -63,6 +66,7 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 
 	// add widget to a horizontal layout
 	QHBoxLayout* layout = new QHBoxLayout(this);
+	layout->setSpacing(1);
 	layout->addWidget(m_icon);
 	layout->addWidget(m_titleLabel);
 	layout->addWidget(m_minButton);
@@ -70,9 +74,8 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	layout->addWidget(m_maxButton);
 	layout->addWidget(m_closeButton);
 	layout->setContentsMargins(5, 0, 5, 0);
-	layout->setSpacing(0);
 	m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	setFixedHeight(TITLE_HEIGHT);
+	setFixedHeight(TITLE_HEIGHT_MAIN_WINDOW);
 	setWindowFlags(Qt::FramelessWindowHint);
 
 	// connect slots
@@ -85,6 +88,7 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	m_maxButton->setVisible(!parent->isMaximized() && hasMaxButton());
 	m_restoreButton->setVisible(parent->isMaximized() && hasMaxButton());
 	m_minButton->setVisible(hasMinButton());
+
 }
 
 XLTitleBar::~XLTitleBar() {
@@ -100,22 +104,17 @@ bool XLTitleBar::hasMinButton() {
 	return (flags & Qt::WindowMinimizeButtonHint) != 0;
 }
 
-void XLTitleBar::paintEvent(QPaintEvent *event) {
-	// draw background
-	QPainter painter(this);
-	QPainterPath pathBack;
-	pathBack.setFillRule(Qt::WindingFill);
-	pathBack.addRoundedRect(QRect(0, 0, width(), height()), 3, 3);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-	painter.fillPath(pathBack, QBrush(QColor::fromRgb(49, 50, 65)));
-
+void XLTitleBar::paintEvent(QPaintEvent* event) {
 	// adjust width
 	if (width() != (parentWidget()->width() - m_windowBorderWidth)) {
 		setFixedWidth(parentWidget()->width() - m_windowBorderWidth);
 	}
 
-	// super
-	QWidget::paintEvent(event);
+	// draw with style
+	QStyleOption opt;
+	opt.init(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 void XLTitleBar::mouseDoubleClickEvent(QMouseEvent *event) {
