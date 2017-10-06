@@ -101,7 +101,7 @@ void XgmOA::httpFinished() {
 	// check error, trigger
 	if(reply->error() == QNetworkReply::NoError) {
 		if(m_respMap.find(reply) != m_respMap.end()) {
-			// need check reply code in json body, if not 200, failed
+			// get response body
 			QJsonDocument doc = m_respMap[reply];
 			QJsonObject json = doc.object();
 
@@ -111,6 +111,7 @@ void XgmOA::httpFinished() {
 				 QString(doc.toJson()).toStdString().c_str());
 #endif
 
+			// need check reply code in json body, if not 200, failed
 			int code = json.value("code").toInt(200);
 			if(code != 200) {
 				QString errMsg = json.value("msg").toString();
