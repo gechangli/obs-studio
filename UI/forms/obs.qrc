@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/logo.png</file>
     <file>images/close.png</file>
     <file>images/maximize.png</file>
     <file>images/minimize.png</file>

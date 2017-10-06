@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QPixmap>
 
 class QPaintEvent;
 class QLabel;
@@ -72,4 +73,7 @@ public:
 
 	// set window title
 	void setWindowTitle(QString title);
+
+	// set icon
+	void setIcon(QPixmap icon);
 };

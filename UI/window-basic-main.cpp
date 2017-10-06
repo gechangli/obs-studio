@@ -375,6 +375,7 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	// title bar
 	m_titleBar = new XLTitleBar(this);
 	m_titleBar->move(0, 0);
+	m_titleBar->setIcon(QPixmap(":/res/images/logo.png"));
 	connect(m_titleBar, &XLTitleBar::windowRequestMinimize, this, &OBSBasic::windowRequestMinimize);
 	connect(m_titleBar, &XLTitleBar::windowRequestRestore, this, &OBSBasic::windowRequestRestore);
 	connect(m_titleBar, &XLTitleBar::windowRequestMaximize, this, &OBSBasic::windowRequestMaximize);
@@ -5618,7 +5619,8 @@ void OBSBasic::UpdateTitleBar()
 	name << " - " << Str("TitleBar.Profile") << ": " << profile;
 	name << " - " << Str("TitleBar.Scenes") << ": " << sceneCollection;
 
-	m_titleBar->setWindowTitle(QT_UTF8(name.str().c_str()));
+	// XXX: for now we don't set title
+//	m_titleBar->setWindowTitle(QT_UTF8(name.str().c_str()));
 }
 
 int OBSBasic::GetProfilePath(char *path, size_t size, const char *file) const

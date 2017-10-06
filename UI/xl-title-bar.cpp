@@ -29,7 +29,6 @@
 #define TITLE_HEIGHT_MAIN_WINDOW 48
 #define TITLE_HEIGHT_SUB_WINDOW 32
 
-
 XLTitleBar::XLTitleBar(QWidget *parent) :
 	QWidget(parent),
 	m_windowBorderWidth(0),
@@ -74,7 +73,7 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	layout->addWidget(m_restoreButton);
 	layout->addWidget(m_maxButton);
 	layout->addWidget(m_closeButton);
-	layout->setContentsMargins(5, 0, 5, 0);
+	layout->setContentsMargins(24, 0, 5, 0);
 	m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setFixedHeight(TITLE_HEIGHT_MAIN_WINDOW);
 	setWindowFlags(Qt::FramelessWindowHint);
@@ -89,7 +88,6 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	m_maxButton->setVisible(!parent->isMaximized() && hasMaxButton());
 	m_restoreButton->setVisible(parent->isMaximized() && hasMaxButton());
 	m_minButton->setVisible(hasMinButton());
-
 }
 
 XLTitleBar::~XLTitleBar() {
@@ -192,4 +190,8 @@ void XLTitleBar::getRestoreInfo(QPoint& point, QSize& size)  {
 
 void XLTitleBar::setWindowTitle(QString title) {
 	m_titleLabel->setText(title);
+}
+
+void XLTitleBar::setIcon(QPixmap icon) {
+	m_icon->setPixmap(icon);
 }
