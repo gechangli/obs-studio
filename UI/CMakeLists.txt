@@ -278,7 +278,7 @@ set(xiaomeilive_HEADERS
 	xl-xiguamei-oa.hpp
 	xl-progress-dialog.hpp
 	xl-title-bar.hpp
-	xl-frameless-window-util-osx.hpp
+	xl-frameless-window-util.hpp
 	xl-title-bar-main.hpp
 	xl-clickable-label.hpp
 	xl-user-popup-widget.hpp)

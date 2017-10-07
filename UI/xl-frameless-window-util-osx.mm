@@ -1,4 +1,4 @@
-#include "xl-frameless-window-util-osx.hpp"
+#include "xl-frameless-window-util.hpp"
 #include <QMenuBar>
 
 #ifdef Q_OS_OSX

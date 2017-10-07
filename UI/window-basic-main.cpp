@@ -63,7 +63,7 @@
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
 #include "xl-title-bar-main.hpp"
-#include "xl-frameless-window-util-osx.hpp"
+#include "xl-frameless-window-util.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
