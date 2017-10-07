@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
     Copyright (C) 2013-2014 by Hugh Bailey <obs.jim@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -558,6 +558,7 @@ protected:
 	void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 	void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) Q_DECL_OVERRIDE;
+	void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
 	void on_actionFullscreenInterface_triggered();

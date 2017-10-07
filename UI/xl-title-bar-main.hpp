@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
     Copyright (C) 2013 by luma <stubma@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -33,10 +33,7 @@ private:
 	XLClickableLabel* m_arrowLabel;
 
 protected:
-	int getPreferredHeight() Q_DECL_OVERRIDE;
 	void initCustomUI(QHBoxLayout* layout) Q_DECL_OVERRIDE;
-	int getButtonWidth() Q_DECL_OVERRIDE;
-	int getButtonHeight() Q_DECL_OVERRIDE;
 
 private slots:
 	void onUserLabelClicked();
@@ -48,4 +45,9 @@ public:
 	// set user label
 	void setUsername(QString username);
 	void removeUsername();
+
+	// override
+	int getPreferredHeight() Q_DECL_OVERRIDE;
+	int getButtonWidth() Q_DECL_OVERRIDE;
+	int getButtonHeight() Q_DECL_OVERRIDE;
 };

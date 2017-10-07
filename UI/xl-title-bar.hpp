@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
     Copyright (C) 2013 by luma <stubma@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -53,9 +53,6 @@ protected:
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 	// implemented by subclass
-	virtual int getPreferredHeight() = 0;
-	virtual int getButtonWidth() = 0;
-	virtual int getButtonHeight() = 0;
 	virtual void initCustomUI(QHBoxLayout* layout) = 0;
 
 signals:
@@ -84,4 +81,9 @@ public:
 
 	// set icon
 	void setIcon(QPixmap icon);
+
+	// implemented by subclass
+	virtual int getPreferredHeight() = 0;
+	virtual int getButtonWidth() = 0;
+	virtual int getButtonHeight() = 0;
 };
