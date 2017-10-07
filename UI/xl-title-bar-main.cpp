@@ -20,6 +20,7 @@
 #include "xl-title-bar-main.hpp"
 #include "window-basic-main.hpp"
 #include "xl-clickable-label.hpp"
+#include "xl-user-popup-widget.hpp"
 
 #define TITLE_HEIGHT 48
 #define BUTTON_HEIGHT 30
@@ -69,6 +70,15 @@ void XLTitleBarMain::initCustomUI(QHBoxLayout* layout) {
 }
 
 void XLTitleBarMain::onUserLabelClicked() {
+	XLUserPopupWidget* popup = XLUserPopupWidget::instance();
+	popup->setParent(this);
+	popup->setReferenceLocation(m_arrowLabel);
+	if (popup->isHidden()) {
+		popup->setWindowFlags(Qt::Popup);
+		popup->show();
+	} else {
+		popup->hide();
+	}
 }
 
 void XLTitleBarMain::setUsername(QString username) {

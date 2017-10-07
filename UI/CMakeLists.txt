@@ -222,7 +222,8 @@ set(xiaomeilive_SOURCES
 	xl-progress-dialog.cpp
 	xl-title-bar.cpp
 	xl-title-bar-main.cpp
-	xl-clickable-label.cpp)
+	xl-clickable-label.cpp
+	xl-user-popup-widget.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -279,7 +280,8 @@ set(xiaomeilive_HEADERS
 	xl-title-bar.hpp
 	xl-frameless-window-util-osx.hpp
 	xl-title-bar-main.hpp
-	xl-clickable-label.hpp)
+	xl-clickable-label.hpp
+	xl-user-popup-widget.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui
@@ -299,7 +301,8 @@ set(xiaomeilive_UI
 	forms/OBSRemux.ui
 	forms/XLRegisterDialog.ui
 	forms/XLLoginDialog.ui
-	forms/XLProgressDialog.ui)
+	forms/XLProgressDialog.ui
+	forms/XLUserPopupWidget.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)
