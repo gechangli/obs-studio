@@ -62,7 +62,7 @@
 #include "xl-register-dialog.hpp"
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
-#include "xl-title-bar.hpp"
+#include "xl-title-bar-main.hpp"
 #include "xl-frameless-window-util-osx.hpp"
 
 #ifdef Q_OS_WIN
@@ -373,9 +373,9 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	m_lpWeb.setMain(this);
 
 	// title bar
-	m_titleBar = new XLTitleBar(this);
+	m_titleBar = new XLTitleBarMain(this);
+	m_titleBar->init();
 	m_titleBar->move(0, 0);
-	m_titleBar->setIcon(QPixmap(":/res/images/logo.png"));
 	connect(m_titleBar, &XLTitleBar::windowRequestMinimize, this, &OBSBasic::windowRequestMinimize);
 	connect(m_titleBar, &XLTitleBar::windowRequestRestore, this, &OBSBasic::windowRequestRestore);
 	connect(m_titleBar, &XLTitleBar::windowRequestMaximize, this, &OBSBasic::windowRequestMaximize);

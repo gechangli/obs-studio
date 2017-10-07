@@ -158,7 +158,7 @@ set(xiaomeilive_libffutil_SOURCES
 	)
 set(xiaomeilive_libffutil_HEADERS
 	../deps/libff/libff/ff-util.h
-	)
+        xl-title-bar-main.hpp)
 
 if(MSVC)
 	set_source_files_properties(
@@ -220,7 +220,9 @@ set(xiaomeilive_SOURCES
 	xl-login-dialog.cpp
 	xl-xiguamei-oa.cpp
 	xl-progress-dialog.cpp
-	xl-title-bar.cpp)
+	xl-title-bar.cpp
+	xl-title-bar-main.cpp
+	xl-clickable-label.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -275,7 +277,9 @@ set(xiaomeilive_HEADERS
 	xl-xiguamei-oa.hpp
 	xl-progress-dialog.hpp
 	xl-title-bar.hpp
-	xl-frameless-window-util-osx.hpp)
+	xl-frameless-window-util-osx.hpp
+	xl-title-bar-main.hpp
+	xl-clickable-label.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui

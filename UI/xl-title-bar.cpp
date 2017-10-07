@@ -24,15 +24,16 @@
 #include <QStyle>
 #include <QStyleOption>
 
-#define BUTTON_HEIGHT 30
-#define BUTTON_WIDTH 30
-#define TITLE_HEIGHT_MAIN_WINDOW 48
-#define TITLE_HEIGHT_SUB_WINDOW 32
-
 XLTitleBar::XLTitleBar(QWidget *parent) :
 	QWidget(parent),
 	m_windowBorderWidth(0),
 	m_pressed(false) {
+}
+
+XLTitleBar::~XLTitleBar() {
+}
+
+void XLTitleBar::init() {
 	// create controls
 	m_icon = new QLabel;
 	m_titleLabel = new QLabel;
@@ -42,10 +43,11 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	m_closeButton = new QPushButton;
 
 	// set button size
-	m_minButton->setFixedSize(QSize(BUTTON_WIDTH, BUTTON_HEIGHT));
-	m_restoreButton->setFixedSize(QSize(BUTTON_WIDTH, BUTTON_HEIGHT));
-	m_maxButton->setFixedSize(QSize(BUTTON_WIDTH, BUTTON_HEIGHT));
-	m_closeButton->setFixedSize(QSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+	QSize buttonSize(getButtonWidth(), getButtonHeight());
+	m_minButton->setFixedSize(buttonSize);
+	m_restoreButton->setFixedSize(buttonSize);
+	m_maxButton->setFixedSize(buttonSize);
+	m_closeButton->setFixedSize(buttonSize);
 
 	// set button ui
 	m_minButton->setFlat(true);
@@ -69,13 +71,14 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	layout->setSpacing(1);
 	layout->addWidget(m_icon);
 	layout->addWidget(m_titleLabel);
+	initCustomUI(layout);
 	layout->addWidget(m_minButton);
 	layout->addWidget(m_restoreButton);
 	layout->addWidget(m_maxButton);
 	layout->addWidget(m_closeButton);
 	layout->setContentsMargins(24, 0, 5, 0);
 	m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	setFixedHeight(TITLE_HEIGHT_MAIN_WINDOW);
+	setFixedHeight(getPreferredHeight());
 	setWindowFlags(Qt::FramelessWindowHint);
 
 	// connect slots
@@ -85,12 +88,9 @@ XLTitleBar::XLTitleBar(QWidget *parent) :
 	connect(m_closeButton, &QPushButton::clicked, this, &XLTitleBar::onCloseClicked);
 
 	// button visibility
-	m_maxButton->setVisible(!parent->isMaximized() && hasMaxButton());
-	m_restoreButton->setVisible(parent->isMaximized() && hasMaxButton());
+	m_maxButton->setVisible(!parentWidget()->isMaximized() && hasMaxButton());
+	m_restoreButton->setVisible(parentWidget()->isMaximized() && hasMaxButton());
 	m_minButton->setVisible(hasMinButton());
-}
-
-XLTitleBar::~XLTitleBar() {
 }
 
 bool XLTitleBar::hasMaxButton() {

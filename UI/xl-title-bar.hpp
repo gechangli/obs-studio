@@ -23,6 +23,7 @@
 class QPaintEvent;
 class QLabel;
 class QPushButton;
+class QHBoxLayout;
 
 class XLTitleBar : public QWidget {
 	Q_OBJECT
@@ -51,6 +52,12 @@ protected:
 	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
+	// implemented by subclass
+	virtual int getPreferredHeight() = 0;
+	virtual int getButtonWidth() = 0;
+	virtual int getButtonHeight() = 0;
+	virtual void initCustomUI(QHBoxLayout* layout) = 0;
+
 signals:
 	void windowRequestMinimize();
 	void windowRequestRestore();
@@ -66,6 +73,7 @@ private slots:
 public:
 	XLTitleBar(QWidget *parent);
 	virtual ~XLTitleBar();
+	void init();
 
 	// save/load window position and size
 	void saveRestoreInfo(const QPoint point, const QSize size);

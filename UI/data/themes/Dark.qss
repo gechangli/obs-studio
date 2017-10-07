@@ -47,6 +47,7 @@ XLTitleBar {
 }
 XLTitleBar>* {
     background-color: transparent;
+    background: transparent;
 }
 XLTitleBar>QPushButton::flat {
     background-color: transparent;
