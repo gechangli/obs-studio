@@ -661,7 +661,6 @@ private slots:
 
 	void on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
 	void on_liveTable_itemClicked(QTableWidgetItem *item);
-	void on_logOutButton_clicked();
 	void windowRequestMinimize();
 	void windowRequestRestore();
 	void windowRequestMaximize();
@@ -717,6 +716,9 @@ public:
 
 	virtual int GetProfilePath(char *path, size_t size, const char *file)
 		const override;
+
+	// logout xgm
+	void logout();
 
 private:
 	std::unique_ptr<Ui::OBSBasic> ui;

@@ -1033,13 +1033,6 @@
        </property>
       </spacer>
      </item>
-     <item>
-      <widget class="QPushButton" name="logOutButton">
-       <property name="text">
-        <string>LogOut</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>

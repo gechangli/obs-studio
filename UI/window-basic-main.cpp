@@ -365,7 +365,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->modeSwitch->setVisible(false);
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
-	ui->logOutButton->setVisible(false);
 
 	// set main
 	m_lpWeb.setMain(this);
@@ -449,7 +448,7 @@ void OBSBasic::on_liveTable_itemClicked(QTableWidgetItem *item) {
 	}
 }
 
-void OBSBasic::on_logOutButton_clicked() {
+void OBSBasic::logout() {
 	// if in live, prompt to end it
 	if(StreamingActive()) {
 		if (QMessageBox::question(nullptr, L("LogOut"), L("XL.Question.Confirm.End.Live")) == QMessageBox::NoButton) {
@@ -469,7 +468,6 @@ void OBSBasic::on_logOutButton_clicked() {
 
 	// clear user, hide logout
 	m_titleBar->removeUsername();
-	ui->logOutButton->setVisible(false);
 
 	// logout
 	m_client.logout();
@@ -1697,7 +1695,6 @@ void OBSBasic::hideProgressDialog() {
 void OBSBasic::xgmUserLoggedIn(QString username) {
 	// show user name and logout button
 	m_titleBar->setUsername(username);
-	ui->logOutButton->setVisible(true);
 
 	// get live platform users
 	m_client.getLivePlatformUsers();

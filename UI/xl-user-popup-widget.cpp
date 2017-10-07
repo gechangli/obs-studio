@@ -33,6 +33,7 @@ XLUserPopupWidget::XLUserPopupWidget(QWidget* parent) :
 	OBSBasic* main = static_cast<OBSBasic*>(App()->GetMainWindow());
 	connect(ui->exitButton, &QPushButton::clicked, main, &OBSBasic::close);
 	connect(ui->settingsButton, &QPushButton::clicked, main, &OBSBasic::on_action_Settings_triggered);
+	connect(ui->switchUserButton, &QPushButton::clicked, main, &OBSBasic::logout);
 }
 
 XLUserPopupWidget::~XLUserPopupWidget() {
@@ -64,18 +65,6 @@ void XLUserPopupWidget::setReferenceLocation(QWidget* w) {
 	m_refLocWidget = w;
 }
 
-void XLUserPopupWidget::onSettingsClicked() {
-
-}
-
 void XLUserPopupWidget::onModifyPasswordClicked() {
-
-}
-
-void XLUserPopupWidget::onSwitchUserClicked() {
-
-}
-
-void XLUserPopupWidget::onExitClicked() {
 
 }
