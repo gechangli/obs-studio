@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QWidget>
+#include <memory>
 #include "ui_XLUserPopupWidget.h"
 
 class XLUserPopupWidget : public QWidget {
