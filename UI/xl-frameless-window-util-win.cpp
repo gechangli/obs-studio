@@ -3,7 +3,8 @@
 #ifdef Q_OS_WIN
 
 void XLFramelessWindowUtil::setupUI(QMainWindow* w) {
-    w->setWindowFlags(w->windowFlags() | Qt::FramelessWindowHint);
+	// update flag
+    w->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint | Qt::Window);
 }
 
 #endif // #ifdef Q_OS_WIN
