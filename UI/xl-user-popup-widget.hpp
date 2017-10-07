@@ -30,6 +30,12 @@ private:
 protected:
 	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 
+private slots:
+	void onSettingsClicked();
+	void onModifyPasswordClicked();
+	void onSwitchUserClicked();
+	void onExitClicked();
+
 public:
 	XLUserPopupWidget(QWidget* parent = Q_NULLPTR);
 	virtual ~XLUserPopupWidget();

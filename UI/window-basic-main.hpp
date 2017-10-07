@@ -564,7 +564,6 @@ private slots:
 
 	void on_actionShow_Recordings_triggered();
 	void on_actionRemux_triggered();
-	void on_action_Settings_triggered();
 	void on_actionAdvAudioProperties_triggered();
 	void on_advAudioProps_clicked();
 	void on_advAudioProps_destroyed();
@@ -617,7 +616,6 @@ private slots:
 
 	void on_streamButton_clicked();
 	void on_recordButton_clicked();
-	void on_settingsButton_clicked();
 
 	void on_actionWebsite_triggered();
 
@@ -706,6 +704,7 @@ private slots:
 
 public slots:
 	void on_actionResetTransform_triggered();
+	void on_action_Settings_triggered();
 
 public:
 	explicit OBSBasic(QWidget *parent = 0);

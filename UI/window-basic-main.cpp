@@ -362,7 +362,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	m_lpWeb.setCurrentPlatform(LIVE_PLATFORM_DOUYU);
 
 	// hide some UI we don't need
-	ui->settingsButton->setVisible(false);
 	ui->modeSwitch->setVisible(false);
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
@@ -4935,11 +4934,6 @@ void OBSBasic::on_recordButton_clicked()
 		StopRecording();
 	else
 		StartRecording();
-}
-
-void OBSBasic::on_settingsButton_clicked()
-{
-	on_action_Settings_triggered();
 }
 
 void OBSBasic::on_actionWebsite_triggered()

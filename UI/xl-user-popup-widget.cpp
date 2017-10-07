@@ -17,6 +17,7 @@
 
 #include <QPainter>
 #include "xl-user-popup-widget.hpp"
+#include "window-basic-main.hpp"
 
 XLUserPopupWidget::XLUserPopupWidget(QWidget* parent) :
 	QWidget(parent),
@@ -27,6 +28,11 @@ XLUserPopupWidget::XLUserPopupWidget(QWidget* parent) :
 
 	// make self transparent
 	setAttribute(Qt::WA_TranslucentBackground);
+
+	// event
+	OBSBasic* main = static_cast<OBSBasic*>(App()->GetMainWindow());
+	connect(ui->exitButton, &QPushButton::clicked, main, &OBSBasic::close);
+	connect(ui->settingsButton, &QPushButton::clicked, main, &OBSBasic::on_action_Settings_triggered);
 }
 
 XLUserPopupWidget::~XLUserPopupWidget() {
@@ -56,4 +62,20 @@ void XLUserPopupWidget::showEvent(QShowEvent *event) {
 
 void XLUserPopupWidget::setReferenceLocation(QWidget* w) {
 	m_refLocWidget = w;
+}
+
+void XLUserPopupWidget::onSettingsClicked() {
+
+}
+
+void XLUserPopupWidget::onModifyPasswordClicked() {
+
+}
+
+void XLUserPopupWidget::onSwitchUserClicked() {
+
+}
+
+void XLUserPopupWidget::onExitClicked() {
+
 }
