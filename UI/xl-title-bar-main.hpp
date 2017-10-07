@@ -44,4 +44,8 @@ private slots:
 public:
 	XLTitleBarMain(QWidget *parent);
 	virtual ~XLTitleBarMain();
+
+	// set user label
+	void setUsername(QString username);
+	void removeUsername();
 };

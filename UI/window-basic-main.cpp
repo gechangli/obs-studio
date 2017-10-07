@@ -367,7 +367,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
 	ui->logOutButton->setVisible(false);
-	ui->userLabel->setText(L("NotLogged"));
 
 	// set main
 	m_lpWeb.setMain(this);
@@ -452,7 +451,7 @@ void OBSBasic::on_logOutButton_clicked() {
 	config_save_safe(globalConfig, "tmp", Q_NULLPTR);
 
 	// clear user, hide logout
-	ui->userLabel->setText(L("NotLogged"));
+	m_titleBar->removeUsername();
 	ui->logOutButton->setVisible(false);
 
 	// logout
@@ -1680,7 +1679,7 @@ void OBSBasic::hideProgressDialog() {
 
 void OBSBasic::xgmUserLoggedIn(QString username) {
 	// show user name and logout button
-	ui->userLabel->setText(username);
+	m_titleBar->setUsername(username);
 	ui->logOutButton->setVisible(true);
 
 	// get live platform users

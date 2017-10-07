@@ -57,13 +57,6 @@ void XLTitleBarMain::initCustomUI(QHBoxLayout* layout) {
 
 	// set text, font and color of user label
 	m_userLabel->setText(L("NotLogged"));
-	QFont font(m_userLabel->font());
-	font.setBold(true);
-	font.setPointSize(16);
-	m_userLabel->setFont(font);
-	QPalette p(m_userLabel->palette());
-	p.setColor(QPalette::Text, Qt::white);
-	m_userLabel->setPalette(p);
 
 	// event
 	connect(m_userLabel, &XLClickableLabel::clicked, this, &XLTitleBarMain::onUserLabelClicked);
@@ -76,4 +69,12 @@ void XLTitleBarMain::initCustomUI(QHBoxLayout* layout) {
 }
 
 void XLTitleBarMain::onUserLabelClicked() {
+}
+
+void XLTitleBarMain::setUsername(QString username) {
+	m_userLabel->setText(L("XL.Title.Current.User") + username);
+}
+
+void XLTitleBarMain::removeUsername() {
+	m_userLabel->setText(L("NotLogged"));
 }

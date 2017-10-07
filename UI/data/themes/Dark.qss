@@ -55,6 +55,11 @@ XLTitleBar>QPushButton::flat {
 XLTitleBar>QPushButton:hover {
     background-color: red;
 }
+XLTitleBar>QLabel {
+    color: white;
+    font-size: 16pt;
+    font: bold;
+}
 
 /* Misc */
 
