@@ -386,8 +386,7 @@ OBSBasic::OBSBasic(QWidget *parent) :
 void OBSBasic::resizeEvent(QResizeEvent* event) {
 	QMainWindow::resizeEvent(event);	
 
-	// platform code to adjust title bar and central widget, only for windows
-#ifdef Q_OS_WIN
+	// adjust title bar and central widget
 	QPoint cwPos(0, 0);
 	cwPos = ui->centralwidget->mapToGlobal(cwPos);
 	QPoint tbPos(0, m_titleBar->getPreferredHeight());
@@ -398,7 +397,6 @@ void OBSBasic::resizeEvent(QResizeEvent* event) {
 		m.setTop(exceed);
 		ui->centralwidget->setContentsMargins(m);
 	}
-#endif
 }
 
 void OBSBasic::windowRequestMinimize() {
