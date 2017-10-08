@@ -1,5 +1,5 @@
 @titleBarColor@=rgb(100,193,18)
-@titleLabelFontSize@=14pt
-@userPopupItemFontSize@=12pt
+@titleLabelFontSize@=12pt
+@userPopupItemFontSize@=10pt
 @userPopupItemColor@=rgb(83,83,83)
 @userPopupItemColorHover@=rgb(137,137,137)
