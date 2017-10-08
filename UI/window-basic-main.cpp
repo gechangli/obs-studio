@@ -1833,6 +1833,10 @@ void OBSBasic::locateTabArrow(QPushButton* tab) {
 	ui->arrowBar->layout()->invalidate();
 }
 
+void OBSBasic::on_drawerArrow_clicked() {
+	blog(LOG_INFO, "testarrow");
+}
+
 void OBSBasic::InitHotkeys()
 {
 	ProfileScope("OBSBasic::InitHotkeys");

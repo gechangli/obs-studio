@@ -464,6 +464,7 @@ private slots:
 	void on_homeTab_clicked();
 	void on_consortiaTab_clicked();
 	void on_earnTab_clicked();
+	void on_drawerArrow_clicked();
 
 private:
 	/* OBS Callbacks */

@@ -294,7 +294,22 @@
        </sizepolicy>
       </property>
       <widget class="QWidget" name="livePage">
-       <layout class="QVBoxLayout" name="verticalLayout_8">
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>24</number>
+        </property>
+        <property name="topMargin">
+         <number>36</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>36</number>
+        </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
@@ -360,6 +375,83 @@
            </layout>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QWidget" name="drawerBar" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <layout class="QGridLayout" name="gridLayout" columnstretch="1" columnminimumwidth="0">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item row="0" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+            <widget class="QLabel" name="drawerHandle">
+             <property name="minimumSize">
+              <size>
+               <width>12</width>
+               <height>92</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>12</width>
+               <height>92</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="obs.qrc">:/res/images/drawer_handle.png</pixmap>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+            <widget class="XLClickableLabel" name="drawerArrow">
+             <property name="minimumSize">
+              <size>
+               <width>12</width>
+               <height>92</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>12</width>
+               <height>92</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap resource="obs.qrc">:/res/images/drawer_arrorw_expand.png</pixmap>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -1949,6 +2041,11 @@
    <class>SourceListWidget</class>
    <extends>QListWidget</extends>
    <header>source-list-widget.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>XLClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>xl-clickable-label.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>
