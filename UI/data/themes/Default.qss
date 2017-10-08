@@ -8,6 +8,46 @@
 /* Dark Theme is a good place to start if you need */
 /* a template. */
 
+/* title bar */
+XLTitleBar {
+    background-color: @titleBarColor; /* green */
+}
+XLTitleBar>* {
+    background-color: transparent;
+    background: transparent;
+}
+XLTitleBar>QPushButton::flat {
+    background-color: transparent;
+}
+XLTitleBar>QPushButton:hover {
+    background-color: red;
+}
+XLTitleBar>QLabel {
+    color: white;
+    font-size: @titleLabelFontSize;
+    font: bold;
+}
+
+/* user popup */
+XLUserPopupWidget {
+    background: transparent;
+}
+XLUserPopupWidget>QFrame {
+    background: white;
+}
+XLUserPopupWidget>QLabel {
+    background: transparent;
+    border: none;
+}
+XLUserPopupWidget>QFrame>QPushButton {
+    border: none;
+    background-color: transparent;
+    font-size: @userPopupLabelFontSize;
+    color: @userPopupItemColor;
+}
+XLUserPopupWidget>QFrame>QPushButton:hover {
+    color: @userPopupItemColorHover;
+}
 
 /* We need to set back the icons, or the preview wont stick. */
 

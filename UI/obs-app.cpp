@@ -44,6 +44,7 @@
 #include "window-license-agreement.hpp"
 #include "crash-report.hpp"
 #include "platform.hpp"
+#include "xl-util.hpp"
 
 #include <fstream>
 
@@ -368,7 +369,7 @@ bool OBSApp::InitGlobalConfigDefaults()
 	config_set_default_string(globalConfig, "General", "Language",
 			DEFAULT_LANG);
 	config_set_default_string(globalConfig, "General", "CurrentTheme",
-							  "Dark");
+							  "Default");
 	config_set_default_uint(globalConfig, "General", "MaxLogs", 10);
 	config_set_default_string(globalConfig, "General", "ProcessPriority",
 			"Normal");
@@ -718,6 +719,7 @@ bool OBSApp::InitLocale()
 bool OBSApp::SetTheme(std::string name, std::string path)
 {
 	theme = name;
+	QString paramPath;
 
 	/* Check user dir first, then preinstalled themes. */
 	if (path == "") {
@@ -735,8 +737,29 @@ bool OBSApp::SetTheme(std::string name, std::string path)
 		}
 	}
 
-	QString mpath = QString("file:///") + path.c_str();
-	setStyleSheet(mpath);
+	// get param file path
+	paramPath = XLUtil::stringByDeletingPathExtension(QString::fromStdString(path));
+#ifdef Q_OS_WIN
+	paramPath += "-win.qssp";
+#elif defined(Q_OS_OSX)
+	paramPath += "-osx.qssp";
+#endif
+
+	// load qss, load param, replace param, then set stylesheet
+	QString qss = XLUtil::getFileContent(QString::fromStdString(path));
+	if(!paramPath.isEmpty()) {
+		QFile f(paramPath);
+		f.open(QIODevice::ReadOnly);
+		QTextStream in(&f);
+		while(!in.atEnd()) {
+			QString line = in.readLine();
+			QStringList pair = line.split("=");
+			if(pair.count() == 2) {
+				qss = qss.replace(pair[0], pair[1]);
+			}
+		}
+ 	}
+	setStyleSheet(qss);
 	return true;
 }
 

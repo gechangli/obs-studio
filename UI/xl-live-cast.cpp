@@ -21,6 +21,7 @@
 #include "window-basic-main.hpp"
 #include "xl-progress-dialog.hpp"
 #include <QMessageBox>
+#include "xl-util.hpp"
 
 using namespace std;
 
@@ -59,15 +60,6 @@ LivePlatformWeb::~LivePlatformWeb() {
 	if(m_progressDialog) {
 		delete m_progressDialog;
 	}
-}
-
-QString LivePlatformWeb::getJavascriptFileContent(QString path) {
-	string jsPath;
-	GetDataFilePath(path.toStdString().c_str(), jsPath);
-	QFile jsFile(QString::fromStdString(jsPath));
-	jsFile.open(QIODevice::ReadOnly | QIODevice::Text);
-	QTextStream in(&jsFile);
-	return in.readAll();
 }
 
 void LivePlatformWeb::loadLivePlatformInfos() {
@@ -161,10 +153,9 @@ void LivePlatformWeb::openWeb(bool clearSession) {
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
 		UNUSED_PARAMETER(ok);
-		page->runJavaScript(getJavascriptFileContent("js/qwebchannel.js"));
-		page->runJavaScript(getJavascriptFileContent("js/util.js"));
-		QString jsFile = QString("js/%1.js").arg(type2Id(m_curPlatform));
-		page->runJavaScript(getJavascriptFileContent(jsFile));
+		page->runJavaScript(XLUtil::getDataFileContent("js/qwebchannel.js"));
+		page->runJavaScript(XLUtil::getDataFileContent("js/util.js"));
+		page->runJavaScript(XLUtil::getDataFileContent(QString("js/%1.js").arg(type2Id(m_curPlatform))));
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
 		hideWeb();

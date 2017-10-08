@@ -223,7 +223,8 @@ set(xiaomeilive_SOURCES
 	xl-title-bar.cpp
 	xl-title-bar-main.cpp
 	xl-clickable-label.cpp
-	xl-user-popup-widget.cpp)
+	xl-user-popup-widget.cpp
+	xl-util.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -281,7 +282,8 @@ set(xiaomeilive_HEADERS
 	xl-frameless-window-util.hpp
 	xl-title-bar-main.hpp
 	xl-clickable-label.hpp
-	xl-user-popup-widget.hpp)
+	xl-user-popup-widget.hpp
+	xl-util.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui
