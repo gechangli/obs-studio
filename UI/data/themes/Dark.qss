@@ -72,6 +72,15 @@ XLUserPopupWidget>QLabel {
     background: transparent;
     border: none;
 }
+XLUserPopupWidget>QFrame>QPushButton {
+    border: none;
+    background-color: transparent;
+    font-size: 14pt;
+    color: rgb(83,83,83);
+}
+XLUserPopupWidget>QFrame>QPushButton:hover {
+    color: rgb(137,137,137);
+}
 
 /* Misc */
 
@@ -375,36 +384,6 @@ QSpinBox::down-arrow, QDoubleSpinBox::down-arrow {
     image: url(./Dark/down_arrow.png);
     width: 100%;
 }
-
-
-/* Buttons */
-
-QPushButton {
-    color: rgb(225,224,225); /* veryLight */
-    background-color: rgb(88,87,88); /* kindaDark */
-    border: none;
-    border-radius: 3px;
-    padding: 4px;
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-QPushButton::flat {
-    background-color: rgb(58,57,58); /* dark */
-}
-
-QPushButton:hover {
-    background-color: rgb(122,121,122); /* light */
-}
-
-QPushButton:pressed {
-    background-color: rgb(31,30,31); /* veryDark */
-}
-
-QPushButton:checked {
-    background-color: rgb(122,121,122); /* light */
-}
-
 
 /* Sliders */
 
