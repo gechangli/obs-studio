@@ -10,7 +10,7 @@
 
 /* title bar */
 XLTitleBar {
-    background-color: @titleBarColor; /* green */
+    background-color: @titleBarColor@;
 }
 XLTitleBar>* {
     background-color: transparent;
@@ -24,7 +24,7 @@ XLTitleBar>QPushButton:hover {
 }
 XLTitleBar>QLabel {
     color: white;
-    font-size: @titleLabelFontSize;
+    font-size: @titleLabelFontSize@;
     font: bold;
 }
 
@@ -42,11 +42,11 @@ XLUserPopupWidget>QLabel {
 XLUserPopupWidget>QFrame>QPushButton {
     border: none;
     background-color: transparent;
-    font-size: @userPopupLabelFontSize;
-    color: @userPopupItemColor;
+    font-size: @userPopupItemFontSize@;
+    color: @userPopupItemColor@;
 }
 XLUserPopupWidget>QFrame>QPushButton:hover {
-    color: @userPopupItemColorHover;
+    color: @userPopupItemColorHover@;
 }
 
 /* We need to set back the icons, or the preview wont stick. */
