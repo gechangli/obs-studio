@@ -313,6 +313,9 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		}
 	}
 
+	// XXX: I don't know why there is 10 pixel spacing on top of stacked widget
+	ui->stackedWidget->setContentsMargins(0, -10, 0, 0);
+
 	// setup live table
 	ui->liveTable->horizontalHeader()->setStretchLastSection(true);
 	ui->liveTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);

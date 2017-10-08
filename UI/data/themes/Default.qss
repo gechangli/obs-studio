@@ -49,6 +49,12 @@ XLUserPopupWidget>QFrame>QPushButton:hover {
     color: @userPopupItemColorHover@;
 }
 
+/* tab bar */
+QWidget#tabBar {
+    background: @titleBarColor@;
+    border-bottom: 2px solid white;
+}
+
 /* We need to set back the icons, or the preview wont stick. */
 
 * [themeID="addIconSmall"] {
