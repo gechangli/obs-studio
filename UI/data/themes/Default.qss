@@ -30,7 +30,9 @@ XLTitleBar>QLabel {
 
 /* user popup */
 XLUserPopupWidget {
-    background: transparent;
+    /* WORKAROUND for windows, set it same as title bar color */
+    /* macOS is ok but windows always show black background */
+    background: @userPopupBackground@;
 }
 XLUserPopupWidget>QFrame {
     background: white;
