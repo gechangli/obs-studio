@@ -461,6 +461,9 @@ private slots:
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 	void liveUserLoggedIn(QString pltName);
 	void liveRtmpGot(QString pltName);
+	void on_homeTab_clicked();
+	void on_consortiaTab_clicked();
+	void on_earnTab_clicked();
 
 private:
 	/* OBS Callbacks */
@@ -484,6 +487,9 @@ private:
 	void copyActionsDynamicProperties();
 
 	static void HotkeyTriggered(void *data, obs_hotkey_id id, bool pressed);
+
+	void switchToTab(QPushButton* tab);
+	void locateTabArrow(QPushButton* tab);
 
 public:
 	OBSScene      GetCurrentScene();
@@ -559,6 +565,7 @@ protected:
 	void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) Q_DECL_OVERRIDE;
 	void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
+	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
 	void on_actionFullscreenInterface_triggered();

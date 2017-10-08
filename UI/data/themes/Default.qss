@@ -54,6 +54,18 @@ QWidget#tabBar {
     background: @titleBarColor@;
     border-bottom: 2px solid white;
 }
+QWidget#tabBar>QWidget>QPushButton {
+    border: none;
+    background-color: transparent;
+    font-size: @tabLabelFontSize@;
+    color: white;
+}
+QWidget#tabBar>QWidget>QPushButton:checked {
+    font: bold;
+}
+QWidget#tabBar>QWidget>QPushButton:hover {
+    font: bold;
+}
 
 /* We need to set back the icons, or the preview wont stick. */
 

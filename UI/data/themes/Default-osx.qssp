@@ -3,3 +3,4 @@
 @userPopupItemFontSize@=14pt
 @userPopupItemColor@=rgb(83,83,83)
 @userPopupItemColorHover@=rgb(137,137,137)
+@tabLabelFontSize@=16pt

@@ -313,9 +313,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		}
 	}
 
-	// XXX: I don't know why there is 10 pixel spacing on top of stacked widget
-	ui->stackedWidget->setContentsMargins(0, -10, 0, 0);
-
 	// setup live table
 	ui->liveTable->horizontalHeader()->setStretchLastSection(true);
 	ui->liveTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
@@ -384,6 +381,11 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	// set title
 	setWindowTitle("");
 	UpdateTitleBar();
+
+	// tab bar
+	ui->homeTab->setProperty("tab", QVariant(0));
+	ui->consortiaTab->setProperty("tab", QVariant(1));
+	ui->earnTab->setProperty("tab", QVariant(2));
 }
 
 void OBSBasic::resizeEvent(QResizeEvent* event) {
@@ -1800,6 +1802,35 @@ void OBSBasic::liveRtmpGot(QString pltName) {
 		live_platform_info_t &info = m_lpWeb.getPlatformInfo(plt);
 		ui->liveInfoLabel->setText(info.rtmpUrl);
 	}
+}
+
+void OBSBasic::on_homeTab_clicked() {
+	switchToTab(ui->homeTab);
+}
+
+void OBSBasic::on_consortiaTab_clicked() {
+	switchToTab(ui->consortiaTab);
+}
+
+void OBSBasic::on_earnTab_clicked() {
+	switchToTab(ui->earnTab);
+}
+
+void OBSBasic::switchToTab(QPushButton* tab) {
+	ui->homeTab->setChecked(false);
+	ui->consortiaTab->setChecked(false);
+	ui->earnTab->setChecked(false);
+	tab->setChecked(true);
+	locateTabArrow(tab);
+	ui->stackedWidget->setCurrentIndex(tab->property("tab").toInt());
+}
+
+void OBSBasic::locateTabArrow(QPushButton* tab) {
+	QPoint pos = tab->pos();
+	QSize tabSize = tab->size();
+	ui->arrowSpacer->changeSize(pos.x() + tabSize.width() / 2 - ui->activeArrow->size().width() / 2, 1,
+								QSizePolicy::Fixed, QSizePolicy::Fixed);
+	ui->arrowBar->layout()->invalidate();
 }
 
 void OBSBasic::InitHotkeys()
@@ -3349,6 +3380,13 @@ void OBSBasic::changeEvent(QEvent *event)
 
 		ToggleShowHide();
 	}
+}
+
+void OBSBasic::showEvent(QShowEvent *event) {
+	QWidget::showEvent(event);
+
+	// init locate tab arrow
+	locateTabArrow(ui->homeTab);
 }
 
 bool OBSBasic::nativeEvent(const QByteArray& eventType, void* message, long* result) {
