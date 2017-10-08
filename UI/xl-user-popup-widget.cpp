@@ -21,8 +21,8 @@
 
 XLUserPopupWidget::XLUserPopupWidget(QWidget* parent) :
 	QWidget(parent),
-	m_refLocWidget(Q_NULLPTR),
-	ui(new Ui::UserPopupWidget) {
+	ui(new Ui::UserPopupWidget),
+	m_refLocWidget(Q_NULLPTR) {
 	// init ui
 	ui->setupUi(this);
 
@@ -59,6 +59,16 @@ void XLUserPopupWidget::showEvent(QShowEvent *event) {
 	pos = ref->mapToGlobal(pos);
 	pos.setX(pos.x() - selfSize.width() / 2);
 	move(pos);
+}
+
+void XLUserPopupWidget::paintEvent(QPaintEvent* event) {
+	QWidget::paintEvent(event);
+
+	// draw with style
+	QStyleOption opt;
+	opt.init(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
 void XLUserPopupWidget::setReferenceLocation(QWidget* w) {

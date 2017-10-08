@@ -61,6 +61,18 @@ XLTitleBar>QLabel {
     font: bold;
 }
 
+/* user popup */
+XLUserPopupWidget {
+    background: transparent;
+}
+XLUserPopupWidget>QFrame {
+    background: white;
+}
+XLUserPopupWidget>QLabel {
+    background: transparent;
+    border: none;
+}
+
 /* Misc */
 
 QWidget::disabled {

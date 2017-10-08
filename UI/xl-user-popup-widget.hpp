@@ -30,6 +30,7 @@ private:
 
 protected:
 	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
 private slots:
 	void onModifyPasswordClicked();

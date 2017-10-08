@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background: transparent;</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -91,9 +88,6 @@
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background: white;</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
