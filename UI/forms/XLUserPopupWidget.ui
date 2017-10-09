@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>147</width>
-    <height>147</height>
+    <height>112</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -77,13 +77,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>140</height>
+       <height>105</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>140</height>
+       <height>105</height>
       </size>
      </property>
      <property name="autoFillBackground">
@@ -127,25 +127,6 @@
         </property>
         <property name="text">
          <string>Settings</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="modifyPasswordButton">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>35</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Modify.Password</string>
         </property>
        </widget>
       </item>

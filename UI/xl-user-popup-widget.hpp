@@ -32,9 +32,6 @@ protected:
 	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
-private slots:
-	void onModifyPasswordClicked();
-
 public:
 	XLUserPopupWidget(QWidget* parent = Q_NULLPTR);
 	virtual ~XLUserPopupWidget();

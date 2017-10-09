@@ -74,7 +74,3 @@ void XLUserPopupWidget::paintEvent(QPaintEvent* event) {
 void XLUserPopupWidget::setReferenceLocation(QWidget* w) {
 	m_refLocWidget = w;
 }
-
-void XLUserPopupWidget::onModifyPasswordClicked() {
-
-}
