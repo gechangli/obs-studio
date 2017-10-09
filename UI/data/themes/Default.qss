@@ -69,6 +69,19 @@ QWidget#tabBar>QWidget>QPushButton:hover {
     font: bold;
 }
 
+/* live page */
+QWidget#previewPanel {
+    background-color: @darkerWidgetBgColor@;
+}
+QWidget#controlPanel, QWidget#statePanel {
+    background-color: @defaultWidgetBgColor@;
+    border-top: 1px solid @panelSeparatorColor@;
+}
+QWidget#scenePanel {
+    background-color: @defaultWidgetBgColor@;
+    border-left: 1px solid @panelSeparatorColor@;
+}
+
 /* We need to set back the icons, or the preview wont stick. */
 
 * [themeID="addIconSmall"] {

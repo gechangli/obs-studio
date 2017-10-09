@@ -1,3 +1,6 @@
+@defaultWidgetBgColor@=rgb(241,241,241)
+@darkerWidgetBgColor@=rgb(231,231,231)
+@panelSeparatorColor@=rgb(210,210,210)
 @titleBarColor@=rgb(100,193,18)
 @titleLabelFontSize@=16pt
 @userPopupBackground@=transparent
