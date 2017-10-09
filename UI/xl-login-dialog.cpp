@@ -172,7 +172,7 @@ void XLLoginDialog::on_refreshSmsCodeButton_clicked() {
 	}
 
 	// request auth code
-	m_client.getAuthCode(ui->mobileEdit->text().trimmed().toStdString());
+	m_client.getAuthCode(ui->mobileEdit->text().trimmed().toStdString(), XgmOA::AT_LOGIN);
 
 	// show progress
 	showProgressDialog();

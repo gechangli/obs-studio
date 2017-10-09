@@ -140,10 +140,11 @@ void XgmOA::httpReadyRead() {
 	m_respMap.insert(reply, doc);
 }
 
-void XgmOA::getAuthCode(string phone) {
+void XgmOA::getAuthCode(string phone, XgmAuthType authType) {
 	// create json data
 	QVariantMap map;
 	map["telephone"] = QVariant(phone.c_str());
+	map["type"] = QVariant((int)authType);
 	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
 	QByteArray json = doc.toJson(QJsonDocument::Compact);
 

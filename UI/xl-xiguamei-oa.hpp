@@ -69,7 +69,7 @@ public:
 
 	// rest api
 	void registerUser(std::string acc, std::string pwd, std::string authCode);
-	void getAuthCode(std::string phone);
+	void getAuthCode(std::string phone, XgmAuthType authType);
 	void loginByPassword(std::string acc, std::string pwd);
 	void loginByAuthCode(std::string acc, std::string authCode);
 	void logout();
