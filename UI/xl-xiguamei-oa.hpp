@@ -45,6 +45,13 @@ public:
 		OP_ADD_LIVE_PLATFORM_ACCOUNT
 	} XgmRestOp;
 
+	// auth code type
+	typedef enum {
+		AT_REGISTER = 1,
+		AT_LOGIN = 2,
+		AT_MODIFY_PASSWORD = 3
+	} XgmAuthType;
+
 private:
 	QNetworkAccessManager* m_netMgr;
 	QMap<QNetworkReply*, QJsonDocument> m_respMap;
