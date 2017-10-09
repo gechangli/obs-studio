@@ -33,6 +33,7 @@ using namespace std;
 #define PATH_LOGOUT "/v1/user/live/logout"
 #define PATH_GET_LIVE_PLATFORM_ACCOUNTS "/v1/user/live/account/list"
 #define PATH_ADD_LIVE_PLATFORM_ACCOUNT "/v1/user/live/account/upload"
+#define PATH_MODIFY_PASSWORD "/v1/user/live/passwd/update"
 
 XgmOA::XgmOA() {
 	m_netMgr = new QNetworkAccessManager(this);
@@ -48,6 +49,8 @@ XgmOA::XgmRestOp XgmOA::urlToOp(QUrl& url) {
 		return OP_GET_AUTO_CODE;
 	} else if(path == PATH_REGISTER) {
 		return OP_REGISTER;
+	} else if(path == PATH_MODIFY_PASSWORD) {
+		return OP_MODIFY_PASSWORD;
 	} else if(path == PATH_LOGIN_BY_PASSWORD) {
 		return OP_LOGIN_BY_PASSWORD;
 	} else if(path == PATH_LOGIN_BY_AUTHCODE) {
@@ -163,6 +166,19 @@ void XgmOA::registerUser(string acc, string pwd, string authCode) {
 
 	// post it
 	doPost(SERVER_URL + PATH_REGISTER, json);
+}
+
+void XgmOA::modifyPassword(std::string acc, std::string pwd, std::string authCode) {
+	// create json data
+	QVariantMap map;
+	map["account"] = QVariant(acc.c_str());
+	map["passwd"] = QVariant(pwd.c_str());
+	map["authcode"] = QVariant(authCode.c_str());
+	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
+	QByteArray json = doc.toJson(QJsonDocument::Compact);
+
+	// post it
+	doPost(SERVER_URL + PATH_MODIFY_PASSWORD, json);
 }
 
 void XgmOA::loginByPassword(std::string acc, std::string pwd) {

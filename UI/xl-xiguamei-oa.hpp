@@ -38,6 +38,7 @@ public:
 		OP_INVALID,
 		OP_GET_AUTO_CODE,
 		OP_REGISTER,
+		OP_MODIFY_PASSWORD,
 		OP_LOGIN_BY_PASSWORD,
 		OP_LOGIN_BY_AUTHCODE,
 		OP_LOGOUT,
@@ -48,8 +49,8 @@ public:
 	// auth code type
 	typedef enum {
 		AT_REGISTER = 1,
-		AT_LOGIN = 2,
-		AT_MODIFY_PASSWORD = 3
+		AT_LOGIN,
+		AT_MODIFY_PASSWORD
 	} XgmAuthType;
 
 private:
@@ -70,6 +71,7 @@ public:
 	// rest api
 	void registerUser(std::string acc, std::string pwd, std::string authCode);
 	void getAuthCode(std::string phone, XgmAuthType authType);
+	void modifyPassword(std::string acc, std::string pwd, std::string authCode);
 	void loginByPassword(std::string acc, std::string pwd);
 	void loginByAuthCode(std::string acc, std::string authCode);
 	void logout();
