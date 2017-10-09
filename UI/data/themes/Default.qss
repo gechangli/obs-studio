@@ -81,6 +81,16 @@ QWidget#scenePanel {
     background-color: @defaultWidgetBgColor@;
     border-left: 1px solid @panelSeparatorColor@;
 }
+QWidget#addSourceBar {
+    background-color: @defaultWidgetBgColor@;
+}
+QWidget#sceneInfoBar {
+    background-color: @defaultWidgetBgColor@;
+    border-top: 1px solid @panelSeparatorColor@;
+}
+QListWidget#sourceList {
+    border-top: 1px solid @panelSeparatorColor@;
+}
 
 /* We need to set back the icons, or the preview wont stick. */
 

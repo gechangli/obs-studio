@@ -1,7 +1,7 @@
 <RCC>
   <qresource prefix="/res">
-    <file>images/drawer_arrorw_expand.png</file>
     <file>images/drawer_arrow_collapse.png</file>
+    <file>images/drawer_arrow_expand.png</file>
     <file>images/drawer_handle.png</file>
     <file>images/tab_arrow.png</file>
     <file>images/up_arrow.png</file>
