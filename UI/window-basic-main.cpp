@@ -32,6 +32,8 @@
 #include <QPushButton>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QStandardItemModel>
+#include <QStandardItem>
 
 #include <util/dstr.h>
 #include <util/util.hpp>
@@ -64,6 +66,8 @@
 #include "xl-progress-dialog.hpp"
 #include "xl-title-bar-main.hpp"
 #include "xl-frameless-window-util.hpp"
+#include "xl-source-list-item-widget.hpp"
+#include "xl-source-list-delegate.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -386,6 +390,16 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->homeTab->setProperty("tab", QVariant(0));
 	ui->consortiaTab->setProperty("tab", QVariant(1));
 	ui->earnTab->setProperty("tab", QVariant(2));
+
+	// source list
+	QStandardItemModel* model = new QStandardItemModel();
+	model->appendRow(new QStandardItem("test"));
+	model->appendRow(new QStandardItem("test1"));
+	model->appendRow(new QStandardItem("test2"));
+	model->appendRow(new QStandardItem("test43"));
+	model->appendRow(new QStandardItem("tes4t"));
+	ui->sourceList->setItemDelegate(new XLSourceListDelegate());
+	ui->sourceList->setModel(model);
 }
 
 void OBSBasic::resizeEvent(QResizeEvent* event) {

@@ -88,7 +88,7 @@ QWidget#sceneInfoBar {
     background-color: @defaultWidgetBgColor@;
     border-top: 1px solid @panelSeparatorColor@;
 }
-QListWidget#sourceList {
+QListView#sourceList {
     border-top: 1px solid @panelSeparatorColor@;
 }
 

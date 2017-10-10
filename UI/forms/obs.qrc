@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/invisible.png</file>
+    <file>images/visible.png</file>
     <file>images/drawer_arrow_collapse.png</file>
     <file>images/drawer_arrow_expand.png</file>
     <file>images/drawer_handle.png</file>

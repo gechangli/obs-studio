@@ -434,8 +434,6 @@
                        </property>
                       </widget>
                       <addaction name="actionRemoveSource"/>
-                      <zorder>previewDisabledLabel</zorder>
-                      <zorder>scenePanel</zorder>
                      </widget>
                     </item>
                    </layout>
@@ -634,15 +632,33 @@
             </widget>
            </item>
            <item>
-            <widget class="QListWidget" name="sourceList">
+            <widget class="XLSourceListView" name="sourceList">
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="frameShape">
               <enum>QFrame::NoFrame</enum>
              </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
+             <property name="horizontalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOff</enum>
+             </property>
+             <property name="editTriggers">
+              <set>QAbstractItemView::NoEditTriggers</set>
+             </property>
+             <property name="dragEnabled">
+              <bool>true</bool>
+             </property>
+             <property name="dragDropMode">
+              <enum>QAbstractItemView::DragDrop</enum>
+             </property>
+             <property name="defaultDropAction">
+              <enum>Qt::MoveAction</enum>
+             </property>
+             <property name="selectionBehavior">
+              <enum>QAbstractItemView::SelectRows</enum>
+             </property>
+             <property name="modelColumn">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2242,6 +2258,11 @@
    <class>XLClickableLabel</class>
    <extends>QLabel</extends>
    <header>xl-clickable-label.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>XLSourceListView</class>
+   <extends>QListView</extends>
+   <header>xl-source-list-view.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

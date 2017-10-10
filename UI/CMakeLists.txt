@@ -224,7 +224,11 @@ set(xiaomeilive_SOURCES
 	xl-title-bar-main.cpp
 	xl-clickable-label.cpp
 	xl-user-popup-widget.cpp
-	xl-util.cpp)
+	xl-util.cpp
+	xl-source-list-item-widget.cpp
+	xl-source-list-delegate.cpp
+	xl-source-list-model.cpp
+	xl-source-list-view.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -283,7 +287,11 @@ set(xiaomeilive_HEADERS
 	xl-title-bar-main.hpp
 	xl-clickable-label.hpp
 	xl-user-popup-widget.hpp
-	xl-util.hpp)
+	xl-util.hpp
+	xl-source-list-item-widget.hpp
+	xl-source-list-delegate.hpp
+	xl-source-list-model.hpp
+	xl-source-list-view.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui
@@ -304,7 +312,8 @@ set(xiaomeilive_UI
 	forms/XLRegisterDialog.ui
 	forms/XLLoginDialog.ui
 	forms/XLProgressDialog.ui
-	forms/XLUserPopupWidget.ui)
+	forms/XLUserPopupWidget.ui
+	forms/XLSourceListItemWidget.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)
