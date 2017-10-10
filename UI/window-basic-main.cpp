@@ -1836,12 +1836,10 @@ void OBSBasic::locateTabArrow(QPushButton* tab) {
 void OBSBasic::on_drawerArrow_clicked() {
 	if(ui->scenePanel->isHidden()) {
 		ui->scenePanel->setVisible(true);
-		ui->drawerHandle->setPixmap(QPixmap(":/res/images/drawer_arrow_collapse"));
-		ui->drawerBar->layout()->invalidate();
+		ui->drawerArrow->setPixmap(QPixmap(":/res/images/drawer_arrow_collapse.png"));
 	} else {
 		ui->scenePanel->setVisible(false);
-		ui->drawerHandle->setPixmap(QPixmap(":/res/images/drawer_arrow_expand"));
-		ui->drawerBar->layout()->invalidate();
+		ui->drawerArrow->setPixmap(QPixmap(":/res/images/drawer_arrow_expand.png"));
 	}
 }
 
