@@ -153,7 +153,6 @@ private:
 	QPointer<QTimer>    cpuUsageTimer;
 	os_cpu_usage_info_t *cpuUsageInfo = nullptr;
 
-	std::unique_ptr<BasicOutputHandler> outputHandler;
 	bool streamingStopping = false;
 	bool recordingStopping = false;
 	bool replayBufferStopping = false;
@@ -493,6 +492,7 @@ private:
 	void locateTabArrow(QPushButton* tab);
 
 public:
+	std::unique_ptr<BasicOutputHandler> outputHandler;
 	OBSScene      GetCurrentScene();
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);

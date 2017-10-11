@@ -79,22 +79,42 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="delayInfoLabel">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="indent">
+      <number>20</number>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="horizontalSpacer_13">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>495</width>
+       <width>335</width>
        <height>20</height>
       </size>
      </property>
     </spacer>
    </item>
    <item>
+    <widget class="QLabel" name="msgLabel">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="networkSpeedIconLabel">
      <property name="text">
       <string>TextLabel</string>
+     </property>
+     <property name="indent">
+      <number>20</number>
      </property>
     </widget>
    </item>
