@@ -28,3 +28,11 @@ XLSourceListItemWidget::XLSourceListItemWidget(QWidget* parent) :
 
 XLSourceListItemWidget::~XLSourceListItemWidget() {
 }
+
+void XLSourceListItemWidget::paintEvent(QPaintEvent* event) {
+	// draw with style
+	QStyleOption opt;
+	opt.init(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
+}

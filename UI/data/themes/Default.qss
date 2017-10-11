@@ -69,7 +69,7 @@ QWidget#tabBar>QWidget>QPushButton:hover {
     font: bold;
 }
 
-/* live page */
+/* live page - panels */
 QWidget#previewPanel {
     background-color: @darkerWidgetBgColor@;
 }
@@ -81,15 +81,27 @@ QWidget#scenePanel {
     background-color: @defaultWidgetBgColor@;
     border-left: 1px solid @panelSeparatorColor@;
 }
+
+/* live page - add source bar */
 QWidget#addSourceBar {
     background-color: @defaultWidgetBgColor@;
 }
+
+/* live page - scene info bar */
 QWidget#sceneInfoBar {
     background-color: @defaultWidgetBgColor@;
     border-top: 1px solid @panelSeparatorColor@;
 }
+
+/* live page - source list */
 QListView#sourceList {
     border-top: 1px solid @panelSeparatorColor@;
+}
+XLSourceListItemWidget {
+    border-bottom: 2px solid @sourceListItemSeparatorColor@;
+}
+QListView#sourceList::item:selected {
+    background: @sourceListItemSelectedColor@;
 }
 
 /* We need to set back the icons, or the preview wont stick. */

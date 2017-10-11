@@ -19,18 +19,17 @@
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include <QStandardItemModel>
 #include <QMimeData>
 #include <QDrag>
 #include "xl-source-list-view.hpp"
 #include "xl-source-list-item-widget.hpp"
 
 XLSourceListView::XLSourceListView(QWidget* parent) :
-	QListView(parent),
-	m_drag(Q_NULLPTR) {
+	QListView(parent) {
 }
 
 XLSourceListView::~XLSourceListView() {
-
 }
 
 void XLSourceListView::setModel(QAbstractItemModel *model) {
@@ -45,50 +44,90 @@ void XLSourceListView::setModel(QAbstractItemModel *model) {
 }
 
 void XLSourceListView::mousePressEvent(QMouseEvent* event) {
-	if (event->button() == Qt::LeftButton) {
-		m_dragIndex = indexAt(event->pos());
-		XLSourceListItemWidget* item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(m_dragIndex));
-		if (!item) {
-			return;
-		}
+	// save this position for later dragging
+	m_dragPos = event->pos();
 
-		m_dragImg = item->grab();
-		m_hotspotY = event->pos().y() - item->pos().y();
-		startDrag(Qt::MoveAction);
-	} else {
-		QListView::mousePressEvent(event);
-	}
+	// call super
+	QListView::mousePressEvent(event);
 }
 
 void XLSourceListView::dragEnterEvent(QDragEnterEvent *event) {
-	QListView::dragEnterEvent(event);
+	// check mime type
+	if (event->mimeData()->hasFormat("application/x-XLSourceListView-MoveRow")) {
+		event->accept();
+	} else {
+		event->ignore();
+	}
 }
 
 void XLSourceListView::dragMoveEvent(QDragMoveEvent *event) {
-	QListView::dragMoveEvent(event);
+	QModelIndex index = indexAt(event->pos());
+	XLSourceListItemWidget* item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
+	if(!item) {
+		return;
+	}
+
+	// check mime type
+	if (event->mimeData()->hasFormat("application/x-XLSourceListView-MoveRow")) {
+		event->setDropAction(Qt::MoveAction);
+		event->accept();
+	} else {
+		event->ignore();
+	}
 }
 
 void XLSourceListView::dropEvent(QDropEvent *event) {
-	QListView::dropEvent(event);
+	// drop based on mime type
+	if (event->mimeData()->hasFormat("application/x-XLSourceListView-MoveRow")) {
+		// get source and destination
+		QStandardItemModel* m = dynamic_cast<QStandardItemModel*>(model());
+		QModelIndex dstIndex = indexAt(event->pos());
+		QStandardItem* srcItem = m->itemFromIndex(m_dragIndex);
+		srcItem = new QStandardItem(srcItem->text());
+
+		// manipulate model to move row
+		m->removeRow(m_dragIndex.row());
+		if(m_dragIndex.row() < dstIndex.row()) {
+			m->insertRow(dstIndex.row() - 1, srcItem);
+			setIndexWidget(m->index(dstIndex.row() - 1, 0), new XLSourceListItemWidget());
+		} else if(dstIndex.row() == -1) {
+			m->appendRow(srcItem);
+			setIndexWidget(m->index(m->rowCount() - 1, 0), new XLSourceListItemWidget());
+		} else {
+			m->insertRow(dstIndex.row(), srcItem);
+			setIndexWidget(dstIndex, new XLSourceListItemWidget());
+		}
+
+		// accept this drop
+		event->setDropAction(Qt::MoveAction);
+		event->accept();
+	} else {
+		event->ignore();
+	}
 }
 
 void XLSourceListView::startDrag(Qt::DropActions supportedActions) {
+	// get dragged item index from drag position
+	m_dragIndex = indexAt(m_dragPos);
+	XLSourceListItemWidget* item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(m_dragIndex));
+	if (!item) {
+		return;
+	}
+
+	// get a widget snapshot for dragging indicator
+	m_dragImg = item->grab();
+
+	// set a mime data for this dragging
 	QByteArray itemData;
 	QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-
-	XLSourceListItemWidget *item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(m_dragIndex));
-
 	dataStream << m_dragIndex.row();
-
 	QMimeData *mimeData = new QMimeData;
-	mimeData->setData("application/x-QListView-DragAndDrop", itemData);
+	mimeData->setData("application/x-XLSourceListView-MoveRow", itemData);
 
-	m_drag = new QDrag(this);
-	m_drag->setMimeData(mimeData);
-	m_drag->setHotSpot(mapToParent(QPoint(item->x(), m_hotspotY)));
-	m_drag->setPixmap(m_dragImg);
-
-	if (m_drag->exec(Qt::MoveAction | Qt::CopyAction) == Qt::MoveAction) {
-		model()->removeRow(m_dragIndex.row());
-	}
+	// create drag and execute
+	QDrag* drag = new QDrag(this);
+	drag->setMimeData(mimeData);
+	drag->setHotSpot(QPoint(m_dragPos.x() - item->pos().x(), m_dragPos.y() - item->pos().y()));
+	drag->setPixmap(m_dragImg);
+	drag->exec(supportedActions);
 }

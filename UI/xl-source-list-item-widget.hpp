@@ -27,6 +27,9 @@ class XLSourceListItemWidget : public QWidget {
 private:
 	std::unique_ptr<Ui::XLSourceListItemWidget> ui;
 
+protected:
+	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
 public:
 	XLSourceListItemWidget(QWidget* parent = Q_NULLPTR);
 	virtual ~XLSourceListItemWidget();

@@ -26,9 +26,8 @@ class XLSourceListView : public QListView {
 
 private:
 	QModelIndex m_dragIndex;
-	QDrag* m_drag;
+	QPoint m_dragPos;
 	QPixmap m_dragImg;
-	int m_hotspotY;
 
 protected:
 	// overrides

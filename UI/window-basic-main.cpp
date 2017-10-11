@@ -393,11 +393,9 @@ OBSBasic::OBSBasic(QWidget *parent) :
 
 	// source list
 	QStandardItemModel* model = new QStandardItemModel();
-	model->appendRow(new QStandardItem("test"));
-	model->appendRow(new QStandardItem("test1"));
-	model->appendRow(new QStandardItem("test2"));
-	model->appendRow(new QStandardItem("test43"));
-	model->appendRow(new QStandardItem("tes4t"));
+	model->appendRow(new QStandardItem("a"));
+	model->appendRow(new QStandardItem("b"));
+	model->appendRow(new QStandardItem("c"));
 	ui->sourceList->setItemDelegate(new XLSourceListDelegate());
 	ui->sourceList->setModel(model);
 }
