@@ -20,14 +20,17 @@
 #include <QListView>
 
 class QDrag;
+class XLSourceListItemWidget;
 
 class XLSourceListView : public QListView {
 	Q_OBJECT
 
 private:
 	QModelIndex m_dragIndex;
+	int m_insertIndex;
 	QPoint m_dragPos;
 	QPixmap m_dragImg;
+	XLSourceListItemWidget* m_lastHoverWidget;
 
 protected:
 	// overrides

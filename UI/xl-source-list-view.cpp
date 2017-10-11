@@ -26,7 +26,8 @@
 #include "xl-source-list-item-widget.hpp"
 
 XLSourceListView::XLSourceListView(QWidget* parent) :
-	QListView(parent) {
+	QListView(parent),
+	m_lastHoverWidget(Q_NULLPTR) {
 }
 
 XLSourceListView::~XLSourceListView() {
@@ -61,18 +62,47 @@ void XLSourceListView::dragEnterEvent(QDragEnterEvent *event) {
 }
 
 void XLSourceListView::dragMoveEvent(QDragMoveEvent *event) {
-	QModelIndex index = indexAt(event->pos());
-	XLSourceListItemWidget* item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
-	if(!item) {
-		return;
-	}
-
 	// check mime type
 	if (event->mimeData()->hasFormat("application/x-XLSourceListView-MoveRow")) {
 		event->setDropAction(Qt::MoveAction);
 		event->accept();
 	} else {
 		event->ignore();
+	}
+
+	// clear last widget style
+	if(m_lastHoverWidget) {
+		m_lastHoverWidget->setStyleSheet("");
+	}
+
+	// check hover position, get insert index
+	// also set style sheet to show insert position
+	QModelIndex index = indexAt(event->pos());
+	m_insertIndex = index.row();
+	XLSourceListItemWidget* item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
+	if(item) {
+		// if mouse position is in the bottom half of item, increase insert position
+		QSize itemSize = item->size();
+		int y = event->pos().y() - item->pos().y();
+		if(y > itemSize.height() / 2) {
+			m_insertIndex = index.row() + 1;
+		}
+
+		// set style
+		if(m_insertIndex > index.row()) {
+			item->setStyleSheet("border-bottom: 1px solid red;");
+		} else {
+			item->setStyleSheet("border-top: 1px solid red;");
+		}
+
+		// save
+		m_lastHoverWidget = item;
+	} else {
+		// if no widget at position, we think it is at the last position
+		QAbstractItemModel* m = model();
+		item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(m->index(m->rowCount() - 1, 0)));
+		item->setStyleSheet("border-bottom: 1px solid red;");
+		m_lastHoverWidget = item;
 	}
 }
 
@@ -81,21 +111,21 @@ void XLSourceListView::dropEvent(QDropEvent *event) {
 	if (event->mimeData()->hasFormat("application/x-XLSourceListView-MoveRow")) {
 		// get source and destination
 		QStandardItemModel* m = dynamic_cast<QStandardItemModel*>(model());
-		QModelIndex dstIndex = indexAt(event->pos());
 		QStandardItem* srcItem = m->itemFromIndex(m_dragIndex);
 		srcItem = new QStandardItem(srcItem->text());
 
 		// manipulate model to move row
+		int rc = m->rowCount();
 		m->removeRow(m_dragIndex.row());
-		if(m_dragIndex.row() < dstIndex.row()) {
-			m->insertRow(dstIndex.row() - 1, srcItem);
-			setIndexWidget(m->index(dstIndex.row() - 1, 0), new XLSourceListItemWidget());
-		} else if(dstIndex.row() == -1) {
+		if(m_insertIndex >= rc || m_insertIndex == -1) {
 			m->appendRow(srcItem);
-			setIndexWidget(m->index(m->rowCount() - 1, 0), new XLSourceListItemWidget());
+			setIndexWidget(m->index(rc - 1, 0), new XLSourceListItemWidget());
+		} else if(m_dragIndex.row() < m_insertIndex) {
+			m->insertRow(m_insertIndex - 1, srcItem);
+			setIndexWidget(m->index(m_insertIndex - 1, 0), new XLSourceListItemWidget());
 		} else {
-			m->insertRow(dstIndex.row(), srcItem);
-			setIndexWidget(dstIndex, new XLSourceListItemWidget());
+			m->insertRow(m_insertIndex, srcItem);
+			setIndexWidget(m->index(m_insertIndex, 0), new XLSourceListItemWidget());
 		}
 
 		// accept this drop
@@ -104,11 +134,18 @@ void XLSourceListView::dropEvent(QDropEvent *event) {
 	} else {
 		event->ignore();
 	}
+
+	// clear style
+	if(m_lastHoverWidget) {
+		m_lastHoverWidget->setStyleSheet("");
+	}
 }
 
 void XLSourceListView::startDrag(Qt::DropActions supportedActions) {
 	// get dragged item index from drag position
 	m_dragIndex = indexAt(m_dragPos);
+	m_insertIndex = m_dragIndex.row();
+	m_lastHoverWidget = Q_NULLPTR;
 	XLSourceListItemWidget* item = dynamic_cast<XLSourceListItemWidget*>(indexWidget(m_dragIndex));
 	if (!item) {
 		return;
