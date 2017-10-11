@@ -45,10 +45,10 @@ XLUserPopupWidget>QFrame>QPushButton {
     border: none;
     background-color: transparent;
     font-size: @userPopupItemFontSize@;
-    color: @userPopupItemColor@;
+    color: rgb(83,83,83);
 }
 XLUserPopupWidget>QFrame>QPushButton:hover {
-    color: @userPopupItemColorHover@;
+    color: rgb(137,137,137);
 }
 
 /* tab bar */
@@ -69,14 +69,51 @@ QWidget#tabBar>QWidget>QPushButton:hover {
     font: bold;
 }
 
-/* live page - panels */
+/* live page - preview panel */
 QWidget#previewPanel {
     background-color: @darkerWidgetBgColor@;
 }
-QWidget#controlPanel, QWidget#statePanel {
+
+/* live page - control panel */
+QWidget#controlPanel {
     background-color: @defaultWidgetBgColor@;
     border-top: 1px solid @panelSeparatorColor@;
 }
+QWidget#controlPanel>QPushButton {
+    border: none;
+    background-color: white;
+    font-size: @controlPanelFontSize@;
+    color: black;
+}
+QWidget#controlPanel>QPushButton:hover {
+    background-color: rgb(248,248,248);
+}
+QWidget#controlPanel>QPushButton#startLiveButton {
+    border: none;
+    background-color: rgb(100,193,18);
+    font-size: @controlPanelFontSize@;
+    color: white;
+}
+QWidget#controlPanel>QPushButton#startLiveButton:hover {
+    background-color: rgb(131,205,65);
+}
+QWidget#controlPanel>QPushButton#marketButton {
+    border: none;
+    background-color: rgb(253,78,78);
+    font-size: @controlPanelFontSize@;
+    color: white;
+}
+QWidget#controlPanel>QPushButton#marketButton:hover {
+    background-color: rgb(253,113,113);
+}
+
+/* live page - state panel */
+QWidget#statePanel {
+    background-color: @defaultWidgetBgColor@;
+    border-top: 1px solid @panelSeparatorColor@;
+}
+
+/* live page - scene panel */
 QWidget#scenePanel {
     background-color: @defaultWidgetBgColor@;
     border-left: 1px solid @panelSeparatorColor@;
@@ -86,11 +123,30 @@ QWidget#scenePanel {
 QWidget#addSourceBar {
     background-color: @defaultWidgetBgColor@;
 }
+QWidget#addSourceBar>QPushButton {
+    border: none;
+    background-color: transparent;
+    font-size: @addSourceTabFontSize@;
+    color: rgb(83,83,83);
+}
+QWidget#addSourceBar>QPushButton:hover {
+    color: rgb(146,205,107);
+}
+QWidget#addSourceBar>QPushButton:checked {
+    color: rgb(146,205,107);
+}
 
 /* live page - scene info bar */
 QWidget#sceneInfoBar {
     background-color: @defaultWidgetBgColor@;
     border-top: 1px solid @panelSeparatorColor@;
+}
+QWidget#sceneInfoBar>QPushButton {
+    border: none;
+    background-color: transparent;
+}
+QWidget#sceneInfoBar>QPushButton:hover {
+    background-color: rgb(146,205,107);
 }
 
 /* live page - source list */
@@ -99,10 +155,10 @@ QListView#sourceList {
 }
 XLSourceListItemWidget {
     border-top: 1px solid white;
-    border-bottom: 1px solid @sourceListItemSeparatorColor@;
+    border-bottom: 1px solid rgb(240,240,240);
 }
 QListView#sourceList::item:selected {
-    background: @sourceListItemSelectedColor@;
+    background: rgb(242,255,230);
 }
 
 /* We need to set back the icons, or the preview wont stick. */

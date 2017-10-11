@@ -5,8 +5,6 @@
 @titleLabelFontSize@=16pt
 @userPopupBackground@=transparent
 @userPopupItemFontSize@=14pt
-@userPopupItemColor@=rgb(83,83,83)
-@userPopupItemColorHover@=rgb(137,137,137)
 @tabLabelFontSize@=16pt
-@sourceListItemSeparatorColor@=rgb(240,240,240)
-@sourceListItemSelectedColor@=rgb(242,255,230)
+@addSourceTabFontSize@=14pt
+@controlPanelFontSize@=16pt

@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/live_platform.png</file>
+    <file>images/market.png</file>
+    <file>images/profile.png</file>
+    <file>images/start.png</file>
+    <file>images/stop.png</file>
+    <file>images/button_drawer_handle.png</file>
     <file>images/invisible.png</file>
     <file>images/visible.png</file>
     <file>images/drawer_arrow_collapse.png</file>
