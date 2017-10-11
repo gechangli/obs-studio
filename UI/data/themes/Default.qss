@@ -107,10 +107,17 @@ QWidget#controlPanel>QPushButton#marketButton:hover {
     background-color: rgb(253,113,113);
 }
 
-/* live page - state panel */
-QWidget#statePanel {
+/* live page - status bar */
+XLStatusBar {
     background-color: @defaultWidgetBgColor@;
     border-top: 1px solid @panelSeparatorColor@;
+}
+XLStatusBar>QLabel {
+    font-size: @statusBarFontSize@;
+    color: rgb(83,83,83);
+}
+XLStatusBar>QLabel#liveTimeLabel {
+    color: rgb(100,193,18);
 }
 
 /* live page - scene panel */

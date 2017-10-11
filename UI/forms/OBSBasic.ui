@@ -707,7 +707,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="statePanel" native="true">
+            <widget class="XLStatusBar" name="statusBar" native="true">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -1578,7 +1578,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>205</width>
+          <width>203</width>
           <height>16</height>
          </rect>
         </property>
@@ -2630,6 +2630,12 @@
    <class>XLSourceListView</class>
    <extends>QListView</extends>
    <header>xl-source-list-view.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>XLStatusBar</class>
+   <extends>QWidget</extends>
+   <header>xl-status-bar.hpp</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

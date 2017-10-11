@@ -8,3 +8,4 @@
 @tabLabelFontSize@=12pt
 @addSourceTabFontSize@=10pt
 @controlPanelFontSize@=12pt
+@statusBarFontSize@=9pt
