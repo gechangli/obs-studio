@@ -203,6 +203,7 @@ QWidget#smsCodePanel {
 QLineEdit#mobileEdit, QLineEdit#smsCodeEdit {
     border: none;
     background: transparent;
+    padding-left: 10px;
 }
 QPushButton#getSmsButton {
     border: none;
@@ -220,9 +221,32 @@ QPushButton#getSmsButton:disabled {
     padding-right: 12px;
     font-size: @smallFontSize@;
     background-color: rgb(232,245,225);
-    color: rgb(150,211,111);
+    color: rgb(203,202,202);
 }
 QPushButton#getSmsButton:hover {
     background-color: rgb(150,211,111);
     color: rgb(232,245,225);
+}
+QLabel#warningLabel {
+    font-size: @smallFontSize@;
+    color: rgb(242,91,37);
+}
+QLabel#licenseCheckboxLabel {
+    font-size: @smallFontSize@;
+    color: rgb(203,202,202);
+}
+XLClickableLabel#licenseLabel {
+    font-size: @smallFontSize@;
+    color: rgb(150,211,111);
+}
+QCheckBox#licenseCheckbox::indicator {
+    width: 28px;
+    height: 26px;
+}
+QCheckBox#licenseCheckbox::indicator:unchecked {
+    image: url(:/res/images/checkbox_bg_green.png);
+}
+QCheckBox#licenseCheckbox::indicator:checked {
+    background-image: url(:/res/images/checkbox_bg_green.png);
+    image: url(:/res/images/tick.png);
 }

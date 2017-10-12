@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/close_gray.png</file>
+    <file>images/tick.png</file>
+    <file>images/checkbox_bg_green.png</file>
     <file>images/warning.png</file>
     <file>images/sign_in_title.png</file>
     <file>images/sign_up_title.png</file>

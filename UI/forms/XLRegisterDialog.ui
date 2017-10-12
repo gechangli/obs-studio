@@ -154,6 +154,12 @@
       </item>
       <item alignment="Qt::AlignHCenter">
        <widget class="QWidget" name="editPanel" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>304</width>
@@ -198,13 +204,13 @@
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
-             <number>5</number>
+             <number>10</number>
             </property>
             <property name="leftMargin">
              <number>1</number>
             </property>
             <property name="topMargin">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="rightMargin">
              <number>12</number>
@@ -215,36 +221,87 @@
             <item>
              <widget class="QLineEdit" name="mobileEdit">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="focusPolicy">
-               <enum>Qt::ClickFocus</enum>
-              </property>
-              <property name="inputMethodHints">
-               <set>Qt::ImhDialableCharactersOnly|Qt::ImhNoAutoUppercase</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="getSmsButton">
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>26</height>
+                <height>38</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>26</height>
+                <height>38</height>
                </size>
               </property>
-              <property name="text">
-               <string>XL.Register.Get.Sms.Code</string>
+              <property name="baseSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
               </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="inputMethodHints">
+               <set>Qt::ImhDialableCharactersOnly|Qt::ImhNoAutoUppercase</set>
+              </property>
+              <property name="frame">
+               <bool>true</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget" native="true">
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="getSmsButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>26</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>26</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>XL.Register.Get.Sms.Code</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
@@ -252,6 +309,18 @@
          </item>
          <item>
           <widget class="QWidget" name="smsCodePanel" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>39</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>39</height>
+            </size>
+           </property>
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <property name="spacing">
              <number>0</number>
@@ -271,10 +340,22 @@
             <item>
              <widget class="QLineEdit" name="smsCodeEdit">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>38</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>38</height>
+               </size>
               </property>
               <property name="inputMethodHints">
                <set>Qt::ImhNoAutoUppercase|Qt::ImhPreferNumbers</set>
@@ -288,7 +369,80 @@
        </widget>
       </item>
       <item>
-       <widget class="QWidget" name="licensePanel" native="true"/>
+       <widget class="QWidget" name="licensePanel" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>120</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QCheckBox" name="licenseCheckbox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="licenseCheckboxLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>XL.Register.License.Checkbox</string>
+           </property>
+           <property name="indent">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="XLClickableLabel" name="licenseLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>XL.Register.License</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
       </item>
       <item alignment="Qt::AlignHCenter">
        <widget class="QWidget" name="buttonBox" native="true">
@@ -372,6 +526,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XLClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>xl-clickable-label.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="obs.qrc"/>
  </resources>
