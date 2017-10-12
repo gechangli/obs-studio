@@ -169,6 +169,9 @@ QListView#sourceList::item:selected {
 }
 
 /* register dialog */
+QFrame#topFrame {
+    background: rgb(248,248,248);
+}
 QWidget#buttonBox>QPushButton#signUpButton {
      background-color: rgb(100,193,18);
      font-size: @mediumFontSize@;
@@ -199,9 +202,28 @@ QWidget#buttonBox>QPushButton#signInButton:pressed {
      background-color: rgb(248,248,248);
      color: rgb(203,202,202);
 }
-QWidget#﻿editContainer {
-    border: 1px solid red;
+QWidget#editPanel { /* this style doesn't take effect, but it does in designer, WTF, qt bug? */
+    border: 1px solid rgb(203,202,202);
     border-radius: 4px;
+    background: white;
+}
+QWidget#smsCodePanel {
+    border-top: 1px solid rgb(203,202,202);
+}
+QLineEdit#mobileEdit, QLineEdit#smsCodeEdit {
+    border: none;
+    background: transparent;
+}
+QPushButton#﻿getSmsButton {
+    border: none;
+    border-radius: 16px;
+    font-size: @smallFontSize@;
+    background-color: rgb(232,245,225);
+    color: rgb(150,211,111);
+}
+QPushButton#﻿getSmsButton:hover {
+    background-color: rgb(150,211,111);
+    color: rgb(232,245,225);
 }
 
 /* We need to set back the icons, or the preview wont stick. */

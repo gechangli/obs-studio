@@ -19,11 +19,8 @@
 #include "window-basic-main.hpp"
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
-#include "obs.hpp"
-#include "obs-app.hpp"
 #include <QKeyEvent>
 #include <QMessageBox>
-#include <QJsonObject>
 
 using namespace std;
 
@@ -39,6 +36,10 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 
 	// set title
 	setWindowTitle(L("XL.Register.Title"));
+
+	// disable focus rect
+	ui->mobileEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
+	ui->smsCodeEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	// listen xgm event
 	connect(&m_client, &XgmOA::restOpDone, this, &XLRegisterDialog::onXgmOAResponse);
@@ -133,9 +134,9 @@ void XLRegisterDialog::on_refreshSmsCodeButton_clicked() {
 
 void XLRegisterDialog::updateSmsRefreshButtonText() {
 	if(m_smsRefreshSeconds <= 0) {
-		ui->refreshSmsCodeButton->setText(L("XL.Register.Get.Sms.Code"));
+		ui->getSmsButton->setText(L("XL.Register.Get.Sms.Code"));
 	} else {
-		ui->refreshSmsCodeButton->setText(QString::asprintf("%s(%ds)", LC("XL.Register.Get.Sms.Code"), m_smsRefreshSeconds));
+		ui->getSmsButton->setText(QString::asprintf("%s(%ds)", LC("XL.Register.Get.Sms.Code"), m_smsRefreshSeconds));
 	}
 }
 
@@ -144,7 +145,7 @@ void XLRegisterDialog::timerEvent(QTimerEvent *event) {
 		// if times up, re-enable refresh button
 		m_smsRefreshSeconds--;
 		if(m_smsRefreshSeconds <= 0) {
-			ui->refreshSmsCodeButton->setEnabled(true);
+			ui->getSmsButton->setEnabled(true);
 			killTimer(m_smsRefreshTimerId);
 			m_smsRefreshTimerId = -1;
 		}
@@ -165,7 +166,7 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		m_smsRefreshSeconds = 60;
 		m_smsRefreshTimerId = startTimer(1000);
 		updateSmsRefreshButtonText();
-		ui->refreshSmsCodeButton->setEnabled(false);
+		ui->getSmsButton->setEnabled(false);
 	} else if(op == XgmOA::OP_REGISTER) {
 		// signal
 		m_registeredOk = true;
@@ -199,7 +200,7 @@ void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply:
 		hideProgressDialog();
 
 		// if failed, immediately re-enable refresh button
-		ui->refreshSmsCodeButton->setEnabled(true);
+		ui->getSmsButton->setEnabled(true);
 		killTimer(m_smsRefreshTimerId);
 		m_smsRefreshTimerId = -1;
 		m_smsRefreshSeconds = 0;
