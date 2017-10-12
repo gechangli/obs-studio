@@ -33,8 +33,8 @@ XLStatusBar::XLStatusBar(QWidget* parent) :
 	// init ui
 	ui->setupUi(this);
 
-	ui->liveTimeLabel->setText(QString("LIVE: 00:00:00"));
-	ui->recordTimeLabel->setText(QString("REC: 00:00:00"));
+	ui->liveTimeLabel->setText(QString("%1: 00:00:00").arg(L("Live.Time")));
+	ui->recordTimeLabel->setText(QString("%1: 00:00:00").arg(L("Record.Time")));
 	ui->cpuLabel->setText(QString("CPU: 0.0%, 0.00 fps"));
 	ui->delayInfoLabel->setText("");
 	ui->dropFrameLabel->setText("");
@@ -86,17 +86,17 @@ void XLStatusBar::Activate()
 }
 
 void XLStatusBar::Deactivate() {
-	OBSBasic *main = dynamic_cast<OBSBasic*>(parent());
+	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 	if (!main)
 		return;
 
 	if (!streamOutput) {
-		ui->liveTimeLabel->setText(QString("LIVE: 00:00:00"));
+		ui->liveTimeLabel->setText(QString("%1: 00:00:00").arg(L("Live.Time")));
 		totalStreamSeconds = 0;
 	}
 
 	if (!recordOutput) {
-		ui->recordTimeLabel->setText(QString("REC: 00:00:00"));
+		ui->recordTimeLabel->setText(QString("%1: 00:00:00").arg(L("Record.Time")));
 		totalRecordSeconds = 0;
 	}
 
@@ -162,19 +162,13 @@ void XLStatusBar::UpdateBandwidth()
 	if (bytesSent == 0)
 		lastBytesSent = 0;
 
-	uint64_t bitsBetween   = (bytesSent - lastBytesSent) * 8;
-
-	double timePassed = double(bytesSentTime - lastBytesSentTime) /
-						1000000000.0;
-
-	double kbitsPerSec = double(bitsBetween) / timePassed / 1000.0;
+	double timePassed = double(bytesSentTime - lastBytesSentTime) / 1000000000.0;
+	double kbPerSec = double(bytesSent - lastBytesSent) / timePassed / 1000.0;
 
 	QString text;
-	text += QString("kb/s: ") +
-			QString::number(kbitsPerSec, 'f', 0);
+	text += QString::number(kbPerSec, 'f', 0) + QString("KB/s");
 
 	ui->networkSpeedLabel->setText(text);
-	ui->networkSpeedLabel->setMinimumWidth(ui->networkSpeedLabel->width());
 
 	lastBytesSent        = bytesSent;
 	lastBytesSentTime    = bytesSentTime;
@@ -183,7 +177,7 @@ void XLStatusBar::UpdateBandwidth()
 
 void XLStatusBar::UpdateCPUUsage()
 {
-	OBSBasic *main = dynamic_cast<OBSBasic*>(parent());
+	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 	if (!main)
 		return;
 
@@ -193,7 +187,6 @@ void XLStatusBar::UpdateCPUUsage()
 			QString::number(obs_get_active_fps(), 'f', 2) + QString(" fps");
 
 	ui->cpuLabel->setText(text);
-	ui->cpuLabel->setMinimumWidth(ui->cpuLabel->width());
 }
 
 void XLStatusBar::UpdateStreamTime()
@@ -206,9 +199,8 @@ void XLStatusBar::UpdateStreamTime()
 	int hours        = totalMinutes / 60;
 
 	QString text;
-	text.sprintf("LIVE: %02d:%02d:%02d", hours, minutes, seconds);
+	text.sprintf("%s: %02d:%02d:%02d", LC("Live.Time"), hours, minutes, seconds);
 	ui->liveTimeLabel->setText(text);
-	ui->liveTimeLabel->setMinimumWidth(ui->liveTimeLabel->width());
 
 	if (reconnectTimeout > 0) {
 		QString msg = QTStr("Basic.StatusBar.Reconnecting")
@@ -241,9 +233,8 @@ void XLStatusBar::UpdateRecordTime()
 	int hours        = totalMinutes / 60;
 
 	QString text;
-	text.sprintf("REC: %02d:%02d:%02d", hours, minutes, seconds);
+	text.sprintf("%s: %02d:%02d:%02d", LC("Record.Time"), hours, minutes, seconds);
 	ui->recordTimeLabel->setText(text);
-	ui->recordTimeLabel->setMinimumWidth(ui->recordTimeLabel->width());
 }
 
 void XLStatusBar::UpdateDroppedFrames()
@@ -262,7 +253,6 @@ void XLStatusBar::UpdateDroppedFrames()
 	text = text.arg(QString::number(totalDropped),
 					QString::number(percent, 'f', 1));
 	ui->dropFrameLabel->setText(text);
-	ui->dropFrameLabel->setMinimumWidth(ui->dropFrameLabel->width());
 
 	/* ----------------------------------- *
 	 * calculate congestion color          */
@@ -317,7 +307,7 @@ void XLStatusBar::OBSOutputReconnectSuccess(void *data, calldata_t *params)
 
 void XLStatusBar::Reconnect(int seconds)
 {
-	OBSBasic *main = dynamic_cast<OBSBasic*>(parent());
+	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 
 	if (!retries)
 		main->SysTrayNotify(
@@ -347,7 +337,7 @@ void XLStatusBar::ReconnectClear()
 
 void XLStatusBar::ReconnectSuccess()
 {
-	OBSBasic *main = dynamic_cast<OBSBasic*>(parent());
+	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 
 	QString msg = QTStr("Basic.StatusBar.ReconnectSuccessful");
 	showMessage(msg, 4000);
@@ -376,7 +366,7 @@ void XLStatusBar::clearMessage() {
 
 void XLStatusBar::UpdateStatusBar()
 {
-	OBSBasic *main = dynamic_cast<OBSBasic*>(parent());
+	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 
 	UpdateBandwidth();
 
@@ -411,7 +401,7 @@ void XLStatusBar::UpdateStatusBar()
 
 void XLStatusBar::StreamDelayStarting(int sec)
 {
-	OBSBasic *main = dynamic_cast<OBSBasic*>(parent());
+	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 	if (!main || !main->outputHandler)
 		return;
 

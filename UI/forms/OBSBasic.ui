@@ -1260,7 +1260,6 @@
    <addaction name="menuTools"/>
    <addaction name="menuBasic_MainMenu_Help"/>
   </widget>
-  <widget class="OBSBasicStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="scenesDock">
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
@@ -2604,11 +2603,6 @@
    <extends>QWidget</extends>
    <header>window-basic-preview.hpp</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>OBSBasicStatusBar</class>
-   <extends>QStatusBar</extends>
-   <header>window-basic-status-bar.hpp</header>
   </customwidget>
   <customwidget>
    <class>VScrollArea</class>

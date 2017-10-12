@@ -187,7 +187,6 @@ set(xiaomeilive_SOURCES
 	window-basic-main-dropfiles.cpp
 	window-basic-main-profiles.cpp
 	window-license-agreement.cpp
-	window-basic-status-bar.cpp
 	window-basic-adv-audio.cpp
 	window-basic-transform.cpp
 	window-basic-preview.cpp
@@ -247,7 +246,6 @@ set(xiaomeilive_HEADERS
 	window-basic-main-outputs.hpp
 	window-basic-source-select.hpp
 	window-license-agreement.hpp
-	window-basic-status-bar.hpp
 	window-basic-adv-audio.hpp
 	window-basic-transform.hpp
 	window-basic-preview.hpp

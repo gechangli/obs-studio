@@ -234,7 +234,7 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	cpuUsageInfo = os_cpu_usage_info_start();
 	cpuUsageTimer = new QTimer(this);
 	connect(cpuUsageTimer, SIGNAL(timeout()),
-			ui->statusbar, SLOT(UpdateCPUUsage()));
+			ui->statusBar, SLOT(UpdateCPUUsage()));
 	cpuUsageTimer->start(3000);
 
 	DeleteKeys =
@@ -4615,7 +4615,7 @@ void OBSBasic::StreamDelayStarting(int sec)
 			this, SLOT(ForceStopStreaming()));
 	ui->streamButton->setMenu(startStreamMenu);
 
-	ui->statusbar->StreamDelayStarting(sec);
+	ui->statusBar->StreamDelayStarting(sec);
 
 	OnActivate();
 }
@@ -4640,14 +4640,14 @@ void OBSBasic::StreamDelayStopping(int sec)
 			this, SLOT(ForceStopStreaming()));
 	ui->streamButton->setMenu(startStreamMenu);
 
-	ui->statusbar->StreamDelayStopping(sec);
+	ui->statusBar->StreamDelayStopping(sec);
 }
 
 void OBSBasic::StreamingStart()
 {
 	ui->streamButton->setText(QTStr("Basic.Main.StopStreaming"));
 	ui->streamButton->setEnabled(true);
-	ui->statusbar->StreamStarted(outputHandler->streamOutput);
+	ui->statusBar->StreamStarted(outputHandler->streamOutput);
 
 	if (sysTrayStream) {
 		sysTrayStream->setText(ui->streamButton->text());
@@ -4713,7 +4713,7 @@ void OBSBasic::StreamingStop(int code, QString last_error)
 	else
 		dstr_copy(errorMessage, errorDescription);
 
-	ui->statusbar->StreamStopped();
+	ui->statusBar->StreamStopped();
 
 	ui->streamButton->setText(QTStr("Basic.Main.StartStreaming"));
 	ui->streamButton->setEnabled(true);
@@ -4784,7 +4784,7 @@ void OBSBasic::StopRecording()
 
 void OBSBasic::RecordingStart()
 {
-	ui->statusbar->RecordingStarted(outputHandler->fileOutput);
+	ui->statusBar->RecordingStarted(outputHandler->fileOutput);
 	ui->recordButton->setText(QTStr("Basic.Main.StopRecording"));
 
 	if (sysTrayRecord)
@@ -4801,7 +4801,7 @@ void OBSBasic::RecordingStart()
 
 void OBSBasic::RecordingStop(int code)
 {
-	ui->statusbar->RecordingStopped();
+	ui->statusBar->RecordingStopped();
 	ui->recordButton->setText(QTStr("Basic.Main.StartRecording"));
 
 	if (sysTrayRecord)
@@ -5784,7 +5784,7 @@ void OBSBasic::on_toggleListboxToolbars_toggled(bool visible)
 
 void OBSBasic::on_toggleStatusBar_toggled(bool visible)
 {
-	ui->statusbar->setVisible(visible);
+	ui->statusBar->setVisible(visible);
 
 	config_set_bool(App()->GlobalConfig(), "BasicWindow",
 			"ShowStatusBar", visible);

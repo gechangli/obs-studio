@@ -733,7 +733,11 @@ uint64_t obs_output_get_total_bytes(const obs_output_t *output)
 	if (delay_active(output) && !delay_capturing(output))
 		return 0;
 
-	return output->info.get_total_bytes(output->context.data);
+	uint64_t total = 0;
+	for(int i = 0; i < output->datas.num; i++) {
+		total += output->info.get_total_bytes(output->datas.array[i]);
+	}
+	return total;
 }
 
 int obs_output_get_frames_dropped(const obs_output_t *output)
