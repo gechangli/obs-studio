@@ -18,6 +18,8 @@
 #pragma once
 
 #include <QString>
+#include <QColor>
+#include <QPixmap>
 
 class XLUtil {
 public:
@@ -25,4 +27,5 @@ public:
 	static QString getDataFileContent(QString path);
 	static QString stringByDeletingLastPathComponent(QString path);
 	static QString stringByDeletingPathExtension(QString path);
+	static QPixmap createCircle(int radius, QColor color);
 };

@@ -19,14 +19,17 @@
 #include "obs-app.hpp"
 #include "window-basic-main.hpp"
 #include "window-basic-main-outputs.hpp"
+#include "xl-util.hpp"
+
+#define BITRATE_UPDATE_SECONDS 2
 
 XLStatusBar::XLStatusBar(QWidget* parent) :
 	QWidget(parent),
 	ui(new Ui::XLStatusBar),
 	transparentPixmap(20, 20),
-	greenPixmap(20, 20),
-	grayPixmap(20, 20),
-	redPixmap(20, 20) {
+	greenPixmap(XLUtil::createCircle(6, QColor(0, 255, 0))),
+	grayPixmap(XLUtil::createCircle(6, QColor(72, 72, 72))),
+	redPixmap(XLUtil::createCircle(6, QColor(255, 0, 0))) {
 	// init ui
 	ui->setupUi(this);
 
@@ -39,10 +42,6 @@ XLStatusBar::XLStatusBar(QWidget* parent) :
 	ui->networkSpeedLabel->setText("");
 
 	transparentPixmap.fill(QColor(0, 0, 0, 0));
-	greenPixmap.fill(QColor(0, 255, 0));
-	grayPixmap.fill(QColor(72, 72, 72));
-	redPixmap.fill(QColor(255, 0, 0));
-
 	ui->networkSpeedIconLabel->setPixmap(transparentPixmap);
 }
 
@@ -57,8 +56,7 @@ void XLStatusBar::paintEvent(QPaintEvent* event) {
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void XLStatusBar::Activate()
-{
+void XLStatusBar::Activate() {
 	if (!active) {
 		refreshTimer = new QTimer(this);
 		connect(refreshTimer, SIGNAL(timeout()),
@@ -115,8 +113,7 @@ void XLStatusBar::Deactivate() {
 	}
 }
 
-void XLStatusBar::UpdateDelayMsg()
-{
+void XLStatusBar::UpdateDelayMsg() {
 	QString msg;
 
 	if (delaySecTotal) {
@@ -141,10 +138,7 @@ void XLStatusBar::UpdateDelayMsg()
 	ui->delayInfoLabel->setText(msg);
 }
 
-#define BITRATE_UPDATE_SECONDS 2
-
-void XLStatusBar::UpdateBandwidth()
-{
+void XLStatusBar::UpdateBandwidth() {
 	if (!streamOutput)
 		return;
 
@@ -172,8 +166,7 @@ void XLStatusBar::UpdateBandwidth()
 	bitrateUpdateSeconds = 0;
 }
 
-void XLStatusBar::UpdateCPUUsage()
-{
+void XLStatusBar::UpdateCPUUsage() {
 	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 	if (!main)
 		return;
@@ -186,8 +179,7 @@ void XLStatusBar::UpdateCPUUsage()
 	ui->cpuLabel->setText(text);
 }
 
-void XLStatusBar::UpdateStreamTime()
-{
+void XLStatusBar::UpdateStreamTime() {
 	totalStreamSeconds++;
 
 	int seconds      = totalStreamSeconds % 60;
@@ -220,8 +212,7 @@ void XLStatusBar::UpdateStreamTime()
 	}
 }
 
-void XLStatusBar::UpdateRecordTime()
-{
+void XLStatusBar::UpdateRecordTime() {
 	totalRecordSeconds++;
 
 	int seconds      = totalRecordSeconds % 60;
@@ -234,8 +225,7 @@ void XLStatusBar::UpdateRecordTime()
 	ui->recordTimeLabel->setText(text);
 }
 
-void XLStatusBar::UpdateDroppedFrames()
-{
+void XLStatusBar::UpdateDroppedFrames() {
 	if (!streamOutput)
 		return;
 
@@ -266,8 +256,6 @@ void XLStatusBar::UpdateDroppedFrames()
 	} else if (fabsf(avgCongestion - 1.0f) < EPSILON) {
 		ui->networkSpeedIconLabel->setPixmap(redPixmap);
 	} else {
-		QPixmap pixmap(20, 20);
-
 		float red = avgCongestion * 2.0f;
 		if (red > 1.0f) red = 1.0f;
 		red *= 255.0;
@@ -276,15 +264,14 @@ void XLStatusBar::UpdateDroppedFrames()
 		if (green > 1.0f) green = 1.0f;
 		green *= 255.0;
 
-		pixmap.fill(QColor(int(red), int(green), 0));
+		QPixmap pixmap = XLUtil::createCircle(6, QColor(int(red), int(green), 0));
 		ui->networkSpeedIconLabel->setPixmap(pixmap);
 	}
 
 	lastCongestion = congestion;
 }
 
-void XLStatusBar::OBSOutputReconnect(void *data, calldata_t *params)
-{
+void XLStatusBar::OBSOutputReconnect(void *data, calldata_t *params) {
 	XLStatusBar *statusBar =
 		reinterpret_cast<XLStatusBar*>(data);
 
@@ -293,8 +280,7 @@ void XLStatusBar::OBSOutputReconnect(void *data, calldata_t *params)
 	UNUSED_PARAMETER(params);
 }
 
-void XLStatusBar::OBSOutputReconnectSuccess(void *data, calldata_t *params)
-{
+void XLStatusBar::OBSOutputReconnectSuccess(void *data, calldata_t *params) {
 	XLStatusBar *statusBar =
 		reinterpret_cast<XLStatusBar*>(data);
 
@@ -302,8 +288,7 @@ void XLStatusBar::OBSOutputReconnectSuccess(void *data, calldata_t *params)
 	UNUSED_PARAMETER(params);
 }
 
-void XLStatusBar::Reconnect(int seconds)
-{
+void XLStatusBar::Reconnect(int seconds) {
 	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 
 	if (!retries)
@@ -321,8 +306,7 @@ void XLStatusBar::Reconnect(int seconds)
 	}
 }
 
-void XLStatusBar::ReconnectClear()
-{
+void XLStatusBar::ReconnectClear() {
 	retries              = 0;
 	reconnectTimeout     = 0;
 	bitrateUpdateSeconds = -1;
@@ -332,8 +316,7 @@ void XLStatusBar::ReconnectClear()
 	UpdateDelayMsg();
 }
 
-void XLStatusBar::ReconnectSuccess()
-{
+void XLStatusBar::ReconnectSuccess() {
 	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 
 	QString msg = QTStr("Basic.StatusBar.ReconnectSuccessful");
@@ -361,8 +344,7 @@ void XLStatusBar::clearMessage() {
 	ui->msgLabel->setText("");
 }
 
-void XLStatusBar::UpdateStatusBar()
-{
+void XLStatusBar::UpdateStatusBar() {
 	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 
 	UpdateBandwidth();
@@ -417,14 +399,12 @@ void XLStatusBar::StreamDelayStarting(int sec) {
 	Activate();
 }
 
-void XLStatusBar::StreamDelayStopping(int sec)
-{
+void XLStatusBar::StreamDelayStopping(int sec) {
 	delaySecTotal = delaySecStopping = sec;
 	UpdateDelayMsg();
 }
 
-void XLStatusBar::StreamStarted(obs_output_t *output)
-{
+void XLStatusBar::StreamStarted(obs_output_t *output) {
 	streamOutput = output;
 
 	signal_handler_connect(obs_output_get_signal_handler(streamOutput),
@@ -438,8 +418,7 @@ void XLStatusBar::StreamStarted(obs_output_t *output)
 	Activate();
 }
 
-void XLStatusBar::StreamStopped()
-{
+void XLStatusBar::StreamStopped() {
 	if (streamOutput) {
 		signal_handler_disconnect(
 			obs_output_get_signal_handler(streamOutput),

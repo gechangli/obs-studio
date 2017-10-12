@@ -19,6 +19,8 @@
 #include "platform.hpp"
 #include <QFile>
 #include <QTextStream>
+#include <QBitmap>
+#include <QPainter>
 
 using namespace std;
 
@@ -54,4 +56,24 @@ QString XLUtil::stringByDeletingPathExtension(QString path) {
 	} else {
 		return path;
 	}
+}
+
+QPixmap XLUtil::createCircle(int radius, QColor color) {
+	// generate mask
+	QSize size(radius << 1, radius << 1);
+	QBitmap mask(size);
+	QPainter painter(&mask);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform);
+	painter.fillRect(0, 0, size.width(), size.height(), Qt::white);
+	painter.setBrush(QColor(0, 0, 0));
+	painter.drawEllipse(QPoint(radius, radius), radius, radius);
+
+	// generate a color square
+	QPixmap src(radius << 1, radius << 1);
+	src.fill(color);
+
+	// mask square to get circle
+	src.setMask(mask);
+	return src;
 }
