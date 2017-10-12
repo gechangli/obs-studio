@@ -737,16 +737,8 @@ bool OBSApp::SetTheme(std::string name, std::string path)
 		}
 	}
 
-	// get param file path
-	paramPath = XLUtil::stringByDeletingPathExtension(QString::fromStdString(path));
-#ifdef Q_OS_WIN
-	paramPath += "-win.qssp";
-#elif defined(Q_OS_OSX)
-	paramPath += "-osx.qssp";
-#endif
-
 	// load qss, load param, replace param, then set stylesheet
-	QString qss = XLUtil::loadQss(QString::fromStdString(path), paramPath);
+	QString qss = XLUtil::loadQss(QString::fromStdString(path));
 #ifndef Q_NO_DEBUG
 	blog(LOG_INFO, "Final stylesheet length: %d", qss.length());
 	blog(LOG_INFO, "Final stylesheet: %s", qss.toStdString().c_str());

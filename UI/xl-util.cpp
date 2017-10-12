@@ -58,6 +58,17 @@ QString XLUtil::stringByDeletingPathExtension(QString path) {
 	}
 }
 
+QString XLUtil::lastPathComponent(QString path) {
+	int idx = path.lastIndexOf('/');
+	if(idx == -1) {
+		return path;
+	} else if(path.length() > 1) {
+		return path.right(path.length() - idx - 1);
+	} else {
+		return "/";
+	}
+}
+
 QPixmap XLUtil::createCircle(int radius, QColor color) {
 	// generate mask
 	QSize size(radius << 1, radius << 1);
@@ -78,7 +89,23 @@ QPixmap XLUtil::createCircle(int radius, QColor color) {
 	return src;
 }
 
-QString XLUtil::loadQss(QString path, QString paramPath) {
+QString XLUtil::loadQss(QString path, QString paramName) {
+	// if param name is not set, get it from qss path
+	QString paramPath;
+	if(paramName.isEmpty()) {
+		paramPath = XLUtil::stringByDeletingPathExtension(path);
+	} else {
+		paramPath = XLUtil::stringByDeletingLastPathComponent(path);
+		paramPath += "/" + paramName;
+	}
+
+	// append suffix
+#ifdef Q_OS_WIN
+	paramPath += "-win.qssp";
+#elif defined(Q_OS_OSX)
+	paramPath += "-osx.qssp";
+#endif
+
 	// load qss, load param, replace param, then set stylesheet
 	QString qss = XLUtil::getFileContent(path);
 	if(!paramPath.isEmpty()) {
