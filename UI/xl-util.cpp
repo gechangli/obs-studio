@@ -77,3 +77,21 @@ QPixmap XLUtil::createCircle(int radius, QColor color) {
 	src.setMask(mask);
 	return src;
 }
+
+QString XLUtil::loadQss(QString path, QString paramPath) {
+	// load qss, load param, replace param, then set stylesheet
+	QString qss = XLUtil::getFileContent(path);
+	if(!paramPath.isEmpty()) {
+		QFile f(paramPath);
+		f.open(QIODevice::ReadOnly);
+		QTextStream in(&f);
+		while(!in.atEnd()) {
+			QString line = in.readLine();
+			QStringList pair = line.split("=");
+			if(pair.count() == 2) {
+				qss = qss.replace(pair[0], pair[1]);
+			}
+		}
+	}
+	return qss;
+}

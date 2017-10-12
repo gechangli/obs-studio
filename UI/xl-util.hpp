@@ -28,4 +28,5 @@ public:
 	static QString stringByDeletingLastPathComponent(QString path);
 	static QString stringByDeletingPathExtension(QString path);
 	static QPixmap createCircle(int radius, QColor color);
+	static QString loadQss(QString path, QString paramPath);
 };

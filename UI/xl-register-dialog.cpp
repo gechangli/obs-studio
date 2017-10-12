@@ -119,7 +119,7 @@ bool XLRegisterDialog::validateSmsCode() {
 	}
 }
 
-void XLRegisterDialog::on_refreshSmsCodeButton_clicked() {
+void XLRegisterDialog::on_getSmsButton_clicked() {
 	// validate mobile
 	if(!validateMobile()) {
 		return;

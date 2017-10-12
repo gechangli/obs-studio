@@ -45,7 +45,7 @@ private:
 	void hideProgressDialog();
 
 private slots:
-	void on_refreshSmsCodeButton_clicked();
+	void on_getSmsButton_clicked();
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 
