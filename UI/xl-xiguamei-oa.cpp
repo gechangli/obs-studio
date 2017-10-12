@@ -30,6 +30,7 @@ using namespace std;
 #define PATH_REGISTER "/v1/user/live/register"
 #define PATH_LOGIN_BY_PASSWORD "/v1/user/live/login/passwd"
 #define PATH_LOGIN_BY_AUTHCODE "/v1/user/live/login/authcode"
+#define PATH_LOGIN_BY_TOKEN "/v1/user/live/login/token/verify"
 #define PATH_LOGOUT "/v1/user/live/logout"
 #define PATH_GET_LIVE_PLATFORM_ACCOUNTS "/v1/user/live/account/list"
 #define PATH_ADD_LIVE_PLATFORM_ACCOUNT "/v1/user/live/account/upload"
@@ -55,6 +56,8 @@ XgmOA::XgmRestOp XgmOA::urlToOp(QUrl& url) {
 		return OP_LOGIN_BY_PASSWORD;
 	} else if(path == PATH_LOGIN_BY_AUTHCODE) {
 		return OP_LOGIN_BY_AUTHCODE;
+	} else if(path == PATH_LOGIN_BY_TOKEN) {
+		return OP_LOGIN_BY_TOKEN;
 	} else if(path == PATH_LOGOUT) {
 		return OP_LOGOUT;
 	} else if(path == PATH_GET_LIVE_PLATFORM_ACCOUNTS) {
@@ -168,7 +171,7 @@ void XgmOA::registerUser(string acc, string pwd, string authCode) {
 	doPost(SERVER_URL + PATH_REGISTER, json);
 }
 
-void XgmOA::modifyPassword(std::string acc, std::string pwd, std::string authCode) {
+void XgmOA::modifyPassword(string acc, string pwd, string authCode) {
 	// create json data
 	QVariantMap map;
 	map["account"] = QVariant(acc.c_str());
@@ -181,7 +184,7 @@ void XgmOA::modifyPassword(std::string acc, std::string pwd, std::string authCod
 	doPost(SERVER_URL + PATH_MODIFY_PASSWORD, json);
 }
 
-void XgmOA::loginByPassword(std::string acc, std::string pwd) {
+void XgmOA::loginByPassword(string acc, string pwd) {
 	// create json data
 	QVariantMap map;
 	map["account"] = QVariant(acc.c_str());
@@ -193,7 +196,7 @@ void XgmOA::loginByPassword(std::string acc, std::string pwd) {
 	doPost(SERVER_URL + PATH_LOGIN_BY_PASSWORD, json);
 }
 
-void XgmOA::loginByAuthCode(std::string acc, std::string authCode) {
+void XgmOA::loginByAuthCode(string acc, string authCode) {
 	// create json data
 	QVariantMap map;
 	map["account"] = QVariant(acc.c_str());
@@ -205,6 +208,18 @@ void XgmOA::loginByAuthCode(std::string acc, std::string authCode) {
 	doPost(SERVER_URL + PATH_LOGIN_BY_AUTHCODE, json);
 }
 
+void XgmOA::loginByToken(string acc, string token) {
+	// create json data
+	QVariantMap map;
+	map["account"] = QVariant(acc.c_str());
+	map["token"] = QVariant(token.c_str());
+	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
+	QByteArray json = doc.toJson(QJsonDocument::Compact);
+
+	// post it
+	doPost(SERVER_URL + PATH_LOGIN_BY_TOKEN, json);
+}
+
 void XgmOA::logout() {
 	doPost(SERVER_URL + PATH_LOGOUT, QByteArray());
 }
@@ -213,7 +228,7 @@ void XgmOA::getLivePlatformUsers() {
 	doGet(SERVER_URL + PATH_GET_LIVE_PLATFORM_ACCOUNTS);
 }
 
-void XgmOA::addLivePlatformUser(std::string pltName, std::string acc) {
+void XgmOA::addLivePlatformUser(string pltName, string acc) {
 	// create json data
 	QVariantMap map;
 	map["account"] = QVariant(acc.c_str());

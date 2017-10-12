@@ -41,6 +41,7 @@ public:
 		OP_MODIFY_PASSWORD,
 		OP_LOGIN_BY_PASSWORD,
 		OP_LOGIN_BY_AUTHCODE,
+		OP_LOGIN_BY_TOKEN,
 		OP_LOGOUT,
 		OP_GET_LIVE_PLATFORM_ACCOUNTS,
 		OP_ADD_LIVE_PLATFORM_ACCOUNT
@@ -74,6 +75,7 @@ public:
 	void modifyPassword(std::string acc, std::string pwd, std::string authCode);
 	void loginByPassword(std::string acc, std::string pwd);
 	void loginByAuthCode(std::string acc, std::string authCode);
+	void loginByToken(std::string acc, std::string token);
 	void logout();
 	void getLivePlatformUsers();
 	void addLivePlatformUser(std::string pltName, std::string acc);
