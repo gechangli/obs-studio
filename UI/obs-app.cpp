@@ -755,10 +755,17 @@ bool OBSApp::SetTheme(std::string name, std::string path)
 			QString line = in.readLine();
 			QStringList pair = line.split("=");
 			if(pair.count() == 2) {
+#ifndef Q_NO_DEBUG
+				blog(LOG_INFO, "Stylesheet replace: %s => %s", pair[0].toStdString().c_str(), pair[1].toStdString().c_str());
+#endif
 				qss = qss.replace(pair[0], pair[1]);
 			}
 		}
  	}
+#ifndef Q_NO_DEBUG
+	blog(LOG_INFO, "Final stylesheet length: %d", qss.length());
+	blog(LOG_INFO, "Final stylesheet: %s", qss.toStdString().c_str());
+#endif
 	setStyleSheet(qss);
 	return true;
 }

@@ -40,7 +40,6 @@ private:
 private:
 	void updateSmsRefreshButtonText();
 	bool validateMobile();
-	bool validatePassword();
 	bool validateSmsCode();
 	void showProgressDialog();
 	void hideProgressDialog();

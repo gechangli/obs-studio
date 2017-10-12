@@ -70,7 +70,7 @@ public:
 	virtual ~XgmOA();
 
 	// rest api
-	void registerUser(std::string acc, std::string pwd, std::string authCode);
+	void registerUser(std::string acc, std::string authCode);
 	void getAuthCode(std::string phone, XgmAuthType authType);
 	void modifyPassword(std::string acc, std::string pwd, std::string authCode);
 	void loginByPassword(std::string acc, std::string pwd);

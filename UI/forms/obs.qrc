@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/warning.png</file>
+    <file>images/sign_in_title.png</file>
+    <file>images/sign_up_title.png</file>
     <file>images/live_platform.png</file>
     <file>images/market.png</file>
     <file>images/profile.png</file>

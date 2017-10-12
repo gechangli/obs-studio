@@ -158,11 +158,11 @@ void XgmOA::getAuthCode(string phone, XgmAuthType authType) {
 	doPost(SERVER_URL + PATH_GET_AUTH_CODE, json);
 }
 
-void XgmOA::registerUser(string acc, string pwd, string authCode) {
+void XgmOA::registerUser(string acc, string authCode) {
 	// create json data
 	QVariantMap map;
 	map["account"] = QVariant(acc.c_str());
-	map["passwd"] = QVariant(pwd.c_str());
+	map["passwd"] = QVariant("");
 	map["authcode"] = QVariant(authCode.c_str());
 	QJsonDocument doc = QJsonDocument::fromVariant(QVariant(map));
 	QByteArray json = doc.toJson(QJsonDocument::Compact);

@@ -35,15 +35,15 @@ XLLoginDialog::XLLoginDialog(OBSBasic *parent) :
 	ui->setupUi(this);
 
 	// set title
-	setWindowTitle(L("LogIn"));
+	setWindowTitle(L("SignIn"));
 
 	// listen xgm event
 	connect(&m_client, &XgmOA::restOpDone, this, &XLLoginDialog::onXgmOAResponse);
 	connect(&m_client, &XgmOA::restOpFailed, this, &XLLoginDialog::onXgmOAResponseFailed);
 
 	// update button text
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setText(L("LogIn"));
-	ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(L("Register"));
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setText(L("SignIn"));
+	ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(L("SignUp"));
 
 	// pre-fill ui
 	config_t* globalConfig = GetGlobalConfig();

@@ -28,22 +28,17 @@
 using namespace std;
 
 XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
-	QDialog (parent),
+	QDialog (parent, Qt::FramelessWindowHint),
 	ui(new Ui::XLRegisterDialog),
 	m_main(parent),
 	m_smsRefreshTimerId(-1),
 	m_progressDialog(Q_NULLPTR),
-	m_registeredOk(false)
-{
+	m_registeredOk(false) {
 	// init ui
 	ui->setupUi(this);
 
 	// set title
 	setWindowTitle(L("XL.Register.Title"));
-
-	// update button text
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setText(L("Register"));
-	ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(L("XL.Register.Already.Has.Account"));
 
 	// listen xgm event
 	connect(&m_client, &XgmOA::restOpDone, this, &XLRegisterDialog::onXgmOAResponse);
@@ -56,11 +51,6 @@ void XLRegisterDialog::accept() {
 		return;
 	}
 
-	// validate password
-	if(!validatePassword()) {
-		return;
-	}
-
 	// validate sms code
 	if(!validateSmsCode()) {
 		return;
@@ -68,7 +58,6 @@ void XLRegisterDialog::accept() {
 
 	// register
 	m_client.registerUser(ui->mobileEdit->text().trimmed().toStdString(),
-						  ui->passwordEdit->text().toStdString(),
 						  ui->smsCodeEdit->text().toStdString());
 
 	// show progress dialog
@@ -105,20 +94,6 @@ void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
 		default:
 			QDialog::keyPressEvent(event);
 			break;
-	}
-}
-
-bool XLRegisterDialog::validatePassword() {
-	QString pwd = ui->passwordEdit->text();
-	QString pwd2 = ui->confirmPasswordEdit->text();
-	if(pwd.length() <= 0 && pwd2.length() <= 0) {
-		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Password.Is.Empty"));
-		return false;
-	} else if(pwd != pwd2) {
-		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Password.Not.Consensus"));
-		return false;
-	} else {
-		return true;
 	}
 }
 
@@ -196,18 +171,13 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		m_registeredOk = true;
 		emit xgmUserRegistered(ui->mobileEdit->text().trimmed());
 
-		// perform login if register ok
-		m_client.loginByPassword(ui->mobileEdit->text().trimmed().toStdString(),
-								 ui->passwordEdit->text().toStdString());
-	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
+		// TODO show login dialog
+	} else if(op == XgmOA::OP_LOGIN_BY_AUTHCODE) {
 		// close progress dialog
 		hideProgressDialog();
 
 		// save user name and password
 		config_t* globalConfig = GetGlobalConfig();
-		config_set_string(globalConfig, "XiaomeiLive", "Username", ui->mobileEdit->text().trimmed().toStdString().c_str());
-		config_set_string(globalConfig, "XiaomeiLive", "Password", ui->passwordEdit->text().toStdString().c_str());
-		config_set_bool(globalConfig, "XiaomeiLive", "RememberPassword", true);
 		config_set_bool(globalConfig, "XiaomeiLive", "AutoLogin", true);
 		config_save_safe(globalConfig, "tmp", Q_NULLPTR);
 

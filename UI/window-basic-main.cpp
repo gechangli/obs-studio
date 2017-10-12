@@ -466,7 +466,7 @@ void OBSBasic::on_liveTable_itemClicked(QTableWidgetItem *item) {
 void OBSBasic::logout() {
 	// if in live, prompt to end it
 	if(StreamingActive()) {
-		if (QMessageBox::question(nullptr, L("LogOut"), L("XL.Question.Confirm.End.Live")) == QMessageBox::NoButton) {
+		if (QMessageBox::question(nullptr, L("SignOut"), L("XL.Question.Confirm.End.Live")) == QMessageBox::NoButton) {
 			return;
 		} else {
 			ForceStopStreaming();

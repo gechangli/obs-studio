@@ -1,11 +1,8 @@
+@bigFontSize@=16pt
+@mediumFontSize@=14pt
+@smallFontSize@=12pt
 @defaultWidgetBgColor@=rgb(241,241,241)
 @darkerWidgetBgColor@=rgb(231,231,231)
 @panelSeparatorColor@=rgb(210,210,210)
 @titleBarColor@=rgb(100,193,18)
-@titleLabelFontSize@=16pt
 @userPopupBackground@=transparent
-@userPopupItemFontSize@=14pt
-@tabLabelFontSize@=16pt
-@addSourceTabFontSize@=14pt
-@controlPanelFontSize@=16pt
-@statusBarFontSize@=12pt

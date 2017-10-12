@@ -24,7 +24,7 @@ XLTitleBar>QPushButton:hover {
 }
 XLTitleBar>QLabel {
     color: white;
-    font-size: @titleLabelFontSize@;
+    font-size: @bigFontSize@;
     font: bold;
 }
 
@@ -44,7 +44,7 @@ XLUserPopupWidget>QLabel {
 XLUserPopupWidget>QFrame>QPushButton {
     border: none;
     background-color: transparent;
-    font-size: @userPopupItemFontSize@;
+    font-size: @mediumFontSize@;
     color: rgb(83,83,83);
 }
 XLUserPopupWidget>QFrame>QPushButton:hover {
@@ -59,7 +59,7 @@ QWidget#tabBar {
 QWidget#tabBar>QWidget>QPushButton {
     border: none;
     background-color: transparent;
-    font-size: @tabLabelFontSize@;
+    font-size: @bigFontSize@;
     color: white;
 }
 QWidget#tabBar>QWidget>QPushButton:checked {
@@ -82,7 +82,7 @@ QWidget#controlPanel {
 QWidget#controlPanel>QPushButton {
     border: none;
     background-color: white;
-    font-size: @controlPanelFontSize@;
+    font-size: @bigFontSize@;
     color: black;
 }
 QWidget#controlPanel>QPushButton:hover {
@@ -91,7 +91,7 @@ QWidget#controlPanel>QPushButton:hover {
 QWidget#controlPanel>QPushButton#startLiveButton {
     border: none;
     background-color: rgb(100,193,18);
-    font-size: @controlPanelFontSize@;
+    font-size: @bigFontSize@;
     color: white;
 }
 QWidget#controlPanel>QPushButton#startLiveButton:hover {
@@ -100,7 +100,7 @@ QWidget#controlPanel>QPushButton#startLiveButton:hover {
 QWidget#controlPanel>QPushButton#marketButton {
     border: none;
     background-color: rgb(253,78,78);
-    font-size: @controlPanelFontSize@;
+    font-size: @bigFontSize@;
     color: white;
 }
 QWidget#controlPanel>QPushButton#marketButton:hover {
@@ -113,7 +113,7 @@ XLStatusBar {
     border-top: 1px solid @panelSeparatorColor@;
 }
 XLStatusBar>QLabel {
-    font-size: @statusBarFontSize@;
+    font-size: @smallFontSize@;
     color: rgb(83,83,83);
 }
 XLStatusBar>QLabel#liveTimeLabel {
@@ -133,7 +133,7 @@ QWidget#addSourceBar {
 QWidget#addSourceBar>QPushButton {
     border: none;
     background-color: transparent;
-    font-size: @addSourceTabFontSize@;
+    font-size: @mediumFontSize@;
     color: rgb(83,83,83);
 }
 QWidget#addSourceBar>QPushButton:hover {
@@ -166,6 +166,42 @@ XLSourceListItemWidget {
 }
 QListView#sourceList::item:selected {
     background: rgb(242,255,230);
+}
+
+/* register dialog */
+QWidget#buttonBox>QPushButton#signUpButton {
+     background-color: rgb(100,193,18);
+     font-size: @mediumFontSize@;
+     color: white;
+     border: 1px solid rgb(100,193,18);
+     border-radius: 16px;
+}
+QWidget#buttonBox>QPushButton#signUpButton:hover {
+     background-color: white;
+     color: rgb(100,193,18);
+}
+QWidget#buttonBox>QPushButton#signUpButton:pressed {
+     background-color: rgb(100,193,18);
+     color: white;
+}
+QWidget#buttonBox>QPushButton#signInButton {
+     background-color: rgb(248,248,248);
+     font-size: @mediumFontSize@;
+     color: rgb(203,202,202);
+     border: 1px solid rgb(203,202,202);
+     border-radius: 16px;
+}
+QWidget#buttonBox>QPushButton#signInButton:hover {
+     background-color: rgb(203,202,202);
+     color: rgb(248,248,248);
+}
+QWidget#buttonBox>QPushButton#signInButton:pressed {
+     background-color: rgb(248,248,248);
+     color: rgb(203,202,202);
+}
+QWidget#﻿editContainer {
+    border: 1px solid red;
+    border-radius: 4px;
 }
 
 /* We need to set back the icons, or the preview wont stick. */
