@@ -44,6 +44,10 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	// listen xgm event
 	connect(&m_client, &XgmOA::restOpDone, this, &XLRegisterDialog::onXgmOAResponse);
 	connect(&m_client, &XgmOA::restOpFailed, this, &XLRegisterDialog::onXgmOAResponseFailed);
+
+	// hide warning
+	ui->warningIconLabel->setVisible(false);
+	ui->warningLabel->setVisible(false);
 }
 
 void XLRegisterDialog::accept() {
