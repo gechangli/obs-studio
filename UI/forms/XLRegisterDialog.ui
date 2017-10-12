@@ -166,10 +166,6 @@
           <height>77</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QWidget#editPanel{
-}</string>
-        </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <property name="spacing">
           <number>0</number>
@@ -245,20 +241,6 @@
                 <width>16777215</width>
                 <height>26</height>
                </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QPushButton#getSmsButton{
-    border: none;
-    border-radius: 12px;
-font-size:12pt;
-padding-left: 12px;
-padding-right:12px;
-    background-color: rgb(232,245,225);
-}
-QPushButton#﻿getSmsButton:hover {
-    background-color: rgb(150,211,111);
-    color: rgb(232,245,225);
-}</string>
               </property>
               <property name="text">
                <string>XL.Register.Get.Sms.Code</string>

@@ -193,7 +193,6 @@ QWidget#buttonBox>QPushButton#signInButton:pressed {
      color: rgb(203,202,202);
 }
 QWidget#editPanel {
-    /* this style doesn't take effect if I don't add a empty style in designer, WTF, qt bug? */
     border: 1px solid rgb(203,202,202);
     border-radius: 4px;
     background: white;
@@ -205,7 +204,7 @@ QLineEdit#mobileEdit, QLineEdit#smsCodeEdit {
     border: none;
     background: transparent;
 }
-QPushButton#﻿getSmsButton {
+QPushButton#getSmsButton {
     border: none;
     border-radius: 12px;
     padding-left: 12px;
@@ -214,7 +213,7 @@ QPushButton#﻿getSmsButton {
     background-color: rgb(232,245,225);
     color: rgb(150,211,111);
 }
-QPushButton#﻿getSmsButton:disabled {
+QPushButton#getSmsButton:disabled {
     border: none;
     border-radius: 12px;
     padding-left: 12px;
@@ -223,7 +222,7 @@ QPushButton#﻿getSmsButton:disabled {
     background-color: rgb(232,245,225);
     color: rgb(150,211,111);
 }
-QPushButton#﻿getSmsButton:hover {
+QPushButton#getSmsButton:hover {
     background-color: rgb(150,211,111);
     color: rgb(232,245,225);
 }
