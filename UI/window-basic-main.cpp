@@ -4981,6 +4981,18 @@ void OBSBasic::ReplayBufferStop(int code)
 	OnDeactivate();
 }
 
+void OBSBasic::on_marketButton_clicked() {
+
+}
+
+void OBSBasic::on_profileButton_clicked() {
+
+}
+
+void OBSBasic::on_livePlatformButton_clicked() {
+
+}
+
 void OBSBasic::on_startLiveButton_clicked()
 {
 	if (StreamingActive()) {
@@ -5942,8 +5954,8 @@ void OBSBasic::SystemTrayInit()
 	exit = new QAction(QTStr("Exit"),
 			trayIcon);
 
-//	if (outputHandler && !outputHandler->replayBuffer)
-//		sysTrayReplayBuffer->setEnabled(false);
+	if (outputHandler && !outputHandler->replayBuffer)
+		sysTrayReplayBuffer->setEnabled(false);
 
 	connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
 			this,

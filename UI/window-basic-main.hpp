@@ -625,6 +625,9 @@ private slots:
 
 	void on_startLiveButton_clicked();
 	void on_recordButton_clicked();
+	void on_marketButton_clicked();
+	void on_profileButton_clicked();
+	void on_livePlatformButton_clicked();
 
 	void on_actionWebsite_triggered();
 
