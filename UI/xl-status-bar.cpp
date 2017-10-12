@@ -16,12 +16,9 @@
 ******************************************************************************/
 
 #include <QPainter>
-#include <QPainter>
-#include <QPixmap>
 #include "obs-app.hpp"
 #include "window-basic-main.hpp"
 #include "window-basic-main-outputs.hpp"
-#include "xl-status-bar.hpp"
 
 XLStatusBar::XLStatusBar(QWidget* parent) :
 	QWidget(parent),
@@ -399,8 +396,16 @@ void XLStatusBar::UpdateStatusBar()
 	lastSkippedFrameCount = skipped;
 }
 
-void XLStatusBar::StreamDelayStarting(int sec)
-{
+void XLStatusBar::StreamStarting() {
+}
+
+void XLStatusBar::StreamStartFailed() {
+}
+
+void XLStatusBar::StreamStopping() {
+}
+
+void XLStatusBar::StreamDelayStarting(int sec) {
 	OBSBasic *main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 	if (!main || !main->outputHandler)
 		return;

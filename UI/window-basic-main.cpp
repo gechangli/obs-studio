@@ -4459,12 +4459,13 @@ void OBSBasic::StartStreaming()
 	SaveProject();
 
 	// update button text
-	ui->streamButton->setEnabled(false);
-	ui->streamButton->setText(QTStr("Basic.Main.Connecting"));
+	ui->statusBar->StreamStarting();
+	ui->startLiveButton->setEnabled(false);
+	ui->startLiveButton->setText(QTStr("Basic.Main.Connecting"));
 
 	if (sysTrayStream) {
 		sysTrayStream->setEnabled(false);
-		sysTrayStream->setText(ui->streamButton->text());
+		sysTrayStream->setText(ui->startLiveButton->text());
 	}
 
 	// init outputs
@@ -4473,11 +4474,12 @@ void OBSBasic::StartStreaming()
 	// start output
 	bool startOk = outputHandler->StartStreaming();
 	if (!startOk) {
-		ui->streamButton->setText(QTStr("Basic.Main.StartStreaming"));
-		ui->streamButton->setEnabled(true);
+		ui->statusBar->StreamStartFailed();
+		ui->startLiveButton->setText(QTStr("Basic.Main.StartStreaming"));
+		ui->startLiveButton->setEnabled(true);
 
 		if (sysTrayStream) {
-			sysTrayStream->setText(ui->streamButton->text());
+			sysTrayStream->setText(ui->startLiveButton->text());
 			sysTrayStream->setEnabled(true);
 		}
 
@@ -4597,11 +4599,12 @@ void OBSBasic::ForceStopStreaming()
 
 void OBSBasic::StreamDelayStarting(int sec)
 {
-	ui->streamButton->setText(QTStr("Basic.Main.StopStreaming"));
-	ui->streamButton->setEnabled(true);
+	// update start live button
+	ui->startLiveButton->setText(QTStr("Basic.Main.StopStreaming"));
+	ui->startLiveButton->setEnabled(true);
 
 	if (sysTrayStream) {
-		sysTrayStream->setText(ui->streamButton->text());
+		sysTrayStream->setText(ui->startLiveButton->text());
 		sysTrayStream->setEnabled(true);
 	}
 
@@ -4613,7 +4616,7 @@ void OBSBasic::StreamDelayStarting(int sec)
 			this, SLOT(StopStreaming()));
 	startStreamMenu->addAction(QTStr("Basic.Main.ForceStopStreaming"),
 			this, SLOT(ForceStopStreaming()));
-	ui->streamButton->setMenu(startStreamMenu);
+	ui->startLiveButton->setMenu(startStreamMenu);
 
 	ui->statusBar->StreamDelayStarting(sec);
 
@@ -4622,11 +4625,12 @@ void OBSBasic::StreamDelayStarting(int sec)
 
 void OBSBasic::StreamDelayStopping(int sec)
 {
-	ui->streamButton->setText(QTStr("Basic.Main.StartStreaming"));
-	ui->streamButton->setEnabled(true);
+	// update start live button
+	ui->startLiveButton->setText(QTStr("Basic.Main.StartStreaming"));
+	ui->startLiveButton->setEnabled(true);
 
 	if (sysTrayStream) {
-		sysTrayStream->setText(ui->streamButton->text());
+		sysTrayStream->setText(ui->startLiveButton->text());
 		sysTrayStream->setEnabled(true);
 	}
 
@@ -4638,19 +4642,22 @@ void OBSBasic::StreamDelayStopping(int sec)
 			this, SLOT(StartStreaming()));
 	startStreamMenu->addAction(QTStr("Basic.Main.ForceStopStreaming"),
 			this, SLOT(ForceStopStreaming()));
-	ui->streamButton->setMenu(startStreamMenu);
+	ui->startLiveButton->setMenu(startStreamMenu);
 
 	ui->statusBar->StreamDelayStopping(sec);
 }
 
 void OBSBasic::StreamingStart()
 {
-	ui->streamButton->setText(QTStr("Basic.Main.StopStreaming"));
-	ui->streamButton->setEnabled(true);
+	// update start live button
+	ui->startLiveButton->setText(QTStr("Basic.Main.StopStreaming"));
+	ui->startLiveButton->setIcon(QIcon(QPixmap(":/res/images/stop.png")));
+	ui->startLiveButton->setEnabled(true);
+
 	ui->statusBar->StreamStarted(outputHandler->streamOutput);
 
 	if (sysTrayStream) {
-		sysTrayStream->setText(ui->streamButton->text());
+		sysTrayStream->setText(ui->startLiveButton->text());
 		sysTrayStream->setEnabled(true);
 	}
 
@@ -4664,10 +4671,12 @@ void OBSBasic::StreamingStart()
 
 void OBSBasic::StreamStopping()
 {
-	ui->streamButton->setText(QTStr("Basic.Main.StoppingStreaming"));
+	ui->startLiveButton->setText(QTStr("Basic.Main.StoppingStreaming"));
+	ui->startLiveButton->setEnabled(false);
+	ui->statusBar->StreamStopping();
 
 	if (sysTrayStream)
-		sysTrayStream->setText(ui->streamButton->text());
+		sysTrayStream->setText(ui->startLiveButton->text());
 
 	streamingStopping = true;
 	if (api)
@@ -4713,13 +4722,15 @@ void OBSBasic::StreamingStop(int code, QString last_error)
 	else
 		dstr_copy(errorMessage, errorDescription);
 
+	// update start live button
+	ui->startLiveButton->setText(QTStr("Basic.Main.StartStreaming"));
+	ui->startLiveButton->setIcon(QIcon(QPixmap(":/res/images/start.png")));
+	ui->startLiveButton->setEnabled(true);
+
 	ui->statusBar->StreamStopped();
 
-	ui->streamButton->setText(QTStr("Basic.Main.StartStreaming"));
-	ui->streamButton->setEnabled(true);
-
 	if (sysTrayStream) {
-		sysTrayStream->setText(ui->streamButton->text());
+		sysTrayStream->setText(ui->startLiveButton->text());
 		sysTrayStream->setEnabled(true);
 	}
 
@@ -4740,7 +4751,7 @@ void OBSBasic::StreamingStop(int code, QString last_error)
 	}
 
 	if (!startStreamMenu.isNull()) {
-		ui->streamButton->setMenu(nullptr);
+		ui->startLiveButton->setMenu(nullptr);
 		startStreamMenu->deleteLater();
 		startStreamMenu = nullptr;
 	}
@@ -4970,7 +4981,7 @@ void OBSBasic::ReplayBufferStop(int code)
 	OnDeactivate();
 }
 
-void OBSBasic::on_streamButton_clicked()
+void OBSBasic::on_startLiveButton_clicked()
 {
 	if (StreamingActive()) {
 		bool confirm = config_get_bool(GetGlobalConfig(), "BasicWindow",
@@ -5940,7 +5951,7 @@ void OBSBasic::SystemTrayInit()
 	connect(showHide, SIGNAL(triggered()),
 			this, SLOT(ToggleShowHide()));
 	connect(sysTrayStream, SIGNAL(triggered()),
-			this, SLOT(on_streamButton_clicked()));
+			this, SLOT(on_startLiveButton_clicked()));
 	connect(sysTrayRecord, SIGNAL(triggered()),
 			this, SLOT(on_recordButton_clicked()));
 	connect(sysTrayReplayBuffer.data(), &QAction::triggered,

@@ -92,8 +92,12 @@ public:
 	XLStatusBar(QWidget* parent = Q_NULLPTR);
 	virtual ~XLStatusBar();
 
+	// event callback
 	void StreamDelayStarting(int sec);
 	void StreamDelayStopping(int sec);
+	void StreamStarting();
+	void StreamStartFailed();
+	void StreamStopping();
 	void StreamStarted(obs_output_t *output);
 	void StreamStopped();
 	void RecordingStarted(obs_output_t *output);
