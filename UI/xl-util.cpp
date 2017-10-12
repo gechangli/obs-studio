@@ -21,6 +21,7 @@
 #include <QTextStream>
 #include <QBitmap>
 #include <QPainter>
+#include "obs-app.hpp"
 
 using namespace std;
 
@@ -87,6 +88,21 @@ QPixmap XLUtil::createCircle(int radius, QColor color) {
 	// mask square to get circle
 	src.setMask(mask);
 	return src;
+}
+
+QString XLUtil::getQssPathByName(QString name) {
+	char userDir[512];
+	name = "themes/" + name + ".qss";
+	QString temp = "obs-studio/" + name;
+	int ret = GetConfigPath(userDir, sizeof(userDir), temp.toStdString().c_str());
+	string path;
+	if (ret > 0 && QFile::exists(userDir)) {
+		return QString::fromUtf8(userDir);
+	} else if (GetDataFilePath(name.toStdString().c_str(), path)) {
+		return QString::fromStdString(path);
+	} else {
+		return name;
+	}
 }
 
 QString XLUtil::loadQss(QString path, QString paramName) {

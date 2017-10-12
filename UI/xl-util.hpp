@@ -30,4 +30,5 @@ public:
 	static QString lastPathComponent(QString path);
 	static QPixmap createCircle(int radius, QColor color);
 	static QString loadQss(QString path, QString paramName = "");
+	static QString getQssPathByName(QString name);
 };

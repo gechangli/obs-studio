@@ -722,23 +722,13 @@ bool OBSApp::SetTheme(std::string name, std::string path)
 	QString paramPath;
 
 	/* Check user dir first, then preinstalled themes. */
+	QString qssPath = QString::fromStdString(path);
 	if (path == "") {
-		char userDir[512];
-		name = "themes/" + name + ".qss";
-		string temp = "obs-studio/" + name;
-		int ret = GetConfigPath(userDir, sizeof(userDir),
-				temp.c_str());
-
-		if (ret > 0 && QFile::exists(userDir)) {
-			path = string(userDir);
-		} else if (!GetDataFilePath(name.c_str(), path)) {
-			OBSErrorBox(NULL, "Failed to find %s.", name.c_str());
-			return false;
-		}
+		qssPath = XLUtil::getQssPathByName(QString::fromStdString(name));
 	}
 
 	// load qss, load param, replace param, then set stylesheet
-	QString qss = XLUtil::loadQss(QString::fromStdString(path));
+	QString qss = XLUtil::loadQss(qssPath);
 #ifndef Q_NO_DEBUG
 	blog(LOG_INFO, "Final stylesheet length: %d", qss.length());
 	blog(LOG_INFO, "Final stylesheet: %s", qss.toStdString().c_str());
