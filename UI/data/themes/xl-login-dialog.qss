@@ -70,11 +70,9 @@ QPushButton#signUpButton {
     color: white;
     font-size: @mediumFontSize@;
 }
-QPushButton#signUpButton:hover {
-    background-color: rgb(232,245,225);
-    color: rgb(150,211,111);
+QWidget#signUpWrapper:hover {
+    background: rgb(100,203,18);
 }
-QPushButton#signUpButton:pressed {
-    background-color: transparent;
-    color: white;
+QWidget#autoLoginWrapper:hover {
+    background: rgb(100,203,18);
 }

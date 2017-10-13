@@ -15,15 +15,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "xl-clickable-label.hpp"
+#pragma once
 
-XLClickableLabel::XLClickableLabel(QWidget* parent, Qt::WindowFlags f) :
-	QLabel(parent, f) {
-}
+#include <QWidget>
+#include <Qt>
 
-XLClickableLabel::~XLClickableLabel() {
-}
+class XLClickableWidget : public QWidget {
+	Q_OBJECT
 
-void XLClickableLabel::mousePressEvent(QMouseEvent* event) {
-	emit clicked();
-}
+public:
+	explicit XLClickableWidget(QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
+	virtual ~XLClickableWidget();
+
+signals:
+	void clicked();
+
+protected:
+	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+	void mousePressEvent(QMouseEvent* event);
+};

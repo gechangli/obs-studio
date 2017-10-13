@@ -175,11 +175,19 @@ void XLLoginDialog::on_signInButton_clicked() {
 	accept();
 }
 
+void XLLoginDialog::on_autoLoginWrapper_clicked() {
+	ui->autoLoginCheckBox->toggle();
+}
+
+void XLLoginDialog::on_signUpWrapper_clicked() {
+	on_signUpButton_clicked();
+}
+
 void XLLoginDialog::updateSmsRefreshButtonText() {
 	if(m_smsRefreshSeconds <= 0) {
-		ui->getSmsButton->setText(L("XL.Login.Get.Sms.Code"));
+		ui->getSmsButton->setText(L("Get.Sms.Code"));
 	} else {
-		ui->getSmsButton->setText(QString::asprintf("%s(%ds)", LC("XL.Login.Get.Sms.Code"), m_smsRefreshSeconds));
+		ui->getSmsButton->setText(QString::asprintf("%s(%ds)", LC("Get.Sms.Code"), m_smsRefreshSeconds));
 	}
 }
 

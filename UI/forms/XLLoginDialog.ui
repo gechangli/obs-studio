@@ -450,6 +450,9 @@
                       <height>26</height>
                      </size>
                     </property>
+                    <property name="default">
+                     <bool>true</bool>
+                    </property>
                    </widget>
                   </item>
                  </layout>
@@ -483,7 +486,7 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QWidget" name="widget_4" native="true">
+          <widget class="XLClickableWidget" name="autoLoginWrapper" native="true">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <property name="spacing">
              <number>0</number>
@@ -517,12 +520,24 @@
           </widget>
          </item>
          <item alignment="Qt::AlignHCenter">
-          <widget class="QWidget" name="widget_5" native="true">
+          <widget class="XLClickableWidget" name="signUpWrapper" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>271</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>271</width>
+             <height>16777215</height>
+            </size>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="spacing">
@@ -543,7 +558,7 @@
             <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
              <widget class="QPushButton" name="signUpButton">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -568,6 +583,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XLClickableWidget</class>
+   <extends>QWidget</extends>
+   <header>xl-clickable-widget.hpp</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="obs.qrc"/>
  </resources>

@@ -15,15 +15,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "xl-clickable-label.hpp"
+#include "xl-clickable-widget.hpp"
+#include <QStyleOption>
+#include <QPainter>
 
-XLClickableLabel::XLClickableLabel(QWidget* parent, Qt::WindowFlags f) :
-	QLabel(parent, f) {
+XLClickableWidget::XLClickableWidget(QWidget* parent, Qt::WindowFlags f) :
+	QWidget(parent, f) {
 }
 
-XLClickableLabel::~XLClickableLabel() {
+XLClickableWidget::~XLClickableWidget() {
 }
 
-void XLClickableLabel::mousePressEvent(QMouseEvent* event) {
+void XLClickableWidget::mousePressEvent(QMouseEvent* event) {
 	emit clicked();
+}
+
+void XLClickableWidget::paintEvent(QPaintEvent* event) {
+	// draw with style
+	QStyleOption opt;
+	opt.init(this);
+	QPainter p(this);
+	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
