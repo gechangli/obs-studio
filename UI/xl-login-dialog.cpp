@@ -20,11 +20,12 @@
 #include "xl-register-dialog.hpp"
 #include "xl-progress-dialog.hpp"
 #include "window-basic-main.hpp"
-#include <QMessageBox>
+#include "xl-util.hpp"
 #include <QKeyEvent>
+#include <QJsonObject>
 
 XLLoginDialog::XLLoginDialog(OBSBasic *parent) :
-	QDialog (parent),
+	QDialog (parent, Qt::FramelessWindowHint),
 	ui(new Ui::XLLoginDialog),
 	m_main(parent),
 	m_smsRefreshTimerId(-1),
@@ -33,31 +34,27 @@ XLLoginDialog::XLLoginDialog(OBSBasic *parent) :
 {
 	// init ui
 	ui->setupUi(this);
-
-	// set title
-	setWindowTitle(L("SignIn"));
+	clearErrorMessage();
 
 	// listen xgm event
 	connect(&m_client, &XgmOA::restOpDone, this, &XLLoginDialog::onXgmOAResponse);
 	connect(&m_client, &XgmOA::restOpFailed, this, &XLLoginDialog::onXgmOAResponseFailed);
 
-	// update button text
-	ui->buttonBox->button(QDialogButtonBox::Ok)->setText(L("SignIn"));
-	ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(L("SignUp"));
+	// disable focus rect
+	ui->mobileEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
+	ui->smsCodeEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
 
 	// pre-fill ui
 	config_t* globalConfig = GetGlobalConfig();
 	QString username = config_get_string(globalConfig, "XiaomeiLive", "Username");
-	QString password = config_get_string(globalConfig, "XiaomeiLive", "Password");
-	bool rememberPassword = config_get_bool(globalConfig, "XiaomeiLive", "RememberPassword");
 	bool autoLogin = config_get_bool(globalConfig, "XiaomeiLive", "AutoLogin");
 	ui->mobileEdit->setText(username);
-	ui->passwordEdit->setText(password);
-	ui->rememberPasswordCheckBox->setChecked(rememberPassword);
 	ui->autoLoginCheckBox->setChecked(autoLogin);
 
-	// by default, use password
-	ui->tabWidget->setCurrentIndex(0);
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-login-dialog");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
 }
 
 void XLLoginDialog::keyPressEvent(QKeyEvent *event) {
@@ -75,7 +72,7 @@ void XLLoginDialog::timerEvent(QTimerEvent *event) {
 		// if times up, re-enable refresh button
 		m_smsRefreshSeconds--;
 		if(m_smsRefreshSeconds <= 0) {
-			ui->refreshSmsCodeButton->setEnabled(true);
+			ui->getSmsButton->setEnabled(true);
 			killTimer(m_smsRefreshTimerId);
 			m_smsRefreshTimerId = -1;
 		}
@@ -125,13 +122,24 @@ void XLLoginDialog::hideProgressDialog() {
 	m_progressDialog = Q_NULLPTR;
 }
 
+void XLLoginDialog::showErrorMessage(QString msg) {
+	ui->warningIconLabel->setVisible(true);
+	ui->warningLabel->setVisible(true);
+	ui->warningLabel->setText(msg);
+}
+
+void XLLoginDialog::clearErrorMessage() {
+	ui->warningIconLabel->setVisible(false);
+	ui->warningLabel->setVisible(false);
+}
+
 bool XLLoginDialog::validateMobile() {
 	QString mobile = ui->mobileEdit->text().trimmed();
 	QRegExp regExp("1\\d{10}");
 	if(regExp.indexIn(mobile, 0) != -1 && regExp.matchedLength() == mobile.length()) {
 		return true;
 	} else {
-		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Login.Please.Fill.Mobile"));
+		showErrorMessage(L("XL.Error.Please.Fill.Mobile"));
 		return false;
 	}
 }
@@ -139,14 +147,14 @@ bool XLLoginDialog::validateMobile() {
 bool XLLoginDialog::validateSmsCode() {
 	QString smsCode = ui->smsCodeEdit->text();
 	if(smsCode.length() != 4) {
-		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Login.Sms.Code.Wrong"));
+		showErrorMessage(L("XL.Error.Sms.Code.Wrong"));
 		return false;
 	} else {
 		return true;
 	}
 }
 
-void XLLoginDialog::on_refreshSmsCodeButton_clicked() {
+void XLLoginDialog::on_getSmsButton_clicked() {
 	// validate mobile
 	if(!validateMobile()) {
 		return;
@@ -159,11 +167,19 @@ void XLLoginDialog::on_refreshSmsCodeButton_clicked() {
 	showProgressDialog();
 }
 
+void XLLoginDialog::on_signUpButton_clicked() {
+	reject();
+}
+
+void XLLoginDialog::on_signInButton_clicked() {
+	accept();
+}
+
 void XLLoginDialog::updateSmsRefreshButtonText() {
 	if(m_smsRefreshSeconds <= 0) {
-		ui->refreshSmsCodeButton->setText(L("XL.Login.Get.Sms.Code"));
+		ui->getSmsButton->setText(L("XL.Login.Get.Sms.Code"));
 	} else {
-		ui->refreshSmsCodeButton->setText(QString::asprintf("%s(%ds)", LC("XL.Login.Get.Sms.Code"), m_smsRefreshSeconds));
+		ui->getSmsButton->setText(QString::asprintf("%s(%ds)", LC("XL.Login.Get.Sms.Code"), m_smsRefreshSeconds));
 	}
 }
 
@@ -180,15 +196,20 @@ void XLLoginDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		m_smsRefreshSeconds = 60;
 		m_smsRefreshTimerId = startTimer(1000);
 		updateSmsRefreshButtonText();
-		ui->refreshSmsCodeButton->setEnabled(false);
+		ui->getSmsButton->setEnabled(false);
 	} else if(op == XgmOA::OP_LOGIN_BY_AUTHCODE) {
 		// close progress dialog
 		hideProgressDialog();
+
+		// get token
+		QJsonObject json = doc.object();
+		QString token = json.value("token").toString();
 
 		// save user name and password
 		config_t* globalConfig = GetGlobalConfig();
 		config_set_string(globalConfig, "XiaomeiLive", "Username", ui->mobileEdit->text().trimmed().toStdString().c_str());
 		config_set_bool(globalConfig, "XiaomeiLive", "AutoLogin", ui->autoLoginCheckBox->isChecked());
+		config_set_string(globalConfig, "XiaomeiLive", "Token", token.toStdString().c_str());
 		config_save_safe(globalConfig, "tmp", Q_NULLPTR);
 
 		// signal
@@ -210,7 +231,7 @@ void XLLoginDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Ne
 		hideProgressDialog();
 
 		// if failed, immediately re-enable refresh button
-		ui->refreshSmsCodeButton->setEnabled(true);
+		ui->getSmsButton->setEnabled(true);
 		killTimer(m_smsRefreshTimerId);
 		m_smsRefreshTimerId = -1;
 		m_smsRefreshSeconds = 0;
@@ -220,6 +241,6 @@ void XLLoginDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Ne
 		hideProgressDialog();
 
 		// warning
-		QMessageBox::critical(Q_NULLPTR, L("Error"), errMsg);
+		showErrorMessage(errMsg);
 	}
 }

@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/enter.png</file>
+    <file>images/checkbox_bg_hollow.png</file>
+    <file>images/sign_up.png</file>
+    <file>images/xiaomei_avatar.png</file>
     <file>images/close_gray.png</file>
     <file>images/tick.png</file>
     <file>images/checkbox_bg_green.png</file>

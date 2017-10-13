@@ -43,13 +43,17 @@ private:
 	bool validateSmsCode();
 	void showProgressDialog();
 	void hideProgressDialog();
+	void showErrorMessage(QString msg);
+	void clearErrorMessage();
 
 protected:
 	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
 	void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
-	void on_refreshSmsCodeButton_clicked();
+	void on_getSmsButton_clicked();
+	void on_signUpButton_clicked();
+	void on_signInButton_clicked();
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 

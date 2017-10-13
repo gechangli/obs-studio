@@ -1,0 +1,80 @@
+/* login dialog */
+QFrame#topFrame {
+    background: rgb(248,248,248);
+}
+QWidget#editPanel {
+    border: 1px solid rgb(203,202,202);
+    border-radius: 4px;
+    background: white;
+}
+QWidget#smsCodePanel {
+    border-top: 1px solid rgb(203,202,202);
+}
+QLineEdit#mobileEdit, QLineEdit#smsCodeEdit {
+    border: none;
+    background: transparent;
+    padding-left: 10px;
+}
+QPushButton#getSmsButton {
+    border: none;
+    border-radius: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: @smallFontSize@;
+    background-color: rgb(232,245,225);
+    color: rgb(150,211,111);
+}
+QPushButton#getSmsButton:disabled {
+    border: none;
+    border-radius: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: @smallFontSize@;
+    background-color: rgb(232,245,225);
+    color: rgb(203,202,202);
+}
+QPushButton#getSmsButton:hover {
+    background-color: rgb(150,211,111);
+    color: rgb(232,245,225);
+}
+QPushButton#signInButton {
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: @mediumFontSize@;
+}
+QLabel#warningLabel {
+    font-size: @smallFontSize@;
+    color: rgb(242,91,37);
+}
+QCheckBox#autoLoginCheckBox {
+    color: white;
+}
+QCheckBox#autoLoginCheckBox::indicator {
+    width: 28px;
+    height: 26px;
+}
+QCheckBox#autoLoginCheckBox::indicator:unchecked {
+    image: url(:/res/images/checkbox_bg_hollow.png);
+}
+QCheckBox#autoLoginCheckBox::indicator:checked {
+    background-image: url(:/res/images/checkbox_bg_hollow.png);
+    image: url(:/res/images/tick.png);
+}
+QWidget#buttonBox {
+    background: rgb(100,193,18);
+}
+QPushButton#signUpButton {
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-size: @mediumFontSize@;
+}
+QPushButton#signUpButton:hover {
+    background-color: rgb(232,245,225);
+    color: rgb(150,211,111);
+}
+QPushButton#signUpButton:pressed {
+    background-color: transparent;
+    color: white;
+}

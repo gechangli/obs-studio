@@ -33,9 +33,7 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	m_registeredOk(false) {
 	// init ui
 	ui->setupUi(this);
-
-	// set title
-	setWindowTitle(L("XL.Register.Title"));
+	clearErrorMessage();
 
 	// disable focus rect
 	ui->mobileEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
@@ -44,10 +42,6 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	// listen xgm event
 	connect(&m_client, &XgmOA::restOpDone, this, &XLRegisterDialog::onXgmOAResponse);
 	connect(&m_client, &XgmOA::restOpFailed, this, &XLRegisterDialog::onXgmOAResponseFailed);
-
-	// hide warning
-	ui->warningIconLabel->setVisible(false);
-	ui->warningLabel->setVisible(false);
 
 	// set style
 	QString qssPath = XLUtil::getQssPathByName("xl-register-dialog");
@@ -130,7 +124,7 @@ bool XLRegisterDialog::validateAgreement() {
 	if(ui->licenseCheckbox->isChecked()) {
 		return true;
 	} else {
-		showErrorMessage(L("XL.Register.Please.Accept.License"));
+		showErrorMessage(L("XL.Error.Please.Accept.License"));
 		return false;
 	}
 }
@@ -141,7 +135,7 @@ bool XLRegisterDialog::validateMobile() {
 	if(regExp.indexIn(mobile, 0) != -1 && regExp.matchedLength() == mobile.length()) {
 		return true;
 	} else {
-		showErrorMessage(L("XL.Register.Please.Fill.Mobile"));
+		showErrorMessage(L("XL.Error.Please.Fill.Mobile"));
 		return false;
 	}
 }
@@ -149,7 +143,7 @@ bool XLRegisterDialog::validateMobile() {
 bool XLRegisterDialog::validateSmsCode() {
 	QString smsCode = ui->smsCodeEdit->text();
 	if(smsCode.length() != 4) {
-		showErrorMessage(L("XL.Register.Sms.Code.Wrong"));
+		showErrorMessage(L("XL.Error.Sms.Code.Wrong"));
 		return false;
 	} else {
 		return true;
@@ -248,6 +242,6 @@ void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply:
 		hideProgressDialog();
 
 		// error
-		showErrorMessage(QString("%1: %2").arg(L("XL.Register.Failed"), errMsg));
+		showErrorMessage(QString("%1: %2").arg(L("XL.Error.Sign.Up.Failed"), errMsg));
 	}
 }
