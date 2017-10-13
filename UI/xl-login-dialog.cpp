@@ -89,23 +89,14 @@ void XLLoginDialog::accept() {
 		return;
 	}
 
-	if(ui->tabWidget->currentIndex() == 0) {
-		if(!validatePassword()) {
-			return;
-		}
-
-		// login
-		m_client.loginByPassword(ui->mobileEdit->text().trimmed().toStdString(),
-								 ui->passwordEdit->text().toStdString());
-	} else {
-		if(!validateSmsCode()) {
-			return;
-		}
-
-		// login
-		m_client.loginByAuthCode(ui->mobileEdit->text().trimmed().toStdString(),
-								 ui->smsCodeEdit->text().toStdString());
+	// validate sms code
+	if(!validateSmsCode()) {
+		return;
 	}
+
+	// login
+	m_client.loginByAuthCode(ui->mobileEdit->text().trimmed().toStdString(),
+							 ui->smsCodeEdit->text().toStdString());
 
 	// progress
 	showProgressDialog();
@@ -142,16 +133,6 @@ bool XLLoginDialog::validateMobile() {
 	} else {
 		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Login.Please.Fill.Mobile"));
 		return false;
-	}
-}
-
-bool XLLoginDialog::validatePassword() {
-	QString pwd = ui->passwordEdit->text();
-	if(pwd.length() <= 0) {
-		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Login.Password.Is.Empty"));
-		return false;
-	} else {
-		return true;
 	}
 }
 
@@ -200,15 +181,13 @@ void XLLoginDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		m_smsRefreshTimerId = startTimer(1000);
 		updateSmsRefreshButtonText();
 		ui->refreshSmsCodeButton->setEnabled(false);
-	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD || op == XgmOA::OP_LOGIN_BY_AUTHCODE) {
+	} else if(op == XgmOA::OP_LOGIN_BY_AUTHCODE) {
 		// close progress dialog
 		hideProgressDialog();
 
 		// save user name and password
 		config_t* globalConfig = GetGlobalConfig();
 		config_set_string(globalConfig, "XiaomeiLive", "Username", ui->mobileEdit->text().trimmed().toStdString().c_str());
-		config_set_string(globalConfig, "XiaomeiLive", "Password", ui->passwordEdit->text().toStdString().c_str());
-		config_set_bool(globalConfig, "XiaomeiLive", "RememberPassword", ui->rememberPasswordCheckBox->isChecked());
 		config_set_bool(globalConfig, "XiaomeiLive", "AutoLogin", ui->autoLoginCheckBox->isChecked());
 		config_save_safe(globalConfig, "tmp", Q_NULLPTR);
 
@@ -236,7 +215,7 @@ void XLLoginDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Ne
 		m_smsRefreshTimerId = -1;
 		m_smsRefreshSeconds = 0;
 		updateSmsRefreshButtonText();
-	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD || op == XgmOA::OP_LOGIN_BY_AUTHCODE) {
+	} else if(op == XgmOA::OP_LOGIN_BY_AUTHCODE) {
 		// close progress dialog
 		hideProgressDialog();
 

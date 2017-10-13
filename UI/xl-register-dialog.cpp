@@ -20,7 +20,6 @@
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
 #include <QKeyEvent>
-#include <QMessageBox>
 #include "xl-util.hpp"
 
 using namespace std;
@@ -57,6 +56,9 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 }
 
 void XLRegisterDialog::accept() {
+	// clear error message
+	clearErrorMessage();
+
 	// validate mobile
 	if(!validateMobile()) {
 		return;
@@ -64,6 +66,11 @@ void XLRegisterDialog::accept() {
 
 	// validate sms code
 	if(!validateSmsCode()) {
+		return;
+	}
+
+	// validate agreement
+	if(!validateAgreement()) {
 		return;
 	}
 
@@ -98,6 +105,17 @@ void XLRegisterDialog::hideProgressDialog() {
 	m_progressDialog = Q_NULLPTR;
 }
 
+void XLRegisterDialog::showErrorMessage(QString msg) {
+	ui->warningIconLabel->setVisible(true);
+	ui->warningLabel->setVisible(true);
+	ui->warningLabel->setText(msg);
+}
+
+void XLRegisterDialog::clearErrorMessage() {
+	ui->warningIconLabel->setVisible(false);
+	ui->warningLabel->setVisible(false);
+}
+
 void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
 	switch (event->key()) {
 		case Qt::Key_Escape:
@@ -108,13 +126,22 @@ void XLRegisterDialog::keyPressEvent(QKeyEvent *event) {
 	}
 }
 
+bool XLRegisterDialog::validateAgreement() {
+	if(ui->licenseCheckbox->isChecked()) {
+		return true;
+	} else {
+		showErrorMessage(L("XL.Register.Please.Accept.License"));
+		return false;
+	}
+}
+
 bool XLRegisterDialog::validateMobile() {
 	QString mobile = ui->mobileEdit->text().trimmed();
 	QRegExp regExp("1\\d{10}");
 	if(regExp.indexIn(mobile, 0) != -1 && regExp.matchedLength() == mobile.length()) {
 		return true;
 	} else {
-		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Please.Fill.Mobile"));
+		showErrorMessage(L("XL.Register.Please.Fill.Mobile"));
 		return false;
 	}
 }
@@ -122,7 +149,7 @@ bool XLRegisterDialog::validateMobile() {
 bool XLRegisterDialog::validateSmsCode() {
 	QString smsCode = ui->smsCodeEdit->text();
 	if(smsCode.length() != 4) {
-		QMessageBox::warning(Q_NULLPTR, L("Warning"), L("XL.Register.Sms.Code.Wrong"));
+		showErrorMessage(L("XL.Register.Sms.Code.Wrong"));
 		return false;
 	} else {
 		return true;
@@ -140,6 +167,18 @@ void XLRegisterDialog::on_getSmsButton_clicked() {
 
 	// show progress
 	showProgressDialog();
+}
+
+void XLRegisterDialog::on_signUpButton_clicked() {
+	accept();
+}
+
+void XLRegisterDialog::on_signInButton_clicked() {
+	reject();
+}
+
+void XLRegisterDialog::on_licenseLabel_clicked() {
+
 }
 
 void XLRegisterDialog::updateSmsRefreshButtonText() {
@@ -182,21 +221,10 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		m_registeredOk = true;
 		emit xgmUserRegistered(ui->mobileEdit->text().trimmed());
 
-		// TODO show login dialog
-	} else if(op == XgmOA::OP_LOGIN_BY_AUTHCODE) {
-		// close progress dialog
-		hideProgressDialog();
-
-		// save user name and password
-		config_t* globalConfig = GetGlobalConfig();
-		config_set_bool(globalConfig, "XiaomeiLive", "AutoLogin", true);
-		config_save_safe(globalConfig, "tmp", Q_NULLPTR);
-
-		// signal
-		emit xgmUserLoggedIn(ui->mobileEdit->text().trimmed());
-
-		// close self
-		close();
+		// show login dialog
+		XLLoginDialog login(m_main);
+		connect(&login, &XLLoginDialog::xgmUserLoggedIn, m_main, &OBSBasic::xgmUserLoggedIn);
+		login.exec();
 	}
 }
 
@@ -220,15 +248,6 @@ void XLRegisterDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply:
 		hideProgressDialog();
 
 		// error
-		QMessageBox::critical(Q_NULLPTR, L("Error"), QString("%1: %2").arg(L("XL.Register.Failed"), errMsg));
-	} else if(op == XgmOA::OP_LOGIN_BY_PASSWORD) {
-		// close progress dialog
-		hideProgressDialog();
-
-		// log
-		blog(LOG_ERROR, "Failed to login: %s", errMsg.toStdString().c_str());
-
-		// show login dialog
-		reject();
+		showErrorMessage(QString("%1: %2").arg(L("XL.Register.Failed"), errMsg));
 	}
 }

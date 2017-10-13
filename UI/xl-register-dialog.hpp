@@ -41,11 +41,17 @@ private:
 	void updateSmsRefreshButtonText();
 	bool validateMobile();
 	bool validateSmsCode();
+	bool validateAgreement();
 	void showProgressDialog();
 	void hideProgressDialog();
+	void showErrorMessage(QString msg);
+	void clearErrorMessage();
 
 private slots:
 	void on_getSmsButton_clicked();
+	void on_signUpButton_clicked();
+	void on_signInButton_clicked();
+	void on_licenseLabel_clicked();
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 

@@ -1676,17 +1676,15 @@ void OBSBasic::OBSInit()
 	// if has, check auto login flag
 	config_t* globalConfig = GetGlobalConfig();
 	const char * username = config_get_string(globalConfig, "XiaomeiLive", "Username");
-	if(username == nullptr) {
+	if(username == Q_NULLPTR) {
 		XLRegisterDialog reg(this);
 		connect(&reg, &XLRegisterDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
 		reg.exec();
 	} else {
-		bool rememberPassword = config_get_bool(globalConfig, "XiaomeiLive", "RememberPassword");
 		bool autoLogin = config_get_bool(globalConfig, "XiaomeiLive", "AutoLogin");
-		if(autoLogin && rememberPassword) {
-			QString username = config_get_string(globalConfig, "XiaomeiLive", "Username");
-			QString password = config_get_string(globalConfig, "XiaomeiLive", "Password");
-			m_client.loginByPassword(username.toStdString(), password.toStdString());
+		QString token = config_get_string(globalConfig, "XiaomeiLive", "Token");
+		if(autoLogin && !token.isEmpty()) {
+			m_client.loginByToken(username, token.toStdString());
 			showProgressDialog();
 		} else {
 			XLLoginDialog login(this);
@@ -1723,7 +1721,7 @@ void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		return;
 	}
 
-	if (op == XgmOA::OP_LOGIN_BY_PASSWORD) {
+	if (op == XgmOA::OP_LOGIN_BY_TOKEN) {
 		// close progress dialog
 		hideProgressDialog();
 
@@ -1773,12 +1771,9 @@ void OBSBasic::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Network
 		return;
 	}
 
-	if (op == XgmOA::OP_LOGIN_BY_PASSWORD) {
+	if (op == XgmOA::OP_LOGIN_BY_TOKEN) {
 		// close progress dialog
 		hideProgressDialog();
-
-		// warning
-		QMessageBox::critical(Q_NULLPTR, L("Error"), errMsg);
 
 		// show login dialog
 		XLLoginDialog login(this);

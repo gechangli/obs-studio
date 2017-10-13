@@ -38,8 +38,6 @@ public:
 		OP_INVALID,
 		OP_GET_AUTO_CODE,
 		OP_REGISTER,
-		OP_MODIFY_PASSWORD,
-		OP_LOGIN_BY_PASSWORD,
 		OP_LOGIN_BY_AUTHCODE,
 		OP_LOGIN_BY_TOKEN,
 		OP_LOGOUT,
@@ -72,8 +70,6 @@ public:
 	// rest api
 	void registerUser(std::string acc, std::string authCode);
 	void getAuthCode(std::string phone, XgmAuthType authType);
-	void modifyPassword(std::string acc, std::string pwd, std::string authCode);
-	void loginByPassword(std::string acc, std::string pwd);
 	void loginByAuthCode(std::string acc, std::string authCode);
 	void loginByToken(std::string acc, std::string token);
 	void logout();
