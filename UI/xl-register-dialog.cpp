@@ -21,6 +21,7 @@
 #include "xl-progress-dialog.hpp"
 #include <QKeyEvent>
 #include <QMessageBox>
+#include "xl-util.hpp"
 
 using namespace std;
 
@@ -48,6 +49,11 @@ XLRegisterDialog::XLRegisterDialog(OBSBasic *parent) :
 	// hide warning
 	ui->warningIconLabel->setVisible(false);
 	ui->warningLabel->setVisible(false);
+
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-register-dialog");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
 }
 
 void XLRegisterDialog::accept() {

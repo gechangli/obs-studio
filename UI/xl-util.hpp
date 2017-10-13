@@ -29,6 +29,6 @@ public:
 	static QString stringByDeletingPathExtension(QString path);
 	static QString lastPathComponent(QString path);
 	static QPixmap createCircle(int radius, QColor color);
-	static QString loadQss(QString path, QString paramName = "");
+	static QString loadQss(QString path, QString paramName = "Default");
 	static QString getQssPathByName(QString name);
 };
