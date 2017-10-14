@@ -18,6 +18,7 @@
 #include "xl-progress-dialog.hpp"
 #include <QKeyEvent>
 #include <QPropertyAnimation>
+#include "xl-util.hpp"
 
 XLProgressDialog::XLProgressDialog(QWidget* parent) :
 	QDialog (parent, Qt::FramelessWindowHint),
@@ -29,11 +30,16 @@ XLProgressDialog::XLProgressDialog(QWidget* parent) :
 	m_animation = new QPropertyAnimation(this, "pixmap");
 	m_animation->setDuration(1000);
 	m_animation->setLoopCount(-1);
-	for (int i = 0; i < 21; ++i) {
-		m_animation->setKeyValueAt(i / 20.0, i + 1);
+	for (int i = 0; i < 13; ++i) {
+		m_animation->setKeyValueAt(i / 12.0, i + 1);
 	}
 	m_animation->setStartValue(1);
-	m_animation->setEndValue(20);
+	m_animation->setEndValue(12);
+
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-progress-dialog");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
 }
 
 void XLProgressDialog::keyPressEvent(QKeyEvent *event) {
@@ -45,6 +51,7 @@ void XLProgressDialog::keyPressEvent(QKeyEvent *event) {
 			break;
 	}
 }
+
 
 void XLProgressDialog::showEvent(QShowEvent *event) {
 	QDialog::showEvent(event);

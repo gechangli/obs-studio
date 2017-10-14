@@ -1,0 +1,7 @@
+QDialog#XLProgressDialog {
+    background: white;
+}
+QLabel#msgLabel {
+    font-size: @mediumFontSize@;
+    color: rgb(83,83,83);
+}

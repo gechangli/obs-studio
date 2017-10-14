@@ -476,9 +476,7 @@ void OBSBasic::logout() {
 	// remove current account settings
 	config_t* globalConfig = GetGlobalConfig();
 	config_remove_value(globalConfig, "XiaomeiLive", "Username");
-	config_remove_value(globalConfig, "XiaomeiLive", "Password");
-	config_remove_value(globalConfig, "XiaomeiLive", "RememberPassword");
-	config_remove_value(globalConfig, "XiaomeiLive", "AutoLogin");
+	config_remove_value(globalConfig, "XiaomeiLive", "Token");
 	config_save_safe(globalConfig, "tmp", Q_NULLPTR);
 
 	// clear user, hide logout

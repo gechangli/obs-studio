@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>296</width>
-    <height>154</height>
+    <width>346</width>
+    <height>179</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,14 +37,14 @@
     <widget class="QLabel" name="loadingLabel">
      <property name="minimumSize">
       <size>
-       <width>63</width>
-       <height>63</height>
+       <width>100</width>
+       <height>100</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>63</width>
-       <height>63</height>
+       <width>100</width>
+       <height>100</height>
       </size>
      </property>
      <property name="text">
