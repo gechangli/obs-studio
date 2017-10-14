@@ -1,8 +1,8 @@
 @bigFontSize@=16pt
 @mediumFontSize@=14pt
 @smallFontSize@=12pt
-@defaultWidgetBgColor@=rgb(241,241,241)
-@darkerWidgetBgColor@=rgb(231,231,231)
-@panelSeparatorColor@=rgb(210,210,210)
-@titleBarColor@=rgb(100,193,18)
+@defaultWidgetBgColor@=#f1f1f1
+@darkerWidgetBgColor@=#e7e7e7
+@panelSeparatorColor@=#d2d2d2
+@titleBarColor@=#64c112
 @userPopupBackground@=transparent

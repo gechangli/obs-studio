@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/speaker.png</file>
+    <file>images/microphone.png</file>
     <file>images/enter.png</file>
     <file>images/checkbox_bg_hollow.png</file>
     <file>images/sign_up.png</file>

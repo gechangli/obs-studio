@@ -35,10 +35,10 @@ XLUserPopupWidget>QFrame>QPushButton {
     border: none;
     background-color: transparent;
     font-size: @mediumFontSize@;
-    color: rgb(83,83,83);
+    color: #535353;
 }
 XLUserPopupWidget>QFrame>QPushButton:hover {
-    color: rgb(137,137,137);
+    color: #898989;
 }
 
 /* tab bar */
@@ -76,26 +76,61 @@ QWidget#controlPanel>QPushButton {
     color: black;
 }
 QWidget#controlPanel>QPushButton:hover {
-    background-color: rgb(248,248,248);
+    background-color: #F8F8F8;
 }
 QWidget#controlPanel>QPushButton#startLiveButton {
     border: none;
-    background-color: rgb(100,193,18);
+    background-color: #64C112;
     font-size: @bigFontSize@;
     color: white;
 }
 QWidget#controlPanel>QPushButton#startLiveButton:hover {
-    background-color: rgb(131,205,65);
+    background-color: #83CD41;
 }
 QWidget#controlPanel>QPushButton#marketButton {
     border: none;
-    background-color: rgb(253,78,78);
+    background-color: #FD4E4E;
     font-size: @bigFontSize@;
     color: white;
 }
 QWidget#controlPanel>QPushButton#marketButton:hover {
-    background-color: rgb(253,113,113);
+    background-color: #FD7171;
 }
+QCheckBox#speakerCheckBox::indicator {
+    width: 28px;
+    height: 26px;
+}
+QCheckBox#speakerCheckBox::indicator:unchecked {
+    image: url(:/res/images/speaker.png);
+}
+QCheckBox#speakerCheckBox::indicator:checked {
+    background-image: url(:/res/images/speaker.png);
+    image: url(:/res/images/tick.png);
+}
+QCheckBox#microphoneCheckBox::indicator {
+    width: 28px;
+    height: 26px;
+}
+QCheckBox#microphoneCheckBox::indicator:unchecked {
+    image: url(:/res/images/microphone.png);
+}
+QCheckBox#microphoneCheckBox::indicator:checked {
+    background-image: url(:/res/images/microphone.png);
+    image: url(:/res/images/tick.png);
+}
+/*
+QWidget#controlPanel QSlider::groove:horizontal {
+    border: none;
+    height: 2px;
+    background-color: #00a3e2;
+}
+
+QWidget#controlPanel QSlider::handle:horizontal {
+    background: white;
+    border: 1px solid #cacaca;
+    width: 16px;
+    border-radius: 8px;
+}*/
 
 /* live page - status bar */
 XLStatusBar {
@@ -104,10 +139,10 @@ XLStatusBar {
 }
 XLStatusBar>QLabel {
     font-size: @smallFontSize@;
-    color: rgb(83,83,83);
+    color: #535353;
 }
 XLStatusBar>QLabel#liveTimeLabel {
-    color: rgb(100,193,18);
+    color: #64c112;
 }
 
 /* live page - scene panel */
@@ -124,13 +159,13 @@ QWidget#addSourceBar>QPushButton {
     border: none;
     background-color: transparent;
     font-size: @mediumFontSize@;
-    color: rgb(83,83,83);
+    color: #535353;
 }
 QWidget#addSourceBar>QPushButton:hover {
-    color: rgb(146,205,107);
+    color: #92CD6B;
 }
 QWidget#addSourceBar>QPushButton:checked {
-    color: rgb(146,205,107);
+    color: #92CD6B;
 }
 
 /* live page - scene info bar */
@@ -143,7 +178,7 @@ QWidget#sceneInfoBar>QPushButton {
     background-color: transparent;
 }
 QWidget#sceneInfoBar>QPushButton:hover {
-    background-color: rgb(146,205,107);
+    background-color: #92CD6B;
 }
 
 /* live page - source list */
@@ -152,8 +187,8 @@ QListView#sourceList {
 }
 XLSourceListItemWidget {
     border-top: 1px solid white;
-    border-bottom: 1px solid rgb(240,240,240);
+    border-bottom: 1px solid #f0f0f0;
 }
 QListView#sourceList::item:selected {
-    background: rgb(242,255,230);
+    background: #F2FFE6;
 }
