@@ -104,8 +104,7 @@ QCheckBox#speakerCheckBox::indicator:unchecked {
     image: url(:/res/images/speaker.png);
 }
 QCheckBox#speakerCheckBox::indicator:checked {
-    background-image: url(:/res/images/speaker.png);
-    image: url(:/res/images/tick.png);
+    background-image: url(:/res/images/speaker_mute.png);
 }
 QCheckBox#microphoneCheckBox::indicator {
     width: 28px;
@@ -115,22 +114,16 @@ QCheckBox#microphoneCheckBox::indicator:unchecked {
     image: url(:/res/images/microphone.png);
 }
 QCheckBox#microphoneCheckBox::indicator:checked {
-    background-image: url(:/res/images/microphone.png);
-    image: url(:/res/images/tick.png);
+    background-image: url(:/res/images/microphone_mute.png);
 }
-/*
 QWidget#controlPanel QSlider::groove:horizontal {
-    border: none;
-    height: 2px;
-    background-color: #00a3e2;
+    border-width: 0px;
+    height: 16px;
+    image: url(:/res/images/slider_groove.png);
 }
-
 QWidget#controlPanel QSlider::handle:horizontal {
-    background: white;
-    border: 1px solid #cacaca;
-    width: 16px;
-    border-radius: 8px;
-}*/
+    image: url(:/res/images/slider_handle.png);
+}
 
 /* live page - status bar */
 XLStatusBar {

@@ -52,7 +52,6 @@ void XLProgressDialog::keyPressEvent(QKeyEvent *event) {
 	}
 }
 
-
 void XLProgressDialog::showEvent(QShowEvent *event) {
 	QDialog::showEvent(event);
 	m_animation->start();
