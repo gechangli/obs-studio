@@ -229,7 +229,8 @@ set(xiaomeilive_SOURCES
 	xl-source-list-model.cpp
 	xl-source-list-view.cpp
 	xl-status-bar.cpp
-	xl-clickable-widget.cpp)
+	xl-clickable-widget.cpp
+	xl-resize-handle.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -293,7 +294,8 @@ set(xiaomeilive_HEADERS
 	xl-source-list-model.hpp
 	xl-source-list-view.hpp
 	xl-status-bar.hpp
-	xl-clickable-widget.hpp)
+	xl-clickable-widget.hpp
+	xl-resize-handle.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui

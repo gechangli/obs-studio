@@ -15,22 +15,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#pragma once
+#include "xl-resize-handle.hpp"
+#include <QMouseEvent>
+#include "window-basic-main.hpp"
 
-#include <QLabel>
-#include <QWidget>
-#include <Qt>
+XLResizeHandle::XLResizeHandle(QWidget* parent, Qt::WindowFlags f) :
+	QLabel(parent, f) {
+}
 
-class XLClickableLabel : public QLabel {
-	Q_OBJECT
+XLResizeHandle::~XLResizeHandle() {
+}
 
-public:
-	explicit XLClickableLabel(QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
-	virtual ~XLClickableLabel();
+void XLResizeHandle::mousePressEvent(QMouseEvent* event) {
+	m_startPos = event->globalPos();
+	m_startSize = App()->GetMainWindow()->size();
+}
 
-signals:
-	void clicked();
+void XLResizeHandle::mouseMoveEvent(QMouseEvent *event) {
+	QPoint delta = event->globalPos() - m_startPos;
+	QSize newSize = m_startSize + QSize(delta.x(), delta.y());
+	App()->GetMainWindow()->resize(newSize);
+}
 
-protected:
-	void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-};
+void XLResizeHandle::mouseReleaseEvent(QMouseEvent *event) {
+
+}

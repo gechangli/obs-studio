@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/resize_handle.png</file>
     <file>images/slider_groove.png</file>
     <file>images/slider_handle.png</file>
     <file>images/speaker_mute.png</file>

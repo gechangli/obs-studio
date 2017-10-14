@@ -21,16 +21,19 @@
 #include <QWidget>
 #include <Qt>
 
-class XLClickableLabel : public QLabel {
+class XLResizeHandle : public QLabel {
 	Q_OBJECT
 
-public:
-	explicit XLClickableLabel(QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
-	virtual ~XLClickableLabel();
+private:
+	QPoint m_startPos;
+	QSize m_startSize;
 
-signals:
-	void clicked();
+public:
+	explicit XLResizeHandle(QWidget* parent = Q_NULLPTR, Qt::WindowFlags f = Qt::WindowFlags());
+	virtual ~XLResizeHandle();
 
 protected:
 	void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 };
