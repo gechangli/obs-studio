@@ -198,7 +198,6 @@ set(xiaomeilive_SOURCES
 	focus-list.cpp
 	menu-button.cpp
 	double-slider.cpp
-	volume-control.cpp
 	adv-audio-control.cpp
 	item-widget-helpers.cpp
 	visibility-checkbox.cpp
@@ -262,8 +261,6 @@ set(xiaomeilive_HEADERS
 	double-slider.hpp
 	focus-list.hpp
 	menu-button.hpp
-	mute-checkbox.hpp
-	volume-control.hpp
 	adv-audio-control.hpp
 	item-widget-helpers.hpp
 	visibility-checkbox.hpp
