@@ -53,13 +53,11 @@
 #include "window-basic-main.hpp"
 #include "window-basic-stats.hpp"
 #include "window-basic-main-outputs.hpp"
-#include "window-basic-properties.hpp"
 #include "window-log-reply.hpp"
 #include "window-projector.hpp"
 #include "window-remux.hpp"
 #include "qt-wrappers.hpp"
 #include "display-helpers.hpp"
-#include "volume-control.hpp"
 #include "remote-text.hpp"
 #include "xl-register-dialog.hpp"
 #include "xl-login-dialog.hpp"
@@ -68,6 +66,7 @@
 #include "xl-frameless-window-util.hpp"
 #include "xl-source-list-item-widget.hpp"
 #include "xl-source-list-delegate.hpp"
+#include "xl-volume-control.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -152,7 +151,9 @@ static QList<QKeySequence> DeleteKeys;
 OBSBasic::OBSBasic(QWidget *parent) :
 	OBSMainWindow(parent),
 	ui(new Ui::OBSBasic),
-	outputHandler(nullptr)
+	outputHandler(nullptr),
+	m_speakerVolume(100),
+	m_microphoneVolume(100)
 {
 	setAttribute(Qt::WA_NativeWindow);
 
@@ -463,6 +464,46 @@ void OBSBasic::on_liveTable_itemClicked(QTableWidgetItem *item) {
 	}
 }
 
+void OBSBasic::on_speakerCheckBox_clicked(bool checked) {
+	if(checked) {
+		m_speakerVolume = ui->speakerVolumeSlider->value();
+		ui->speakerVolumeSlider->blockSignals(true);
+		ui->speakerVolumeSlider->setValue(0);
+		ui->speakerVolumeSlider->blockSignals(false);
+	} else {
+		ui->speakerVolumeSlider->setValue(m_speakerVolume);
+	}
+}
+
+void OBSBasic::on_microphoneCheckBox_clicked(bool checked) {
+	if(checked) {
+		m_microphoneVolume = ui->microphoneVolumeSlider->value();
+		ui->microphoneVolumeSlider->blockSignals(true);
+		ui->microphoneVolumeSlider->setValue(0);
+		ui->microphoneVolumeSlider->blockSignals(false);
+	} else {
+		ui->microphoneVolumeSlider->setValue(m_microphoneVolume);
+	}
+}
+
+void OBSBasic::on_speakerVolumeSlider_valueChanged(int value) {
+	if(ui->speakerCheckBox->isChecked() && value > 0) {
+		m_speakerVolume = value;
+		ui->speakerCheckBox->setChecked(false);
+	} else if(!ui->speakerCheckBox->isChecked() && value == 0) {
+		ui->speakerCheckBox->setChecked(true);
+	}
+}
+
+void OBSBasic::on_microphoneVolumeSlider_valueChanged(int value) {
+	if(ui->microphoneCheckBox->isChecked() && value > 0) {
+		m_microphoneVolume = value;
+		ui->microphoneCheckBox->setChecked(false);
+	} else if(!ui->microphoneCheckBox->isChecked() && value == 0) {
+		ui->microphoneCheckBox->setChecked(true);
+	}
+}
+
 void OBSBasic::logout() {
 	// if in live, prompt to end it
 	if(StreamingActive()) {
@@ -601,7 +642,7 @@ void OBSBasic::copyActionsDynamicProperties()
 
 void OBSBasic::ClearVolumeControls()
 {
-	VolControl *control;
+	XLVolControl *control;
 
 	for (size_t i = 0; i < volumes.size(); i++) {
 		control = volumes[i];
@@ -1664,6 +1705,10 @@ void OBSBasic::OBSInit()
         ui->toggleScenes->activate(QAction::Trigger);
     }
 
+	// set speaker volume by default
+	m_speakerVolume = 100;
+	ui->speakerVolumeSlider->setValue(m_speakerVolume);
+
 	// signals
 	connect(&m_client, &XgmOA::restOpDone, this, &OBSBasic::onXgmOAResponse);
 	connect(&m_client, &XgmOA::restOpFailed, this, &OBSBasic::onXgmOAResponseFailed);
@@ -2482,11 +2527,6 @@ void OBSBasic::RenameSources(QString newName, QString prevName)
 {
 	RenameListValues(ui->scenes,  newName, prevName);
 
-	for (size_t i = 0; i < volumes.size(); i++) {
-		if (volumes[i]->GetName().compare(prevName) == 0)
-			volumes[i]->SetName(newName);
-	}
-
 	std::string newText = newName.toUtf8().constData();
 	std::string prevText = prevName.toUtf8().constData();
 
@@ -2523,7 +2563,7 @@ void OBSBasic::SelectSceneItem(OBSScene scene, OBSSceneItem item, bool select)
 void OBSBasic::GetAudioSourceFilters()
 {
 	QAction *action = reinterpret_cast<QAction*>(sender());
-	VolControl *vol = action->property("volControl").value<VolControl*>();
+	XLVolControl *vol = action->property("volControl").value<XLVolControl*>();
 	obs_source_t *source = vol->GetSource();
 
 	CreateFiltersWindow(source);
@@ -2532,7 +2572,7 @@ void OBSBasic::GetAudioSourceFilters()
 void OBSBasic::GetAudioSourceProperties()
 {
 	QAction *action = reinterpret_cast<QAction*>(sender());
-	VolControl *vol = action->property("volControl").value<VolControl*>();
+	XLVolControl *vol = action->property("volControl").value<XLVolControl*>();
 	obs_source_t *source = vol->GetSource();
 
 	CreatePropertiesWindow(source);
@@ -2540,7 +2580,7 @@ void OBSBasic::GetAudioSourceProperties()
 
 void OBSBasic::VolControlContextMenu()
 {
-	VolControl *vol = reinterpret_cast<VolControl*>(sender());
+	XLVolControl *vol = reinterpret_cast<XLVolControl*>(sender());
 
 	QAction filtersAction(QTStr("Filters"), this);
 	QAction propertiesAction(QTStr("Properties"), this);
@@ -2557,9 +2597,9 @@ void OBSBasic::VolControlContextMenu()
 			Qt::DirectConnection);
 
 	filtersAction.setProperty("volControl",
-			QVariant::fromValue<VolControl*>(vol));
+			QVariant::fromValue<XLVolControl*>(vol));
 	propertiesAction.setProperty("volControl",
-			QVariant::fromValue<VolControl*>(vol));
+			QVariant::fromValue<XLVolControl*>(vol));
 
 	QMenu popup(this);
 	popup.addAction(&filtersAction);
@@ -2570,13 +2610,18 @@ void OBSBasic::VolControlContextMenu()
 
 void OBSBasic::ActivateAudioSource(OBSSource source)
 {
-	VolControl *vol = new VolControl(source, true);
-
-	connect(vol, &VolControl::ConfigClicked,
-			this, &OBSBasic::VolControlContextMenu);
-
-	volumes.push_back(vol);
-	ui->volumeWidgets->layout()->addWidget(vol);
+	// for the new UI, we only display volume control for default input/output source
+	const char* id = obs_source_get_id(source);
+	bool isOutput = !strcmp(id, App()->OutputAudioSource());
+	bool isInput = !strcmp(id, App()->InputAudioSource());
+	if(isInput || isOutput) {
+		XLVolControl *vol = new XLVolControl(source,
+											 isInput ? ui->microphoneCheckBox : ui->speakerCheckBox,
+											 isInput ? ui->microphoneVolumeSlider : ui->speakerVolumeSlider);
+		connect(vol, &XLVolControl::ConfigClicked,
+				this, &OBSBasic::VolControlContextMenu);
+		volumes.push_back(vol);
+	}
 }
 
 void OBSBasic::DeactivateAudioSource(OBSSource source)
@@ -2899,10 +2944,11 @@ void OBSBasic::SourceActivated(void *data, calldata_t *params)
 	obs_source_t *source = (obs_source_t*)calldata_ptr(params, "source");
 	uint32_t     flags  = obs_source_get_output_flags(source);
 
-	if (flags & OBS_SOURCE_AUDIO)
-		QMetaObject::invokeMethod(static_cast<OBSBasic*>(data),
-				"ActivateAudioSource",
-				Q_ARG(OBSSource, OBSSource(source)));
+	if ((flags & OBS_SOURCE_AUDIO) != 0) {
+		QMetaObject::invokeMethod(static_cast<OBSBasic *>(data),
+								  "ActivateAudioSource",
+								  Q_ARG(OBSSource, OBSSource(source)));
+	}
 }
 
 void OBSBasic::SourceDeactivated(void *data, calldata_t *params)
@@ -2910,10 +2956,11 @@ void OBSBasic::SourceDeactivated(void *data, calldata_t *params)
 	obs_source_t *source = (obs_source_t*)calldata_ptr(params, "source");
 	uint32_t     flags  = obs_source_get_output_flags(source);
 
-	if (flags & OBS_SOURCE_AUDIO)
-		QMetaObject::invokeMethod(static_cast<OBSBasic*>(data),
-				"DeactivateAudioSource",
-				Q_ARG(OBSSource, OBSSource(source)));
+	if ((flags & OBS_SOURCE_AUDIO) != 0) {
+		QMetaObject::invokeMethod(static_cast<OBSBasic *>(data),
+								  "DeactivateAudioSource",
+								  Q_ARG(OBSSource, OBSSource(source)));
+	}
 }
 
 void OBSBasic::SourceRenamed(void *data, calldata_t *params)

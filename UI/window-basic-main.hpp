@@ -42,7 +42,7 @@
 
 class QMessageBox;
 class QListWidgetItem;
-class VolControl;
+class XLVolControl;
 class QNetworkReply;
 class OBSBasicStats;
 class XLProgressDialog;
@@ -124,7 +124,7 @@ private:
 
 	obs_frontend_callbacks *api = nullptr;
 
-	std::vector<VolControl*> volumes;
+	std::vector<XLVolControl*> volumes;
 
 	std::vector<OBSSignal> signalHandlers;
 
@@ -136,6 +136,9 @@ private:
 	bool projectChanged = false;
 	bool previewEnabled = true;
 	bool fullscreenInterface = false;
+
+	int m_speakerVolume;
+	int m_microphoneVolume;
 
 	const char *copyString;
 	const char *copyFiltersString;
@@ -670,6 +673,10 @@ private slots:
 	void on_resetUI_triggered();
 	void on_lockUI_toggled(bool lock);
 
+	void on_speakerCheckBox_clicked(bool checked);
+	void on_microphoneCheckBox_clicked(bool checked);
+	void on_speakerVolumeSlider_valueChanged(int value);
+	void on_microphoneVolumeSlider_valueChanged(int value);
 	void on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
 	void on_liveTable_itemClicked(QTableWidgetItem *item);
 	void windowRequestMinimize();
