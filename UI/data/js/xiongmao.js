@@ -61,15 +61,22 @@ function onSettingsPage() {
 }
 
 // dispatch
-if(window.location.href.indexOf('setting') == -1) {
+try {
+    if (window.location.href.indexOf('setting') == -1) {
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+            var lp = channel.objects.lp;
+            if (lp.m_loggedIn) {
+                window.location.href = "https://www.panda.tv/setting";
+            } else {
+                onLoginPage();
+            }
+        });
+    } else {
+        onSettingsPage();
+    }
+} catch(e) {
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
-        if(lp.m_loggedIn) {
-            window.location.href = "https://www.panda.tv/setting";
-        } else {
-            onLoginPage();
-        }
-    });
-} else {
-    onSettingsPage();
+        lp.jsLog(e.stack);
+    })
 }

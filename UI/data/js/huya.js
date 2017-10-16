@@ -116,10 +116,17 @@ function onOtherPage() {
 }
 
 // dispatch
-if(getCookie('username') == null) {
-    onLoginPage();
-} else if(window.location.href.indexOf('i.huya.com') != -1) {
-    onSettingsPage();
-} else {
-    onOtherPage();
+try {
+    if(getCookie('username') == null) {
+        onLoginPage();
+    } else if(window.location.href.indexOf('i.huya.com') != -1) {
+        onSettingsPage();
+    } else {
+        onOtherPage();
+    }
+} catch(e) {
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+        var lp = channel.objects.lp;
+        lp.jsLog(e.stack);
+    })
 }

@@ -117,10 +117,17 @@ function onOtherPage() {
 }
 
 // dispatch
-if (window.location.href.indexOf("login") > 0) {
-    onLoginPage();
-} else if(window.location.href.indexOf("room/my") > 0) {
-    onSettingsPage();
-} else {
-    onOtherPage();
+try {
+    if (window.location.href.indexOf("login") > 0) {
+        onLoginPage();
+    } else if (window.location.href.indexOf("room/my") > 0) {
+        onSettingsPage();
+    } else {
+        onOtherPage();
+    }
+} catch(e) {
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+        var lp = channel.objects.lp;
+        lp.jsLog(e.stack);
+    })
 }
