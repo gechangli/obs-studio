@@ -238,6 +238,9 @@ void XLLoginDialog::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Ne
 		// hide progress dialog
 		hideProgressDialog();
 
+		// warning
+		showErrorMessage(errMsg);
+
 		// if failed, immediately re-enable refresh button
 		ui->getSmsButton->setEnabled(true);
 		killTimer(m_smsRefreshTimerId);
