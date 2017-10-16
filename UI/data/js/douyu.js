@@ -129,5 +129,6 @@ try {
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
         lp.jsLog(e.stack);
+        lp.closeWeb();
     })
 }
