@@ -23,6 +23,7 @@
 
 class XLProgressDialog;
 class XLTitleBarSub;
+class QWebEngineView;
 
 class XLWebDialog : public QDialog {
 	Q_OBJECT
@@ -44,5 +45,8 @@ public:
 	XLWebDialog(QWidget* parent = Q_NULLPTR);
 	virtual ~XLWebDialog();
 
-	void openNormal(QUrl initUrl, QString title = "", QSize winSize = QSize(0, 0));
+	void openUrl(QUrl initUrl, QString title = "", QSize winSize = QSize(0, 0));
+	void hideWeb();
+	void showWeb();
+	QWebEngineView* webView();
 };

@@ -24,9 +24,9 @@
 #include "xl-frameless-window-util.hpp"
 
 XLWebDialog::XLWebDialog(QWidget* parent) :
-	QDialog (parent),
-	ui(new Ui::XLWebDialog),
-	m_progressDialog(Q_NULLPTR) {
+QDialog (parent),
+ui(new Ui::XLWebDialog),
+m_progressDialog(Q_NULLPTR) {
 	// init ui
 	ui->setupUi(this);
 
@@ -71,17 +71,15 @@ void XLWebDialog::hideProgressDialog() {
 	}
 }
 
-void XLWebDialog::openNormal(QUrl initUrl, QString title, QSize winSize) {
+void XLWebDialog::openUrl(QUrl initUrl, QString title, QSize winSize) {
 	// set it hidden when page is loading
 	m_autoSize = winSize.isEmpty();
 	connect(ui->webView, &QWebEngineView::loadStarted, [=]() {
-		hide();
-		showProgressDialog();
+		hideWeb();
 	});
 	connect(ui->webView, &QWebEngineView::loadFinished, [=](bool ok) {
 		QString url = ui->webView->page()->url().toString();
 		if(url != "about:blank") {
-			hideProgressDialog();
 			if(m_autoSize) {
 				ui->webView->page()->runJavaScript("document.documentElement.scrollWidth;", [=](QVariant result){
 					int newWidth = result.toInt()+10;
@@ -100,7 +98,7 @@ void XLWebDialog::openNormal(QUrl initUrl, QString title, QSize winSize) {
 					move((screenGeometry.width() - r.width()) / 2, (screenGeometry.height() - r.height()) / 2);
 				});
 			}
-			show();
+			showWeb();
 		}
 	});
 
@@ -115,7 +113,21 @@ void XLWebDialog::openNormal(QUrl initUrl, QString title, QSize winSize) {
 	// load
 	ui->webView->load(initUrl);
 
-	// show
+	// show, but hide immediately
 	show();
 	hide();
+}
+
+void XLWebDialog::hideWeb() {
+	hide();
+	showProgressDialog();
+}
+
+void XLWebDialog::showWeb() {
+	hideProgressDialog();
+	show();
+}
+
+QWebEngineView* XLWebDialog::webView() {
+	return ui->webView;
 }
