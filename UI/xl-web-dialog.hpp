@@ -17,56 +17,30 @@
 
 #pragma once
 
-#include <obs.hpp>
-#include "ui_XLLoginDialog.h"
-#include "xl-xiguamei-oa.hpp"
+#include "ui_XLWebDialog.h"
 #include <QDialog>
 #include <memory>
 
-class OBSBasic;
 class XLProgressDialog;
 
-class XLLoginDialog : public QDialog {
+class XLWebDialog : public QDialog {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::XLLoginDialog> ui;
-	OBSBasic* m_main;
-	XgmOA m_client;
-	int m_smsRefreshTimerId;
-	int m_smsRefreshSeconds;
+	std::unique_ptr<Ui::XLWebDialog> ui;
 	XLProgressDialog* m_progressDialog;
-	bool m_loggedIn;
+	bool m_autoSize;
 
 private:
-	void updateSmsRefreshButtonText();
-	bool validateMobile();
-	bool validateSmsCode();
 	void showProgressDialog();
 	void hideProgressDialog();
-	void showErrorMessage(QString msg);
-	void clearErrorMessage();
 
 protected:
 	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
-	void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
-
-private slots:
-	void on_getSmsButton_clicked();
-	void on_signUpButton_clicked();
-	void on_signInButton_clicked();
-	void on_autoLoginWrapper_clicked();
-	void on_signUpWrapper_clicked();
-	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
-	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
-
-signals:
-	void xgmUserLoggedIn(QString username);
 
 public:
-	XLLoginDialog(OBSBasic *parent);
+	XLWebDialog(QWidget* parent = Q_NULLPTR);
+	virtual ~XLWebDialog();
 
-	// slot override
-	void accept() Q_DECL_OVERRIDE;
-	void reject() Q_DECL_OVERRIDE;
+	void openNormal(QUrl initUrl, QString title = "", QSize winSize = QSize(0, 0));
 };

@@ -19,6 +19,7 @@
 #include "window-basic-main.hpp"
 #include "xl-login-dialog.hpp"
 #include "xl-progress-dialog.hpp"
+#include "xl-web-dialog.hpp"
 #include <QKeyEvent>
 #include "xl-util.hpp"
 
@@ -172,7 +173,9 @@ void XLRegisterDialog::on_signInButton_clicked() {
 }
 
 void XLRegisterDialog::on_licenseLabel_clicked() {
-	// TODO http://101.201.253.175:8000/admin/live/login/protocol
+	QUrl url("http://101.201.253.175:8000/admin/live/login/protocol");
+	XLWebDialog* web = new XLWebDialog();
+	web->openNormal(url);
 }
 
 void XLRegisterDialog::updateSmsRefreshButtonText() {

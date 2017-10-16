@@ -151,7 +151,6 @@ void LivePlatformWeb::openWeb(bool clearSession) {
 
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
-		UNUSED_PARAMETER(ok);
 		page->runJavaScript(XLUtil::getDataFileContent("js/qwebchannel.js"));
 		page->runJavaScript(XLUtil::getDataFileContent("js/util.js"));
 		page->runJavaScript(XLUtil::getDataFileContent(QString("js/%1.js").arg(type2Id(m_curPlatform))));
