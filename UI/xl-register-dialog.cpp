@@ -175,7 +175,7 @@ void XLRegisterDialog::on_signInButton_clicked() {
 void XLRegisterDialog::on_licenseLabel_clicked() {
 	QUrl url("http://101.201.253.175:8000/admin/live/login/protocol");
 	XLWebDialog* web = new XLWebDialog();
-	web->openNormal(url);
+	web->openNormal(url, L("User.Agreement"));
 }
 
 void XLRegisterDialog::updateSmsRefreshButtonText() {

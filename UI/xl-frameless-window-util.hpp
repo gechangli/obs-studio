@@ -3,5 +3,5 @@
 
 class XLFramelessWindowUtil  {
 public:
-    static void setupUI(QMainWindow* w);
+    static void setupUI(QWidget* w);
 };

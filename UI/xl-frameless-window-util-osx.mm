@@ -5,25 +5,30 @@
 
 #include <Cocoa/Cocoa.h>
 
-void XLFramelessWindowUtil::setupUI(QMainWindow* w) {
-    // set full size content
-    NSView *nativeView = reinterpret_cast<NSView *>(w->winId());
-    NSWindow* nativeWindow = [nativeView window];
-    [nativeWindow setStyleMask:[nativeWindow styleMask] | NSFullSizeContentViewWindowMask | NSWindowTitleHidden];
-    [nativeWindow setTitlebarAppearsTransparent:YES];
+void XLFramelessWindowUtil::setupUI(QWidget* w) {
+    QMainWindow* mw = dynamic_cast<QMainWindow*>(w);
+    if(mw) {
+        // set full size content
+        NSView *nativeView = reinterpret_cast<NSView *>(w->winId());
+        NSWindow* nativeWindow = [nativeView window];
+        [nativeWindow setStyleMask:[nativeWindow styleMask] | NSFullSizeContentViewWindowMask | NSWindowTitleHidden];
+        [nativeWindow setTitlebarAppearsTransparent:YES];
 
-    // hide standard buttons
-    [[nativeWindow standardWindowButton:NSWindowCloseButton] setHidden:YES];
-    [[nativeWindow standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
-    [[nativeWindow standardWindowButton:NSWindowZoomButton] setHidden:YES];
+        // hide standard buttons
+        [[nativeWindow standardWindowButton:NSWindowCloseButton] setHidden:YES];
+        [[nativeWindow standardWindowButton:NSWindowMiniaturizeButton] setHidden:YES];
+        [[nativeWindow standardWindowButton:NSWindowZoomButton] setHidden:YES];
 
-    // set central widget top margin based on menu property
-    QWidget* centralWidget = w->centralWidget();
-    QMenuBar* menuBar = w->menuBar();
-    if(menuBar && menuBar->isNativeMenuBar()) {
-        QMargins m = centralWidget->contentsMargins();
-        m.setTop(36);
-        centralWidget->setContentsMargins(m);
+        // set central widget top margin based on menu property
+        QWidget *centralWidget = mw->centralWidget();
+        QMenuBar *menuBar = mw->menuBar();
+        if (menuBar && menuBar->isNativeMenuBar()) {
+            QMargins m = centralWidget->contentsMargins();
+            m.setTop(36);
+            centralWidget->setContentsMargins(m);
+        }
+    } else {
+        w->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
     }
 }
 

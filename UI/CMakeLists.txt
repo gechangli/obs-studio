@@ -231,7 +231,8 @@ set(xiaomeilive_SOURCES
 	xl-clickable-widget.cpp
 	xl-resize-handle.cpp
 	xl-volume-control.cpp
-	xl-web-dialog.cpp)
+	xl-web-dialog.cpp
+	xl-title-bar-sub.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -296,7 +297,8 @@ set(xiaomeilive_HEADERS
 	xl-clickable-widget.hpp
 	xl-resize-handle.hpp
 	xl-volume-control.hpp
-	xl-web-dialog.hpp)
+	xl-web-dialog.hpp
+	xl-title-bar-sub.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui

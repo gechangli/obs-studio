@@ -40,6 +40,7 @@ private:
 	QSize m_restoreSize;
 	bool m_pressed;
 	QPoint m_startMovePos;
+	QHBoxLayout* m_layout;
 
 private:
 	bool hasMaxButton();
@@ -54,6 +55,9 @@ protected:
 
 	// implemented by subclass
 	virtual void initCustomUI(QHBoxLayout* layout) = 0;
+
+	// remove icon
+	void removeIcon();
 
 signals:
 	void windowRequestMinimize();

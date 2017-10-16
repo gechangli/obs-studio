@@ -20,6 +20,8 @@
 #include "xl-progress-dialog.hpp"
 #include "window-basic-main.hpp"
 #include <QDesktopWidget>
+#include "xl-title-bar-sub.hpp"
+#include "xl-frameless-window-util.hpp"
 
 XLWebDialog::XLWebDialog(QWidget* parent) :
 	QDialog (parent),
@@ -27,6 +29,15 @@ XLWebDialog::XLWebDialog(QWidget* parent) :
 	m_progressDialog(Q_NULLPTR) {
 	// init ui
 	ui->setupUi(this);
+
+	// setup frameless ui
+	XLFramelessWindowUtil::setupUI(this);
+
+	// title bar
+	m_titleBar = new XLTitleBarSub(this);
+	m_titleBar->init();
+	m_titleBar->move(0, 0);
+	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &QDialog::close);
 }
 
 XLWebDialog::~XLWebDialog() {
@@ -75,21 +86,26 @@ void XLWebDialog::openNormal(QUrl initUrl, QString title, QSize winSize) {
 				ui->webView->page()->runJavaScript("document.documentElement.scrollWidth;", [=](QVariant result){
 					int newWidth = result.toInt()+10;
 					QRect r = geometry();
-					r.setWidth(newWidth);
 					QRect screenGeometry = QApplication::desktop()->screenGeometry();
-					r.setX((screenGeometry.width() - r.width()) / 2);
-					setGeometry(r);
+					r.setWidth(qMin(newWidth, screenGeometry.width() * 2 / 3));
+					resize(r.size());
+					move((screenGeometry.width() - r.width()) / 2, (screenGeometry.height() - r.height()) / 2);
 				});
 				ui->webView->page()->runJavaScript("document.documentElement.scrollHeight;", [=](QVariant result){
 					int newHeight = result.toInt();
 					QRect r = geometry();
-					r.setHeight(newHeight);
-					setGeometry(r);
+					QRect screenGeometry = QApplication::desktop()->screenGeometry();
+					r.setHeight(qMin(newHeight, screenGeometry.height() * 2 / 3));
+					resize(r.size());
+					move((screenGeometry.width() - r.width()) / 2, (screenGeometry.height() - r.height()) / 2);
 				});
 			}
 			show();
 		}
 	});
+
+	// set title
+	m_titleBar->setWindowTitle(title);
 
 	// resize
 	if(!m_autoSize) {
@@ -100,5 +116,6 @@ void XLWebDialog::openNormal(QUrl initUrl, QString title, QSize winSize) {
 	ui->webView->load(initUrl);
 
 	// show
-	exec();
+	show();
+	hide();
 }

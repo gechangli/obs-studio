@@ -67,16 +67,16 @@ void XLTitleBar::init() {
 	m_closeButton->setObjectName("closeButton");
 
 	// add widget to a horizontal layout
-	QHBoxLayout* layout = new QHBoxLayout(this);
-	layout->setSpacing(1);
-	layout->addWidget(m_icon);
-	layout->addWidget(m_titleLabel);
-	initCustomUI(layout);
-	layout->addWidget(m_minButton);
-	layout->addWidget(m_restoreButton);
-	layout->addWidget(m_maxButton);
-	layout->addWidget(m_closeButton);
-	layout->setContentsMargins(24, 0, 5, 0);
+	m_layout = new QHBoxLayout(this);
+	m_layout->setContentsMargins(24, 0, 5, 0);
+	m_layout->setSpacing(1);
+	m_layout->addWidget(m_icon);
+	m_layout->addWidget(m_titleLabel);
+	initCustomUI(m_layout);
+	m_layout->addWidget(m_minButton);
+	m_layout->addWidget(m_restoreButton);
+	m_layout->addWidget(m_maxButton);
+	m_layout->addWidget(m_closeButton);
 	m_titleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	setFixedHeight(getPreferredHeight());
 	setWindowFlags(Qt::FramelessWindowHint);
@@ -194,4 +194,8 @@ void XLTitleBar::setWindowTitle(QString title) {
 
 void XLTitleBar::setIcon(QPixmap icon) {
 	m_icon->setPixmap(icon);
+}
+
+void XLTitleBar::removeIcon() {
+	m_layout->removeWidget(m_icon);
 }

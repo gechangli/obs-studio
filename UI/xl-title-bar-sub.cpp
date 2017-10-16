@@ -1,5 +1,5 @@
 /******************************************************************************
-    Copyright (C) 2014 by Luma <stubma@gmail.com>
+    Copyright (C) 2013 by luma <stubma@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -15,34 +15,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#pragma once
+#include "xl-title-bar-sub.hpp"
+#include <QHBoxLayout>
 
-#include "ui_XLWebDialog.h"
-#include <QDialog>
-#include <memory>
+#define TITLE_HEIGHT 32
+#define BUTTON_HEIGHT 26
+#define BUTTON_WIDTH 26
 
-class XLProgressDialog;
-class XLTitleBarSub;
+XLTitleBarSub::XLTitleBarSub(QWidget *parent) :
+	XLTitleBar(parent) {
+}
 
-class XLWebDialog : public QDialog {
-	Q_OBJECT
+XLTitleBarSub::~XLTitleBarSub() {
+}
 
-private:
-	std::unique_ptr<Ui::XLWebDialog> ui;
-	XLProgressDialog* m_progressDialog;
-	bool m_autoSize;
-	XLTitleBarSub* m_titleBar;
+int XLTitleBarSub::getPreferredHeight() {
+	return TITLE_HEIGHT;
+}
 
-private:
-	void showProgressDialog();
-	void hideProgressDialog();
+int XLTitleBarSub::getButtonWidth() {
+	return BUTTON_WIDTH;
+}
 
-protected:
-	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
+int XLTitleBarSub::getButtonHeight() {
+	return BUTTON_HEIGHT;
+}
 
-public:
-	XLWebDialog(QWidget* parent = Q_NULLPTR);
-	virtual ~XLWebDialog();
-
-	void openNormal(QUrl initUrl, QString title = "", QSize winSize = QSize(0, 0));
-};
+void XLTitleBarSub::initCustomUI(QHBoxLayout* layout) {
+	removeIcon();
+	layout->setContentsMargins(16, 0, 5, 0);
+}
