@@ -48,5 +48,8 @@ public:
 	void openUrl(QUrl initUrl, QString title = "", QSize winSize = QSize(0, 0));
 	void hideWeb();
 	void showWeb();
+	void closeWeb();
 	QWebEngineView* webView();
+	void autoFit();
+	void setWindowTitle(const QString& title);
 };

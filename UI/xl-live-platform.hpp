@@ -55,9 +55,7 @@ struct live_platform_info {
 typedef struct live_platform_info live_platform_info_t;
 
 // declaration
-class OBSBasic;
-class QWebEngineView;
-class XLProgressDialog;
+class XLWebDialog;
 
 // helper to access live platform web site
 class LivePlatformWeb : public QObject {
@@ -66,11 +64,10 @@ class LivePlatformWeb : public QObject {
 private:
     LivePlatform m_curPlatform;
     std::map<int, live_platform_info_t> m_infos;
-	QWebEngineView* m_webView;
-	XLProgressDialog* m_progressDialog;
 	int m_pageWidth;
 	int m_pageHeight;
 	bool m_loggedIn;
+	XLWebDialog* m_webDialog;
 
 private:
 	void loadLivePlatformInfos();

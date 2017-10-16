@@ -81,22 +81,7 @@ void XLWebDialog::openUrl(QUrl initUrl, QString title, QSize winSize) {
 		QString url = ui->webView->page()->url().toString();
 		if(url != "about:blank") {
 			if(m_autoSize) {
-				ui->webView->page()->runJavaScript("document.documentElement.scrollWidth;", [=](QVariant result){
-					int newWidth = result.toInt()+10;
-					QRect r = geometry();
-					QRect screenGeometry = QApplication::desktop()->screenGeometry();
-					r.setWidth(qMin(newWidth, screenGeometry.width() * 2 / 3));
-					resize(r.size());
-					move((screenGeometry.width() - r.width()) / 2, (screenGeometry.height() - r.height()) / 2);
-				});
-				ui->webView->page()->runJavaScript("document.documentElement.scrollHeight;", [=](QVariant result){
-					int newHeight = result.toInt();
-					QRect r = geometry();
-					QRect screenGeometry = QApplication::desktop()->screenGeometry();
-					r.setHeight(qMin(newHeight, screenGeometry.height() * 2 / 3));
-					resize(r.size());
-					move((screenGeometry.width() - r.width()) / 2, (screenGeometry.height() - r.height()) / 2);
-				});
+				autoFit();
 			}
 			showWeb();
 		}
@@ -118,6 +103,25 @@ void XLWebDialog::openUrl(QUrl initUrl, QString title, QSize winSize) {
 	hide();
 }
 
+void XLWebDialog::autoFit() {
+	ui->webView->page()->runJavaScript("document.documentElement.scrollWidth;", [=](QVariant result){
+		int newWidth = result.toInt()+10;
+		QRect r = geometry();
+		QRect screenGeometry = QApplication::desktop()->screenGeometry();
+		r.setWidth(qMin(newWidth, screenGeometry.width() * 2 / 3));
+		resize(r.size());
+		move((screenGeometry.width() - r.width()) / 2, (screenGeometry.height() - r.height()) / 2);
+	});
+	ui->webView->page()->runJavaScript("document.documentElement.scrollHeight;", [=](QVariant result){
+		int newHeight = result.toInt();
+		QRect r = geometry();
+		QRect screenGeometry = QApplication::desktop()->screenGeometry();
+		r.setHeight(qMin(newHeight, screenGeometry.height() * 2 / 3));
+		resize(r.size());
+		move((screenGeometry.width() - r.width()) / 2, (screenGeometry.height() - r.height()) / 2);
+	});
+}
+
 void XLWebDialog::hideWeb() {
 	hide();
 	showProgressDialog();
@@ -128,6 +132,15 @@ void XLWebDialog::showWeb() {
 	show();
 }
 
+void XLWebDialog::closeWeb() {
+	hideProgressDialog();
+	close();
+}
+
 QWebEngineView* XLWebDialog::webView() {
 	return ui->webView;
+}
+
+void XLWebDialog::setWindowTitle(const QString& title) {
+	m_titleBar->setWindowTitle(title);
 }

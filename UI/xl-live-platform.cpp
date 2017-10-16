@@ -22,6 +22,7 @@
 #include "xl-progress-dialog.hpp"
 #include <QMessageBox>
 #include "xl-util.hpp"
+#include "xl-web-dialog.hpp"
 
 using namespace std;
 
@@ -47,8 +48,7 @@ static const char* s_livePlatformIds[] = {
 
 LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
-m_webView(nullptr),
-m_progressDialog(nullptr),
+m_webDialog(Q_NULLPTR),
 m_pageWidth(0),
 m_pageHeight(0) {
 	// load info from config
@@ -56,9 +56,6 @@ m_pageHeight(0) {
 }
 
 LivePlatformWeb::~LivePlatformWeb() {
-	if(m_progressDialog) {
-		delete m_progressDialog;
-	}
 }
 
 void LivePlatformWeb::loadLivePlatformInfos() {
@@ -105,44 +102,32 @@ int LivePlatformWeb::getPageHeight() {
 }
 
 void LivePlatformWeb::hideWeb() {
-	if(m_webView) {
-		m_webView->hide();
-		m_progressDialog->show();
+	if(m_webDialog) {
+		m_webDialog->hideWeb();
 	}
 }
 
 void LivePlatformWeb::showWeb() {
-	if(m_webView) {
-		m_webView->show();
-		m_progressDialog->hide();
+	if(m_webDialog) {
+		m_webDialog->showWeb();
 	}
 }
 
 void LivePlatformWeb::openWeb(bool clearSession) {
-	// create web view
-	QWebEngineView* view = new QWebEngineView();
-	m_webView = view;
-	view->setWindowModality(Qt::ApplicationModal);
-	view->setAttribute(Qt::WA_DeleteOnClose);
-
 	// clear session
 	if(clearSession) {
 		clearCookies();
 	}
 
 	// set channel
+	m_webDialog = new XLWebDialog();
+	QWebEngineView* view = m_webDialog->webView();
 	QWebEnginePage* page = view->page();
 	QWebChannel* channel = new QWebChannel(page);
 	page->setWebChannel(channel);
 
 	// register self
 	channel->registerObject(QStringLiteral("lp"), this);
-
-	// create progress dialog
-	if(!m_progressDialog) {
-		m_progressDialog = new XLProgressDialog();
-	}
-	m_progressDialog->hide();
 
 	// save web view size
 	QSize size = view->size();
@@ -151,17 +136,27 @@ void LivePlatformWeb::openWeb(bool clearSession) {
 
 	// setup javascript and event
 	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
-		page->runJavaScript(XLUtil::getDataFileContent("js/qwebchannel.js"));
-		page->runJavaScript(XLUtil::getDataFileContent("js/util.js"));
-		page->runJavaScript(XLUtil::getDataFileContent(QString("js/%1.js").arg(type2Id(m_curPlatform))));
+		QString url = page->url().toString();
+		if(url != "about:blank") {
+			m_webDialog->autoFit();
+			page->runJavaScript(XLUtil::getDataFileContent("js/qwebchannel.js"));
+			page->runJavaScript(XLUtil::getDataFileContent("js/util.js"));
+			page->runJavaScript(XLUtil::getDataFileContent(QString("js/%1.js").arg(type2Id(m_curPlatform))));
+		}
 	});
 	connect(view, &QWebEngineView::loadStarted, [=]() {
 		hideWeb();
 	});
 
-	// open home
+	// set title
+	m_webDialog->setWindowTitle(L(LivePlatformNames[m_curPlatform]));
+
+	// load
 	const QUrl url(getPlatformHomeUrl(m_curPlatform));
 	view->load(url);
+
+	// open
+	m_webDialog->exec();
 }
 
 void LivePlatformWeb::jsLog(QString t) {
@@ -205,21 +200,20 @@ bool LivePlatformWeb::isLoggedIn() {
 }
 
 void LivePlatformWeb::closeWeb() {
-	if(m_webView) {
-		m_webView->close();
-		m_webView = nullptr;
-		m_progressDialog->hide();
+	if(m_webDialog) {
+		m_webDialog->closeWeb();
+		m_webDialog = Q_NULLPTR;
 	}
 }
 
 void LivePlatformWeb::clearCookies() {
-	if(m_webView) {
-		m_webView->page()->profile()->cookieStore()->deleteAllCookies();
+	if(m_webDialog) {
+		m_webDialog->webView()->page()->profile()->cookieStore()->deleteAllCookies();
 	}
 }
 
 void LivePlatformWeb::showMessageBox(QString title, QString msg) {
-	QMessageBox::warning(nullptr, title, msg);
+	QMessageBox::warning(Q_NULLPTR, title, msg);
 }
 
 live_platform_info_t& LivePlatformWeb::getCurrentPlatformInfo() {
