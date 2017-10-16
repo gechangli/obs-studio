@@ -370,9 +370,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
 
-	// set main
-	m_lpWeb.setMain(this);
-
 	// title bar
 	m_titleBar = new XLTitleBarMain(this);
 	m_titleBar->init();

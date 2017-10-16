@@ -45,5 +45,5 @@ protected:
 	void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
 
 public:
-	XLProgressDialog(QWidget* parent);
+	XLProgressDialog(QWidget* parent = Q_NULLPTR);
 };

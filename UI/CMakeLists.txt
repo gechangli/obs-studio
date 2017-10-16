@@ -213,7 +213,7 @@ set(xiaomeilive_SOURCES
 	remote-text.cpp
 	audio-encoders.cpp
 	qt-wrappers.cpp
-	xl-live-cast.cpp
+	xl-live-platform.cpp
 	xl-register-dialog.cpp
 	xl-login-dialog.cpp
 	xl-xiguamei-oa.cpp
@@ -276,7 +276,7 @@ set(xiaomeilive_HEADERS
 	remote-text.hpp
 	audio-encoders.hpp
 	qt-wrappers.hpp
-	xl-live-cast.hpp
+	xl-live-platform.hpp
 	xl-register-dialog.hpp
 	xl-login-dialog.hpp
 	xl-xiguamei-oa.hpp

@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "xl-live-cast.hpp"
+#include "xl-live-platform.hpp"
 #include <QtWebEngineWidgets/QtWebEngineWidgets>
 #include "platform.hpp"
 #include "window-basic-main.hpp"
@@ -47,7 +47,6 @@ static const char* s_livePlatformIds[] = {
 
 LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
-m_main(nullptr),
 m_webView(nullptr),
 m_progressDialog(nullptr),
 m_pageWidth(0),
@@ -141,7 +140,7 @@ void LivePlatformWeb::openWeb(bool clearSession) {
 
 	// create progress dialog
 	if(!m_progressDialog) {
-		m_progressDialog = new XLProgressDialog(m_main);
+		m_progressDialog = new XLProgressDialog();
 	}
 	m_progressDialog->hide();
 
@@ -222,10 +221,6 @@ void LivePlatformWeb::clearCookies() {
 
 void LivePlatformWeb::showMessageBox(QString title, QString msg) {
 	QMessageBox::warning(nullptr, title, msg);
-}
-
-void LivePlatformWeb::setMain(OBSBasic *m) {
-	m_main = m;
 }
 
 live_platform_info_t& LivePlatformWeb::getCurrentPlatformInfo() {

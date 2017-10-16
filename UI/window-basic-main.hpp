@@ -29,7 +29,7 @@
 #include "window-basic-transform.hpp"
 #include "window-basic-adv-audio.hpp"
 #include "window-basic-filters.hpp"
-#include "xl-live-cast.hpp"
+#include "xl-live-platform.hpp"
 #include "xl-xiguamei-oa.hpp"
 
 #include <obs-frontend-internal.hpp>

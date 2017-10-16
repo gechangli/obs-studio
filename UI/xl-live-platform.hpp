@@ -66,7 +66,6 @@ class LivePlatformWeb : public QObject {
 private:
     LivePlatform m_curPlatform;
     std::map<int, live_platform_info_t> m_infos;
-	OBSBasic* m_main;
 	QWebEngineView* m_webView;
 	XLProgressDialog* m_progressDialog;
 	int m_pageWidth;
@@ -104,9 +103,6 @@ public:
 
     // open web site
     void openWeb(bool clearSession = false);
-
-	// associate main
-	void setMain(OBSBasic *m);
 
     // set current platform
     inline void setCurrentPlatform(LivePlatform p) { m_curPlatform = p; }
