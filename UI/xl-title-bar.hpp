@@ -56,8 +56,8 @@ protected:
 	// implemented by subclass
 	virtual void initCustomUI(QHBoxLayout* layout) = 0;
 
-	// remove icon
-	void removeIcon();
+	// hide icon
+	void hideIcon();
 
 signals:
 	void windowRequestMinimize();

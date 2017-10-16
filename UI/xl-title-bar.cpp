@@ -196,6 +196,6 @@ void XLTitleBar::setIcon(QPixmap icon) {
 	m_icon->setPixmap(icon);
 }
 
-void XLTitleBar::removeIcon() {
-	m_layout->removeWidget(m_icon);
+void XLTitleBar::hideIcon() {
+	m_icon->setVisible(false);
 }

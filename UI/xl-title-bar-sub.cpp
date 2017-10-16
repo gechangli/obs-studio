@@ -42,6 +42,6 @@ int XLTitleBarSub::getButtonHeight() {
 }
 
 void XLTitleBarSub::initCustomUI(QHBoxLayout* layout) {
-	removeIcon();
+	hideIcon();
 	layout->setContentsMargins(16, 0, 5, 0);
 }
