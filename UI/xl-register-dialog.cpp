@@ -175,14 +175,14 @@ void XLRegisterDialog::on_signInButton_clicked() {
 void XLRegisterDialog::on_licenseLabel_clicked() {
 	QUrl url("http://101.201.253.175:8000/admin/live/login/protocol");
 	XLWebDialog* web = new XLWebDialog();
-	web->openNormal(url, L("User.Agreement"));
+	web->openUrl(url, L("User.Agreement"));
 }
 
 void XLRegisterDialog::updateSmsRefreshButtonText() {
 	if(m_smsRefreshSeconds <= 0) {
-		ui->getSmsButton->setText(L("XL.Register.Get.Sms.Code"));
+		ui->getSmsButton->setText(L("Get.Sms.Code"));
 	} else {
-		ui->getSmsButton->setText(QString::asprintf("%s(%ds)", LC("XL.Register.Get.Sms.Code"), m_smsRefreshSeconds));
+		ui->getSmsButton->setText(QString::asprintf("%s(%ds)", LC("Get.Sms.Code"), m_smsRefreshSeconds));
 	}
 }
 
