@@ -1551,7 +1551,7 @@ bool GetFileSafeName(const char *name, std::string &file)
 
 		if (iswspace(wfile[im1])) {
 			wfile[im1] = '_';
-		} else if (wfile[im1] != '_' && !iswalnum(wfile[im1])) {
+		} else if (!iswprint(wfile[im1])) {
 			wfile.erase(im1, 1);
 		}
 	}
