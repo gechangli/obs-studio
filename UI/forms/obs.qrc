@@ -1,5 +1,15 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/delete.png</file>
+    <file>images/edit.png</file>
+    <file>images/move.png</file>
+    <file>images/source_camera.png</file>
+    <file>images/source_curtain.png</file>
+    <file>images/source_picture.png</file>
+    <file>images/source_stage.png</file>
+    <file>images/source_text.png</file>
+    <file>images/source_video.png</file>
+    <file>images/source_window.png</file>
     <file>images/resize_handle.png</file>
     <file>images/slider_groove.png</file>
     <file>images/slider_handle.png</file>

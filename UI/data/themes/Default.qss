@@ -185,3 +185,10 @@ XLSourceListItemWidget {
 QListView#sourceList::item:selected {
     background: #F2FFE6;
 }
+XLSourceListItemWidget>QFrame[frameShape="5"] { /* vertical line */
+    color: #f0f0f0;
+}
+XLSourceListItemWidget>QLabel {
+    color: black;
+    font-size: @mediumFontSize@;
+}
