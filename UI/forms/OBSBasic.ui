@@ -1110,7 +1110,7 @@
                <number>0</number>
               </property>
               <item>
-               <widget class="QLabel" name="sceneNameLabel">
+               <widget class="QLabel" name="templateNameLabel">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                   <horstretch>0</horstretch>

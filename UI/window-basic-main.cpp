@@ -1102,6 +1102,9 @@ retryScene:
 		opt_start_replaybuffer = false;
 	}
 
+	// update template label
+	ui->templateNameLabel->setText(L("Current.Template") + ": " + name);
+
 	LogScenes();
 
 	disableSaving--;
