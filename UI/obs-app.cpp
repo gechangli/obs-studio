@@ -1549,7 +1549,7 @@ bool GetFileSafeName(const char *name, std::string &file)
 	for (size_t i = wfile.size(); i > 0; i--) {
 		size_t im1 = i - 1;
 
-		if (iswspace(wfile[im1])) {
+		if (iswspace(wfile[im1]) || wfile[im1] == '.') {
 			wfile[im1] = '_';
 		} else if (!iswprint(wfile[im1])) {
 			wfile.erase(im1, 1);
