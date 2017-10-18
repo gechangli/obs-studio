@@ -390,9 +390,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 
 	// source list
 	QStandardItemModel* model = new QStandardItemModel();
-	model->appendRow(new QStandardItem("a"));
-	model->appendRow(new QStandardItem("b"));
-	model->appendRow(new QStandardItem("c"));
 	ui->sourceList->setItemDelegate(new XLSourceListDelegate());
 	ui->sourceList->setModel(model);
 }
@@ -2299,13 +2296,25 @@ void OBSBasic::UpdateSources(OBSScene scene)
 
 void OBSBasic::InsertSceneItem(obs_sceneitem_t *item)
 {
-	QListWidgetItem *listItem = new QListWidgetItem();
-	SetOBSRef(listItem, OBSSceneItem(item));
+	{
+		QListWidgetItem *listItem = new QListWidgetItem();
+		SetOBSRef(listItem, OBSSceneItem(item));
 
-	ui->sources->insertItem(0, listItem);
-	ui->sources->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
+		ui->sources->insertItem(0, listItem);
+		ui->sources->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
 
-	SetupVisibilityItem(ui->sources, listItem, item);
+		SetupVisibilityItem(ui->sources, listItem, item);
+	}
+
+	// get model, create item, bind scene item to item
+	QStandardItemModel* model = static_cast<QStandardItemModel*>(ui->sourceList->model());
+	QStandardItem* listItem = new QStandardItem();
+	listItem->setData(QVariant::fromValue(OBSSceneItem(item)), static_cast<int>(QtDataRole::OBSRef));
+
+	// add to model
+	model->appendRow(listItem);
+	int rc = model->rowCount();
+	emit model->dataChanged(model->index(rc - 1, 0), model->index(rc - 1, 0));
 }
 
 void OBSBasic::CreateInteractionWindow(obs_source_t *source)

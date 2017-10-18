@@ -40,6 +40,9 @@ protected:
 	void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
 	void startDrag(Qt::DropActions supportedActions) Q_DECL_OVERRIDE;
 
+private slots:
+	void onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
+
 public:
 	XLSourceListView(QWidget* parent = Q_NULLPTR);
 	virtual ~XLSourceListView();

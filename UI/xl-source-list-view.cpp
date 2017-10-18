@@ -41,6 +41,23 @@ void XLSourceListView::setModel(QAbstractItemModel *model) {
 		QModelIndex index = model->index(i, 0);
 		XLSourceListItemWidget* widget = new XLSourceListItemWidget;
 		setIndexWidget(index, widget);
+		widget->update(i);
+	}
+
+	// connect
+	connect(model, &QAbstractItemModel::dataChanged, this, &XLSourceListView::onDataChanged);
+}
+
+void XLSourceListView::onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles) {
+	QStandardItemModel* model = static_cast<QStandardItemModel*>(this->model());
+	for(int i = topLeft.row(); i <= bottomRight.row(); i++) {
+		QModelIndex index = model->index(i, 0);
+		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
+		if(widget == Q_NULLPTR) {
+			XLSourceListItemWidget* widget = new XLSourceListItemWidget;
+			setIndexWidget(index, widget);
+		}
+		widget->update(i);
 	}
 }
 

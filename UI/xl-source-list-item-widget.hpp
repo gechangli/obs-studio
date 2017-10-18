@@ -33,4 +33,7 @@ protected:
 public:
 	XLSourceListItemWidget(QWidget* parent = Q_NULLPTR);
 	virtual ~XLSourceListItemWidget();
+
+	// update item
+	void update(int index);
 };
