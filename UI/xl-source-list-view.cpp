@@ -24,6 +24,9 @@
 #include <QDrag>
 #include "xl-source-list-view.hpp"
 #include "xl-source-list-item-widget.hpp"
+#include "window-basic-main.hpp"
+
+Q_DECLARE_METATYPE(OBSSceneItem);
 
 XLSourceListView::XLSourceListView(QWidget* parent) :
 	QListView(parent),
@@ -46,6 +49,34 @@ void XLSourceListView::setModel(QAbstractItemModel *model) {
 
 	// connect
 	connect(model, &QAbstractItemModel::dataChanged, this, &XLSourceListView::onDataChanged);
+	connect(model, &QAbstractItemModel::rowsInserted, this, &XLSourceListView::onRowsInserted);
+	connect(model, &QAbstractItemModel::rowsRemoved, this, &XLSourceListView::onRowsRemoved);
+}
+
+void XLSourceListView::onRowsRemoved(const QModelIndex &parent, int first, int last) {
+	QStandardItemModel* model = static_cast<QStandardItemModel*>(this->model());
+	int rc = model->rowCount();
+	for(int i = first; i < rc; i++) {
+		QModelIndex index = model->index(i, 0);
+		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
+		widget->update(i);
+	}
+}
+
+void XLSourceListView::onRowsInserted(const QModelIndex &parent, int first, int last) {
+	QStandardItemModel* model = static_cast<QStandardItemModel*>(this->model());
+	int rc = model->rowCount();
+	for(int i = last + 1; i < rc; i++) {
+		QModelIndex index = model->index(i, 0);
+		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
+		widget->update(i);
+	}
+	for(int i = first; i <= last; i++) {
+		QModelIndex index = model->index(i, 0);
+		XLSourceListItemWidget* widget = new XLSourceListItemWidget;
+		setIndexWidget(index, widget);
+		widget->update(i);
+	}
 }
 
 void XLSourceListView::onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles) {
@@ -53,10 +84,6 @@ void XLSourceListView::onDataChanged(const QModelIndex &topLeft, const QModelInd
 	for(int i = topLeft.row(); i <= bottomRight.row(); i++) {
 		QModelIndex index = model->index(i, 0);
 		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
-		if(widget == Q_NULLPTR) {
-			XLSourceListItemWidget* widget = new XLSourceListItemWidget;
-			setIndexWidget(index, widget);
-		}
 		widget->update(i);
 	}
 }
@@ -126,23 +153,25 @@ void XLSourceListView::dragMoveEvent(QDragMoveEvent *event) {
 void XLSourceListView::dropEvent(QDropEvent *event) {
 	// drop based on mime type
 	if (event->mimeData()->hasFormat("application/x-XLSourceListView-MoveRow")) {
-		// get source and destination
+		// get source
 		QStandardItemModel* m = dynamic_cast<QStandardItemModel*>(model());
 		QStandardItem* srcItem = m->itemFromIndex(m_dragIndex);
-		srcItem = new QStandardItem(srcItem->text());
 
-		// manipulate model to move row
+		// make a copy of source item
+		QStandardItem* newItem = new QStandardItem();
+		OBSSceneItem sceneItem = srcItem->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
+		newItem->setData(QVariant::fromValue(sceneItem), static_cast<int>(QtDataRole::OBSRef));
+
+		// manipulate model to remove row and insert again
+		// it will trigger signal to update widget
 		int rc = m->rowCount();
 		m->removeRow(m_dragIndex.row());
 		if(m_insertIndex >= rc || m_insertIndex == -1) {
-			m->appendRow(srcItem);
-			setIndexWidget(m->index(rc - 1, 0), new XLSourceListItemWidget());
+			m->appendRow(newItem);
 		} else if(m_dragIndex.row() < m_insertIndex) {
-			m->insertRow(m_insertIndex - 1, srcItem);
-			setIndexWidget(m->index(m_insertIndex - 1, 0), new XLSourceListItemWidget());
+			m->insertRow(m_insertIndex - 1, newItem);
 		} else {
-			m->insertRow(m_insertIndex, srcItem);
-			setIndexWidget(m->index(m_insertIndex, 0), new XLSourceListItemWidget());
+			m->insertRow(m_insertIndex, newItem);
 		}
 
 		// accept this drop

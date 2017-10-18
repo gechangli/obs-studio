@@ -2313,8 +2313,6 @@ void OBSBasic::InsertSceneItem(obs_sceneitem_t *item)
 
 	// add to model
 	model->appendRow(listItem);
-	int rc = model->rowCount();
-	emit model->dataChanged(model->index(rc - 1, 0), model->index(rc - 1, 0));
 }
 
 void OBSBasic::CreateInteractionWindow(obs_source_t *source)

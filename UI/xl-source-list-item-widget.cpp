@@ -16,8 +16,13 @@
 ******************************************************************************/
 
 #include <QPainter>
+#include <QStandardItemModel>
+#include <QPaintEvent>
 #include "xl-source-list-item-widget.hpp"
+#include "xl-source-list-view.hpp"
 #include "window-basic-main.hpp"
+
+Q_DECLARE_METATYPE(OBSSceneItem);
 
 XLSourceListItemWidget::XLSourceListItemWidget(QWidget* parent) :
 	QWidget(parent),
@@ -38,5 +43,11 @@ void XLSourceListItemWidget::paintEvent(QPaintEvent* event) {
 }
 
 void XLSourceListItemWidget::update(int index) {
-
+	XLSourceListView* listView = dynamic_cast<XLSourceListView*>(parentWidget()->parentWidget());
+	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(listView->model());
+	QStandardItem* item = model->item(index, 0);
+	OBSSceneItem sceneItem = item->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
+	obs_source_t* source = obs_sceneitem_get_source(sceneItem);
+	const char* name = obs_source_get_name(source);
+	ui->nameLabel->setText(name);
 }

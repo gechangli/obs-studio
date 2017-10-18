@@ -41,6 +41,8 @@ protected:
 	void startDrag(Qt::DropActions supportedActions) Q_DECL_OVERRIDE;
 
 private slots:
+	void onRowsInserted(const QModelIndex &parent, int first, int last);
+	void onRowsRemoved(const QModelIndex &parent, int first, int last);
 	void onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
 
 public:
