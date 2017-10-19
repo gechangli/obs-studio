@@ -43,11 +43,16 @@ void XLSourceListItemWidget::paintEvent(QPaintEvent* event) {
 }
 
 void XLSourceListItemWidget::update(int index) {
+	// get item by index
 	XLSourceListView* listView = dynamic_cast<XLSourceListView*>(parentWidget()->parentWidget());
 	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(listView->model());
 	QStandardItem* item = model->item(index, 0);
+
+	// get source
 	OBSSceneItem sceneItem = item->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
 	obs_source_t* source = obs_sceneitem_get_source(sceneItem);
+
+	// update name
 	const char* name = obs_source_get_name(source);
 	ui->nameLabel->setText(name);
 }

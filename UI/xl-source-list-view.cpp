@@ -153,30 +153,48 @@ void XLSourceListView::dragMoveEvent(QDragMoveEvent *event) {
 void XLSourceListView::dropEvent(QDropEvent *event) {
 	// drop based on mime type
 	if (event->mimeData()->hasFormat("application/x-XLSourceListView-MoveRow")) {
-		// get source
+		// get row count
 		QStandardItemModel* m = dynamic_cast<QStandardItemModel*>(model());
-		QStandardItem* srcItem = m->itemFromIndex(m_dragIndex);
-
-		// make a copy of source item
-		QStandardItem* newItem = new QStandardItem();
-		OBSSceneItem sceneItem = srcItem->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
-		newItem->setData(QVariant::fromValue(sceneItem), static_cast<int>(QtDataRole::OBSRef));
-
-		// manipulate model to remove row and insert again
-		// it will trigger signal to update widget
 		int rc = m->rowCount();
-		m->removeRow(m_dragIndex.row());
-		if(m_insertIndex >= rc || m_insertIndex == -1) {
-			m->appendRow(newItem);
-		} else if(m_dragIndex.row() < m_insertIndex) {
-			m->insertRow(m_insertIndex - 1, newItem);
-		} else {
-			m->insertRow(m_insertIndex, newItem);
+
+		// check if insertion will change anything
+		bool same = false;
+		if((m_insertIndex >= rc || m_insertIndex == -1) && m_dragIndex.row() == rc - 1) {
+			same = true;
+		} else if(m_dragIndex.row() < m_insertIndex && m_dragIndex.row() == m_insertIndex - 1) {
+			same = true;
+		} else if(m_dragIndex.row() == m_insertIndex) {
+			same = true;
 		}
 
-		// accept this drop
-		event->setDropAction(Qt::MoveAction);
-		event->accept();
+		// if will, accept drop
+		if(!same) {
+			// make a copy of source item
+			QStandardItem* srcItem = m->itemFromIndex(m_dragIndex);
+			QStandardItem* newItem = new QStandardItem();
+			OBSSceneItem sceneItem = srcItem->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
+			newItem->setData(QVariant::fromValue(sceneItem), static_cast<int>(QtDataRole::OBSRef));
+
+			// manipulate model to remove row and insert again
+			// it will trigger signal to update widget
+			m->removeRow(m_dragIndex.row());
+			if(m_insertIndex >= rc || m_insertIndex == -1) {
+				m->appendRow(newItem);
+				obs_sceneitem_set_order_position(sceneItem, rc - 1);
+			} else if(m_dragIndex.row() < m_insertIndex) {
+				m->insertRow(m_insertIndex - 1, newItem);
+				obs_sceneitem_set_order_position(sceneItem, m_insertIndex - 1);
+			} else {
+				m->insertRow(m_insertIndex, newItem);
+				obs_sceneitem_set_order_position(sceneItem, m_insertIndex);
+			}
+
+			// accept this drop
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		} else {
+			event->ignore();
+		}
 	} else {
 		event->ignore();
 	}
