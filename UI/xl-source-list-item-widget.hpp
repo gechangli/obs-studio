@@ -30,6 +30,9 @@ private:
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
+private slots:
+	void on_visibilityLabel_clicked();
+
 public:
 	XLSourceListItemWidget(QWidget* parent = Q_NULLPTR);
 	virtual ~XLSourceListItemWidget();

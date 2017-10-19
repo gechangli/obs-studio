@@ -177,6 +177,7 @@ void XLSourceListView::dropEvent(QDropEvent *event) {
 
 			// manipulate model to remove row and insert again
 			// it will trigger signal to update widget
+			// meanwhile, we need re-order source position
 			m->removeRow(m_dragIndex.row());
 			if(m_insertIndex >= rc || m_insertIndex == -1) {
 				m->appendRow(newItem);

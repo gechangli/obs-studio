@@ -1632,6 +1632,32 @@ void obs_sceneitem_set_order_position(obs_sceneitem_t *item,
 	obs_scene_release(scene);
 }
 
+int obs_sceneitem_get_order_position(obs_sceneitem_t* item) {
+	if (!item) {
+		return -1;
+	}
+
+	// get scene, and lock
+	struct obs_scene *scene = item->parent;
+	obs_scene_addref(scene);
+	full_lock(scene);
+
+	// start to find
+	int idx = 0;
+	struct obs_scene_item *next = scene->first_item;
+	while(next && next != item) {
+		idx++;
+		next = next->next;
+	}
+
+	// unlock scene
+	full_unlock(scene);
+	obs_scene_release(scene);
+
+	// return
+	return next ? idx : -1;
+}
+
 void obs_sceneitem_set_bounds_type(obs_sceneitem_t *item,
 		enum obs_bounds_type type)
 {

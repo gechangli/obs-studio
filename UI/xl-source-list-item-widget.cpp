@@ -55,4 +55,10 @@ void XLSourceListItemWidget::update(int index) {
 	// update name
 	const char* name = obs_source_get_name(source);
 	ui->nameLabel->setText(name);
+
+	// visible
+	ui->visibilityLabel->setPixmap(QPixmap(obs_sceneitem_visible(sceneItem) ? ":/res/images/visible.png" : ":/res/images/invisible.png"));
+}
+
+void XLSourceListItemWidget::on_visibilityLabel_clicked() {
 }
