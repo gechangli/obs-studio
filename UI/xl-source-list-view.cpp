@@ -44,7 +44,8 @@ void XLSourceListView::setModel(QAbstractItemModel *model) {
 		QModelIndex index = model->index(i, 0);
 		XLSourceListItemWidget* widget = new XLSourceListItemWidget;
 		setIndexWidget(index, widget);
-		widget->update(i);
+		widget->setIndex(i);
+		widget->update();
 	}
 
 	// connect
@@ -59,7 +60,8 @@ void XLSourceListView::onRowsRemoved(const QModelIndex &parent, int first, int l
 	for(int i = first; i < rc; i++) {
 		QModelIndex index = model->index(i, 0);
 		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
-		widget->update(i);
+		widget->setIndex(i);
+		widget->update();
 	}
 }
 
@@ -69,13 +71,15 @@ void XLSourceListView::onRowsInserted(const QModelIndex &parent, int first, int 
 	for(int i = last + 1; i < rc; i++) {
 		QModelIndex index = model->index(i, 0);
 		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
-		widget->update(i);
+		widget->setIndex(i);
+		widget->update();
 	}
 	for(int i = first; i <= last; i++) {
 		QModelIndex index = model->index(i, 0);
 		XLSourceListItemWidget* widget = new XLSourceListItemWidget;
 		setIndexWidget(index, widget);
-		widget->update(i);
+		widget->setIndex(i);
+		widget->update();
 	}
 }
 
@@ -84,7 +88,8 @@ void XLSourceListView::onDataChanged(const QModelIndex &topLeft, const QModelInd
 	for(int i = topLeft.row(); i <= bottomRight.row(); i++) {
 		QModelIndex index = model->index(i, 0);
 		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(index));
-		widget->update(i);
+		widget->setIndex(i);
+		widget->update();
 	}
 }
 

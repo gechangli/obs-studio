@@ -20,12 +20,19 @@
 #include <QWidget>
 #include <memory>
 #include "ui_XLSourceListItemWidget.h"
+#include "obs.h"
 
 class XLSourceListItemWidget : public QWidget {
 	Q_OBJECT
 
 private:
 	std::unique_ptr<Ui::XLSourceListItemWidget> ui;
+	Q_PROPERTY(int m_index READ getIndex WRITE setIndex);
+	int m_index;
+
+private:
+	obs_sceneitem_t* getSceneItem();
+	obs_source_t* getSource();
 
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -38,5 +45,9 @@ public:
 	virtual ~XLSourceListItemWidget();
 
 	// update item
-	void update(int index);
+	void update();
+
+	// setter/getter
+	int getIndex();
+	void setIndex(int i);
 };

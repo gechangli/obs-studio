@@ -26,7 +26,8 @@ Q_DECLARE_METATYPE(OBSSceneItem);
 
 XLSourceListItemWidget::XLSourceListItemWidget(QWidget* parent) :
 	QWidget(parent),
-	ui(new Ui::XLSourceListItemWidget) {
+	ui(new Ui::XLSourceListItemWidget),
+	m_index(0) {
 	// init ui
 	ui->setupUi(this);
 }
@@ -42,14 +43,9 @@ void XLSourceListItemWidget::paintEvent(QPaintEvent* event) {
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void XLSourceListItemWidget::update(int index) {
-	// get item by index
-	XLSourceListView* listView = dynamic_cast<XLSourceListView*>(parentWidget()->parentWidget());
-	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(listView->model());
-	QStandardItem* item = model->item(index, 0);
-
+void XLSourceListItemWidget::update() {
 	// get source
-	OBSSceneItem sceneItem = item->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
+	obs_sceneitem_t* sceneItem = getSceneItem();
 	obs_source_t* source = obs_sceneitem_get_source(sceneItem);
 
 	// update name
@@ -60,5 +56,34 @@ void XLSourceListItemWidget::update(int index) {
 	ui->visibilityLabel->setPixmap(QPixmap(obs_sceneitem_visible(sceneItem) ? ":/res/images/visible.png" : ":/res/images/invisible.png"));
 }
 
+obs_sceneitem_t* XLSourceListItemWidget::getSceneItem() {
+	XLSourceListView* listView = dynamic_cast<XLSourceListView*>(parentWidget()->parentWidget());
+	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(listView->model());
+	QStandardItem* item = model->item(m_index, 0);
+	return item->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
+}
+
+obs_source_t* XLSourceListItemWidget::getSource() {
+	obs_sceneitem_t* sceneItem = getSceneItem();
+	return obs_sceneitem_get_source(sceneItem);
+}
+
 void XLSourceListItemWidget::on_visibilityLabel_clicked() {
+	// get scene item
+	obs_sceneitem_t* sceneItem = getSceneItem();
+
+	// toggle visibility
+	bool visible = !obs_sceneitem_visible(sceneItem);
+	obs_sceneitem_set_visible(sceneItem, visible);
+
+	// update ui
+	ui->visibilityLabel->setPixmap(QPixmap(visible ? ":/res/images/visible.png" : ":/res/images/invisible.png"));
+}
+
+int XLSourceListItemWidget::getIndex() {
+	return m_index;
+}
+
+void XLSourceListItemWidget::setIndex(int i) {
+	m_index = i;
 }
