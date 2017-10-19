@@ -22,6 +22,8 @@
 #include "ui_XLSourceListItemWidget.h"
 #include "obs.h"
 
+class QStandardItemModel;
+
 class XLSourceListItemWidget : public QWidget {
 	Q_OBJECT
 
@@ -33,12 +35,15 @@ private:
 private:
 	obs_sceneitem_t* getSceneItem();
 	obs_source_t* getSource();
+	QStandardItemModel* getModel();
 
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
 	void on_visibilityLabel_clicked();
+	void on_deleteLabel_clicked();
+	void on_editLabel_clicked();
 
 public:
 	XLSourceListItemWidget(QWidget* parent = Q_NULLPTR);

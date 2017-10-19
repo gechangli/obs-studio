@@ -57,8 +57,7 @@ void XLSourceListItemWidget::update() {
 }
 
 obs_sceneitem_t* XLSourceListItemWidget::getSceneItem() {
-	XLSourceListView* listView = dynamic_cast<XLSourceListView*>(parentWidget()->parentWidget());
-	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(listView->model());
+	QStandardItemModel* model = getModel();
 	QStandardItem* item = model->item(m_index, 0);
 	return item->data(static_cast<int>(QtDataRole::OBSRef)).value<OBSSceneItem>();
 }
@@ -78,6 +77,23 @@ void XLSourceListItemWidget::on_visibilityLabel_clicked() {
 
 	// update ui
 	ui->visibilityLabel->setPixmap(QPixmap(visible ? ":/res/images/visible.png" : ":/res/images/invisible.png"));
+}
+
+QStandardItemModel* XLSourceListItemWidget::getModel() {
+	XLSourceListView* listView = dynamic_cast<XLSourceListView*>(parentWidget()->parentWidget());
+	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(listView->model());
+	return model;
+}
+
+void XLSourceListItemWidget::on_deleteLabel_clicked() {
+	QStandardItemModel* model = getModel();
+	obs_sceneitem_t* sceneItem = getSceneItem();
+	obs_sceneitem_remove(sceneItem);
+	model->removeRow(m_index);
+}
+
+void XLSourceListItemWidget::on_editLabel_clicked() {
+
 }
 
 int XLSourceListItemWidget::getIndex() {
