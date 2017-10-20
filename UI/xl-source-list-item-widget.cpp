@@ -54,6 +54,28 @@ void XLSourceListItemWidget::update() {
 
 	// visible
 	ui->visibilityLabel->setPixmap(QPixmap(obs_sceneitem_visible(sceneItem) ? ":/res/images/visible.png" : ":/res/images/invisible.png"));
+
+	// update icon
+	if(obs_source_get_type(source) == OBS_SOURCE_TYPE_INPUT) {
+		const char* id = obs_source_get_id(source);
+		if(!strcmp(id, "decklink-input") || !strcmp(id, "xshm_input") || !strcmp(id, "v4l2_input") ||
+		   !strcmp(id, "av_capture_input") || !strcmp(id, "syphon-input") || !strcmp(id, "dshow_input") ||
+		   !strcmp(id, "win-ivcam")) {
+			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_camera.png"));
+		} else if(!strcmp(id, "color_source") || !strcmp(id, "image_source") || !strcmp(id, "slideshow")) {
+			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_picture.png"));
+		} else if(!strcmp(id, "display_capture") || !strcmp(id, "monitor_capture")) {
+			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_monitor.png"));
+		} else if(!strcmp(id, "window_capture") || !strcmp(id, "game_capture")) {
+			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_window.png"));
+		} else if(!strcmp(id, "ffmpeg_source") || !strcmp(id, "vlc_source")) {
+			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_video.png"));
+		} else if(!strcmp(id, "text_gdiplus") || !strcmp(id, "text_ft2_source")) {
+			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_text.png"));
+		}
+	} else {
+		// should not go here
+	}
 }
 
 obs_sceneitem_t* XLSourceListItemWidget::getSceneItem() {
@@ -68,8 +90,9 @@ obs_source_t* XLSourceListItemWidget::getSource() {
 }
 
 void XLSourceListItemWidget::on_visibilityLabel_clicked() {
-	// get scene item
+	// get scene item and source
 	obs_sceneitem_t* sceneItem = getSceneItem();
+	obs_source_t* source = obs_sceneitem_get_source(sceneItem);
 
 	// toggle visibility
 	bool visible = !obs_sceneitem_visible(sceneItem);

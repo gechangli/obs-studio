@@ -121,7 +121,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="obs.qrc">:/res/images/source_curtain.png</pixmap>
+      <pixmap resource="obs.qrc">:/res/images/source_monitor.png</pixmap>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
