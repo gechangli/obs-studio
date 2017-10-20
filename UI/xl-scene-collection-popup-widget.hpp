@@ -19,13 +19,13 @@
 
 #include <QWidget>
 #include <memory>
-#include "ui_XLUserPopupWidget.h"
+#include "ui_XLSceneCollectionPopupWidget.h"
 
-class XLUserPopupWidget : public QWidget {
+class XLSceneCollectionPopupWidget : public QWidget {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::XLUserPopupWidget> ui;
+	std::unique_ptr<Ui::XLSceneCollectionPopupWidget> ui;
 	QWidget* m_refLocWidget;
 
 protected:
@@ -33,10 +33,10 @@ protected:
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
 public:
-	XLUserPopupWidget(QWidget* parent = Q_NULLPTR);
-	virtual ~XLUserPopupWidget();
-	static XLUserPopupWidget* instance();
+	XLSceneCollectionPopupWidget(QWidget* parent = Q_NULLPTR);
+	virtual ~XLSceneCollectionPopupWidget();
+	static XLSceneCollectionPopupWidget* instance();
 
-	// reference location, if set, place it at center bottom of this widget
+	// reference widget
 	void setReferenceWidget(QWidget* w);
 };

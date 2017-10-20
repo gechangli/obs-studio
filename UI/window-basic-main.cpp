@@ -67,6 +67,7 @@
 #include "xl-source-list-item-widget.hpp"
 #include "xl-source-list-delegate.hpp"
 #include "xl-volume-control.hpp"
+#include "xl-scene-collection-popup-widget.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -1886,6 +1887,18 @@ void OBSBasic::on_drawerArrow_clicked() {
 	} else {
 		ui->scenePanel->setVisible(false);
 		ui->drawerArrow->setPixmap(QPixmap(":/res/images/drawer_arrow_expand.png"));
+	}
+}
+
+void OBSBasic::on_sceneButtonDrawer_clicked() {
+	XLSceneCollectionPopupWidget* popup = XLSceneCollectionPopupWidget::instance();
+	popup->setParent(this);
+	popup->setReferenceWidget(ui->sceneButtonDrawer);
+	if (popup->isHidden()) {
+		popup->setWindowFlags(Qt::Popup);
+		popup->show();
+	} else {
+		popup->hide();
 	}
 }
 

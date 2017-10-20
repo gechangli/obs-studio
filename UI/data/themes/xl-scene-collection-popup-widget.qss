@@ -1,0 +1,12 @@
+XLSceneCollectionPopupWidget {
+    background: @defaultWidgetBgColor@;
+}
+XLSceneCollectionPopupWidget>QPushButton {
+    border: none;
+    background: transparent;
+    font-size: @mediumFontSize@;
+    color: #535353;
+}
+XLSceneCollectionPopupWidget>QPushButton:hover {
+    color: #898989;
+}

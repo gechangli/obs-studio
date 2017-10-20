@@ -18,29 +18,6 @@ XLTitleBar>QLabel {
     font: bold;
 }
 
-/* user popup */
-XLUserPopupWidget {
-    /* WORKAROUND for windows, set it same as title bar color */
-    /* macOS is ok but windows always show black background */
-    background: @userPopupBackground@;
-}
-XLUserPopupWidget>QFrame {
-    background: white;
-}
-XLUserPopupWidget>QLabel {
-    background: transparent;
-    border: none;
-}
-XLUserPopupWidget>QFrame>QPushButton {
-    border: none;
-    background-color: transparent;
-    font-size: @mediumFontSize@;
-    color: #535353;
-}
-XLUserPopupWidget>QFrame>QPushButton:hover {
-    color: #898989;
-}
-
 /* tab bar */
 QWidget#tabBar {
     background: @titleBarColor@;

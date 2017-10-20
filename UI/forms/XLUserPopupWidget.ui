@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>UserPopupWidget</class>
- <widget class="QWidget" name="UserPopupWidget">
+ <class>XLUserPopupWidget</class>
+ <widget class="QWidget" name="XLUserPopupWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

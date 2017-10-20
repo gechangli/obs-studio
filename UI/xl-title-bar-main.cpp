@@ -72,7 +72,7 @@ void XLTitleBarMain::initCustomUI(QHBoxLayout* layout) {
 void XLTitleBarMain::onUserLabelClicked() {
 	XLUserPopupWidget* popup = XLUserPopupWidget::instance();
 	popup->setParent(this);
-	popup->setReferenceLocation(m_arrowLabel);
+	popup->setReferenceWidget(m_arrowLabel);
 	if (popup->isHidden()) {
 		popup->setWindowFlags(Qt::Popup);
 		popup->show();

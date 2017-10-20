@@ -232,7 +232,8 @@ set(xiaomeilive_SOURCES
 	xl-resize-handle.cpp
 	xl-volume-control.cpp
 	xl-web-dialog.cpp
-	xl-title-bar-sub.cpp)
+	xl-title-bar-sub.cpp
+	xl-scene-collection-popup-widget.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -298,7 +299,8 @@ set(xiaomeilive_HEADERS
 	xl-resize-handle.hpp
 	xl-volume-control.hpp
 	xl-web-dialog.hpp
-	xl-title-bar-sub.hpp)
+	xl-title-bar-sub.hpp
+	xl-scene-collection-popup-widget.hpp)
 
 set(xiaomeilive_UI
 	forms/NameDialog.ui
@@ -321,6 +323,7 @@ set(xiaomeilive_UI
 	forms/XLProgressDialog.ui
 	forms/XLUserPopupWidget.ui
 	forms/XLSourceListItemWidget.ui
+	forms/XLSceneCollectionPopupWidget.ui
 	forms/XLStatusBar.ui
 	forms/XLWebDialog.ui)
 

@@ -16,13 +16,13 @@
 ******************************************************************************/
 
 #include <QPainter>
-#include "xl-user-popup-widget.hpp"
+#include "xl-scene-collection-popup-widget.hpp"
 #include "window-basic-main.hpp"
 #include "xl-util.hpp"
 
-XLUserPopupWidget::XLUserPopupWidget(QWidget* parent) :
+XLSceneCollectionPopupWidget::XLSceneCollectionPopupWidget(QWidget* parent) :
 	QWidget(parent),
-	ui(new Ui::XLUserPopupWidget),
+	ui(new Ui::XLSceneCollectionPopupWidget),
 	m_refLocWidget(Q_NULLPTR) {
 	// init ui
 	ui->setupUi(this);
@@ -32,28 +32,25 @@ XLUserPopupWidget::XLUserPopupWidget(QWidget* parent) :
 
 	// event
 	OBSBasic* main = static_cast<OBSBasic*>(App()->GetMainWindow());
-	connect(ui->exitButton, &QPushButton::clicked, main, &OBSBasic::close);
-	connect(ui->settingsButton, &QPushButton::clicked, main, &OBSBasic::on_action_Settings_triggered);
-	connect(ui->switchUserButton, &QPushButton::clicked, main, &OBSBasic::logout);
 
 	// set style
-	QString qssPath = XLUtil::getQssPathByName("xl-user-popup-widget");
+	QString qssPath = XLUtil::getQssPathByName("xl-scene-collection-popup-widget");
 	QString qss = XLUtil::loadQss(qssPath);
 	setStyleSheet(qss);
 }
 
-XLUserPopupWidget::~XLUserPopupWidget() {
+XLSceneCollectionPopupWidget::~XLSceneCollectionPopupWidget() {
 }
 
-XLUserPopupWidget* XLUserPopupWidget::instance() {
-	static XLUserPopupWidget* inst = Q_NULLPTR;
+XLSceneCollectionPopupWidget* XLSceneCollectionPopupWidget::instance() {
+	static XLSceneCollectionPopupWidget* inst = Q_NULLPTR;
 	if (inst == Q_NULLPTR) {
-		inst = new XLUserPopupWidget();
+		inst = new XLSceneCollectionPopupWidget();
 	}
 	return inst;
 }
 
-void XLUserPopupWidget::showEvent(QShowEvent *event) {
+void XLSceneCollectionPopupWidget::showEvent(QShowEvent *event) {
 	// call super
 	QWidget::showEvent(event);
 
@@ -61,13 +58,12 @@ void XLUserPopupWidget::showEvent(QShowEvent *event) {
 	QWidget* ref = m_refLocWidget ? m_refLocWidget : parentWidget();
 	QSize refSize = ref->size();
 	QSize selfSize = size();
-	QPoint pos(refSize.width() / 2, refSize.height());
+	QPoint pos(refSize.width() - selfSize.width(), refSize.height());
 	pos = ref->mapToGlobal(pos);
-	pos.setX(pos.x() - selfSize.width() / 2);
 	move(pos);
 }
 
-void XLUserPopupWidget::paintEvent(QPaintEvent* event) {
+void XLSceneCollectionPopupWidget::paintEvent(QPaintEvent* event) {
 	QWidget::paintEvent(event);
 
 	// draw with style
@@ -77,6 +73,6 @@ void XLUserPopupWidget::paintEvent(QPaintEvent* event) {
 	style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void XLUserPopupWidget::setReferenceWidget(QWidget* w) {
+void XLSceneCollectionPopupWidget::setReferenceWidget(QWidget* w) {
 	m_refLocWidget = w;
 }
