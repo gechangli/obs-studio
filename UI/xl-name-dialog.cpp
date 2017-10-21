@@ -20,6 +20,8 @@
 #include "ui_NameDialog.h"
 #include "obs-app.hpp"
 #include "xl-util.hpp"
+#include "xl-title-bar-sub.hpp"
+#include "xl-frameless-window-util.hpp"
 
 using namespace std;
 
