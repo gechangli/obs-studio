@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>118</width>
-    <height>90</height>
+    <height>60</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>118</width>
-    <height>90</height>
+    <height>60</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>118</width>
-    <height>90</height>
+    <width>152</width>
+    <height>60</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -41,13 +41,6 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
-    <widget class="QPushButton" name="saveButton">
-     <property name="text">
-      <string>Save.Template</string>
-     </property>
-    </widget>
-   </item>
    <item>
     <widget class="QPushButton" name="renameButton">
      <property name="text">
