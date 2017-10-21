@@ -32,6 +32,18 @@ XLNameDialog::XLNameDialog(QWidget *parent) :
 	// disable focus rect
 	ui->nameEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
 
+	// title bar
+#ifdef Q_OS_WIN
+	// setup frameless ui
+	XLFramelessWindowUtil::setupUI(this);
+
+	// create title bar
+	m_titleBar = new XLTitleBarSub(this);
+	m_titleBar->init();
+	m_titleBar->move(0, 0);
+	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &QDialog::reject);
+#endif
+
 	// set style
 	QString qssPath = XLUtil::getQssPathByName("xl-name-dialog");
 	QString qss = XLUtil::loadQss(qssPath);
@@ -44,6 +56,14 @@ void XLNameDialog::on_yesButton_clicked() {
 
 void XLNameDialog::on_noButton_clicked() {
 	reject();
+}
+
+void XLNameDialog::setWindowTitle(const QString& title) {
+#ifdef Q_OS_WIN
+	m_titleBar->setWindowTitle(title);
+#else
+	QDialog::setWindowTitle(title);
+#endif
 }
 
 static bool IsWhitespace(char ch)  {

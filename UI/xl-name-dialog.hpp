@@ -22,11 +22,19 @@
 #include <memory>
 #include "ui_XLNameDialog.h"
 
+class XLTitleBarSub;
+
 class XLNameDialog : public QDialog {
 	Q_OBJECT
 
 private:
 	std::unique_ptr<Ui::XLNameDialog> ui;
+
+	// because this dialog in macOS is displayed as sheet
+	// so we only use custom title in windows
+#ifdef Q_OS_WIN
+	XLTitleBarSub* m_titleBar;
+#endif
 
 private slots:
 	void on_yesButton_clicked();
@@ -34,6 +42,9 @@ private slots:
 
 public:
 	XLNameDialog(QWidget *parent);
+
+	// override
+	void setWindowTitle(const QString& title);
 
 	static bool AskForName(QWidget *parent, const QString &title,
 			const QString &text, std::string &str,
