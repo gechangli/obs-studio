@@ -28,6 +28,10 @@ class XLNameDialog : public QDialog {
 private:
 	std::unique_ptr<Ui::XLNameDialog> ui;
 
+private slots:
+	void on_yesButton_clicked();
+	void on_noButton_clicked();
+
 public:
 	XLNameDialog(QWidget *parent);
 

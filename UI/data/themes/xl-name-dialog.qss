@@ -1,0 +1,38 @@
+QDialog#XLNameDialog {
+    background: #F8F8F8;
+}
+QLineEdit#nameEdit {
+    border: 1px solid #CBCACA;
+    border-radius: 4px;
+    background: white;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+QPushButton#yesButton {
+    font-size: @bigFontSize@;
+    border-radius: 16px;
+    border: none;
+    background-color: #64c112;
+    color: #F8F8F8;
+}
+QPushButton#yesButton:hover {
+    background-color: #64D112;
+}
+QPushButton#yesButton:pressed {
+    background-color: #64c112;
+}
+QPushButton#noButton {
+    font-size: @bigFontSize@;
+    border-radius: 16px;
+    border: 1px solid #C9C9C9;
+    background-color: #F8F8F8;
+    color: #C9C9C9;
+}
+QPushButton#noButton:hover {
+    background-color: #C9C9C9;
+    color: #F8F8F8;
+}
+QPushButton#noButton:pressed {
+    background-color: #F8F8F8;
+    color: #C9C9C9;
+}

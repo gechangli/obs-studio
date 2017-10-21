@@ -19,36 +19,48 @@
 #include "qt-wrappers.hpp"
 #include "ui_NameDialog.h"
 #include "obs-app.hpp"
+#include "xl-util.hpp"
 
 using namespace std;
 
-XLNameDialog::XLNameDialog(QWidget *parent)
-	: QDialog (parent),
-	  ui      (new Ui::XLNameDialog)
-{
+XLNameDialog::XLNameDialog(QWidget *parent) :
+	QDialog (parent),
+	ui(new Ui::XLNameDialog) {
+	// init ui
 	ui->setupUi(this);
 
-	installEventFilter(CreateShortcutFilter());
+	// disable focus rect
+	ui->nameEdit->setAttribute(Qt::WA_MacShowFocusRect, false);
+
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-name-dialog");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
 }
 
-static bool IsWhitespace(char ch)
-{
+void XLNameDialog::on_yesButton_clicked() {
+	accept();
+}
+
+void XLNameDialog::on_noButton_clicked() {
+	reject();
+}
+
+static bool IsWhitespace(char ch)  {
 	return ch == ' ' || ch == '\t';
 }
 
 bool XLNameDialog::AskForName(QWidget *parent, const QString &title,
-		const QString &text, string &str, const QString &placeHolder)
-{
+							  const QString &text, string &str, const QString &placeHolder) {
 	XLNameDialog dialog(parent);
 	dialog.setWindowTitle(title);
 	dialog.ui->label->setText(text);
-	dialog.ui->userText->setText(placeHolder);
-	dialog.ui->userText->selectAll();
+	dialog.ui->nameEdit->setText(placeHolder);
+	dialog.ui->nameEdit->selectAll();
 
 	bool accepted = (dialog.exec() == DialogCode::Accepted);
 	if (accepted) {
-		str = QT_TO_UTF8(dialog.ui->userText->text());
-
+		str = QT_TO_UTF8(dialog.ui->nameEdit->text());
 		while (str.size() && IsWhitespace(str.back()))
 			str.erase(str.end() - 1);
 		while (str.size() && IsWhitespace(str.front()))
