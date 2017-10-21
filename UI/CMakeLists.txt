@@ -199,7 +199,7 @@ set(xiaomeilive_SOURCES
 	menu-button.cpp
 	double-slider.cpp
 	adv-audio-control.cpp
-        visibility-checkbox.cpp
+	visibility-checkbox.cpp
 	locked-checkbox.cpp
 	vertical-scroll-area.cpp
 	visibility-item-widget.cpp
@@ -232,7 +232,8 @@ set(xiaomeilive_SOURCES
 	xl-volume-control.cpp
 	xl-web-dialog.cpp
 	xl-title-bar-sub.cpp
-	xl-scene-collection-popup-widget.cpp)
+	xl-scene-collection-popup-widget.cpp
+	xl-message-box.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -298,7 +299,8 @@ set(xiaomeilive_HEADERS
 	xl-volume-control.hpp
 	xl-web-dialog.hpp
 	xl-title-bar-sub.hpp
-	xl-scene-collection-popup-widget.hpp)
+	xl-scene-collection-popup-widget.hpp
+	xl-message-box.hpp)
 
 set(xiaomeilive_UI
 	forms/AutoConfigStartPage.ui
@@ -323,7 +325,8 @@ set(xiaomeilive_UI
 	forms/XLSourceListItemWidget.ui
 	forms/XLSceneCollectionPopupWidget.ui
 	forms/XLStatusBar.ui
-	forms/XLWebDialog.ui)
+	forms/XLWebDialog.ui
+	forms/XLMessageBox.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)

@@ -498,6 +498,7 @@ private:
 public:
 	std::unique_ptr<BasicOutputHandler> outputHandler;
 	OBSScene      GetCurrentScene();
+	int GetSceneCollectionCount();
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);
 

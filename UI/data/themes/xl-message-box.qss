@@ -1,0 +1,35 @@
+QDialog#XLMessageBox {
+    background: #F8F8F8;
+}
+QLabel#msgLabel {
+    font-size: @largeFontSize@;
+    color: black;
+}
+QPushButton#yesButton {
+    font-size: @bigFontSize@;
+    border-radius: 16px;
+    border: none;
+    background-color: #64c112;
+    color: #F8F8F8;
+}
+QPushButton#yesButton:hover {
+    background-color: #64D112;
+}
+QPushButton#yesButton:pressed {
+    background-color: #64c112;
+}
+QPushButton#noButton {
+    font-size: @bigFontSize@;
+    border-radius: 16px;
+    border: 1px solid #C9C9C9;
+    background-color: #F8F8F8;
+    color: #C9C9C9;
+}
+QPushButton#noButton:hover {
+    background-color: #C9C9C9;
+    color: #F8F8F8;
+}
+QPushButton#noButton:pressed {
+    background-color: #F8F8F8;
+    color: #C9C9C9;
+}

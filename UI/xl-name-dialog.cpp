@@ -17,7 +17,7 @@
 
 #include "xl-name-dialog.hpp"
 #include "qt-wrappers.hpp"
-#include "ui_NameDialog.h"
+#include "ui_XLNameDialog.h"
 #include "obs-app.hpp"
 #include "xl-util.hpp"
 #include "xl-title-bar-sub.hpp"

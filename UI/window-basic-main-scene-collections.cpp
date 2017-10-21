@@ -25,6 +25,7 @@
 #include "window-basic-main.hpp"
 #include "xl-name-dialog.hpp"
 #include "qt-wrappers.hpp"
+#include "xl-message-box.hpp"
 
 using namespace std;
 
@@ -187,6 +188,15 @@ void OBSBasic::AddSceneCollection(bool create_new)
 	}
 }
 
+int OBSBasic::GetSceneCollectionCount() {
+	int count = 0;
+	EnumSceneCollections([&](const char *name, const char *path) {
+		count++;
+		return true;
+	});
+	return count;
+}
+
 void OBSBasic::RefreshSceneCollections()
 {
 	QList<QAction*> menuActions = ui->sceneCollectionMenu->actions();
@@ -342,9 +352,9 @@ void OBSBasic::on_actionRemoveSceneCollection_triggered()
 	// confirm remove
 	QString text = QTStr("ConfirmRemove.Text");
 	text.replace("$1", QT_UTF8(oldName.c_str()));
-	QMessageBox::StandardButton button = OBSMessageBox::question(this,
+	QDialog::DialogCode button = XLMessageBox::question(this,
 			QTStr("ConfirmRemove.Title"), text);
-	if (button == QMessageBox::No)
+	if (button == QDialog::Rejected)
 		return;
 
 	// get scene collection file folder

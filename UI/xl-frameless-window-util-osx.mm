@@ -29,6 +29,9 @@ void XLFramelessWindowUtil::setupUI(QWidget* w) {
         }
     } else {
         w->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+        QMargins m = w->contentsMargins();
+        m.setTop(m.top() + 32);
+        w->setContentsMargins(m);
     }
 }
 
