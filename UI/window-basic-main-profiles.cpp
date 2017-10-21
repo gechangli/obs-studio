@@ -22,7 +22,7 @@
 #include <QVariant>
 #include <QFileDialog>
 #include "window-basic-main.hpp"
-#include "window-namedialog.hpp"
+#include "xl-name-dialog.hpp"
 #include "qt-wrappers.hpp"
 
 void EnumProfiles(std::function<bool (const char *, const char *)> &&cb)
@@ -96,7 +96,7 @@ static bool GetProfileName(QWidget *parent, std::string &name,
 	int ret;
 
 	for (;;) {
-		bool success = NameDialog::AskForName(parent, title, text,
+		bool success = XLNameDialog::AskForName(parent, title, text,
 				name, QT_UTF8(oldName));
 		if (!success) {
 			return false;

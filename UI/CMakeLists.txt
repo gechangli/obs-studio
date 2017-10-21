@@ -190,7 +190,7 @@ set(xiaomeilive_SOURCES
 	window-basic-adv-audio.cpp
 	window-basic-transform.cpp
 	window-basic-preview.cpp
-	window-namedialog.cpp
+	xl-name-dialog.cpp
 	window-log-reply.cpp
 	window-projector.cpp
 	window-remux.cpp
@@ -254,7 +254,7 @@ set(xiaomeilive_HEADERS
 	window-basic-adv-audio.hpp
 	window-basic-transform.hpp
 	window-basic-preview.hpp
-	window-namedialog.hpp
+	xl-name-dialog.hpp
 	window-log-reply.hpp
 	window-projector.hpp
 	window-remux.hpp

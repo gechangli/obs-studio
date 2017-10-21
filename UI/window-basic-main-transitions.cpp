@@ -22,7 +22,7 @@
 #include <util/dstr.hpp>
 #include "window-basic-main.hpp"
 #include "display-helpers.hpp"
-#include "window-namedialog.hpp"
+#include "xl-name-dialog.hpp"
 #include "menu-button.hpp"
 #include "qt-wrappers.hpp"
 
@@ -357,7 +357,7 @@ void OBSBasic::AddTransition()
 		placeHolderText = format.arg(++i);
 	}
 
-	bool accepted = NameDialog::AskForName(this,
+	bool accepted = XLNameDialog::AskForName(this,
 			QTStr("TransitionNameDlg.Title"),
 			QTStr("TransitionNameDlg.Text"),
 			name, placeHolderText);
@@ -463,7 +463,7 @@ void OBSBasic::RenameTransition()
 	QString placeHolderText = QT_UTF8(obs_source_get_name(transition));
 	obs_source_t *source = nullptr;
 
-	bool accepted = NameDialog::AskForName(this,
+	bool accepted = XLNameDialog::AskForName(this,
 			QTStr("TransitionNameDlg.Title"),
 			QTStr("TransitionNameDlg.Text"),
 			name, placeHolderText);

@@ -47,7 +47,7 @@
 #include "visibility-item-widget.hpp"
 #include "item-widget-helpers.hpp"
 #include "window-basic-settings.hpp"
-#include "window-namedialog.hpp"
+#include "xl-name-dialog.hpp"
 #include "window-basic-auto-config.hpp"
 #include "window-basic-source-select.hpp"
 #include "window-basic-main.hpp"
@@ -2763,7 +2763,7 @@ void OBSBasic::DuplicateSelectedScene()
 
 	for (;;) {
 		string name;
-		bool accepted = NameDialog::AskForName(this,
+		bool accepted = XLNameDialog::AskForName(this,
 				QTStr("Basic.Main.AddSceneDlg.Title"),
 				QTStr("Basic.Main.AddSceneDlg.Text"),
 				name,
@@ -3719,7 +3719,7 @@ void OBSBasic::on_actionAddScene_triggered()
 		placeHolderText = format.arg(++i);
 	}
 
-	bool accepted = NameDialog::AskForName(this,
+	bool accepted = XLNameDialog::AskForName(this,
 			QTStr("Basic.Main.AddSceneDlg.Title"),
 			QTStr("Basic.Main.AddSceneDlg.Text"),
 			name,

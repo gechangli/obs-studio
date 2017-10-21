@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "window-namedialog.hpp"
+#include "xl-name-dialog.hpp"
 #include "window-basic-main.hpp"
 #include "window-basic-filters.hpp"
 #include "display-helpers.hpp"
@@ -391,7 +391,7 @@ void OBSBasicFilters::AddNewFilter(const char *id)
 		obs_source_t *existing_filter;
 		string name = obs_source_get_display_name(id);
 
-		bool success = NameDialog::AskForName(this,
+		bool success = XLNameDialog::AskForName(this,
 				QTStr("Basic.Filters.AddFilter.Title"),
 				QTStr("Basic.FIlters.AddFilter.Text"), name,
 				QT_UTF8(name.c_str()));

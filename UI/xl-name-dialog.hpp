@@ -23,14 +23,14 @@
 
 #include "ui_NameDialog.h"
 
-class NameDialog : public QDialog {
+class XLNameDialog : public QDialog {
 	Q_OBJECT
 
 private:
 	std::unique_ptr<Ui::NameDialog> ui;
 
 public:
-	NameDialog(QWidget *parent);
+	XLNameDialog(QWidget *parent);
 
 	static bool AskForName(QWidget *parent, const QString &title,
 			const QString &text, std::string &str,

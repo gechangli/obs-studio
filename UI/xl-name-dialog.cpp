@@ -15,14 +15,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "window-namedialog.hpp"
+#include "xl-name-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "ui_NameDialog.h"
 #include "obs-app.hpp"
 
 using namespace std;
 
-NameDialog::NameDialog(QWidget *parent)
+XLNameDialog::XLNameDialog(QWidget *parent)
 	: QDialog (parent),
 	  ui      (new Ui::NameDialog)
 {
@@ -36,10 +36,10 @@ static bool IsWhitespace(char ch)
 	return ch == ' ' || ch == '\t';
 }
 
-bool NameDialog::AskForName(QWidget *parent, const QString &title,
+bool XLNameDialog::AskForName(QWidget *parent, const QString &title,
 		const QString &text, string &str, const QString &placeHolder)
 {
-	NameDialog dialog(parent);
+	XLNameDialog dialog(parent);
 	dialog.setWindowTitle(title);
 	dialog.ui->label->setText(text);
 	dialog.ui->userText->setText(placeHolder);

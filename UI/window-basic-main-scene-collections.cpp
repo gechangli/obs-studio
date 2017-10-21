@@ -23,7 +23,7 @@
 #include <QStandardPaths>
 #include "item-widget-helpers.hpp"
 #include "window-basic-main.hpp"
-#include "window-namedialog.hpp"
+#include "xl-name-dialog.hpp"
 #include "qt-wrappers.hpp"
 
 using namespace std;
@@ -108,7 +108,7 @@ static bool GetSceneCollectionName(QWidget *parent, std::string &name,
 	}
 
 	for (;;) {
-		bool success = NameDialog::AskForName(parent, title, text,
+		bool success = XLNameDialog::AskForName(parent, title, text,
 				name, QT_UTF8(oldName));
 		if (!success) {
 			return false;
