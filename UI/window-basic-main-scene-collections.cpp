@@ -267,11 +267,17 @@ void OBSBasic::on_actionRenameSceneCollection_triggered()
 	if (!success)
 		return;
 
+	// save scene collection name in global config
 	config_set_string(App()->GlobalConfig(), "Basic", "SceneCollection",
 			name.c_str());
 	config_set_string(App()->GlobalConfig(), "Basic", "SceneCollectionFile",
 			file.c_str());
+
+	// save scene collection file
 	SaveProjectNow();
+
+	// set global config
+	config_save_safe(App()->GlobalConfig(), "tmp", Q_NULLPTR);
 
 	char path[512];
 	int ret = GetConfigPath(path, 512, "obs-studio/basic/scenes/");
@@ -293,6 +299,9 @@ void OBSBasic::on_actionRenameSceneCollection_triggered()
 
 	UpdateTitleBar();
 	RefreshSceneCollections();
+
+	// update template name
+	ui->templateNameLabel->setText(L("Current.Template") + ": " + name.c_str());
 
 	if (api) {
 		api->on_event(OBS_FRONTEND_EVENT_SCENE_COLLECTION_LIST_CHANGED);
