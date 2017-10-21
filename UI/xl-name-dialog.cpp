@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
     Copyright (C) 2013 by Hugh Bailey <obs.jim@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
@@ -44,6 +44,12 @@ XLNameDialog::XLNameDialog(QWidget *parent) :
 	m_titleBar->init();
 	m_titleBar->move(0, 0);
 	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &QDialog::reject);
+
+	// hide label
+	ui->label->setVisible(false);
+	QSize contentSize = size();
+	contentSize.setHeight(contentSize.height() - ui->label->size().height());
+	resize(contentSize);
 #endif
 
 	// set style
