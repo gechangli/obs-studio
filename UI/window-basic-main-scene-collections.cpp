@@ -21,7 +21,7 @@
 #include <QVariant>
 #include <QFileDialog>
 #include <QStandardPaths>
-#include "item-widget-helpers.hpp"
+#include "xl-util.hpp"
 #include "window-basic-main.hpp"
 #include "xl-name-dialog.hpp"
 #include "qt-wrappers.hpp"
@@ -314,11 +314,13 @@ void OBSBasic::on_actionRemoveSceneCollection_triggered()
 	std::string newName;
 	std::string newPath;
 
+	// get current scene collection
 	std::string oldFile = config_get_string(App()->GlobalConfig(),
 			"Basic", "SceneCollectionFile");
 	std::string oldName = config_get_string(App()->GlobalConfig(),
 			"Basic", "SceneCollection");
 
+	// callback to find another scene collection
 	auto cb = [&](const char *name, const char *filePath)
 	{
 		if (strcmp(oldName.c_str(), name) != 0) {
@@ -330,20 +332,22 @@ void OBSBasic::on_actionRemoveSceneCollection_triggered()
 		return true;
 	};
 
+	// enum to find another scene collection
 	EnumSceneCollections(cb);
 
 	/* this should never be true due to menu item being grayed out */
 	if (newPath.empty())
 		return;
 
+	// confirm remove
 	QString text = QTStr("ConfirmRemove.Text");
 	text.replace("$1", QT_UTF8(oldName.c_str()));
-
 	QMessageBox::StandardButton button = OBSMessageBox::question(this,
 			QTStr("ConfirmRemove.Title"), text);
 	if (button == QMessageBox::No)
 		return;
 
+	// get scene collection file folder
 	char path[512];
 	int ret = GetConfigPath(path, 512, "obs-studio/basic/scenes/");
 	if (ret <= 0) {
@@ -351,14 +355,19 @@ void OBSBasic::on_actionRemoveSceneCollection_triggered()
 		return;
 	}
 
+	// remove
 	oldFile.insert(0, path);
 	oldFile += ".json";
 	os_unlink(oldFile.c_str());
 	oldFile += ".bak";
 	os_unlink(oldFile.c_str());
 
+	// load another scene collection
 	Load(newPath.c_str());
 	RefreshSceneCollections();
+
+	// save global config
+	config_save_safe(App()->GlobalConfig(), "tmp", Q_NULLPTR);
 
 	const char *newFile = config_get_string(App()->GlobalConfig(),
 			"Basic", "SceneCollectionFile");
@@ -370,6 +379,9 @@ void OBSBasic::on_actionRemoveSceneCollection_triggered()
 	blog(LOG_INFO, "------------------------------------------------");
 
 	UpdateTitleBar();
+
+	// update template name
+	ui->templateNameLabel->setText(L("Current.Template") + ": " + newName.c_str());
 
 	if (api) {
 		api->on_event(OBS_FRONTEND_EVENT_SCENE_COLLECTION_LIST_CHANGED);

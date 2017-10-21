@@ -21,7 +21,7 @@
 #include "display-helpers.hpp"
 #include "qt-wrappers.hpp"
 #include "visibility-item-widget.hpp"
-#include "item-widget-helpers.hpp"
+#include "xl-util.hpp"
 #include "obs-app.hpp"
 
 #include <QMessageBox>
@@ -132,8 +132,8 @@ OBSBasicFilters::OBSBasicFilters(QWidget *parent, OBSSource source_)
 
 OBSBasicFilters::~OBSBasicFilters()
 {
-	ClearListItems(ui->asyncFilters);
-	ClearListItems(ui->effectFilters);
+	XLUtil::clearListItems(ui->asyncFilters);
+	XLUtil::clearListItems(ui->effectFilters);
 }
 
 void OBSBasicFilters::Init()
@@ -210,7 +210,7 @@ void OBSBasicFilters::RemoveFilter(OBSSource filter)
 		OBSSource curFilter = v.value<OBSSource>();
 
 		if (filter == curFilter) {
-			DeleteListItem(list, item);
+			XLUtil::deleteListItem(list, item);
 			break;
 		}
 	}
@@ -250,7 +250,7 @@ void OBSBasicFilters::ReorderFilter(QListWidget *list,
 			if ((int)idx != i) {
 				bool sel = (list->currentRow() == i);
 
-				listItem = TakeListItem(list, i);
+				listItem = XLUtil::takeListItem(list, i);
 				if (listItem)  {
 					list->insertItem((int)idx, listItem);
 					SetupVisibilityItem(list,
@@ -298,8 +298,8 @@ void OBSBasicFilters::UpdateFilters()
 	if (!source)
 		return;
 
-	ClearListItems(ui->effectFilters);
-	ClearListItems(ui->asyncFilters);
+	XLUtil::clearListItems(ui->effectFilters);
+	XLUtil::clearListItems(ui->asyncFilters);
 
 	obs_source_enum_filters(source,
 			[] (obs_source_t*, obs_source_t *filter, void *p)

@@ -45,7 +45,7 @@
 #include "obs-app.hpp"
 #include "platform.hpp"
 #include "visibility-item-widget.hpp"
-#include "item-widget-helpers.hpp"
+#include "xl-util.hpp"
 #include "window-basic-settings.hpp"
 #include "xl-name-dialog.hpp"
 #include "window-basic-auto-config.hpp"
@@ -2294,7 +2294,7 @@ void OBSBasic::UpdatePreviewScalingMenu()
 
 void OBSBasic::UpdateSources(OBSScene scene)
 {
-	ClearListItems(ui->sources);
+	XLUtil::clearListItems(ui->sources);
 
 	obs_scene_enum_items(scene,
 			[] (obs_scene_t *scene, obs_sceneitem_t *item, void *p)
@@ -2452,7 +2452,7 @@ void OBSBasic::RemoveScene(OBSSource source)
 
 	if (sel != nullptr) {
 		if (sel == ui->scenes->currentItem())
-			ClearListItems(ui->sources);
+			XLUtil::clearListItems(ui->sources);
 		delete sel;
 	}
 
@@ -2492,7 +2492,7 @@ void OBSBasic::RemoveSceneItem(OBSSceneItem item)
 		QListWidgetItem *listItem = ui->sources->item(i);
 
 		if (GetOBSRef<OBSSceneItem>(listItem) == item) {
-			DeleteListItem(ui->sources, listItem);
+			XLUtil::deleteListItem(ui->sources, listItem);
 			break;
 		}
 	}
@@ -2843,7 +2843,7 @@ void OBSBasic::ReorderSceneItem(obs_sceneitem_t *item, size_t idx)
 			if ((int)idx_inv != i) {
 				bool sel = (ui->sources->currentRow() == i);
 
-				listItem = TakeListItem(ui->sources, i);
+				listItem = XLUtil::takeListItem(ui->sources, i);
 				if (listItem)  {
 					ui->sources->insertItem(idx_inv,
 							listItem);
@@ -3370,8 +3370,8 @@ void OBSBasic::ClearSceneData()
 	CloseDialogs();
 
 	ClearVolumeControls();
-	ClearListItems(ui->scenes);
-	ClearListItems(ui->sources);
+	XLUtil::clearListItems(ui->scenes);
+	XLUtil::clearListItems(ui->sources);
 	ClearQuickTransitions();
 	ui->transitions->clear();
 

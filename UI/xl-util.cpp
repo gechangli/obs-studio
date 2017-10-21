@@ -21,6 +21,7 @@
 #include <QTextStream>
 #include <QBitmap>
 #include <QPainter>
+#include <QListWidget>
 #include "obs-app.hpp"
 
 using namespace std;
@@ -137,4 +138,27 @@ QString XLUtil::loadQss(QString path, QString paramName) {
 		}
 	}
 	return qss;
+}
+
+QListWidgetItem* XLUtil::takeListItem(QListWidget *widget, int row) {
+	QListWidgetItem *item = widget->item(row);
+	if (item) {
+		delete widget->itemWidget(item);
+	}
+	return widget->takeItem(row);
+}
+
+void XLUtil::deleteListItem(QListWidget *widget, QListWidgetItem *item) {
+	if (item) {
+		delete widget->itemWidget(item);
+		delete item;
+	}
+}
+
+void XLUtil::clearListItems(QListWidget *widget) {
+	widget->setCurrentItem(Q_NULLPTR, QItemSelectionModel::Clear);
+	for (int i = 0; i < widget->count(); i++) {
+		delete widget->itemWidget(widget->item(i));
+	}
+	widget->clear();
 }

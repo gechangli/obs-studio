@@ -199,8 +199,7 @@ set(xiaomeilive_SOURCES
 	menu-button.cpp
 	double-slider.cpp
 	adv-audio-control.cpp
-	item-widget-helpers.cpp
-	visibility-checkbox.cpp
+        visibility-checkbox.cpp
 	locked-checkbox.cpp
 	vertical-scroll-area.cpp
 	visibility-item-widget.cpp
@@ -265,7 +264,6 @@ set(xiaomeilive_HEADERS
 	focus-list.hpp
 	menu-button.hpp
 	adv-audio-control.hpp
-	item-widget-helpers.hpp
 	visibility-checkbox.hpp
 	locked-checkbox.hpp
 	vertical-scroll-area.hpp

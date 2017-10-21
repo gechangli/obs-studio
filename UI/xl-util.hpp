@@ -21,14 +21,29 @@
 #include <QColor>
 #include <QPixmap>
 
+class QListWidgetItem;
+class QListWidget;
+
 class XLUtil {
 public:
+	// file
 	static QString getFileContent(QString path);
 	static QString getDataFileContent(QString path);
+
+	// string
 	static QString stringByDeletingLastPathComponent(QString path);
 	static QString stringByDeletingPathExtension(QString path);
 	static QString lastPathComponent(QString path);
+
+	// pixmap
 	static QPixmap createCircle(int radius, QColor color);
+
+	// qss
 	static QString loadQss(QString path, QString paramName = "Default");
 	static QString getQssPathByName(QString name);
+
+	// list
+	static QListWidgetItem* takeListItem(QListWidget *widget, int row);
+	static void deleteListItem(QListWidget *widget, QListWidgetItem *item);
+	static void clearListItems(QListWidget *widget);
 };
