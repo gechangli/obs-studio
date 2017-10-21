@@ -639,13 +639,6 @@ private slots:
 	void on_previewDisabledLabel_customContextMenuRequested(
 			const QPoint &pos);
 
-	void on_actionNewSceneCollection_triggered();
-	void on_actionDupSceneCollection_triggered();
-	void on_actionRenameSceneCollection_triggered();
-	void on_actionRemoveSceneCollection_triggered();
-	void on_actionImportSceneCollection_triggered();
-	void on_actionExportSceneCollection_triggered();
-
 	void on_actionNewProfile_triggered();
 	void on_actionDupProfile_triggered();
 	void on_actionRenameProfile_triggered();
@@ -724,6 +717,13 @@ private slots:
 public slots:
 	void on_actionResetTransform_triggered();
 	void on_action_Settings_triggered();
+
+	void on_actionNewSceneCollection_triggered();
+	void on_actionDupSceneCollection_triggered();
+	void on_actionRenameSceneCollection_triggered();
+	void on_actionRemoveSceneCollection_triggered();
+	void on_actionImportSceneCollection_triggered();
+	void on_actionExportSceneCollection_triggered();
 
 public:
 	explicit OBSBasic(QWidget *parent = 0);

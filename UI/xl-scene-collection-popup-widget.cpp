@@ -32,6 +32,8 @@ XLSceneCollectionPopupWidget::XLSceneCollectionPopupWidget(QWidget* parent) :
 
 	// event
 	OBSBasic* main = static_cast<OBSBasic*>(App()->GetMainWindow());
+	connect(ui->renameButton, &QPushButton::clicked, main, &OBSBasic::on_actionRenameSceneCollection_triggered);
+	connect(ui->deleteButton, &QPushButton::clicked, main, &OBSBasic::on_actionRemoveSceneCollection_triggered);
 
 	// set style
 	QString qssPath = XLUtil::getQssPathByName("xl-scene-collection-popup-widget");
