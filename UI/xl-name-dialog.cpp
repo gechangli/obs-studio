@@ -24,7 +24,7 @@ using namespace std;
 
 XLNameDialog::XLNameDialog(QWidget *parent)
 	: QDialog (parent),
-	  ui      (new Ui::NameDialog)
+	  ui      (new Ui::XLNameDialog)
 {
 	ui->setupUi(this);
 

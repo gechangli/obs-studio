@@ -303,7 +303,6 @@ set(xiaomeilive_HEADERS
 	xl-scene-collection-popup-widget.hpp)
 
 set(xiaomeilive_UI
-	forms/NameDialog.ui
 	forms/AutoConfigStartPage.ui
 	forms/AutoConfigVideoPage.ui
 	forms/AutoConfigStreamPage.ui
@@ -318,6 +317,7 @@ set(xiaomeilive_UI
 	forms/OBSBasicInteraction.ui
 	forms/OBSUpdate.ui
 	forms/OBSRemux.ui
+	forms/XLNameDialog.ui
 	forms/XLRegisterDialog.ui
 	forms/XLLoginDialog.ui
 	forms/XLProgressDialog.ui

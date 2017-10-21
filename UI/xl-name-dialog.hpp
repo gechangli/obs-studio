@@ -20,14 +20,13 @@
 #include <QDialog>
 #include <string>
 #include <memory>
-
-#include "ui_NameDialog.h"
+#include "ui_XLNameDialog.h"
 
 class XLNameDialog : public QDialog {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::NameDialog> ui;
+	std::unique_ptr<Ui::XLNameDialog> ui;
 
 public:
 	XLNameDialog(QWidget *parent);
