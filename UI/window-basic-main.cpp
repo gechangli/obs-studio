@@ -2296,6 +2296,11 @@ void OBSBasic::UpdateSources(OBSScene scene)
 {
 	XLUtil::clearListItems(ui->sources);
 
+	// clear source list model
+	QAbstractItemModel* model = ui->sourceList->model();
+	model->removeRows(0, model->rowCount());
+
+	// enumerate current scene to re-populate source list
 	obs_scene_enum_items(scene,
 			[] (obs_scene_t *scene, obs_sceneitem_t *item, void *p)
 			{
