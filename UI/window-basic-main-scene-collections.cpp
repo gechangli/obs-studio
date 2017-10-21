@@ -100,7 +100,7 @@ static bool GetSceneCollectionName(QWidget *parent, std::string &name,
 	int ret;
 
 	if (rename) {
-		title = Str("Basic.Main.RenameSceneCollection.Title");
+		title = Str("Rename.Template");
 		text  = Str("Basic.Main.AddSceneCollection.Text");
 	} else {
 		title = Str("Basic.Main.AddSceneCollection.Title");
