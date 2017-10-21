@@ -68,6 +68,7 @@
 #include "xl-source-list-delegate.hpp"
 #include "xl-volume-control.hpp"
 #include "xl-scene-collection-popup-widget.hpp"
+#include "xl-add-camera-dialog.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -1900,6 +1901,12 @@ void OBSBasic::on_sceneButtonDrawer_clicked() {
 	} else {
 		popup->hide();
 	}
+}
+
+void OBSBasic::on_cameraButton_clicked() {
+	XLAddCameraDialog* dialog = new XLAddCameraDialog(this);
+	dialog->setWindowTitle(L("Add") + L("Camera"));
+	dialog->exec();
 }
 
 void OBSBasic::InitHotkeys()

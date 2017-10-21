@@ -468,6 +468,7 @@ private slots:
 	void on_earnTab_clicked();
 	void on_drawerArrow_clicked();
 	void on_sceneButtonDrawer_clicked();
+	void on_cameraButton_clicked();
 
 private:
 	/* OBS Callbacks */

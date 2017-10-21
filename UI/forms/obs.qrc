@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/drop_down_arrow_gray.png</file>
     <file>images/delete.png</file>
     <file>images/edit.png</file>
     <file>images/move.png</file>

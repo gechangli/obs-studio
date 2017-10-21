@@ -1,5 +1,6 @@
 QDialog#XLProgressDialog {
     background: white;
+    border: 1px solid #64c112;
 }
 QLabel#msgLabel {
     font-size: @mediumFontSize@;

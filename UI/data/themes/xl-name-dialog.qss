@@ -1,5 +1,6 @@
 QDialog#XLNameDialog {
     background: #F8F8F8;
+    border: 1px solid #64c112;
 }
 QLineEdit#nameEdit {
     border: 1px solid #CBCACA;
