@@ -22,6 +22,7 @@
 #include <memory>
 #include <QDialog>
 #include "ui_XLAddCameraDialog.h"
+#include "obs.hpp"
 
 class XLTitleBarSub;
 
@@ -31,13 +32,21 @@ class XLAddCameraDialog : public QDialog {
 private:
 	std::unique_ptr<Ui::XLAddCameraDialog> ui;
 	XLTitleBarSub* m_titleBar;
+	OBSSource m_source;
 
 private slots:
 	void on_yesButton_clicked();
+
+private:
+	static void drawPreview(void *data, uint32_t cx, uint32_t cy);
+	static void getScaleAndCenterPos(int baseCX, int baseCY, int windowCX, int windowCY, int &x, int &y, float &scale);
 
 public:
 	XLAddCameraDialog(QWidget *parent);
 
 	// override
 	void setWindowTitle(const QString& title);
+
+	// getter/setter
+	obs_source_t* getSource();
 };
