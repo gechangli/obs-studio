@@ -63,6 +63,11 @@ void XLSceneCollectionPopupWidget::showEvent(QShowEvent *event) {
 	QPoint pos(refSize.width() - selfSize.width(), refSize.height());
 	pos = ref->mapToGlobal(pos);
 	move(pos);
+
+	// disable delete if there is only one template
+	OBSBasic* main = static_cast<OBSBasic*>(App()->GetMainWindow());
+	int count = main->GetSceneCollectionCount();
+	ui->deleteButton->setEnabled(count > 1);
 }
 
 void XLSceneCollectionPopupWidget::paintEvent(QPaintEvent* event) {

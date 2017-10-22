@@ -10,3 +10,6 @@ XLSceneCollectionPopupWidget>QPushButton {
 XLSceneCollectionPopupWidget>QPushButton:hover {
     color: #898989;
 }
+XLSceneCollectionPopupWidget>QPushButton:!enabled {
+    color: #d2d2d2;
+}
