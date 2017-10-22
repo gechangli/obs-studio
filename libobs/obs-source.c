@@ -1672,9 +1672,10 @@ static void obs_source_update_async_video(obs_source_t *source)
 
 		source->async_rendered = true;
 		if (frame) {
-			source->timing_adjust =
-				obs->video.video_time - frame->timestamp;
-			source->timing_set = true;
+			if (!source->async_decoupled || !source->async_unbuffered) {
+				source->timing_adjust = obs->video.video_time - frame->timestamp;
+				source->timing_set = true;
+			}
 
 			if (source->async_update_texture) {
 				update_async_texture(source, frame,
@@ -4056,4 +4057,24 @@ bool obs_source_async_unbuffered(const obs_source_t *source)
 {
 	return obs_source_valid(source, "obs_source_async_unbuffered") ?
 		source->async_unbuffered : false;
+}
+
+void obs_source_set_async_decoupled(obs_source_t *source, bool decouple)
+{
+	if (!obs_ptr_valid(source, "obs_source_set_async_decoupled"))
+		return;
+
+	source->async_decoupled = decouple;
+	if (decouple) {
+		pthread_mutex_lock(&source->audio_buf_mutex);
+		source->timing_set = false;
+		reset_audio_data(source, 0);
+		pthread_mutex_unlock(&source->audio_buf_mutex);
+	}
+}
+
+bool obs_source_async_decoupled(const obs_source_t *source)
+{
+	return obs_source_valid(source, "obs_source_async_decoupled") ?
+		source->async_decoupled : false;
 }
