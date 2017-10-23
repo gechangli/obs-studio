@@ -15,6 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+#include <QStandardItemModel>
 #include "xl-add-camera-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
@@ -24,9 +25,13 @@
 
 using namespace std;
 
-XLAddCameraDialog::XLAddCameraDialog(QWidget *parent) :
+XLAddCameraDialog::XLAddCameraDialog(QWidget *parent, obs_source_t* source) :
 	QDialog (parent),
-	ui(new Ui::XLAddCameraDialog) {
+	ui(new Ui::XLAddCameraDialog),
+	m_source(OBSSource(source)),
+	m_oldSettings(obs_data_create()),
+	m_properties(Q_NULLPTR, obs_properties_destroy),
+	m_rollback(false) {
 	// init ui
 	ui->setupUi(this);
 
@@ -44,42 +49,39 @@ XLAddCameraDialog::XLAddCameraDialog(QWidget *parent) :
 	QString qss = XLUtil::loadQss(qssPath);
 	setStyleSheet(qss);
 
-	// get source id, name and create it
-	char* id = "";
-#ifdef Q_OS_OSX
-	id = "av_capture_input";
-#elif defined(Q_OS_WIN)
-	id = "dshow_input";
-#endif
-	const char* name = obs_source_get_display_name(id);
-	m_source = obs_source_create(id, name, NULL, nullptr);
+	// The OBSData constructor increments the reference once so we need release here
+	// then copy default settings from source
+	obs_data_release(m_oldSettings);
+	OBSData settings = obs_source_get_settings(source);
+	obs_data_apply(m_oldSettings, settings);
+	obs_data_release(settings);
 
-	// add to scene
-	OBSBasic* main = reinterpret_cast<OBSBasic*>(App()->GetMainWindow());
-	OBSScene scene = main->GetCurrentScene();
-	auto addSource = [](void *data, obs_scene_t *scene) {
-		XLAddCameraDialog *window = static_cast<XLAddCameraDialog*>(data);
-		obs_sceneitem_t* sceneitem = obs_scene_add(scene, window->getSource());
-		obs_sceneitem_set_visible(sceneitem, true);
-	};
-	obs_enter_graphics();
-	obs_scene_atomic_update(scene, addSource, this);
-	obs_leave_graphics();
-
+	// add preview callback
 	obs_source_inc_showing(m_source);
 	auto addDrawCallback = [this]() {
-		obs_display_add_draw_callback(ui->preview->GetDisplay(),
-									  XLAddCameraDialog::drawPreview, this);
+		obs_display_add_draw_callback(ui->preview->GetDisplay(), XLAddCameraDialog::drawPreview, this);
 	};
-
 	enum obs_source_type type = obs_source_get_type(m_source);
 	uint32_t caps = obs_source_get_output_flags(m_source);
-	bool drawable_type = type == OBS_SOURCE_TYPE_INPUT ||
-						 type == OBS_SOURCE_TYPE_SCENE;
-
+	bool drawable_type = type == OBS_SOURCE_TYPE_INPUT || type == OBS_SOURCE_TYPE_SCENE;
 	if (drawable_type && (caps & OBS_SOURCE_VIDEO) != 0) {
 		connect(ui->preview, &OBSQTDisplay::DisplayCreated, addDrawCallback);
 	}
+
+	// init ui for properties
+	reloadProperties();
+}
+
+XLAddCameraDialog::~XLAddCameraDialog() {
+	obs_source_dec_showing(m_source);
+	if(m_rollback) {
+
+	}
+}
+
+void XLAddCameraDialog::reject() {
+	m_rollback = true;
+	QDialog::reject();
 }
 
 obs_source_t* XLAddCameraDialog::getSource() {
@@ -144,4 +146,71 @@ void XLAddCameraDialog::drawPreview(void *data, uint32_t cx, uint32_t cy) {
 
 	gs_projection_pop();
 	gs_viewport_pop();
+}
+
+void XLAddCameraDialog::reloadProperties() {
+	// load properties from source
+	m_properties.reset(obs_source_properties(m_source));
+
+	// check defer update flag
+	uint32_t flags = obs_properties_get_flags(m_properties.get());
+	m_deferUpdate = (flags & OBS_PROPERTIES_DEFER_UPDATE) != 0;
+
+	// init ui
+	reloadPropertiesUI();
+}
+
+void XLAddCameraDialog::reloadPropertiesUI() {
+	// fill device combo
+	obs_property_t *property = obs_properties_get(m_properties.get(), "device");
+	if (property) {
+		// add items
+		obs_combo_type type   = obs_property_list_type(property);
+		obs_combo_format format = obs_property_list_format(property);
+		size_t count  = obs_property_list_item_count(property);
+		for (size_t i = 0; i < count; i++) {
+			addComboItem(ui->cameraComboBox, property, format, i);
+		}
+
+		// set editable or not
+		if (type == OBS_COMBO_TYPE_EDITABLE) {
+			ui->cameraComboBox->setEditable(true);
+		}
+
+		// max visible items and tooltip
+		ui->cameraComboBox->setMaxVisibleItems(40);
+		ui->cameraComboBox->setToolTip(QT_UTF8(obs_property_long_description(property)));
+	}
+}
+
+void XLAddCameraDialog::addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx) {
+	// get property name and value
+	const char *name = obs_property_list_item_name(prop, idx);
+	QVariant var;
+	if (format == OBS_COMBO_FORMAT_INT) {
+		long long val = obs_property_list_item_int(prop, idx);
+		var = QVariant::fromValue<long long>(val);
+	} else if (format == OBS_COMBO_FORMAT_FLOAT) {
+		double val = obs_property_list_item_float(prop, idx);
+		var = QVariant::fromValue<double>(val);
+	} else if (format == OBS_COMBO_FORMAT_STRING) {
+		var = QByteArray(obs_property_list_item_string(prop, idx));
+	}
+
+	// add item to combo
+	combo->addItem(QT_UTF8(name), var);
+
+	// if item is disabled, set it
+	if (obs_property_list_item_disabled(prop, idx)) {
+		int index = combo->findText(QT_UTF8(name));
+		if (index < 0) {
+			return;
+		}
+		QStandardItemModel *model = dynamic_cast<QStandardItemModel*>(combo->model());
+		if (!model) {
+			return;
+		}
+		QStandardItem *item = model->item(index);
+		item->setFlags(Qt::NoItemFlags);
+	}
 }

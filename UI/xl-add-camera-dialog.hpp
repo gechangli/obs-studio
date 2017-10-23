@@ -29,10 +29,18 @@ class XLTitleBarSub;
 class XLAddCameraDialog : public QDialog {
 	Q_OBJECT
 
+	// pointer type for properties
+	using properties_delete_t = decltype(&obs_properties_destroy);
+	using properties_t = std::unique_ptr<obs_properties_t, properties_delete_t>;
+
 private:
 	std::unique_ptr<Ui::XLAddCameraDialog> ui;
 	XLTitleBarSub* m_titleBar;
 	OBSSource m_source;
+	OBSData m_oldSettings;
+	properties_t m_properties;
+	bool m_rollback;
+	bool m_deferUpdate;
 
 private slots:
 	void on_yesButton_clicked();
@@ -40,12 +48,17 @@ private slots:
 private:
 	static void drawPreview(void *data, uint32_t cx, uint32_t cy);
 	static void getScaleAndCenterPos(int baseCX, int baseCY, int windowCX, int windowCY, int &x, int &y, float &scale);
+	void reloadProperties();
+	void reloadPropertiesUI();
+	void addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx);
 
 public:
-	XLAddCameraDialog(QWidget *parent);
+	XLAddCameraDialog(QWidget *parent, obs_source_t* source);
+	virtual ~XLAddCameraDialog();
 
 	// override
 	void setWindowTitle(const QString& title);
+	void reject();
 
 	// getter/setter
 	obs_source_t* getSource();

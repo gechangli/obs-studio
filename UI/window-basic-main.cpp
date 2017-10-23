@@ -1904,8 +1904,31 @@ void OBSBasic::on_sceneButtonDrawer_clicked() {
 }
 
 void OBSBasic::on_cameraButton_clicked() {
-	XLAddCameraDialog* dialog = new XLAddCameraDialog(this);
+	// get source id, name and create it
+	char* id = "";
+#ifdef Q_OS_OSX
+	id = "av_capture_input";
+#elif defined(Q_OS_WIN)
+	id = "dshow_input";
+#endif
+	const char* name = obs_source_get_display_name(id);
+	obs_source_t* source = obs_source_create(id, name, NULL, nullptr);
+
+	// add to scene
+	OBSScene scene = GetCurrentScene();
+	auto addSource = [](void *data, obs_scene_t *scene) {
+		obs_sceneitem_t* sceneitem = obs_scene_add(scene, (obs_source_t*)data);
+		obs_sceneitem_set_visible(sceneitem, true);
+	};
+	obs_enter_graphics();
+	obs_scene_atomic_update(scene, addSource, source);
+	obs_leave_graphics();
+
+	// show add camera dialog to adjust properties, if user directly close
+	// it, then source will be removed
+	XLAddCameraDialog* dialog = new XLAddCameraDialog(this, source);
 	dialog->setWindowTitle(L("Add") + L("Camera"));
+	obs_source_release(source);
 	dialog->exec();
 }
 

@@ -44,6 +44,12 @@ QComboBox#cameraComboBox::drop-down {
 QComboBox#cameraComboBox::down-arrow {
     image: url(:/res/images/drop_down_arrow_gray.png);
 }
+QComboBox QAbstractItemView {
+    color: black;
+}
+QComboBox QAbstractItemView:item:hover {
+    color: #898989;
+}
 QComboBox#resolutionComboBox:editable {
     border: 1px solid #D2D2D2;
     border-radius: 4px;
