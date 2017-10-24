@@ -114,7 +114,42 @@ void XLAddCameraDialog::on_yesButton_clicked() {
 }
 
 void XLAddCameraDialog::onDeviceChanged(int index) {
+	// get combo, data format and type
+	QComboBox* combo = static_cast<QComboBox*>(sender());
+	const char* name = obs_property_name(m_deviceProperty);
+	obs_combo_format format = obs_property_list_format(m_deviceProperty);
+	obs_combo_type type = obs_property_list_type(m_deviceProperty);
+	QVariant data;
 
+	// get selected data
+	if (type == OBS_COMBO_TYPE_EDITABLE) {
+		data = combo->currentText().toUtf8();
+	} else {
+		if (index != -1)
+			data = combo->itemData(index);
+		else
+			return;
+	}
+
+	// save new value to settings
+	switch (format) {
+		case OBS_COMBO_FORMAT_INVALID:
+			return;
+		case OBS_COMBO_FORMAT_INT:
+			obs_data_set_int(m_settings, name, data.value<long long>());
+			break;
+		case OBS_COMBO_FORMAT_FLOAT:
+			obs_data_set_double(m_settings, name, data.value<double>());
+			break;
+		case OBS_COMBO_FORMAT_STRING:
+			obs_data_set_string(m_settings, name, data.toByteArray().constData());
+			break;
+	}
+
+	// update
+	if(!m_deferUpdate) {
+		obs_source_update(m_source, m_settings);
+	}
 }
 
 void XLAddCameraDialog::setWindowTitle(const QString& title) {
@@ -200,6 +235,8 @@ void XLAddCameraDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget) {
 		case OBS_PROPERTY_LIST:
 			bindComboBoxPropertyUI(prop, dynamic_cast<QComboBox*>(widget));
 			break;
+		default:
+			break;
 	}
 }
 
@@ -238,7 +275,7 @@ void XLAddCameraDialog::bindComboBoxPropertyUI(obs_property_t* prop, QComboBox* 
 	}
 
 	// connect event
-	connect(combo, &QComboBox::currentIndexChanged, this, &XLAddCameraDialog::onDeviceChanged);
+	connect(combo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &XLAddCameraDialog::onDeviceChanged);
 
 	// trigger device changed if current value is not found
 	if(idx == -1) {
