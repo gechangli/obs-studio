@@ -18,6 +18,7 @@
 #include <QStandardItemModel>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCloseEvent>
 #include "xl-add-camera-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
@@ -102,7 +103,17 @@ XLAddCameraDialog::~XLAddCameraDialog() {
 
 void XLAddCameraDialog::reject() {
 	m_rollback = true;
+	cleanup();
 	QDialog::reject();
+}
+
+void XLAddCameraDialog::accept() {
+	cleanup();
+	QDialog::accept();
+}
+
+void XLAddCameraDialog::cleanup() {
+	obs_display_remove_draw_callback(ui->preview->GetDisplay(), XLAddCameraDialog::drawPreview, this);
 }
 
 obs_source_t* XLAddCameraDialog::getSource() {

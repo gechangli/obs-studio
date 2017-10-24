@@ -56,6 +56,7 @@ private:
 	void bindPropertyUI(obs_property_t* prop, QWidget* widget);
 	void bindComboBoxPropertyUI(obs_property_t* prop, QComboBox* combo);
 	void addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx);
+	void cleanup();
 
 public:
 	XLAddCameraDialog(QWidget *parent, obs_source_t* source);
@@ -64,6 +65,7 @@ public:
 	// override
 	void setWindowTitle(const QString& title);
 	void reject();
+	void accept();
 
 	// getter/setter
 	obs_source_t* getSource();
