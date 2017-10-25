@@ -26,6 +26,17 @@ class QListWidget;
 
 class XLUtil {
 public:
+	typedef enum {
+		XLS_UNKNOWN,
+		XLS_CAMERA,
+		XLS_APP,
+		XLS_MONITOR,
+		XLS_TEXT,
+		XLS_VIDEO,
+		XLS_PICTURE
+	} XLSourceType;
+
+public:
 	// file
 	static QString getFileContent(QString path);
 	static QString getDataFileContent(QString path);
@@ -39,6 +50,7 @@ public:
 	static QPixmap createCircle(int radius, QColor color);
 
 	// source
+	static XLSourceType getSourceType(const char* id);
 	static QPixmap getSourceIcon(const char* id);
 	static QString getSourceLabel(const char* id);
 

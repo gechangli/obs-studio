@@ -164,42 +164,60 @@ void XLUtil::clearListItems(QListWidget *widget) {
 	widget->clear();
 }
 
-QPixmap XLUtil::getSourceIcon(const char* id) {
+XLUtil::XLSourceType XLUtil::getSourceType(const char* id) {
 	if(!strcmp(id, "decklink-input") || !strcmp(id, "xshm_input") || !strcmp(id, "v4l2_input") ||
 	   !strcmp(id, "av_capture_input") || !strcmp(id, "syphon-input") || !strcmp(id, "dshow_input") ||
 	   !strcmp(id, "win-ivcam")) {
-		return QPixmap(":/res/images/source_camera.png");
+		return XLS_CAMERA;
 	} else if(!strcmp(id, "color_source") || !strcmp(id, "image_source") || !strcmp(id, "slideshow")) {
-		return QPixmap(":/res/images/source_picture.png");
+		return XLS_PICTURE;
 	} else if(!strcmp(id, "display_capture") || !strcmp(id, "monitor_capture")) {
-		return QPixmap(":/res/images/source_monitor.png");
+		return XLS_MONITOR;
 	} else if(!strcmp(id, "window_capture") || !strcmp(id, "game_capture")) {
-		return QPixmap(":/res/images/source_window.png");
+		return XLS_APP;
 	} else if(!strcmp(id, "ffmpeg_source") || !strcmp(id, "vlc_source")) {
-		return QPixmap(":/res/images/source_video.png");
+		return XLS_VIDEO;
 	} else if(!strcmp(id, "text_gdiplus") || !strcmp(id, "text_ft2_source")) {
-		return QPixmap(":/res/images/source_text.png");
+		return XLS_TEXT;
 	} else {
-		return QPixmap();
+		return XLS_UNKNOWN;
+	}
+}
+
+QPixmap XLUtil::getSourceIcon(const char* id) {
+	switch(getSourceType(id)) {
+		case XLS_CAMERA:
+			return QPixmap(":/res/images/source_camera.png");
+		case XLS_PICTURE:
+			return QPixmap(":/res/images/source_picture.png");
+		case XLS_MONITOR:
+			return QPixmap(":/res/images/source_monitor.png");
+		case XLS_APP:
+			return QPixmap(":/res/images/source_window.png");
+		case XLS_VIDEO:
+			return QPixmap(":/res/images/source_video.png");
+		case XLS_TEXT:
+			return QPixmap(":/res/images/source_text.png");
+		default:
+			return QPixmap();
 	}
 }
 
 QString XLUtil::getSourceLabel(const char* id) {
-	if(!strcmp(id, "decklink-input") || !strcmp(id, "xshm_input") || !strcmp(id, "v4l2_input") ||
-	   !strcmp(id, "av_capture_input") || !strcmp(id, "syphon-input") || !strcmp(id, "dshow_input") ||
-	   !strcmp(id, "win-ivcam")) {
-		return L("Camera");
-	} else if(!strcmp(id, "color_source") || !strcmp(id, "image_source") || !strcmp(id, "slideshow")) {
-		return L("Picture");
-	} else if(!strcmp(id, "display_capture") || !strcmp(id, "monitor_capture")) {
-		return L("Monitor");
-	} else if(!strcmp(id, "window_capture") || !strcmp(id, "game_capture")) {
-		return L("App");
-	} else if(!strcmp(id, "ffmpeg_source") || !strcmp(id, "vlc_source")) {
-		return L("Video");
-	} else if(!strcmp(id, "text_gdiplus") || !strcmp(id, "text_ft2_source")) {
-		return L("Text");
-	} else {
-		return "";
+	switch(getSourceType(id)) {
+		case XLS_CAMERA:
+			return L("Camera");
+		case XLS_PICTURE:
+			return L("Picture");
+		case XLS_MONITOR:
+			return L("Monitor");
+		case XLS_APP:
+			return L("App");
+		case XLS_VIDEO:
+			return L("Video");
+		case XLS_TEXT:
+			return L("Text");
+		default:
+			return "";
 	}
 }

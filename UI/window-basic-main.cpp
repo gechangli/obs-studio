@@ -2372,10 +2372,16 @@ void OBSBasic::CreateInteractionWindow(obs_source_t *source)
 }
 
 void OBSBasic::showPropertiesWindow(obs_source_t* source, bool edit) {
-	XLAddCameraDialog dialog(this, source);
-	dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(obs_source_get_id(source)));
-	dialog.setEditMode(edit);
-	dialog.exec();
+	// create dialog by type
+	const char* id = obs_source_get_id(source);
+	switch(XLUtil::getSourceType(id)) {
+		case XLUtil::XLS_CAMERA:
+			XLAddCameraDialog dialog(this, source);
+			dialog.setEditMode(edit);
+			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
+			dialog.exec();
+			break;
+	}
 }
 
 void OBSBasic::CreatePropertiesWindow(obs_source_t *source)
