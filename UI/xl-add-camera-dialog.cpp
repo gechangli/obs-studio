@@ -124,12 +124,11 @@ void XLAddCameraDialog::on_yesButton_clicked() {
 	accept();
 }
 
-void XLAddCameraDialog::onDeviceChanged(int index) {
+bool XLAddCameraDialog::onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index) {
 	// get combo, data format and type
-	QComboBox* combo = static_cast<QComboBox*>(sender());
-	const char* name = obs_property_name(m_deviceProperty);
-	obs_combo_format format = obs_property_list_format(m_deviceProperty);
-	obs_combo_type type = obs_property_list_type(m_deviceProperty);
+	const char* name = obs_property_name(prop);
+	obs_combo_format format = obs_property_list_format(prop);
+	obs_combo_type type = obs_property_list_type(prop);
 	QVariant data;
 
 	// get selected data
@@ -139,13 +138,13 @@ void XLAddCameraDialog::onDeviceChanged(int index) {
 		if (index != -1)
 			data = combo->itemData(index);
 		else
-			return;
+			return true;
 	}
 
 	// save new value to settings
 	switch (format) {
 		case OBS_COMBO_FORMAT_INVALID:
-			return;
+			return true;
 		case OBS_COMBO_FORMAT_INT:
 			obs_data_set_int(m_settings, name, data.value<long long>());
 			break;
@@ -160,6 +159,21 @@ void XLAddCameraDialog::onDeviceChanged(int index) {
 	// update
 	if(!m_deferUpdate) {
 		obs_source_update(m_source, m_settings);
+	}
+
+	// notify property changed
+	return obs_property_modified(prop, m_settings);
+}
+
+void XLAddCameraDialog::onPresetResolutionChanged(int index) {
+	QComboBox* combo = static_cast<QComboBox*>(sender());
+	onListPropertyChanged(m_presetProperty, combo, index);
+}
+
+void XLAddCameraDialog::onDeviceChanged(int index) {
+	QComboBox* combo = static_cast<QComboBox*>(sender());
+	if(onListPropertyChanged(m_deviceProperty, combo, index)) {
+		populateListProperty(m_presetProperty, ui->resolutionComboBox);
 	}
 }
 
@@ -225,16 +239,18 @@ void XLAddCameraDialog::loadProperties() {
 
 	// find properties we want to set
 	m_deviceProperty = obs_properties_get(m_properties.get(), "device");
+	m_presetProperty = obs_properties_get(m_properties.get(), "preset");
 
 	// check defer update flag
 	uint32_t flags = obs_properties_get_flags(m_properties.get());
 	m_deferUpdate = (flags & OBS_PROPERTIES_DEFER_UPDATE) != 0;
 
 	// bind ui
-	bindPropertyUI(m_deviceProperty, ui->cameraComboBox);
+	bindPropertyUI(m_deviceProperty, ui->cameraComboBox, SLOT(onDeviceChanged(int)));
+	bindPropertyUI(m_presetProperty, ui->resolutionComboBox, SLOT(onPresetResolutionChanged(int)));
 }
 
-void XLAddCameraDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget) {
+void XLAddCameraDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, const char* slot) {
 	// null checking
 	if (!prop) {
 		return;
@@ -244,16 +260,19 @@ void XLAddCameraDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget) {
 	obs_property_type type = obs_property_get_type(prop);
 	switch(type) {
 		case OBS_PROPERTY_LIST:
-			bindComboBoxPropertyUI(prop, dynamic_cast<QComboBox*>(widget));
+			bindListPropertyUI(prop, dynamic_cast<QComboBox *>(widget), slot);
 			break;
 		default:
 			break;
 	}
 }
 
-void XLAddCameraDialog::bindComboBoxPropertyUI(obs_property_t* prop, QComboBox* combo) {
+void XLAddCameraDialog::populateListProperty(obs_property_t* prop, QComboBox* combo) {
+	// clear list first
+	QStandardItemModel *model = dynamic_cast<QStandardItemModel*>(combo->model());
+	model->clear();
+
 	// add items
-	const char* name = obs_property_name(prop);
 	obs_combo_type type = obs_property_list_type(prop);
 	obs_combo_format format = obs_property_list_format(prop);
 	size_t count = obs_property_list_item_count(prop);
@@ -262,9 +281,7 @@ void XLAddCameraDialog::bindComboBoxPropertyUI(obs_property_t* prop, QComboBox* 
 	}
 
 	// set editable or not
-	if (type == OBS_COMBO_TYPE_EDITABLE) {
-		combo->setEditable(true);
-	}
+	combo->setEditable(type == OBS_COMBO_TYPE_EDITABLE);
 
 	// max visible items and tooltip
 	combo->setMaxVisibleItems(40);
@@ -273,25 +290,25 @@ void XLAddCameraDialog::bindComboBoxPropertyUI(obs_property_t* prop, QComboBox* 
 	// get current property value
 	// if string value, set to combo box
 	// if a list value, find value index and set as current
-	int idx = -1;
+	const char* name = obs_property_name(prop);
 	string value = from_obs_data(m_settings, name, format);
 	if (format == OBS_COMBO_FORMAT_STRING &&
 		type == OBS_COMBO_TYPE_EDITABLE) {
 		combo->lineEdit()->setText(QT_UTF8(value.c_str()));
 	} else {
-		idx = combo->findData(QByteArray(value.c_str()));
+		int idx = combo->findData(QByteArray(value.c_str()));
 		if (idx != -1) {
 			combo->setCurrentIndex(idx);
 		}
 	}
+}
+
+void XLAddCameraDialog::bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot) {
+	// populate list items
+	populateListProperty(prop, combo);
 
 	// connect event
-	connect(combo, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &XLAddCameraDialog::onDeviceChanged);
-
-	// trigger device changed if current value is not found
-	if(idx == -1) {
-		onDeviceChanged(-1);
-	}
+	connect(combo, SIGNAL(currentIndexChanged(int)), this, slot);
 }
 
 void XLAddCameraDialog::addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx) {

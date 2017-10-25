@@ -42,21 +42,25 @@ private:
 	OBSData m_settings;
 	properties_t m_properties;
 	obs_property_t* m_deviceProperty;
+	obs_property_t* m_presetProperty;
 	bool m_rollback;
 	bool m_deferUpdate;
 
 private slots:
 	void on_yesButton_clicked();
 	void onDeviceChanged(int index);
+	void onPresetResolutionChanged(int index);
 
 private:
 	static void drawPreview(void *data, uint32_t cx, uint32_t cy);
 	static void getScaleAndCenterPos(int baseCX, int baseCY, int windowCX, int windowCY, int &x, int &y, float &scale);
 	void loadProperties();
-	void bindPropertyUI(obs_property_t* prop, QWidget* widget);
-	void bindComboBoxPropertyUI(obs_property_t* prop, QComboBox* combo);
+	void bindPropertyUI(obs_property_t* prop, QWidget* widget, const char* slot);
+	void bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot);
 	void addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx);
 	void cleanup();
+	bool onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index);
+	void populateListProperty(obs_property_t* prop, QComboBox* combo);
 
 public:
 	XLAddCameraDialog(QWidget *parent, obs_source_t* source);
