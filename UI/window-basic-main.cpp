@@ -1927,6 +1927,7 @@ void OBSBasic::on_cameraButton_clicked() {
 	// show add camera dialog to adjust properties, if user directly close
 	// it, then source will be removed
 	XLAddCameraDialog* dialog = new XLAddCameraDialog(this, source);
+	dialog->setAttribute(Qt::WA_DeleteOnClose, true);
 	dialog->setWindowTitle(L("Add") + L("Camera"));
 	obs_source_release(source);
 	dialog->exec();
