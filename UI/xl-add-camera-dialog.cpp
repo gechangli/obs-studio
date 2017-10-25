@@ -53,7 +53,8 @@ XLAddCameraDialog::XLAddCameraDialog(QWidget *parent, obs_source_t* source) :
 	ui(new Ui::XLAddCameraDialog),
 	m_source(OBSSource(source)),
 	m_properties(Q_NULLPTR, obs_properties_destroy),
-	m_rollback(false) {
+	m_rollback(false),
+	m_editMode(false) {
 	// init ui
 	ui->setupUi(this);
 
@@ -96,9 +97,13 @@ XLAddCameraDialog::XLAddCameraDialog(QWidget *parent, obs_source_t* source) :
 
 XLAddCameraDialog::~XLAddCameraDialog() {
 	obs_source_dec_showing(m_source);
-	if(m_rollback) {
+	if(m_rollback && !m_editMode) {
 
 	}
+}
+
+void XLAddCameraDialog::setEditMode(bool v) {
+	m_editMode = v;
 }
 
 void XLAddCameraDialog::reject() {

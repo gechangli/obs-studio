@@ -1926,10 +1926,8 @@ void OBSBasic::on_cameraButton_clicked() {
 
 	// show add camera dialog to adjust properties, if user directly close
 	// it, then source will be removed
-	XLAddCameraDialog dialog(this, source);
-	dialog.setWindowTitle(L("Add") + L("Camera"));
+	showPropertiesWindow(source, false);
 	obs_source_release(source);
-	dialog.exec();
 }
 
 void OBSBasic::InitHotkeys()
@@ -2371,6 +2369,13 @@ void OBSBasic::CreateInteractionWindow(obs_source_t *source)
 	interaction = new OBSBasicInteraction(this, source);
 	interaction->Init();
 	interaction->setAttribute(Qt::WA_DeleteOnClose, true);
+}
+
+void OBSBasic::showPropertiesWindow(obs_source_t* source, bool edit) {
+	XLAddCameraDialog dialog(this, source);
+	dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(obs_source_get_id(source)));
+	dialog.setEditMode(edit);
+	dialog.exec();
 }
 
 void OBSBasic::CreatePropertiesWindow(obs_source_t *source)

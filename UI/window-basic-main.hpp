@@ -500,6 +500,7 @@ public:
 	std::unique_ptr<BasicOutputHandler> outputHandler;
 	OBSScene      GetCurrentScene();
 	int GetSceneCollectionCount();
+	void showPropertiesWindow(obs_source_t* source, bool edit);
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);
 

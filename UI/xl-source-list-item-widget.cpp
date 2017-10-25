@@ -21,6 +21,7 @@
 #include "xl-source-list-item-widget.hpp"
 #include "xl-source-list-view.hpp"
 #include "window-basic-main.hpp"
+#include "xl-util.hpp"
 
 Q_DECLARE_METATYPE(OBSSceneItem);
 
@@ -58,21 +59,7 @@ void XLSourceListItemWidget::update() {
 	// update icon
 	if(obs_source_get_type(source) == OBS_SOURCE_TYPE_INPUT) {
 		const char* id = obs_source_get_id(source);
-		if(!strcmp(id, "decklink-input") || !strcmp(id, "xshm_input") || !strcmp(id, "v4l2_input") ||
-		   !strcmp(id, "av_capture_input") || !strcmp(id, "syphon-input") || !strcmp(id, "dshow_input") ||
-		   !strcmp(id, "win-ivcam")) {
-			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_camera.png"));
-		} else if(!strcmp(id, "color_source") || !strcmp(id, "image_source") || !strcmp(id, "slideshow")) {
-			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_picture.png"));
-		} else if(!strcmp(id, "display_capture") || !strcmp(id, "monitor_capture")) {
-			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_monitor.png"));
-		} else if(!strcmp(id, "window_capture") || !strcmp(id, "game_capture")) {
-			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_window.png"));
-		} else if(!strcmp(id, "ffmpeg_source") || !strcmp(id, "vlc_source")) {
-			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_video.png"));
-		} else if(!strcmp(id, "text_gdiplus") || !strcmp(id, "text_ft2_source")) {
-			ui->iconLabel->setPixmap(QPixmap(":/res/images/source_text.png"));
-		}
+		ui->iconLabel->setPixmap(XLUtil::getSourceIcon(id));
 	} else {
 		// should not go here
 	}
@@ -116,7 +103,9 @@ void XLSourceListItemWidget::on_deleteLabel_clicked() {
 }
 
 void XLSourceListItemWidget::on_editLabel_clicked() {
-
+	obs_source_t* source = getSource();
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	main->showPropertiesWindow(source, true);
 }
 
 int XLSourceListItemWidget::getIndex() {

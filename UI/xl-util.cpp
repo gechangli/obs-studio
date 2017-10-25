@@ -23,6 +23,7 @@
 #include <QPainter>
 #include <QListWidget>
 #include "obs-app.hpp"
+#include "window-basic-main.hpp"
 
 using namespace std;
 
@@ -161,4 +162,44 @@ void XLUtil::clearListItems(QListWidget *widget) {
 		delete widget->itemWidget(widget->item(i));
 	}
 	widget->clear();
+}
+
+QPixmap XLUtil::getSourceIcon(const char* id) {
+	if(!strcmp(id, "decklink-input") || !strcmp(id, "xshm_input") || !strcmp(id, "v4l2_input") ||
+	   !strcmp(id, "av_capture_input") || !strcmp(id, "syphon-input") || !strcmp(id, "dshow_input") ||
+	   !strcmp(id, "win-ivcam")) {
+		return QPixmap(":/res/images/source_camera.png");
+	} else if(!strcmp(id, "color_source") || !strcmp(id, "image_source") || !strcmp(id, "slideshow")) {
+		return QPixmap(":/res/images/source_picture.png");
+	} else if(!strcmp(id, "display_capture") || !strcmp(id, "monitor_capture")) {
+		return QPixmap(":/res/images/source_monitor.png");
+	} else if(!strcmp(id, "window_capture") || !strcmp(id, "game_capture")) {
+		return QPixmap(":/res/images/source_window.png");
+	} else if(!strcmp(id, "ffmpeg_source") || !strcmp(id, "vlc_source")) {
+		return QPixmap(":/res/images/source_video.png");
+	} else if(!strcmp(id, "text_gdiplus") || !strcmp(id, "text_ft2_source")) {
+		return QPixmap(":/res/images/source_text.png");
+	} else {
+		return QPixmap();
+	}
+}
+
+QString XLUtil::getSourceLabel(const char* id) {
+	if(!strcmp(id, "decklink-input") || !strcmp(id, "xshm_input") || !strcmp(id, "v4l2_input") ||
+	   !strcmp(id, "av_capture_input") || !strcmp(id, "syphon-input") || !strcmp(id, "dshow_input") ||
+	   !strcmp(id, "win-ivcam")) {
+		return L("Camera");
+	} else if(!strcmp(id, "color_source") || !strcmp(id, "image_source") || !strcmp(id, "slideshow")) {
+		return L("Picture");
+	} else if(!strcmp(id, "display_capture") || !strcmp(id, "monitor_capture")) {
+		return L("Monitor");
+	} else if(!strcmp(id, "window_capture") || !strcmp(id, "game_capture")) {
+		return L("App");
+	} else if(!strcmp(id, "ffmpeg_source") || !strcmp(id, "vlc_source")) {
+		return L("Video");
+	} else if(!strcmp(id, "text_gdiplus") || !strcmp(id, "text_ft2_source")) {
+		return L("Text");
+	} else {
+		return "";
+	}
 }

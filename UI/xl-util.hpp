@@ -38,6 +38,10 @@ public:
 	// pixmap
 	static QPixmap createCircle(int radius, QColor color);
 
+	// source
+	static QPixmap getSourceIcon(const char* id);
+	static QString getSourceLabel(const char* id);
+
 	// qss
 	static QString loadQss(QString path, QString paramName = "Default");
 	static QString getQssPathByName(QString name);

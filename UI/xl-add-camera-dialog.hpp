@@ -45,6 +45,7 @@ private:
 	obs_property_t* m_presetProperty;
 	bool m_rollback;
 	bool m_deferUpdate;
+	bool m_editMode;
 
 private slots:
 	void on_yesButton_clicked();
@@ -73,4 +74,5 @@ public:
 
 	// getter/setter
 	obs_source_t* getSource();
+	void setEditMode(bool v);
 };
