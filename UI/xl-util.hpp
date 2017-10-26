@@ -20,6 +20,7 @@
 #include <QString>
 #include <QColor>
 #include <QPixmap>
+#include "obs.h"
 
 class QListWidgetItem;
 class QListWidget;
@@ -53,6 +54,7 @@ public:
 	static XLSourceType getSourceType(const char* id);
 	static QPixmap getSourceIcon(const char* id);
 	static QString getSourceLabel(const char* id);
+	static QString getData(obs_data_t *data, const char *name, obs_combo_format format);
 
 	// qss
 	static QString loadQss(QString path, QString paramName = "Default");

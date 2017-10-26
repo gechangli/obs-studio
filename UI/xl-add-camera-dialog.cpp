@@ -28,26 +28,6 @@
 
 using namespace std;
 
-template <long long get_int(obs_data_t*, const char*),
-	double get_double(obs_data_t*, const char*),
-	const char *get_string(obs_data_t*, const char*)>
-static string from_obs_data(obs_data_t *data, const char *name, obs_combo_format format) {
-	switch (format) {
-		case OBS_COMBO_FORMAT_INT:
-			return to_string(get_int(data, name));
-		case OBS_COMBO_FORMAT_FLOAT:
-			return to_string(get_double(data, name));
-		case OBS_COMBO_FORMAT_STRING:
-			return get_string(data, name);
-		default:
-			return "";
-	}
-}
-
-static string from_obs_data(obs_data_t *data, const char *name, obs_combo_format format) {
-	return from_obs_data<obs_data_get_int, obs_data_get_double, obs_data_get_string>(data, name, format);
-}
-
 XLAddCameraDialog::XLAddCameraDialog(QWidget *parent, obs_source_t* source) :
 	QDialog (parent),
 	ui(new Ui::XLAddCameraDialog),
@@ -296,12 +276,12 @@ void XLAddCameraDialog::populateListProperty(obs_property_t* prop, QComboBox* co
 	// if string value, set to combo box
 	// if a list value, find value index and set as current
 	const char* name = obs_property_name(prop);
-	string value = from_obs_data(m_settings, name, format);
+	QString value = XLUtil::getData(m_settings, name, format);
 	if (format == OBS_COMBO_FORMAT_STRING &&
 		type == OBS_COMBO_TYPE_EDITABLE) {
-		combo->lineEdit()->setText(QT_UTF8(value.c_str()));
+		combo->lineEdit()->setText(value);
 	} else {
-		int idx = combo->findData(QByteArray(value.c_str()));
+		int idx = combo->findData(QByteArray(value.toStdString().c_str()));
 		if (idx != -1) {
 			combo->setCurrentIndex(idx);
 		}

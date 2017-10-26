@@ -27,6 +27,26 @@
 
 using namespace std;
 
+template <long long get_int(obs_data_t*, const char*),
+	double get_double(obs_data_t*, const char*),
+	const char *get_string(obs_data_t*, const char*)>
+static QString from_obs_data(obs_data_t *data, const char *name, obs_combo_format format) {
+	switch (format) {
+		case OBS_COMBO_FORMAT_INT:
+			return QString::fromStdString(to_string(get_int(data, name)));
+		case OBS_COMBO_FORMAT_FLOAT:
+			return QString::fromStdString(to_string(get_double(data, name)));
+		case OBS_COMBO_FORMAT_STRING:
+			return get_string(data, name);
+		default:
+			return "";
+	}
+}
+
+QString XLUtil::getData(obs_data_t *data, const char *name, obs_combo_format format) {
+	return from_obs_data<obs_data_get_int, obs_data_get_double, obs_data_get_string>(data, name, format);
+}
+
 QString XLUtil::getFileContent(QString path) {
 	QFile f(path);
 	f.open(QIODevice::ReadOnly);
