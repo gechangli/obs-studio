@@ -38,7 +38,6 @@ XLAddSourceDialog::XLAddSourceDialog(QWidget *parent, obs_source_t* source) :
 XLAddSourceDialog::~XLAddSourceDialog() {
 	obs_source_dec_showing(m_source);
 	if(m_rollback && !m_editMode) {
-
 	}
 }
 

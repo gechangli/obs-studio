@@ -52,6 +52,18 @@ void XLSourceListView::setModel(QAbstractItemModel *model) {
 	connect(model, &QAbstractItemModel::dataChanged, this, &XLSourceListView::onDataChanged);
 	connect(model, &QAbstractItemModel::rowsInserted, this, &XLSourceListView::onRowsInserted);
 	connect(model, &QAbstractItemModel::rowsRemoved, this, &XLSourceListView::onRowsRemoved);
+	connect(selectionModel(), &QItemSelectionModel::currentRowChanged, this, &XLSourceListView::onCurrentRowChanged);
+}
+
+void XLSourceListView::onCurrentRowChanged(const QModelIndex &current, const QModelIndex &previous) {
+	XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(previous));
+	if(widget) {
+		obs_sceneitem_select(widget->getSceneItem(), false);
+	}
+	widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(current));
+	if(widget) {
+		obs_sceneitem_select(widget->getSceneItem(), true);
+	}
 }
 
 void XLSourceListView::onRowsRemoved(const QModelIndex &parent, int first, int last) {

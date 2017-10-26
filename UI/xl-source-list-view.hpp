@@ -44,6 +44,7 @@ private slots:
 	void onRowsInserted(const QModelIndex &parent, int first, int last);
 	void onRowsRemoved(const QModelIndex &parent, int first, int last);
 	void onDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles);
+	void onCurrentRowChanged(const QModelIndex &current, const QModelIndex &previous);
 
 public:
 	XLSourceListView(QWidget* parent = Q_NULLPTR);
