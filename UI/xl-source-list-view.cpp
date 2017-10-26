@@ -31,6 +31,7 @@ Q_DECLARE_METATYPE(OBSSceneItem);
 XLSourceListView::XLSourceListView(QWidget* parent) :
 	QListView(parent),
 	m_lastHoverWidget(Q_NULLPTR) {
+	setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 XLSourceListView::~XLSourceListView() {
@@ -111,6 +112,13 @@ void XLSourceListView::onDataChanged(const QModelIndex &topLeft, const QModelInd
 void XLSourceListView::mousePressEvent(QMouseEvent* event) {
 	// save this position for later dragging
 	m_dragPos = event->pos();
+
+	// if not valid index, clear selection
+	QModelIndex item = indexAt(m_dragPos);
+	if(!item.isValid()) {
+		selectionModel()->clearCurrentIndex();
+		clearSelection();
+	}
 
 	// call super
 	QListView::mousePressEvent(event);
