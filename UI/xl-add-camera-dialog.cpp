@@ -22,132 +22,34 @@
 #include "xl-add-camera-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
-#include "xl-title-bar-sub.hpp"
-#include "xl-frameless-window-util.hpp"
 #include "window-basic-main.hpp"
 
 using namespace std;
 
 XLAddCameraDialog::XLAddCameraDialog(QWidget *parent, obs_source_t* source) :
-	QDialog (parent),
-	ui(new Ui::XLAddCameraDialog),
-	m_source(OBSSource(source)),
-	m_properties(Q_NULLPTR, obs_properties_destroy),
-	m_rollback(false),
-	m_editMode(false) {
-	// init ui
-	ui->setupUi(this);
-
-	// setup frameless ui
-	XLFramelessWindowUtil::setupUI(this);
-
-	// create title bar
-	m_titleBar = new XLTitleBarSub(this);
-	m_titleBar->init();
-	m_titleBar->move(0, 0);
-	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &QDialog::reject);
-
-	// set style
-	QString qssPath = XLUtil::getQssPathByName("xl-add-camera-dialog");
-	QString qss = XLUtil::loadQss(qssPath);
-	setStyleSheet(qss);
-
-	// make a copy of settings
-	m_oldSettings = obs_data_create();
-	m_settings = obs_source_get_settings(source);
-	obs_data_apply(m_oldSettings, m_settings);
-	obs_data_release(m_oldSettings);
-	obs_data_release(m_settings);
-
-	// add preview callback
-	obs_source_inc_showing(m_source);
-	auto addDrawCallback = [this]() {
-		obs_display_add_draw_callback(ui->preview->GetDisplay(), XLAddCameraDialog::drawPreview, this);
-	};
-	enum obs_source_type type = obs_source_get_type(m_source);
-	uint32_t caps = obs_source_get_output_flags(m_source);
-	bool drawable_type = type == OBS_SOURCE_TYPE_INPUT || type == OBS_SOURCE_TYPE_SCENE;
-	if (drawable_type && (caps & OBS_SOURCE_VIDEO) != 0) {
-		connect(ui->preview, &OBSQTDisplay::DisplayCreated, addDrawCallback);
-	}
-
-	// init ui for properties
-	loadProperties();
+	XLAddSourceDialog (parent, source),
+	ui(new Ui::XLAddCameraDialog) {
 }
 
 XLAddCameraDialog::~XLAddCameraDialog() {
-	obs_source_dec_showing(m_source);
-	if(m_rollback && !m_editMode) {
-
-	}
-}
-
-void XLAddCameraDialog::setEditMode(bool v) {
-	m_editMode = v;
-}
-
-void XLAddCameraDialog::reject() {
-	m_rollback = true;
-	cleanup();
-	QDialog::reject();
-}
-
-void XLAddCameraDialog::accept() {
-	cleanup();
-	QDialog::accept();
-}
-
-void XLAddCameraDialog::cleanup() {
-	obs_display_remove_draw_callback(ui->preview->GetDisplay(), XLAddCameraDialog::drawPreview, this);
-}
-
-obs_source_t* XLAddCameraDialog::getSource() {
-	return m_source;
 }
 
 void XLAddCameraDialog::on_yesButton_clicked() {
 	accept();
 }
 
-bool XLAddCameraDialog::onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index) {
-	// get combo, data format and type
-	const char* name = obs_property_name(prop);
-	obs_combo_format format = obs_property_list_format(prop);
-	obs_combo_type type = obs_property_list_type(prop);
-	QVariant data;
+void XLAddCameraDialog::loadUI() {
+	// init ui
+	ui->setupUi(this);
 
-	// get selected data
-	if (type == OBS_COMBO_TYPE_EDITABLE) {
-		data = combo->currentText().toUtf8();
-	} else {
-		if (index != -1)
-			data = combo->itemData(index);
-		else
-			return true;
-	}
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-add-camera-dialog");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
+}
 
-	// save new value to settings
-	switch (format) {
-		case OBS_COMBO_FORMAT_INVALID:
-			return true;
-		case OBS_COMBO_FORMAT_INT:
-			obs_data_set_int(m_settings, name, data.value<long long>());
-			break;
-		case OBS_COMBO_FORMAT_FLOAT:
-			obs_data_set_double(m_settings, name, data.value<double>());
-			break;
-		case OBS_COMBO_FORMAT_STRING:
-			obs_data_set_string(m_settings, name, data.toByteArray().constData());
-			break;
-	}
-
-	// update
-	if(!m_deferUpdate) {
-		obs_source_update(m_source, m_settings);
-	}
-
-	// notify property changed
-	return obs_property_modified(prop, m_settings);
+OBSQTDisplay* XLAddCameraDialog::getDisplay() {
+	return ui->preview;
 }
 
 void XLAddCameraDialog::onPresetResolutionChanged(int index) {
@@ -160,62 +62,6 @@ void XLAddCameraDialog::onDeviceChanged(int index) {
 	if(onListPropertyChanged(m_deviceProperty, combo, index)) {
 		populateListProperty(m_presetProperty, ui->resolutionComboBox);
 	}
-}
-
-void XLAddCameraDialog::setWindowTitle(const QString& title) {
-	m_titleBar->setWindowTitle(title);
-}
-
-void XLAddCameraDialog::getScaleAndCenterPos(
-	int baseCX, int baseCY, int windowCX, int windowCY,
-	int &x, int &y, float &scale) {
-	double windowAspect, baseAspect;
-	int newCX, newCY;
-
-	windowAspect = double(windowCX) / double(windowCY);
-	baseAspect   = double(baseCX)   / double(baseCY);
-
-	if (windowAspect > baseAspect) {
-		scale = float(windowCY) / float(baseCY);
-		newCX = int(double(windowCY) * baseAspect);
-		newCY = windowCY;
-	} else {
-		scale = float(windowCX) / float(baseCX);
-		newCX = windowCX;
-		newCY = int(float(windowCX) / baseAspect);
-	}
-
-	x = windowCX/2 - newCX/2;
-	y = windowCY/2 - newCY/2;
-}
-
-void XLAddCameraDialog::drawPreview(void *data, uint32_t cx, uint32_t cy) {
-	XLAddCameraDialog *window = static_cast<XLAddCameraDialog*>(data);
-	if (!window->getSource())
-		return;
-
-	uint32_t sourceCX = max(obs_source_get_width(window->getSource()), 1u);
-	uint32_t sourceCY = max(obs_source_get_height(window->getSource()), 1u);
-
-	int   x, y;
-	int   newCX, newCY;
-	float scale;
-
-	getScaleAndCenterPos(sourceCX, sourceCY, cx, cy, x, y, scale);
-
-	newCX = int(scale * float(sourceCX));
-	newCY = int(scale * float(sourceCY));
-
-	gs_viewport_push();
-	gs_projection_push();
-	gs_ortho(0.0f, float(sourceCX), 0.0f, float(sourceCY),
-			 -100.0f, 100.0f);
-	gs_set_viewport(x, y, newCX, newCY);
-
-	obs_source_video_render(window->getSource());
-
-	gs_projection_pop();
-	gs_viewport_pop();
 }
 
 void XLAddCameraDialog::loadProperties() {
@@ -233,97 +79,4 @@ void XLAddCameraDialog::loadProperties() {
 	// bind ui
 	bindPropertyUI(m_deviceProperty, ui->cameraComboBox, SLOT(onDeviceChanged(int)));
 	bindPropertyUI(m_presetProperty, ui->resolutionComboBox, SLOT(onPresetResolutionChanged(int)));
-}
-
-void XLAddCameraDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, const char* slot) {
-	// null checking
-	if (!prop) {
-		return;
-	}
-
-	// get property type
-	obs_property_type type = obs_property_get_type(prop);
-	switch(type) {
-		case OBS_PROPERTY_LIST:
-			bindListPropertyUI(prop, dynamic_cast<QComboBox *>(widget), slot);
-			break;
-		default:
-			break;
-	}
-}
-
-void XLAddCameraDialog::populateListProperty(obs_property_t* prop, QComboBox* combo) {
-	// clear list first
-	QStandardItemModel *model = dynamic_cast<QStandardItemModel*>(combo->model());
-	model->clear();
-
-	// add items
-	obs_combo_type type = obs_property_list_type(prop);
-	obs_combo_format format = obs_property_list_format(prop);
-	size_t count = obs_property_list_item_count(prop);
-	for (size_t i = 0; i < count; i++) {
-		addComboItem(combo, prop, format, i);
-	}
-
-	// set editable or not
-	combo->setEditable(type == OBS_COMBO_TYPE_EDITABLE);
-
-	// max visible items and tooltip
-	combo->setMaxVisibleItems(40);
-	combo->setToolTip(QT_UTF8(obs_property_long_description(prop)));
-
-	// get current property value
-	// if string value, set to combo box
-	// if a list value, find value index and set as current
-	const char* name = obs_property_name(prop);
-	QString value = XLUtil::getData(m_settings, name, format);
-	if (format == OBS_COMBO_FORMAT_STRING &&
-		type == OBS_COMBO_TYPE_EDITABLE) {
-		combo->lineEdit()->setText(value);
-	} else {
-		int idx = combo->findData(QByteArray(value.toStdString().c_str()));
-		if (idx != -1) {
-			combo->setCurrentIndex(idx);
-		}
-	}
-}
-
-void XLAddCameraDialog::bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot) {
-	// populate list items
-	populateListProperty(prop, combo);
-
-	// connect event
-	connect(combo, SIGNAL(currentIndexChanged(int)), this, slot);
-}
-
-void XLAddCameraDialog::addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx) {
-	// get property name and value
-	const char *name = obs_property_list_item_name(prop, idx);
-	QVariant var;
-	if (format == OBS_COMBO_FORMAT_INT) {
-		long long val = obs_property_list_item_int(prop, idx);
-		var = QVariant::fromValue<long long>(val);
-	} else if (format == OBS_COMBO_FORMAT_FLOAT) {
-		double val = obs_property_list_item_float(prop, idx);
-		var = QVariant::fromValue<double>(val);
-	} else if (format == OBS_COMBO_FORMAT_STRING) {
-		var = QByteArray(obs_property_list_item_string(prop, idx));
-	}
-
-	// add item to combo
-	combo->addItem(QT_UTF8(name), var);
-
-	// if item is disabled, set it
-	if (obs_property_list_item_disabled(prop, idx)) {
-		int index = combo->findText(QT_UTF8(name));
-		if (index < 0) {
-			return;
-		}
-		QStandardItemModel *model = dynamic_cast<QStandardItemModel*>(combo->model());
-		if (!model) {
-			return;
-		}
-		QStandardItem *item = model->item(index);
-		item->setFlags(Qt::NoItemFlags);
-	}
 }

@@ -2377,6 +2377,7 @@ void OBSBasic::showPropertiesWindow(obs_source_t* source, bool edit) {
 	switch(XLUtil::getSourceType(id)) {
 		case XLUtil::XLS_CAMERA:
 			XLAddCameraDialog dialog(this, source);
+			dialog.init();
 			dialog.setEditMode(edit);
 			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
 			dialog.exec();

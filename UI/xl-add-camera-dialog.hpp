@@ -20,59 +20,32 @@
 #include <QDialog>
 #include <string>
 #include <memory>
-#include <QDialog>
 #include "ui_XLAddCameraDialog.h"
 #include "obs.hpp"
+#include "xl-add-source-dialog.hpp"
 
 class XLTitleBarSub;
 class QComboBox;
 
-class XLAddCameraDialog : public QDialog {
+class XLAddCameraDialog : public XLAddSourceDialog {
 	Q_OBJECT
-
-	// pointer type for properties
-	using properties_delete_t = decltype(&obs_properties_destroy);
-	using properties_t = std::unique_ptr<obs_properties_t, properties_delete_t>;
 
 private:
 	std::unique_ptr<Ui::XLAddCameraDialog> ui;
-	XLTitleBarSub* m_titleBar;
-	OBSSource m_source;
-	OBSData m_oldSettings;
-	OBSData m_settings;
-	properties_t m_properties;
 	obs_property_t* m_deviceProperty;
 	obs_property_t* m_presetProperty;
-	bool m_rollback;
-	bool m_deferUpdate;
-	bool m_editMode;
 
 private slots:
 	void on_yesButton_clicked();
 	void onDeviceChanged(int index);
 	void onPresetResolutionChanged(int index);
 
-private:
-	static void drawPreview(void *data, uint32_t cx, uint32_t cy);
-	static void getScaleAndCenterPos(int baseCX, int baseCY, int windowCX, int windowCY, int &x, int &y, float &scale);
-	void loadProperties();
-	void bindPropertyUI(obs_property_t* prop, QWidget* widget, const char* slot);
-	void bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot);
-	void addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx);
-	void cleanup();
-	bool onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index);
-	void populateListProperty(obs_property_t* prop, QComboBox* combo);
+protected:
+	void loadUI() Q_DECL_OVERRIDE;
+	OBSQTDisplay* getDisplay() Q_DECL_OVERRIDE;
+	void loadProperties() Q_DECL_OVERRIDE;
 
 public:
 	XLAddCameraDialog(QWidget *parent, obs_source_t* source);
 	virtual ~XLAddCameraDialog();
-
-	// override
-	void setWindowTitle(const QString& title);
-	void reject();
-	void accept();
-
-	// getter/setter
-	obs_source_t* getSource();
-	void setEditMode(bool v);
 };
