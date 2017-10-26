@@ -56,10 +56,13 @@ void XLSourceListView::setModel(QAbstractItemModel *model) {
 }
 
 void XLSourceListView::onCurrentRowChanged(const QModelIndex &current, const QModelIndex &previous) {
+	// deselect previous
 	XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(previous));
 	if(widget) {
 		obs_sceneitem_select(widget->getSceneItem(), false);
 	}
+
+	// select current
 	widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(current));
 	if(widget) {
 		obs_sceneitem_select(widget->getSceneItem(), true);
