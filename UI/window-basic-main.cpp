@@ -2320,6 +2320,10 @@ void OBSBasic::UpdatePreviewScalingMenu()
 			scalingAmount == float(ovi.output_width) / float(ovi.base_width));
 }
 
+XLSourceListView* OBSBasic::getSourceList() {
+	return ui->sourceList;
+}
+
 void OBSBasic::UpdateSources(OBSScene scene)
 {
 	XLUtil::clearListItems(ui->sources);

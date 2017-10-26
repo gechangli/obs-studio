@@ -221,7 +221,6 @@ private:
 	void          InitPrimitives();
 
 	OBSSceneItem  GetSceneItem(QListWidgetItem *item);
-	OBSSceneItem  GetCurrentSceneItem();
 
 	bool          QueryRemoveSource(obs_source_t *source);
 
@@ -499,7 +498,9 @@ private:
 public:
 	std::unique_ptr<BasicOutputHandler> outputHandler;
 	OBSScene      GetCurrentScene();
+	OBSSceneItem  GetCurrentSceneItem();
 	int GetSceneCollectionCount();
+	XLSourceListView* getSourceList();
 	void showPropertiesWindow(obs_source_t* source, bool edit);
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);

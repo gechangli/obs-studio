@@ -47,6 +47,9 @@ public:
 	// update item
 	void update();
 
+	// remove self from list view, as well as remove scene item
+	void remove();
+
 	// setter/getter
 	int getIndex();
 	void setIndex(int i);

@@ -24,6 +24,7 @@
 #include "xl-title-bar-sub.hpp"
 #include "xl-frameless-window-util.hpp"
 #include "window-basic-main.hpp"
+#include "xl-source-list-item-widget.hpp"
 
 using namespace std;
 
@@ -37,7 +38,16 @@ XLAddSourceDialog::XLAddSourceDialog(QWidget *parent, obs_source_t* source) :
 
 XLAddSourceDialog::~XLAddSourceDialog() {
 	obs_source_dec_showing(m_source);
+
+	// if user click X and not in edit mode, we need rollback the change
+	// so, get list view item widget and call remove
 	if(m_rollback && !m_editMode) {
+		OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+		XLSourceListView* listView = main->getSourceList();
+		QAbstractItemModel* model = listView->model();
+		QModelIndex index = model->index(model->rowCount() - 1, 0);
+		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(listView->indexWidget(index));
+		widget->remove();
 	}
 }
 

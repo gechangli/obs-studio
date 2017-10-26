@@ -96,6 +96,10 @@ QStandardItemModel* XLSourceListItemWidget::getModel() {
 }
 
 void XLSourceListItemWidget::on_deleteLabel_clicked() {
+	remove();
+}
+
+void XLSourceListItemWidget::remove() {
 	QStandardItemModel* model = getModel();
 	obs_sceneitem_t* sceneItem = getSceneItem();
 	obs_sceneitem_remove(sceneItem);
