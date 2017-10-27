@@ -19,6 +19,7 @@
 
 #include <QDialog>
 #include <string>
+#include <memory>
 #include "obs.hpp"
 
 class XLTitleBarSub;
