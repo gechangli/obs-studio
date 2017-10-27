@@ -77,7 +77,7 @@ void XLAddCameraDialog::loadProperties() {
 #ifdef Q_OS_OSX
 	const char* id2 = "preset";
 #else
-	const char* id1 = "resolution";
+	const char* id2 = "resolution";
 #endif
 	m_deviceProperty = obs_properties_get(m_properties.get(), id1);
 	m_presetProperty = obs_properties_get(m_properties.get(), id2);
