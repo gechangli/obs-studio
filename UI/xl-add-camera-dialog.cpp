@@ -69,8 +69,18 @@ void XLAddCameraDialog::loadProperties() {
 	m_properties.reset(obs_source_properties(m_source));
 
 	// find properties we want to set
-	m_deviceProperty = obs_properties_get(m_properties.get(), "device");
-	m_presetProperty = obs_properties_get(m_properties.get(), "preset");
+#ifdef Q_OS_OSX
+	const char* id1 = "device";
+#else
+	const char* id1 = "video_device_id";
+#endif
+#ifdef Q_OS_OSX
+	const char* id2 = "preset";
+#else
+	const char* id1 = "resolution";
+#endif
+	m_deviceProperty = obs_properties_get(m_properties.get(), id1);
+	m_presetProperty = obs_properties_get(m_properties.get(), id2);
 
 	// check defer update flag
 	uint32_t flags = obs_properties_get_flags(m_properties.get());
