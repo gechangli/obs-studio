@@ -208,19 +208,17 @@ void XLAddSourceDialog::drawPreview(void *data, uint32_t cx, uint32_t cy) {
 }
 
 void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, const char* slot) {
-	// null checking
-	if (!prop) {
-		return;
-	}
-
-	// get property type
-	obs_property_type type = obs_property_get_type(prop);
-	switch(type) {
-		case OBS_PROPERTY_LIST:
-			bindListPropertyUI(prop, dynamic_cast<QComboBox *>(widget), slot);
-			break;
-		default:
-			break;
+	// if has this property, bind UI
+	if (prop) {
+		// get property type
+		obs_property_type type = obs_property_get_type(prop);
+		switch(type) {
+			case OBS_PROPERTY_LIST:
+				bindListPropertyUI(prop, dynamic_cast<QComboBox *>(widget), slot);
+				break;
+			default:
+				break;
+		}
 	}
 }
 
@@ -247,25 +245,31 @@ void XLAddSourceDialog::populateListProperty(obs_property_t* prop, QComboBox* co
 	// get current property value
 	// if string value, set to combo box
 	// if a list value, find value index and set as current
+	int idx = -1;
 	const char* name = obs_property_name(prop);
 	QString value = XLUtil::getData(m_settings, name, format);
 	if (format == OBS_COMBO_FORMAT_STRING &&
 		type == OBS_COMBO_TYPE_EDITABLE) {
 		combo->lineEdit()->setText(value);
 	} else {
-		int idx = combo->findData(QByteArray(value.toStdString().c_str()));
+		idx = combo->findData(QByteArray(value.toStdString().c_str()));
 		if (idx != -1) {
 			combo->setCurrentIndex(idx);
 		}
 	}
+
+	// trigger change event if index is -1
+	if(idx == -1) {
+		emit combo->currentIndexChanged(0);
+	}
 }
 
 void XLAddSourceDialog::bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot) {
-	// populate list items
-	populateListProperty(prop, combo);
-
 	// connect event
 	connect(combo, SIGNAL(currentIndexChanged(int)), this, slot);
+
+	// populate list items
+	populateListProperty(prop, combo);
 }
 
 void XLAddSourceDialog::addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx) {
