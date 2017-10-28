@@ -37,6 +37,12 @@ XLSourceListView::XLSourceListView(QWidget* parent) :
 XLSourceListView::~XLSourceListView() {
 }
 
+void XLSourceListView::setup() {
+	QStandardItemModel* model = new QStandardItemModel();
+	setItemDelegate(new XLSourceListDelegate());
+	setModel(model);
+}
+
 void XLSourceListView::setModel(QAbstractItemModel *model) {
 	QListView::setModel(model);
 
@@ -260,4 +266,16 @@ void XLSourceListView::startDrag(Qt::DropActions supportedActions) {
 	drag->setHotSpot(QPoint(m_dragPos.x() - item->pos().x(), m_dragPos.y() - item->pos().y()));
 	drag->setPixmap(m_dragImg);
 	drag->exec(supportedActions);
+}
+
+XLSourceListDelegate::XLSourceListDelegate(QObject* parent) :
+	QStyledItemDelegate(parent) {
+
+}
+
+XLSourceListDelegate::~XLSourceListDelegate() {
+}
+
+QSize XLSourceListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+	return QSize(0, 50);
 }

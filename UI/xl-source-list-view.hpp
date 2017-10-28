@@ -18,6 +18,7 @@
 #pragma once
 
 #include <QListView>
+#include <QStyledItemDelegate>
 
 class QDrag;
 class XLSourceListItemWidget;
@@ -50,6 +51,20 @@ public:
 	XLSourceListView(QWidget* parent = Q_NULLPTR);
 	virtual ~XLSourceListView();
 
+	// called once when init
+	void setup();
+
 	// overrides
 	void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
+};
+
+class XLSourceListDelegate : public QStyledItemDelegate {
+	Q_OBJECT
+
+public:
+	XLSourceListDelegate(QObject* parent = Q_NULLPTR);
+	virtual ~XLSourceListDelegate();
+
+	// implementation
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
 };

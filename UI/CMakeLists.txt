@@ -223,7 +223,6 @@ set(xiaomeilive_SOURCES
 	xl-user-popup-widget.cpp
 	xl-util.cpp
 	xl-source-list-item-widget.cpp
-	xl-source-list-delegate.cpp
 	xl-source-list-model.cpp
 	xl-source-list-view.cpp
 	xl-status-bar.cpp
@@ -293,7 +292,6 @@ set(xiaomeilive_HEADERS
 	xl-user-popup-widget.hpp
 	xl-util.hpp
 	xl-source-list-item-widget.hpp
-	xl-source-list-delegate.hpp
 	xl-source-list-model.hpp
 	xl-source-list-view.hpp
 	xl-status-bar.hpp

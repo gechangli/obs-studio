@@ -65,7 +65,6 @@
 #include "xl-title-bar-main.hpp"
 #include "xl-frameless-window-util.hpp"
 #include "xl-source-list-item-widget.hpp"
-#include "xl-source-list-delegate.hpp"
 #include "xl-volume-control.hpp"
 #include "xl-scene-collection-popup-widget.hpp"
 #include "xl-add-camera-dialog.hpp"
@@ -392,9 +391,7 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	ui->earnTab->setProperty("tab", QVariant(2));
 
 	// source list
-	QStandardItemModel* model = new QStandardItemModel();
-	ui->sourceList->setItemDelegate(new XLSourceListDelegate());
-	ui->sourceList->setModel(model);
+	ui->sourceList->setup();
 }
 
 void OBSBasic::resizeEvent(QResizeEvent* event) {
@@ -1932,39 +1929,24 @@ void OBSBasic::on_cameraButton_clicked() {
 }
 
 void OBSBasic::on_appButton_clicked() {
-	XLSourcePopupWidget* popup = XLSourcePopupWidget::instance();
-	popup->setParent(this);
+	XLSourcePopupWidget* popup = new XLSourcePopupWidget(this);
 	popup->setReferenceWidget(ui->appButton);
-	if (popup->isHidden()) {
-		popup->setWindowFlags(Qt::Popup);
-		popup->show();
-	} else {
-		popup->hide();
-	}
+	popup->setWindowFlags(Qt::Popup);
+	popup->show();
 }
 
 void OBSBasic::on_monitorButton_clicked() {
-	XLSourcePopupWidget* popup = XLSourcePopupWidget::instance();
-	popup->setParent(this);
+	XLSourcePopupWidget* popup = new XLSourcePopupWidget(this);
 	popup->setReferenceWidget(ui->monitorButton);
-	if (popup->isHidden()) {
-		popup->setWindowFlags(Qt::Popup);
-		popup->show();
-	} else {
-		popup->hide();
-	}
+	popup->setWindowFlags(Qt::Popup);
+	popup->show();
 }
 
 void OBSBasic::on_toolboxButton_clicked() {
-	XLSourcePopupWidget* popup = XLSourcePopupWidget::instance();
-	popup->setParent(this);
+	XLSourcePopupWidget* popup = new XLSourcePopupWidget(this);
 	popup->setReferenceWidget(ui->toolboxButton);
-	if (popup->isHidden()) {
-		popup->setWindowFlags(Qt::Popup);
-		popup->show();
-	} else {
-		popup->hide();
-	}
+	popup->setWindowFlags(Qt::Popup);
+	popup->show();
 }
 
 void OBSBasic::InitHotkeys()

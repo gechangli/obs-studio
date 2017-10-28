@@ -39,12 +39,12 @@ XLSourcePopupWidget::XLSourcePopupWidget(QWidget* parent) :
 XLSourcePopupWidget::~XLSourcePopupWidget() {
 }
 
-XLSourcePopupWidget* XLSourcePopupWidget::instance() {
-	static XLSourcePopupWidget* inst = Q_NULLPTR;
-	if (inst == Q_NULLPTR) {
-		inst = new XLSourcePopupWidget();
-	}
-	return inst;
+void XLSourcePopupWidget::hideEvent(QHideEvent *event) {
+	// call super
+	QWidget::hideEvent(event);
+
+	// delete self
+	deleteLater();
 }
 
 void XLSourcePopupWidget::showEvent(QShowEvent *event) {

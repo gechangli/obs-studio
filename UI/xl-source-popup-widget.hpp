@@ -29,13 +29,13 @@ private:
 	QWidget* m_refLocWidget;
 
 protected:
+	void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
 	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
 public:
 	XLSourcePopupWidget(QWidget* parent = Q_NULLPTR);
 	virtual ~XLSourcePopupWidget();
-	static XLSourcePopupWidget* instance();
 
 	// reference location, if set, place it at center bottom of this widget
 	void setReferenceWidget(QWidget* w);
