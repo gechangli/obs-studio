@@ -23,7 +23,8 @@
 XLSourcePopupWidget::XLSourcePopupWidget(QWidget* parent) :
 	QWidget(parent),
 	ui(new Ui::XLSourcePopupWidget),
-	m_refLocWidget(Q_NULLPTR) {
+	m_refLocWidget(Q_NULLPTR),
+	m_mode(MODE_APP) {
 	// init ui
 	ui->setupUi(this);
 
@@ -37,6 +38,10 @@ XLSourcePopupWidget::XLSourcePopupWidget(QWidget* parent) :
 }
 
 XLSourcePopupWidget::~XLSourcePopupWidget() {
+}
+
+void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
+	m_mode = m;
 }
 
 void XLSourcePopupWidget::hideEvent(QHideEvent *event) {

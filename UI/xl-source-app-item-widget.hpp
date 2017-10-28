@@ -19,35 +19,34 @@
 
 #include <QWidget>
 #include <memory>
-#include "ui_XLSourcePopupWidget.h"
+#include "ui_XLAppItemWidget.h"
+#include "obs.h"
 
-class XLSourcePopupWidget : public QWidget {
+class QStandardItemModel;
+
+class XLSourceAppItemWidget : public QWidget {
 	Q_OBJECT
 
-public:
-	typedef enum {
-		MODE_APP,
-		MODE_MONITOR,
-		MODE_TOOLBOX
-	} Mode;
-
 private:
-	std::unique_ptr<Ui::XLSourcePopupWidget> ui;
-	QWidget* m_refLocWidget;
-	Mode m_mode;
+	std::unique_ptr<Ui::XLAppItemWidget> ui;
+	Q_PROPERTY(int m_index READ getIndex WRITE setIndex);
+	int m_index;
 
 protected:
-	void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
-	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-	void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+
+private slots:
+	void on_openButton_clicked();
 
 public:
-	XLSourcePopupWidget(QWidget* parent = Q_NULLPTR);
-	virtual ~XLSourcePopupWidget();
+	XLSourceAppItemWidget(QWidget* parent = Q_NULLPTR);
+	virtual ~XLSourceAppItemWidget();
 
-	// reference location, if set, place it at center bottom of this widget
-	void setReferenceWidget(QWidget* w);
+	// update item
+	void update();
 
-	// set mode
-	void setMode(Mode m);
+	// setter/getter
+	int getIndex();
+	void setIndex(int i);
+	QStandardItemModel* getModel();
 };

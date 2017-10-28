@@ -235,7 +235,9 @@ set(xiaomeilive_SOURCES
 	xl-message-box.cpp
 	xl-add-camera-dialog.cpp
 	xl-add-source-dialog.cpp
-	xl-source-popup-widget.cpp)
+	xl-source-popup-widget.cpp
+	xl-source-toolbox-item-widget.cpp
+	xl-source-app-item-widget.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -304,7 +306,9 @@ set(xiaomeilive_HEADERS
 	xl-message-box.hpp
 	xl-add-camera-dialog.hpp
 	xl-add-source-dialog.hpp
-	xl-source-popup-widget.hpp)
+	xl-source-popup-widget.hpp
+	xl-source-toolbox-item-widget.hpp
+	xl-source-app-item-widget.hpp)
 
 set(xiaomeilive_UI
 	forms/AutoConfigStartPage.ui
@@ -332,7 +336,9 @@ set(xiaomeilive_UI
 	forms/XLWebDialog.ui
 	forms/XLMessageBox.ui
 	forms/XLAddCameraDialog.ui
-	forms/XLSourcePopupWidget.ui)
+	forms/XLSourcePopupWidget.ui
+	forms/XLToolboxItemWidget.ui
+	forms/XLAppItemWidget.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)

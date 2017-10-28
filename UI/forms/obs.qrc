@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/source_monitor_pic.png</file>
     <file>images/source_picture_pic.png</file>
     <file>images/source_text_pic.png</file>
     <file>images/source_video_pic.png</file>

@@ -1931,6 +1931,7 @@ void OBSBasic::on_cameraButton_clicked() {
 void OBSBasic::on_appButton_clicked() {
 	XLSourcePopupWidget* popup = new XLSourcePopupWidget(this);
 	popup->setReferenceWidget(ui->appButton);
+	popup->setMode(XLSourcePopupWidget::MODE_APP);
 	popup->setWindowFlags(Qt::Popup);
 	popup->show();
 }
@@ -1938,6 +1939,7 @@ void OBSBasic::on_appButton_clicked() {
 void OBSBasic::on_monitorButton_clicked() {
 	XLSourcePopupWidget* popup = new XLSourcePopupWidget(this);
 	popup->setReferenceWidget(ui->monitorButton);
+	popup->setMode(XLSourcePopupWidget::MODE_MONITOR);
 	popup->setWindowFlags(Qt::Popup);
 	popup->show();
 }
@@ -1945,6 +1947,7 @@ void OBSBasic::on_monitorButton_clicked() {
 void OBSBasic::on_toolboxButton_clicked() {
 	XLSourcePopupWidget* popup = new XLSourcePopupWidget(this);
 	popup->setReferenceWidget(ui->toolboxButton);
+	popup->setMode(XLSourcePopupWidget::MODE_TOOLBOX);
 	popup->setWindowFlags(Qt::Popup);
 	popup->show();
 }
