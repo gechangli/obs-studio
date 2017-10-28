@@ -468,6 +468,9 @@ private slots:
 	void on_drawerArrow_clicked();
 	void on_sceneButtonDrawer_clicked();
 	void on_cameraButton_clicked();
+	void on_appButton_clicked();
+	void on_monitorButton_clicked();
+	void on_toolboxButton_clicked();
 
 private:
 	/* OBS Callbacks */
@@ -502,6 +505,7 @@ public:
 	int GetSceneCollectionCount();
 	XLSourceListView* getSourceList();
 	void showPropertiesWindow(obs_source_t* source, bool edit);
+	QWidget* getScenePanel();
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);
 

@@ -1,0 +1,12 @@
+XLSourcePopupWidget {
+    /* WORKAROUND for windows, set it same as title bar color */
+    /* macOS is ok but windows always show black background */
+    background: @userPopupBackground@;
+}
+QWidget#content {
+    background: white;
+}
+QLabel#hintLabel {
+    font-size: @mediumFontSize@;
+    color: #535353;
+}

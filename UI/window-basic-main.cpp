@@ -69,6 +69,7 @@
 #include "xl-volume-control.hpp"
 #include "xl-scene-collection-popup-widget.hpp"
 #include "xl-add-camera-dialog.hpp"
+#include "xl-source-popup-widget.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -1930,6 +1931,42 @@ void OBSBasic::on_cameraButton_clicked() {
 	obs_source_release(source);
 }
 
+void OBSBasic::on_appButton_clicked() {
+	XLSourcePopupWidget* popup = XLSourcePopupWidget::instance();
+	popup->setParent(this);
+	popup->setReferenceWidget(ui->appButton);
+	if (popup->isHidden()) {
+		popup->setWindowFlags(Qt::Popup);
+		popup->show();
+	} else {
+		popup->hide();
+	}
+}
+
+void OBSBasic::on_monitorButton_clicked() {
+	XLSourcePopupWidget* popup = XLSourcePopupWidget::instance();
+	popup->setParent(this);
+	popup->setReferenceWidget(ui->monitorButton);
+	if (popup->isHidden()) {
+		popup->setWindowFlags(Qt::Popup);
+		popup->show();
+	} else {
+		popup->hide();
+	}
+}
+
+void OBSBasic::on_toolboxButton_clicked() {
+	XLSourcePopupWidget* popup = XLSourcePopupWidget::instance();
+	popup->setParent(this);
+	popup->setReferenceWidget(ui->toolboxButton);
+	if (popup->isHidden()) {
+		popup->setWindowFlags(Qt::Popup);
+		popup->show();
+	} else {
+		popup->hide();
+	}
+}
+
 void OBSBasic::InitHotkeys()
 {
 	ProfileScope("OBSBasic::InitHotkeys");
@@ -2387,6 +2424,10 @@ void OBSBasic::showPropertiesWindow(obs_source_t* source, bool edit) {
 			dialog.exec();
 			break;
 	}
+}
+
+QWidget* OBSBasic::getScenePanel() {
+	return ui->scenePanel;
 }
 
 void OBSBasic::CreatePropertiesWindow(obs_source_t *source)
