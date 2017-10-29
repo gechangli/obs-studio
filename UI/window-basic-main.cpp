@@ -1901,14 +1901,7 @@ void OBSBasic::on_sceneButtonDrawer_clicked() {
 	}
 }
 
-void OBSBasic::on_cameraButton_clicked() {
-	// get source id, name and create it
-	char* id = "";
-#ifdef Q_OS_OSX
-	id = "av_capture_input";
-#elif defined(Q_OS_WIN)
-	id = "dshow_input";
-#endif
+obs_source_t* OBSBasic::addSourceById(const char* id) {
 	const char* name = obs_source_get_display_name(id);
 	obs_source_t* source = obs_source_create(id, name, NULL, nullptr);
 
@@ -1921,6 +1914,18 @@ void OBSBasic::on_cameraButton_clicked() {
 	obs_enter_graphics();
 	obs_scene_atomic_update(scene, addSource, source);
 	obs_leave_graphics();
+	return source;
+}
+
+void OBSBasic::on_cameraButton_clicked() {
+	// get source id, name and create it
+	char* id = "";
+#ifdef Q_OS_OSX
+	id = "av_capture_input";
+#elif defined(Q_OS_WIN)
+	id = "dshow_input";
+#endif
+	obs_source_t* source = addSourceById(id);
 
 	// show add camera dialog to adjust properties, if user directly close
 	// it, then source will be removed

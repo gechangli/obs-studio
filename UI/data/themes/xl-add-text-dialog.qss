@@ -1,0 +1,21 @@
+QDialog#XLAddTextDialog {
+    background: #f8f8f8;
+    border: 1px solid #64c112;
+}
+QWidget#preview {
+    border: 1px solid #d2d2d2;
+    background: #e7e7e7;
+}
+QPushButton#yesButton {
+    font-size: @bigFontSize@;
+    border: none;
+    border-radius: 16px;
+    background-color: #64C123;
+    color: white;
+}
+QPushButton#yesButton:hover {
+    background-color: #64CD23;
+}
+QPushButton#yesButton:pressed {
+    background-color: #64C123;
+}

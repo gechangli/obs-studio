@@ -492,6 +492,7 @@ private:
 	QMenu *CreateAddSourcePopupMenu();
 	void AddSourcePopupMenu(const QPoint &pos);
 	void copyActionsDynamicProperties();
+	obs_source_t* addSourceById(const char* id);
 
 	static void HotkeyTriggered(void *data, obs_hotkey_id id, bool pressed);
 

@@ -237,7 +237,8 @@ set(xiaomeilive_SOURCES
 	xl-add-source-dialog.cpp
 	xl-source-popup-widget.cpp
 	xl-source-toolbox-item-widget.cpp
-	xl-source-app-item-widget.cpp)
+	xl-source-app-item-widget.cpp
+	xl-add-text-dialog.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -308,7 +309,8 @@ set(xiaomeilive_HEADERS
 	xl-add-source-dialog.hpp
 	xl-source-popup-widget.hpp
 	xl-source-toolbox-item-widget.hpp
-	xl-source-app-item-widget.hpp)
+	xl-source-app-item-widget.hpp
+	xl-add-text-dialog.hpp)
 
 set(xiaomeilive_UI
 	forms/AutoConfigStartPage.ui
