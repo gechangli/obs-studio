@@ -338,7 +338,8 @@ set(xiaomeilive_UI
 	forms/XLAddCameraDialog.ui
 	forms/XLSourcePopupWidget.ui
 	forms/XLToolboxItemWidget.ui
-	forms/XLAppItemWidget.ui)
+	forms/XLAppItemWidget.ui
+	forms/XLAddTextDialog.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)

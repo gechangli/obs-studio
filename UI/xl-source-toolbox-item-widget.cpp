@@ -22,13 +22,18 @@
 #include "window-basic-main.hpp"
 #include "xl-util.hpp"
 
-Q_DECLARE_METATYPE(OBSSceneItem);
-
-XLSourceToolboxItemWidget::XLSourceToolboxItemWidget(QWidget* parent) :
+XLSourceToolboxItemWidget::XLSourceToolboxItemWidget(QWidget* parent, XLSourcePopupWidget::Mode mode) :
 	QWidget(parent),
 	ui(new Ui::XLToolboxItemWidget),
-	m_index(0) {
+	m_index(0),
+	m_mode(mode) {
+	// init ui
 	ui->setupUi(this);
+
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-source-toolbox-item-widget");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
 }
 
 XLSourceToolboxItemWidget::~XLSourceToolboxItemWidget() {
@@ -52,6 +57,11 @@ QStandardItemModel* XLSourceToolboxItemWidget::getModel() {
 }
 
 void XLSourceToolboxItemWidget::on_openButton_clicked() {
+	switch(m_mode) {
+		case XLSourcePopupWidget::MODE_TOOLBOX:
+			blog(LOG_INFO, "open button %d", m_index);
+			break;
+	}
 }
 
 int XLSourceToolboxItemWidget::getIndex() {
@@ -60,4 +70,16 @@ int XLSourceToolboxItemWidget::getIndex() {
 
 void XLSourceToolboxItemWidget::setIndex(int i) {
 	m_index = i;
+}
+
+void XLSourceToolboxItemWidget::setIcon(QPixmap icon) {
+	ui->iconLabel->setPixmap(icon);
+}
+
+void XLSourceToolboxItemWidget::setName(QString name) {
+	ui->nameLabel->setText(name);
+}
+
+void XLSourceToolboxItemWidget::setDesc(QString desc) {
+	ui->descLabel->setText(desc);
 }

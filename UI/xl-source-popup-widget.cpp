@@ -16,9 +16,12 @@
 ******************************************************************************/
 
 #include <QPainter>
+#include <QStandardItemModel>
 #include "xl-source-popup-widget.hpp"
 #include "window-basic-main.hpp"
 #include "xl-util.hpp"
+#include "xl-source-toolbox-item-widget.hpp"
+#include "xl-source-app-item-widget.hpp"
 
 XLSourcePopupWidget::XLSourcePopupWidget(QWidget* parent) :
 	QWidget(parent),
@@ -41,7 +44,53 @@ XLSourcePopupWidget::~XLSourcePopupWidget() {
 }
 
 void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
+	// set model
+	QStandardItemModel* model = new QStandardItemModel();
+	ui->listView->setItemDelegate(new XLSourcePopupWidgetListDelegate(ui->listView, m));
+	ui->listView->setModel(model);
+
+	// check model, load cells
 	m_mode = m;
+	switch(m_mode) {
+		case MODE_TOOLBOX: {
+			// set title
+			ui->titleLabel->setText(L("Toolbox.Title"));
+
+			// init rows
+			model->appendRow(new QStandardItem());
+			model->appendRow(new QStandardItem());
+			model->appendRow(new QStandardItem());
+			QPixmap icons[] = {
+				QPixmap(":/res/images/source_text_pic.png"),
+				QPixmap(":/res/images/source_picture_pic.png"),
+				QPixmap(":/res/images/source_video_pic.png")
+			};
+			QString names[] = {
+				L("Text"),
+				L("Picture"),
+				L("Video")
+			};
+			QString descs[] = {
+				L("Text.Desc"),
+				L("Picture.Desc"),
+				L("Video.Desc")
+			};
+			for (int i = 0; i < 3; i++) {
+				XLSourceToolboxItemWidget *widget = new XLSourceToolboxItemWidget(this,
+																				  XLSourcePopupWidget::MODE_TOOLBOX);
+				widget->setIndex(i);
+				widget->setIcon(icons[i]);
+				widget->setName(names[i]);
+				widget->setDesc(descs[i]);
+				ui->listView->setIndexWidget(model->index(i, 0), widget);
+			}
+			break;
+		}
+		case XLSourcePopupWidget::MODE_MONITOR:
+			// title
+			ui->titleLabel->setText(L("Monitor.Title"));
+			break;
+	}
 }
 
 void XLSourcePopupWidget::hideEvent(QHideEvent *event) {
@@ -91,4 +140,20 @@ void XLSourcePopupWidget::paintEvent(QPaintEvent* event) {
 
 void XLSourcePopupWidget::setReferenceWidget(QWidget* w) {
 	m_refLocWidget = w;
+}
+
+XLSourcePopupWidgetListDelegate::XLSourcePopupWidgetListDelegate(QObject* parent, XLSourcePopupWidget::Mode mode) :
+	QStyledItemDelegate(parent),
+	m_mode(mode) {
+}
+
+XLSourcePopupWidgetListDelegate::~XLSourcePopupWidgetListDelegate() {
+}
+
+QSize XLSourcePopupWidgetListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+	if(m_mode == XLSourcePopupWidget::MODE_APP) {
+		return QSize(0, 48);
+	} else {
+		return QSize(0, 78);
+	}
 }

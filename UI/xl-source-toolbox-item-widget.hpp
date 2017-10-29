@@ -21,6 +21,7 @@
 #include <memory>
 #include "ui_XLToolboxItemWidget.h"
 #include "obs.h"
+#include "xl-source-popup-widget.hpp"
 
 class QStandardItemModel;
 
@@ -31,6 +32,7 @@ private:
 	std::unique_ptr<Ui::XLToolboxItemWidget> ui;
 	Q_PROPERTY(int m_index READ getIndex WRITE setIndex);
 	int m_index;
+	XLSourcePopupWidget::Mode m_mode;
 
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -39,7 +41,7 @@ private slots:
 	void on_openButton_clicked();
 
 public:
-	XLSourceToolboxItemWidget(QWidget* parent = Q_NULLPTR);
+	XLSourceToolboxItemWidget(QWidget* parent = Q_NULLPTR, XLSourcePopupWidget::Mode mode = XLSourcePopupWidget::MODE_APP);
 	virtual ~XLSourceToolboxItemWidget();
 
 	// update item
@@ -49,4 +51,7 @@ public:
 	int getIndex();
 	void setIndex(int i);
 	QStandardItemModel* getModel();
+	void setIcon(QPixmap icon);
+	void setName(QString name);
+	void setDesc(QString desc);
 };

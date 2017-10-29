@@ -10,3 +10,6 @@ QLabel#hintLabel {
     font-size: @mediumFontSize@;
     color: #535353;
 }
+QListView#listView::item:selected {
+    background: transparent;
+}

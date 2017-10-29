@@ -19,6 +19,7 @@
 
 #include <QWidget>
 #include <memory>
+#include <QStyledItemDelegate>
 #include "ui_XLSourcePopupWidget.h"
 
 class XLSourcePopupWidget : public QWidget {
@@ -50,4 +51,18 @@ public:
 
 	// set mode
 	void setMode(Mode m);
+};
+
+class XLSourcePopupWidgetListDelegate : public QStyledItemDelegate {
+	Q_OBJECT
+
+private:
+	XLSourcePopupWidget::Mode m_mode;
+
+public:
+	XLSourcePopupWidgetListDelegate(QObject* parent = Q_NULLPTR, XLSourcePopupWidget::Mode mode = XLSourcePopupWidget::MODE_APP);
+	virtual ~XLSourcePopupWidgetListDelegate();
+
+	// implementation
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
 };

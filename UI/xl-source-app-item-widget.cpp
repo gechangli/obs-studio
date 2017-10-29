@@ -22,8 +22,6 @@
 #include "window-basic-main.hpp"
 #include "xl-util.hpp"
 
-Q_DECLARE_METATYPE(OBSSceneItem);
-
 XLSourceAppItemWidget::XLSourceAppItemWidget(QWidget* parent) :
 	QWidget(parent),
 	ui(new Ui::XLAppItemWidget),
