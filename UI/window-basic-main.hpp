@@ -492,7 +492,6 @@ private:
 	QMenu *CreateAddSourcePopupMenu();
 	void AddSourcePopupMenu(const QPoint &pos);
 	void copyActionsDynamicProperties();
-	obs_source_t* addSourceById(const char* id);
 
 	static void HotkeyTriggered(void *data, obs_hotkey_id id, bool pressed);
 
@@ -507,6 +506,7 @@ public:
 	XLSourceListView* getSourceList();
 	void showPropertiesWindow(obs_source_t* source, bool edit);
 	QWidget* getScenePanel();
+	obs_source_t* addSourceById(const char* id);
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);
 
