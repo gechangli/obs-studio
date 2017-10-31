@@ -87,6 +87,6 @@ void XLAddCameraDialog::loadProperties() {
 	m_deferUpdate = (flags & OBS_PROPERTIES_DEFER_UPDATE) != 0;
 
 	// bind ui
-	bindPropertyUI(m_deviceProperty, ui->cameraComboBox, SLOT(onDeviceChanged(int)));
-	bindPropertyUI(m_presetProperty, ui->resolutionComboBox, SLOT(onPresetResolutionChanged(int)));
+	bindPropertyUI(m_deviceProperty, ui->cameraComboBox, Q_NULLPTR, SLOT(onDeviceChanged(int)));
+	bindPropertyUI(m_presetProperty, ui->resolutionComboBox, Q_NULLPTR, SLOT(onPresetResolutionChanged(int)));
 }

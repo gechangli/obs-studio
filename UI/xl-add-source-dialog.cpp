@@ -41,13 +41,24 @@ XLAddSourceDialog::~XLAddSourceDialog() {
 
 	// if user click X and not in edit mode, we need rollback the change
 	// so, get list view item widget and call remove
-	if(m_rollback && !m_editMode) {
-		OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
-		XLSourceListView* listView = main->getSourceList();
-		QAbstractItemModel* model = listView->model();
-		QModelIndex index = model->index(model->rowCount() - 1, 0);
-		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(listView->indexWidget(index));
-		widget->remove();
+	if(m_rollback) {
+		if(m_editMode) {
+			obs_data_t *settings = obs_source_get_settings(m_source);
+			obs_data_clear(settings);
+			obs_data_release(settings);
+			if(m_deferUpdate) {
+				obs_data_apply(settings, m_oldSettings);
+			} else {
+				obs_source_update(m_source, m_oldSettings);
+			}
+		} else {
+			OBSBasic *main = dynamic_cast<OBSBasic *>(App()->GetMainWindow());
+			XLSourceListView *listView = main->getSourceList();
+			QAbstractItemModel *model = listView->model();
+			QModelIndex index = model->index(model->rowCount() - 1, 0);
+			XLSourceListItemWidget *widget = dynamic_cast<XLSourceListItemWidget *>(listView->indexWidget(index));
+			widget->remove();
+		}
 	}
 }
 
@@ -207,7 +218,7 @@ void XLAddSourceDialog::drawPreview(void *data, uint32_t cx, uint32_t cy) {
 	gs_viewport_pop();
 }
 
-void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, const char* slot) {
+void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, QWidget* actionWidget, const char* slot) {
 	// if has this property, bind UI
 	if (prop) {
 		// get property type
@@ -215,6 +226,9 @@ void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, co
 		switch(type) {
 			case OBS_PROPERTY_LIST:
 				bindListPropertyUI(prop, dynamic_cast<QComboBox *>(widget), slot);
+				break;
+			case OBS_PROPERTY_FONT:
+				bindFontPropertyUI(prop, dynamic_cast<QLabel*>(widget), dynamic_cast<QPushButton*>(actionWidget), slot);
 				break;
 			default:
 				break;
@@ -270,6 +284,68 @@ void XLAddSourceDialog::bindListPropertyUI(obs_property_t *prop, QComboBox *comb
 
 	// populate list items
 	populateListProperty(prop, combo);
+}
+
+void XLAddSourceDialog::bindFontPropertyUI(obs_property_t* prop, QLabel* fontNameLabel, QPushButton* selectFontButton, const char* slot) {
+	// get font settings
+	const char* name = obs_property_name(prop);
+	obs_data_t* font_obj = obs_data_get_obj(m_settings, name);
+	const char* face = obs_data_get_string(font_obj, "face");
+	const char* style = obs_data_get_string(font_obj, "style");
+
+	// if font property is not enabled, disable widget
+	if (!obs_property_enabled(prop)) {
+		selectFontButton->setEnabled(false);
+		fontNameLabel->setEnabled(false);
+	}
+
+	// create font based on current settings
+	QFont font = fontNameLabel->font();
+	makeQFont(font_obj, font, true);
+
+	// set tooltip
+	selectFontButton->setToolTip(QT_UTF8(obs_property_long_description(prop)));
+
+	// set font name
+	fontNameLabel->setFont(font);
+	fontNameLabel->setText(QString("%1 %2").arg(face, style));
+	fontNameLabel->setToolTip(QT_UTF8(obs_property_long_description(prop)));
+
+	// event
+	connect(selectFontButton, SIGNAL(clicked()), this, slot);
+
+	// release
+	obs_data_release(font_obj);
+}
+
+void XLAddSourceDialog::makeQFont(obs_data_t *font_obj, QFont &font, bool limit) {
+	// get font settings
+	const char *face  = obs_data_get_string(font_obj, "face");
+	const char *style = obs_data_get_string(font_obj, "style");
+	int size = (int)obs_data_get_int(font_obj, "size");
+	uint32_t flags = (uint32_t)obs_data_get_int(font_obj, "flags");
+
+	// set face
+	if (face) {
+		font.setFamily(face);
+		font.setStyleName(style);
+	}
+
+	// set size
+	if (size) {
+		if (limit) {
+			int max_size = font.pointSize();
+			if (max_size < 28) max_size = 28;
+			if (size > max_size) size = max_size;
+		}
+		font.setPointSize(size);
+	}
+
+	// set style
+	font.setBold(flags & OBS_FONT_BOLD);
+	font.setItalic(flags & OBS_FONT_ITALIC);
+	font.setUnderline(flags & OBS_FONT_UNDERLINE);
+	font.setStrikeOut(flags & OBS_FONT_STRIKEOUT);
 }
 
 void XLAddSourceDialog::addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx) {

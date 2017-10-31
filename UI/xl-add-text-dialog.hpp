@@ -32,9 +32,12 @@ class XLAddTextDialog : public XLAddSourceDialog {
 
 private:
 	std::unique_ptr<Ui::XLAddTextDialog> ui;
+	obs_property_t* m_fontProperty;
 
 private slots:
 	void on_yesButton_clicked();
+	void on_noButton_clicked();
+	void onSelectFont();
 
 protected:
 	void loadUI() Q_DECL_OVERRIDE;

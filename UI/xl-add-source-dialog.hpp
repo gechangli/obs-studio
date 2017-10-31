@@ -25,6 +25,7 @@
 class XLTitleBarSub;
 class QComboBox;
 class OBSQTDisplay;
+class QLabel;
 
 class XLAddSourceDialog : public QDialog {
 	Q_OBJECT
@@ -49,11 +50,13 @@ private:
 	static void getScaleAndCenterPos(int baseCX, int baseCY, int windowCX, int windowCY, int &x, int &y, float &scale);
 	void addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx);
 	void bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot);
+	void bindFontPropertyUI(obs_property_t* prop, QLabel* fontNameLabel, QPushButton* selectFontButton, const char* slot);
 
 protected:
-	void bindPropertyUI(obs_property_t* prop, QWidget* widget, const char* slot);
+	void bindPropertyUI(obs_property_t* prop, QWidget* widget, QWidget* actionWidget, const char* slot);
 	bool onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index);
 	void populateListProperty(obs_property_t* prop, QComboBox* combo);
+	void makeQFont(obs_data_t *font_obj, QFont &font, bool limit = false);
 
 	// subclass implmeentation
 	virtual void loadUI() = 0;
