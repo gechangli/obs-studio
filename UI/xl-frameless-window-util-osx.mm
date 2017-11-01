@@ -8,10 +8,15 @@
 void XLFramelessWindowUtil::setupUI(QWidget* w) {
     QMainWindow* mw = dynamic_cast<QMainWindow*>(w);
     if(mw) {
-		w->setWindowFlags(Qt::FramelessWindowHint | Qt::Window);
+		w->setWindowFlags(w->windowFlags() | Qt::FramelessWindowHint | Qt::Window);
 		QMargins m = w->contentsMargins();
 		m.setTop(m.top() + 48);
 		w->setContentsMargins(m);
+
+		// let window can be resized and minimized
+		NSView *nativeView = reinterpret_cast<NSView*>(w->winId());
+		NSWindow* nativeWindow = [nativeView window];
+		[nativeWindow setStyleMask:[nativeWindow styleMask] | NSResizableWindowMask | NSMiniaturizableWindowMask];
 
 		// XXX: This is old way to make a frameless resizable window
 		// it is good, BUT, it causes a weird cpu hang-up, maybe NSFullSizeContentViewWindowMask

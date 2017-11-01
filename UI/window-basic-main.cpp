@@ -382,6 +382,9 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	connect(m_titleBar, &XLTitleBar::windowRequestMaximize, this, &OBSBasic::windowRequestMaximize);
 	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &OBSBasic::windowRequestClose);
 
+	// tab bar
+	ui->tabBar->setTitleBar(m_titleBar);
+
 	// set title
 	setWindowTitle("");
 	UpdateTitleBar();

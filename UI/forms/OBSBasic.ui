@@ -51,7 +51,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QWidget" name="tabBar" native="true">
+     <widget class="XLTabBar" name="tabBar" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -2697,6 +2697,12 @@
    <class>XLResizeHandle</class>
    <extends>QLabel</extends>
    <header>xl-resize-handle.hpp</header>
+  </customwidget>
+  <customwidget>
+   <class>XLTabBar</class>
+   <extends>QWidget</extends>
+   <header>xl-tab-bar.hpp</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -28,6 +28,9 @@ class QHBoxLayout;
 class XLTitleBar : public QWidget {
 	Q_OBJECT
 
+	// friend class
+	friend class XLTabBar;
+
 private:
 	int m_windowBorderWidth;
 	QLabel* m_icon;
