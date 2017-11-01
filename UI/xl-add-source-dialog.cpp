@@ -19,6 +19,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QTextEdit>
+#include <QFontDialog>
 #include "xl-add-source-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
@@ -122,6 +123,23 @@ obs_source_t* XLAddSourceDialog::getSource() {
 	return m_source;
 }
 
+bool XLAddSourceDialog::onTextPropertyChanged(obs_property_t* prop, QWidget* edit) {
+	// get property name and text type
+	const char* name = obs_property_name(prop);
+	obs_text_type type = obs_proprety_text_type(prop);
+
+	// based on type
+	switch(type) {
+		case OBS_TEXT_MULTILINE:
+			QTextEdit* textEdit = dynamic_cast<QTextEdit*>(edit);
+			obs_data_set_string(m_settings, name, QT_TO_UTF8(textEdit->toPlainText()));
+			break;
+	}
+
+	// update
+	return postPropertyChanged(prop);
+}
+
 bool XLAddSourceDialog::onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index) {
 	// get combo, data format and type
 	const char* name = obs_property_name(prop);
@@ -154,6 +172,57 @@ bool XLAddSourceDialog::onListPropertyChanged(obs_property_t* prop, QComboBox* c
 			break;
 	}
 
+	// update
+	return postPropertyChanged(prop);
+}
+
+bool XLAddSourceDialog::onFontPropertyChanged(obs_property_t* prop, QLabel* fontNameLabel) {
+	// get font settings
+	const char* name = obs_property_name(prop);
+	obs_data_t* font_obj = obs_data_get_obj(m_settings, name);
+
+	// open font dialog to select font
+	bool success;
+	QFont font;
+	if (!font_obj) {
+		font = QFontDialog::getFont(&success, this);
+	} else {
+		makeQFont(font_obj, font);
+		font = QFontDialog::getFont(&success, font, this);
+		obs_data_release(font_obj);
+	}
+
+	// if failed, do nothing
+	if (!success) {
+		return false;
+	}
+
+	// create font setting for selected font
+	font_obj = obs_data_create();
+	obs_data_set_string(font_obj, "face", QT_TO_UTF8(font.family()));
+	obs_data_set_string(font_obj, "style", QT_TO_UTF8(font.styleName()));
+	obs_data_set_int(font_obj, "size", font.pointSize());
+	uint32_t flags = font.bold() ? OBS_FONT_BOLD : 0;
+	flags |= font.italic() ? OBS_FONT_ITALIC : 0;
+	flags |= font.underline() ? OBS_FONT_UNDERLINE : 0;
+	flags |= font.strikeOut() ? OBS_FONT_STRIKEOUT : 0;
+	obs_data_set_int(font_obj, "flags", flags);
+
+	// update font name label
+	QFont labelFont;
+	makeQFont(font_obj, labelFont, true);
+	fontNameLabel->setFont(labelFont);
+	fontNameLabel->setText(QString("%1 %2").arg(font.family(), font.styleName()));
+
+	// write font settings back
+	obs_data_set_obj(m_settings, name, font_obj);
+	obs_data_release(font_obj);
+
+	// update
+	return postPropertyChanged(prop);
+}
+
+bool XLAddSourceDialog::postPropertyChanged(obs_property_t* prop) {
 	// update
 	if(!m_deferUpdate) {
 		obs_source_update(m_source, m_settings);
@@ -240,6 +309,9 @@ void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, QW
 				}
 				break;
 			}
+			case OBS_PROPERTY_COLOR:
+
+				break;
 			default:
 				break;
 		}
@@ -329,7 +401,14 @@ void XLAddSourceDialog::bindFontPropertyUI(obs_property_t* prop, QLabel* fontNam
 }
 
 void XLAddSourceDialog::bindMultilineTextPropertyUI(obs_property_t* prop, QTextEdit* textEdit, const char* slot) {
+	// set text
+	const char* name = obs_property_name(prop);
+	const char* val = obs_data_get_string(m_settings, name);
+	textEdit->setText(QT_UTF8(val));
+	textEdit->setToolTip(QT_UTF8(obs_property_long_description(prop)));
 
+	// event
+	connect(textEdit, SIGNAL(textChanged()), this, slot);
 }
 
 void XLAddSourceDialog::makeQFont(obs_data_t *font_obj, QFont &font, bool limit) {

@@ -19,7 +19,6 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCloseEvent>
-#include <QFontDialog>
 #include "xl-add-text-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
@@ -68,9 +67,14 @@ void XLAddTextDialog::loadProperties() {
 	const char* id1 = "font";
 #endif
 #ifdef Q_OS_OSX
-	const char* id2 = "preset";
+	const char* id2 = "text";
 #else
-	const char* id2 = "resolution";
+	const char* id2 = "text";
+#endif
+#ifdef Q_OS_OSX
+	const char* id3 = "color1";
+#else
+	const char* id3 = "color1";
 #endif
 
 	// check defer update flag
@@ -79,50 +83,62 @@ void XLAddTextDialog::loadProperties() {
 
 	// property
 	m_fontProperty = obs_properties_get(m_properties.get(), id1);
+	m_textProperty = obs_properties_get(m_properties.get(), id2);
+	m_color1Property = obs_properties_get(m_properties.get(), id3);
 
 	// bind ui
 	bindPropertyUI(m_fontProperty, ui->fontNameLabel, ui->selectFontButton, SLOT(onSelectFont()));
+	bindPropertyUI(m_textProperty, ui->textEdit, Q_NULLPTR, SLOT(onTextChanged()));
+
+	// custom init
+	initOtherUI();
+}
+
+void XLAddTextDialog::onTextChanged() {
+	onTextPropertyChanged(m_textProperty, ui->textEdit);
 }
 
 void XLAddTextDialog::onSelectFont() {
-	// get font settings
-	const char* name = obs_property_name(m_fontProperty);
-	obs_data_t* font_obj = obs_data_get_obj(m_settings, name);
+	onFontPropertyChanged(m_fontProperty, ui->fontNameLabel);
+}
 
-	// open font dialog to select font
-	bool success;
-	QFont font;
-	if (!font_obj) {
-		font = QFontDialog::getFont(&success, this);
-	} else {
-		makeQFont(font_obj, font);
-		font = QFontDialog::getFont(&success, font, this);
-		obs_data_release(font_obj);
-	}
+void XLAddTextDialog::onColorButtonClicked() {
+	// update checked state of all color buttons
+	QPushButton* btn = dynamic_cast<QPushButton*>(sender());
+	selectColorButton(btn);
+}
 
-	// if failed, do nothing
-	if (!success) {
-		return;
-	}
+void XLAddTextDialog::initOtherUI() {
+	// color event
+	connect(ui->colorButton1, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton2, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton3, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton4, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton5, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton6, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton7, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton8, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton9, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->colorButton10, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+	connect(ui->customColorButton, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
 
-	// create font setting for selected font
-	font_obj = obs_data_create();
-	obs_data_set_string(font_obj, "face", QT_TO_UTF8(font.family()));
-	obs_data_set_string(font_obj, "style", QT_TO_UTF8(font.styleName()));
-	obs_data_set_int(font_obj, "size", font.pointSize());
-	uint32_t flags = font.bold() ? OBS_FONT_BOLD : 0;
-	flags |= font.italic() ? OBS_FONT_ITALIC : 0;
-	flags |= font.underline() ? OBS_FONT_UNDERLINE : 0;
-	flags |= font.strikeOut() ? OBS_FONT_STRIKEOUT : 0;
-	obs_data_set_int(font_obj, "flags", flags);
+	// init custom color
+	QPalette pal;
+	pal.setColor(QPalette::Button, Qt::black);
+	ui->customColorButton->setPalette(pal);
+}
 
-	// update font name label
-	QFont labelFont;
-	makeQFont(font_obj, labelFont, true);
-	ui->fontNameLabel->setFont(labelFont);
-	ui->fontNameLabel->setText(QString("%1 %2").arg(font.family(), font.styleName()));
-
-	// write font settings back
-	obs_data_set_obj(m_settings, name, font_obj);
-	obs_data_release(font_obj);
+void XLAddTextDialog::selectColorButton(QPushButton* btn) {
+	ui->colorButton1->setChecked(false);
+	ui->colorButton2->setChecked(false);
+	ui->colorButton3->setChecked(false);
+	ui->colorButton4->setChecked(false);
+	ui->colorButton5->setChecked(false);
+	ui->colorButton6->setChecked(false);
+	ui->colorButton7->setChecked(false);
+	ui->colorButton8->setChecked(false);
+	ui->colorButton9->setChecked(false);
+	ui->colorButton10->setChecked(false);
+	ui->customColorButton->setChecked(false);
+	btn->setChecked(true);
 }

@@ -33,11 +33,19 @@ class XLAddTextDialog : public XLAddSourceDialog {
 private:
 	std::unique_ptr<Ui::XLAddTextDialog> ui;
 	obs_property_t* m_fontProperty;
+	obs_property_t* m_textProperty;
+	obs_property_t* m_color1Property;
 
 private slots:
 	void on_yesButton_clicked();
 	void on_noButton_clicked();
 	void onSelectFont();
+	void onTextChanged();
+	void onColorButtonClicked();
+
+private:
+	void initOtherUI();
+	void selectColorButton(QPushButton* btn);
 
 protected:
 	void loadUI() Q_DECL_OVERRIDE;

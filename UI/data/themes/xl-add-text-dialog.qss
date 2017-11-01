@@ -37,7 +37,7 @@ QPushButton#customizeButton {
     background-color: transparent;
 }
 QPushButton#customizeButton:hover {
-    color: #757575;
+    color: #878787;
 }
 QPushButton#customizeButton:pressed {
     color: #535353;
@@ -72,101 +72,166 @@ QPushButton#noButton:pressed {
 }
 QPushButton#colorButton1 {
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton1:hover {
-    border: 1px solid red;
+    border: 1px solid black;
 }
 QPushButton#colorButton1:pressed {
+    border: 1px solid red;
+}
+QPushButton#colorButton1:checked {
     border: 1px solid black;
 }
 QPushButton#colorButton2 {
     background-color: #050505;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton2:hover {
-    border: 1px solid red;
+    border: 1px solid black;
 }
 QPushButton#colorButton2:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton2:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton3 {
     background-color: #fe0000;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton3:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton3:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton3:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton4 {
     background-color: #ed6943;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton4:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton4:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton4:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton5 {
     background-color: #f2914a;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton5:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton5:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton5:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton6 {
     background-color: #fff100;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton6:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton6:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton6:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton7 {
     background-color: #90c320;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton7:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton7:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton7:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton8 {
     background-color: #019944;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton8:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton8:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton8:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton9 {
     background-color: #00a0ea;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton9:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton9:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton9:checked {
+    border: 1px solid black;
 }
 QPushButton#colorButton10 {
     background-color: #0168b7;
-    border: none;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
 }
 QPushButton#colorButton10:hover {
     border: 1px solid black;
 }
 QPushButton#colorButton10:pressed {
-    border: none;
+    border: 1px solid red;
+}
+QPushButton#colorButton10:checked {
+    border: 1px solid black;
+}
+QPushButton#customColorButton {
+    background-color: black;
+    border: 1px solid transparent;
+    padding: 1px;
+    background-clip: content;
+}
+QPushButton#customColorButton:hover {
+    border: 1px solid black;
+}
+QPushButton#customColorButton:pressed {
+    border: 1px solid red;
+}
+QPushButton#customColorButton:checked {
+    border: 1px solid black;
 }
