@@ -55,7 +55,7 @@ private:
 protected:
 	void bindPropertyUI(obs_property_t* prop, QWidget* widget, QWidget* actionWidget, const char* slot);
 	bool onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index);
-	void populateListProperty(obs_property_t* prop, QComboBox* combo);
+	void populateListProperty(obs_property_t* prop, QComboBox* combo, const char *slot = Q_NULLPTR);
 	void makeQFont(obs_data_t *font_obj, QFont &font, bool limit = false);
 
 	// subclass implmeentation

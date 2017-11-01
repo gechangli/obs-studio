@@ -236,7 +236,7 @@ void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, QW
 	}
 }
 
-void XLAddSourceDialog::populateListProperty(obs_property_t* prop, QComboBox* combo) {
+void XLAddSourceDialog::populateListProperty(obs_property_t* prop, QComboBox* combo, const char *slot) {
 	// clear list first
 	QStandardItemModel *model = dynamic_cast<QStandardItemModel*>(combo->model());
 	model->clear();
@@ -273,17 +273,17 @@ void XLAddSourceDialog::populateListProperty(obs_property_t* prop, QComboBox* co
 	}
 
 	// trigger change event if index is -1
-	if(idx == -1) {
-		emit combo->currentIndexChanged(0);
+	if(idx == -1 && slot) {
+		QMetaObject::invokeMethod(this, slot, Q_ARG(int, 0));
 	}
 }
 
 void XLAddSourceDialog::bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot) {
+	// populate list items
+	populateListProperty(prop, combo, slot);
+
 	// connect event
 	connect(combo, SIGNAL(currentIndexChanged(int)), this, slot);
-
-	// populate list items
-	populateListProperty(prop, combo);
 }
 
 void XLAddSourceDialog::bindFontPropertyUI(obs_property_t* prop, QLabel* fontNameLabel, QPushButton* selectFontButton, const char* slot) {
