@@ -18,6 +18,7 @@
 #include <QStandardItemModel>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QTextEdit>
 #include "xl-add-source-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
@@ -230,6 +231,15 @@ void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, QW
 			case OBS_PROPERTY_FONT:
 				bindFontPropertyUI(prop, dynamic_cast<QLabel*>(widget), dynamic_cast<QPushButton*>(actionWidget), slot);
 				break;
+			case OBS_PROPERTY_TEXT: {
+				obs_text_type textType = obs_proprety_text_type(prop);
+				switch(textType) {
+					case OBS_TEXT_MULTILINE:
+						bindMultilineTextPropertyUI(prop, dynamic_cast<QTextEdit*>(widget), slot);
+						break;
+				}
+				break;
+			}
 			default:
 				break;
 		}
@@ -316,6 +326,10 @@ void XLAddSourceDialog::bindFontPropertyUI(obs_property_t* prop, QLabel* fontNam
 
 	// release
 	obs_data_release(font_obj);
+}
+
+void XLAddSourceDialog::bindMultilineTextPropertyUI(obs_property_t* prop, QTextEdit* textEdit, const char* slot) {
+
 }
 
 void XLAddSourceDialog::makeQFont(obs_data_t *font_obj, QFont &font, bool limit) {

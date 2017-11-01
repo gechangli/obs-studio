@@ -26,6 +26,7 @@ class XLTitleBarSub;
 class QComboBox;
 class OBSQTDisplay;
 class QLabel;
+class QTextEdit;
 
 class XLAddSourceDialog : public QDialog {
 	Q_OBJECT
@@ -51,6 +52,7 @@ private:
 	void addComboItem(QComboBox *combo, obs_property_t *prop, obs_combo_format format, size_t idx);
 	void bindListPropertyUI(obs_property_t *prop, QComboBox *combo, const char *slot);
 	void bindFontPropertyUI(obs_property_t* prop, QLabel* fontNameLabel, QPushButton* selectFontButton, const char* slot);
+	void bindMultilineTextPropertyUI(obs_property_t* prop, QTextEdit* textEdit, const char* slot);
 
 protected:
 	void bindPropertyUI(obs_property_t* prop, QWidget* widget, QWidget* actionWidget, const char* slot);
