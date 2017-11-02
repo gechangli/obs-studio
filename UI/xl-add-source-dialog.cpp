@@ -176,6 +176,10 @@ bool XLAddSourceDialog::onListPropertyChanged(obs_property_t* prop, QComboBox* c
 	return postPropertyChanged(prop);
 }
 
+QColor XLAddSourceDialog::onColorPropertyChanged(obs_property_t* prop) {
+
+}
+
 bool XLAddSourceDialog::onFontPropertyChanged(obs_property_t* prop, QLabel* fontNameLabel) {
 	// get font settings
 	const char* name = obs_property_name(prop);
@@ -310,7 +314,7 @@ void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, QW
 				break;
 			}
 			case OBS_PROPERTY_COLOR:
-
+				bindColorPropertyUI(prop, dynamic_cast<QPushButton*>(widget), slot);
 				break;
 			default:
 				break;
@@ -409,6 +413,16 @@ void XLAddSourceDialog::bindMultilineTextPropertyUI(obs_property_t* prop, QTextE
 
 	// event
 	connect(textEdit, SIGNAL(textChanged()), this, slot);
+}
+
+void XLAddSourceDialog::bindColorPropertyUI(obs_property_t* prop, QPushButton* selectColorButton, const char* slot) {
+	// enable button or not
+	if (!obs_property_enabled(prop)) {
+		selectColorButton->setEnabled(false);
+	}
+
+	// event
+	connect(selectColorButton, SIGNAL(clicked()), this, slot);
 }
 
 void XLAddSourceDialog::makeQFont(obs_data_t *font_obj, QFont &font, bool limit) {

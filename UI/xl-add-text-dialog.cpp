@@ -76,6 +76,11 @@ void XLAddTextDialog::loadProperties() {
 #else
 	const char* id3 = "color1";
 #endif
+#ifdef Q_OS_OSX
+	const char* id4 = "color2";
+#else
+	const char* id4 = "color2";
+#endif
 
 	// check defer update flag
 	uint32_t flags = obs_properties_get_flags(m_properties.get());
@@ -85,10 +90,12 @@ void XLAddTextDialog::loadProperties() {
 	m_fontProperty = obs_properties_get(m_properties.get(), id1);
 	m_textProperty = obs_properties_get(m_properties.get(), id2);
 	m_color1Property = obs_properties_get(m_properties.get(), id3);
+	m_color2Property = obs_properties_get(m_properties.get(), id4);
 
 	// bind ui
 	bindPropertyUI(m_fontProperty, ui->fontNameLabel, ui->selectFontButton, SLOT(onSelectFont()));
 	bindPropertyUI(m_textProperty, ui->textEdit, Q_NULLPTR, SLOT(onTextChanged()));
+	bindPropertyUI(m_color1Property, ui->customizeButton, Q_NULLPTR, SLOT(onColorChanged()));
 
 	// custom init
 	initOtherUI();
@@ -108,6 +115,10 @@ void XLAddTextDialog::onColorButtonClicked() {
 	selectColorButton(btn);
 }
 
+void XLAddTextDialog::onColorChanged() {
+
+}
+
 void XLAddTextDialog::initOtherUI() {
 	// color event
 	connect(ui->colorButton1, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
@@ -121,11 +132,6 @@ void XLAddTextDialog::initOtherUI() {
 	connect(ui->colorButton9, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
 	connect(ui->colorButton10, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
 	connect(ui->customColorButton, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
-
-	// init custom color
-	QPalette pal;
-	pal.setColor(QPalette::Button, Qt::black);
-	ui->customColorButton->setPalette(pal);
 }
 
 void XLAddTextDialog::selectColorButton(QPushButton* btn) {

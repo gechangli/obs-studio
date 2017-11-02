@@ -35,6 +35,7 @@ private:
 	obs_property_t* m_fontProperty;
 	obs_property_t* m_textProperty;
 	obs_property_t* m_color1Property;
+	obs_property_t* m_color2Property;
 
 private slots:
 	void on_yesButton_clicked();
@@ -42,6 +43,7 @@ private slots:
 	void onSelectFont();
 	void onTextChanged();
 	void onColorButtonClicked();
+	void onColorChanged();
 
 private:
 	void initOtherUI();
