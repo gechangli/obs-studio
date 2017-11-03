@@ -20,6 +20,7 @@
 #include <QComboBox>
 #include <QTextEdit>
 #include <QFontDialog>
+#include <QColorDialog>
 #include "xl-add-source-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
@@ -177,7 +178,32 @@ bool XLAddSourceDialog::onListPropertyChanged(obs_property_t* prop, QComboBox* c
 }
 
 QColor XLAddSourceDialog::onColorPropertyChanged(obs_property_t* prop) {
+	// get property info
+	const char* name = obs_property_name(prop);
+	const char* desc = obs_property_description(prop);
+	long long val = obs_data_get_int(m_settings, name);
+	QColor color = XLUtil::int2Color(val);
 
+	/* The native dialog on OSX has all kinds of problems, like closing
+	 * other open QDialogs on exit, and
+	 * https://bugreports.qt-project.org/browse/QTBUG-34532
+	 */
+	QColorDialog::ColorDialogOptions options = QColorDialog::ShowAlphaChannel;
+#ifdef __APPLE__
+	options |= QColorDialog::DontUseNativeDialog;
+#endif
+	color = QColorDialog::getColor(color, this, QT_UTF8(desc), options);
+	if (!color.isValid())
+		return Qt::black;
+
+	// write back to settings
+	obs_data_set_int(m_settings, name, XLUtil::color2Int(color));
+
+	// update
+	postPropertyChanged(prop);
+
+	// return color
+	return color;
 }
 
 bool XLAddSourceDialog::onFontPropertyChanged(obs_property_t* prop, QLabel* fontNameLabel) {

@@ -54,7 +54,6 @@ private:
 	void bindFontPropertyUI(obs_property_t* prop, QLabel* fontNameLabel, QPushButton* selectFontButton, const char* slot);
 	void bindMultilineTextPropertyUI(obs_property_t* prop, QTextEdit* textEdit, const char* slot);
 	void bindColorPropertyUI(obs_property_t* prop, QPushButton* selectColorButton, const char* slot);
-	bool postPropertyChanged(obs_property_t* prop);
 
 protected:
 	void bindPropertyUI(obs_property_t* prop, QWidget* widget, QWidget* actionWidget, const char* slot);
@@ -64,6 +63,7 @@ protected:
 	QColor onColorPropertyChanged(obs_property_t* prop);
 	void populateListProperty(obs_property_t* prop, QComboBox* combo, const char *slot = Q_NULLPTR);
 	void makeQFont(obs_data_t *font_obj, QFont &font, bool limit = false);
+	bool postPropertyChanged(obs_property_t* prop);
 
 	// subclass implmeentation
 	virtual void loadUI() = 0;

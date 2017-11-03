@@ -64,4 +64,8 @@ public:
 	static QListWidgetItem* takeListItem(QListWidget *widget, int row);
 	static void deleteListItem(QListWidget *widget, QListWidgetItem *item);
 	static void clearListItems(QListWidget *widget);
+
+	// color
+	static QColor int2Color(long long val);
+	static long long color2Int(QColor color);
 };

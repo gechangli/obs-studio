@@ -113,10 +113,33 @@ void XLAddTextDialog::onColorButtonClicked() {
 	// update checked state of all color buttons
 	QPushButton* btn = dynamic_cast<QPushButton*>(sender());
 	selectColorButton(btn);
+
+	// get color
+	QColor color = btn->palette().button().color();
+
+	// update color1
+	const char* name1 = obs_property_name(m_color1Property);
+	obs_data_set_int(m_settings, name1, XLUtil::color2Int(color));
+	postPropertyChanged(m_color1Property);
+
+	// update color2 also
+	const char* name2 = obs_property_name(m_color2Property);
+	obs_data_set_int(m_settings, name2, XLUtil::color2Int(color));
+	postPropertyChanged(m_color2Property);
 }
 
 void XLAddTextDialog::onColorChanged() {
+	// get changed color
+	QColor color = onColorPropertyChanged(m_color1Property);
 
+	// update color2 also
+	const char* name = obs_property_name(m_color2Property);
+	obs_data_set_int(m_settings, name, XLUtil::color2Int(color));
+	postPropertyChanged(m_color2Property);
+
+	// update custom color button
+	ui->customColorButton->setStyleSheet(QString("background-color: %1;").arg(color.name(QColor::HexArgb)));
+	selectColorButton(ui->customColorButton);
 }
 
 void XLAddTextDialog::initOtherUI() {
@@ -132,6 +155,15 @@ void XLAddTextDialog::initOtherUI() {
 	connect(ui->colorButton9, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
 	connect(ui->colorButton10, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
 	connect(ui->customColorButton, SIGNAL(clicked()), this, SLOT(onColorButtonClicked()));
+
+	// get current color
+	const char* name = obs_property_name(m_color1Property);
+	long long val = obs_data_get_int(m_settings, name);
+	QColor color = XLUtil::int2Color(val);
+
+	// update custom color button
+	ui->customColorButton->setStyleSheet(QString("background-color: %1;").arg(color.name(QColor::HexArgb)));
+	selectColorButton(ui->customColorButton);
 }
 
 void XLAddTextDialog::selectColorButton(QPushButton* btn) {
