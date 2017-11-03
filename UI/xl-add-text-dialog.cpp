@@ -61,24 +61,14 @@ void XLAddTextDialog::loadProperties() {
 	m_properties.reset(obs_source_properties(m_source));
 
 	// find properties we want to set
-#ifdef Q_OS_OSX
 	const char* id1 = "font";
-#else
-	const char* id1 = "font";
-#endif
-#ifdef Q_OS_OSX
 	const char* id2 = "text";
-#else
-	const char* id2 = "text";
-#endif
 #ifdef Q_OS_OSX
 	const char* id3 = "color1";
 #else
-	const char* id3 = "color1";
+	const char* id3 = "color";
 #endif
 #ifdef Q_OS_OSX
-	const char* id4 = "color2";
-#else
 	const char* id4 = "color2";
 #endif
 
@@ -90,7 +80,9 @@ void XLAddTextDialog::loadProperties() {
 	m_fontProperty = obs_properties_get(m_properties.get(), id1);
 	m_textProperty = obs_properties_get(m_properties.get(), id2);
 	m_color1Property = obs_properties_get(m_properties.get(), id3);
+#ifdef Q_OS_OSX
 	m_color2Property = obs_properties_get(m_properties.get(), id4);
+#endif
 
 	// bind ui
 	bindPropertyUI(m_fontProperty, ui->fontNameLabel, ui->selectFontButton, SLOT(onSelectFont()));
@@ -122,20 +114,24 @@ void XLAddTextDialog::onColorButtonClicked() {
 	obs_data_set_int(m_settings, name1, XLUtil::color2Int(color));
 	postPropertyChanged(m_color1Property);
 
+#ifdef Q_OS_OSX
 	// update color2 also
 	const char* name2 = obs_property_name(m_color2Property);
 	obs_data_set_int(m_settings, name2, XLUtil::color2Int(color));
 	postPropertyChanged(m_color2Property);
+#endif
 }
 
 void XLAddTextDialog::onColorChanged() {
 	// get changed color
 	QColor color = onColorPropertyChanged(m_color1Property);
 
+#ifdef Q_OS_OSX
 	// update color2 also
 	const char* name = obs_property_name(m_color2Property);
 	obs_data_set_int(m_settings, name, XLUtil::color2Int(color));
 	postPropertyChanged(m_color2Property);
+#endif
 
 	// update custom color button
 	ui->customColorButton->setStyleSheet(QString("background-color: %1;").arg(color.name(QColor::HexArgb)));

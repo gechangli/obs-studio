@@ -35,7 +35,9 @@ private:
 	obs_property_t* m_fontProperty;
 	obs_property_t* m_textProperty;
 	obs_property_t* m_color1Property;
+#ifdef Q_OS_OSX
 	obs_property_t* m_color2Property;
+#endif
 
 private slots:
 	void on_yesButton_clicked();
