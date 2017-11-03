@@ -74,6 +74,9 @@
         <property name="text">
          <string>Picture.File</string>
         </property>
+        <property name="indent">
+         <number>0</number>
+        </property>
        </widget>
       </item>
       <item>
@@ -87,7 +90,13 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>26</height>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
          </size>
         </property>
         <property name="frameShape">
@@ -102,6 +111,9 @@
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
+        <property name="indent">
+         <number>0</number>
+        </property>
        </widget>
       </item>
       <item>
@@ -114,8 +126,14 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>120</width>
-          <height>0</height>
+          <width>48</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>48</width>
+          <height>30</height>
          </size>
         </property>
         <property name="text">

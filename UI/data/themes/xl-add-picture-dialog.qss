@@ -1,0 +1,63 @@
+QDialog#XLAddTextDialog {
+    background: #f8f8f8;
+    border: 1px solid #64c112;
+}
+QWidget#preview {
+    border: 1px solid #d2d2d2;
+    background: #e7e7e7;
+}
+QLabel#fileLabel {
+    font-size: @bigFontSize@;
+    color: black;
+}
+QLabel#fileNameLabel {
+    font-size: @mediumFontSize@;
+    color: black;
+    background: white;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    padding-left: 8px;
+}
+QPushButton#selectFileButton {
+    font-size: @bigFontSize@;
+    border: 1px solid #5FB921;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    color: #5FB921;
+}
+QPushButton#selectFileButton:hover {
+    background-color: #5FB921;
+    color: #f8f8f8;
+}
+QPushButton#selectFileButton:pressed {
+    background-color: #f8f8f8;
+    color: #5FB921;
+}
+QPushButton#yesButton {
+    font-size: @bigFontSize@;
+    border: none;
+    border-radius: 16px;
+    background-color: #64C123;
+    color: white;
+}
+QPushButton#yesButton:hover {
+    background-color: #64CD23;
+}
+QPushButton#yesButton:pressed {
+    background-color: #64C123;
+}
+QPushButton#noButton {
+     background-color: rgb(248,248,248);
+     font-size: @bigFontSize@;
+     color: rgb(203,202,202);
+     border: 1px solid rgb(203,202,202);
+     border-radius: 16px;
+}
+QPushButton#noButton:hover {
+     background-color: rgb(203,202,202);
+     color: rgb(248,248,248);
+}
+QPushButton#noButton:pressed {
+     background-color: rgb(248,248,248);
+     color: rgb(203,202,202);
+}

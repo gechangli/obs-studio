@@ -60,19 +60,25 @@ QStandardItemModel* XLSourceToolboxItemWidget::getModel() {
 void XLSourceToolboxItemWidget::on_openButton_clicked() {
 	switch(m_mode) {
 		case XLSourcePopupWidget::MODE_TOOLBOX:
+			const char* id;
 			switch(m_index) {
 				case 0:
-					OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 #ifdef Q_OS_OSX
-					const char* id = "text_ft2_source";
+					id = "text_ft2_source";
 #else
-					const char* id = "text_gdiplus";
+					id = "text_gdiplus";
 #endif
-					obs_source_t* source = main->addSourceById(id);
-					main->showPropertiesWindow(source, false);
-					obs_source_release(source);
+					break;
+				case 1:
+					id = "image_source";
 					break;
 			}
+
+			// show properties window
+			OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+			obs_source_t* source = main->addSourceById(id);
+			main->showPropertiesWindow(source, false);
+			obs_source_release(source);
 			break;
 	}
 }

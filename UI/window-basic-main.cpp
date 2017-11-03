@@ -70,6 +70,7 @@
 #include "xl-add-camera-dialog.hpp"
 #include "xl-source-popup-widget.hpp"
 #include "xl-add-text-dialog.hpp"
+#include "xl-add-picture-dialog.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -2421,6 +2422,15 @@ void OBSBasic::showPropertiesWindow(obs_source_t* source, bool edit) {
 		case XLUtil::XLS_TEXT:
 		{
 			XLAddTextDialog dialog(this, source);
+			dialog.init();
+			dialog.setEditMode(edit);
+			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
+			dialog.exec();
+			break;
+		}
+		case XLUtil::XLS_PICTURE:
+		{
+			XLAddPictureDialog dialog(this, source);
 			dialog.init();
 			dialog.setEditMode(edit);
 			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));

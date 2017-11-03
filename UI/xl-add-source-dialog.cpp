@@ -21,6 +21,7 @@
 #include <QTextEdit>
 #include <QFontDialog>
 #include <QColorDialog>
+#include <QFileDialog>
 #include "xl-add-source-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
@@ -206,6 +207,45 @@ QColor XLAddSourceDialog::onColorPropertyChanged(obs_property_t* prop) {
 	return color;
 }
 
+bool XLAddSourceDialog::onPathPropertyChanged(obs_property_t* prop, QLabel* fileNameLabel) {
+	// get property info
+	const char* name = obs_property_name(prop);
+	const char* desc = obs_property_description(prop);
+	obs_path_type type = obs_property_path_type(prop);
+	const char* filter = obs_property_path_filter(prop);
+	const char* default_path = obs_property_path_default_path(prop);
+
+	// open file dialog to get path
+	QString path;
+	if (type == OBS_PATH_DIRECTORY) {
+		path = QFileDialog::getExistingDirectory(this,
+												 QT_UTF8(desc), QT_UTF8(default_path),
+												 QFileDialog::ShowDirsOnly |
+												 QFileDialog::DontResolveSymlinks);
+	} else if(type == OBS_PATH_FILE) {
+		path = QFileDialog::getOpenFileName(this,
+											QT_UTF8(desc), QT_UTF8(default_path),
+											QT_UTF8(filter));
+	} else if (type == OBS_PATH_FILE_SAVE) {
+		path = QFileDialog::getSaveFileName(this,
+											QT_UTF8(desc), QT_UTF8(default_path),
+											QT_UTF8(filter));
+	}
+
+	// if path is empty
+	if (path.isEmpty())
+		return false;
+
+	// update ui
+	fileNameLabel->setText(path);
+
+	// save to setting
+	obs_data_set_string(m_settings, name, QT_TO_UTF8(path));
+
+	// update
+	return postPropertyChanged(prop);
+}
+
 bool XLAddSourceDialog::onFontPropertyChanged(obs_property_t* prop, QLabel* fontNameLabel) {
 	// get font settings
 	const char* name = obs_property_name(prop);
@@ -342,6 +382,9 @@ void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, QW
 			case OBS_PROPERTY_COLOR:
 				bindColorPropertyUI(prop, dynamic_cast<QPushButton*>(widget), slot);
 				break;
+			case OBS_PROPERTY_PATH:
+				bindPathPropertyUI(prop, dynamic_cast<QLabel*>(widget), dynamic_cast<QPushButton*>(actionWidget), slot);
+				break;
 			default:
 				break;
 		}
@@ -396,6 +439,25 @@ void XLAddSourceDialog::bindListPropertyUI(obs_property_t *prop, QComboBox *comb
 
 	// connect event
 	connect(combo, SIGNAL(currentIndexChanged(int)), this, slot);
+}
+
+void XLAddSourceDialog::bindPathPropertyUI(obs_property_t* prop, QLabel* fileNameLabel, QPushButton* selectFileButton, const char* slot) {
+	// property info
+	const char* name = obs_property_name(prop);
+	const char* val = obs_data_get_string(m_settings, name);
+
+	// enable
+	if (!obs_property_enabled(prop)) {
+		fileNameLabel->setEnabled(false);
+		selectFileButton->setEnabled(false);
+	}
+
+	// tooltip
+	fileNameLabel->setText(QT_UTF8(val));
+	fileNameLabel->setToolTip(QT_UTF8(obs_property_long_description(prop)));
+
+	// event
+	connect(selectFileButton, SIGNAL(clicked()), this, slot);
 }
 
 void XLAddSourceDialog::bindFontPropertyUI(obs_property_t* prop, QLabel* fontNameLabel, QPushButton* selectFontButton, const char* slot) {

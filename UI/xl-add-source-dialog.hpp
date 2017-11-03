@@ -54,12 +54,14 @@ private:
 	void bindFontPropertyUI(obs_property_t* prop, QLabel* fontNameLabel, QPushButton* selectFontButton, const char* slot);
 	void bindMultilineTextPropertyUI(obs_property_t* prop, QTextEdit* textEdit, const char* slot);
 	void bindColorPropertyUI(obs_property_t* prop, QPushButton* selectColorButton, const char* slot);
+	void bindPathPropertyUI(obs_property_t* prop, QLabel* fileNameLabel, QPushButton* selectFileButton, const char* slot);
 
 protected:
 	void bindPropertyUI(obs_property_t* prop, QWidget* widget, QWidget* actionWidget, const char* slot);
 	bool onListPropertyChanged(obs_property_t* prop, QComboBox* combo, int index);
 	bool onTextPropertyChanged(obs_property_t* prop, QWidget* edit);
 	bool onFontPropertyChanged(obs_property_t* prop, QLabel* fontNameLabel);
+	bool onPathPropertyChanged(obs_property_t* prop, QLabel* fileNameLabel);
 	QColor onColorPropertyChanged(obs_property_t* prop);
 	void populateListProperty(obs_property_t* prop, QComboBox* combo, const char *slot = Q_NULLPTR);
 	void makeQFont(obs_data_t *font_obj, QFont &font, bool limit = false);
