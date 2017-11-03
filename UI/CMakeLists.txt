@@ -239,7 +239,8 @@ set(xiaomeilive_SOURCES
 	xl-source-toolbox-item-widget.cpp
 	xl-source-app-item-widget.cpp
 	xl-add-text-dialog.cpp
-	xl-tab-bar.cpp)
+	xl-tab-bar.cpp
+	xl-add-picture-dialog.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -312,7 +313,8 @@ set(xiaomeilive_HEADERS
 	xl-source-toolbox-item-widget.hpp
 	xl-source-app-item-widget.hpp
 	xl-add-text-dialog.hpp
-	xl-tab-bar.hpp)
+	xl-tab-bar.hpp
+	xl-add-picture-dialog.hpp)
 
 set(xiaomeilive_UI
 	forms/AutoConfigStartPage.ui
@@ -343,7 +345,8 @@ set(xiaomeilive_UI
 	forms/XLSourcePopupWidget.ui
 	forms/XLToolboxItemWidget.ui
 	forms/XLAppItemWidget.ui
-	forms/XLAddTextDialog.ui)
+	forms/XLAddTextDialog.ui
+	forms/XLAddPictureDialog.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)
