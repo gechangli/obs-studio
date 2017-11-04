@@ -6,6 +6,7 @@
 #include <windows.h>
 
 static BOOL CALLBACK enum_monitor_props(HMONITOR handle, HDC hdc, LPRECT rect, LPARAM param) {
+	UNUSED_PARAMETER(handle);
 	UNUSED_PARAMETER(hdc);
 	UNUSED_PARAMETER(rect);
 
