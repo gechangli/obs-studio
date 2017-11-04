@@ -3,6 +3,7 @@
 #ifdef Q_OS_WIN
 
 #include "xl-util.hpp"
+#include <windows.h>
 
 static BOOL CALLBACK enum_monitor_props(HMONITOR handle, HDC hdc, LPRECT rect, LPARAM param) {
 	UNUSED_PARAMETER(hdc);
