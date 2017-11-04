@@ -47,6 +47,7 @@ class QNetworkReply;
 class OBSBasicStats;
 class XLProgressDialog;
 class XLTitleBarMain;
+class XLAddSourceDialog;
 
 #include "ui_OBSBasic.h"
 
@@ -504,7 +505,7 @@ public:
 	OBSSceneItem  GetCurrentSceneItem();
 	int GetSceneCollectionCount();
 	XLSourceListView* getSourceList();
-	void showPropertiesWindow(obs_source_t* source, bool edit);
+	XLAddSourceDialog* showPropertiesWindow(obs_source_t* source, bool edit, bool autoStart = true);
 	QWidget* getScenePanel();
 	obs_source_t* addSourceById(const char* id);
 

@@ -72,6 +72,7 @@
 #include "xl-add-text-dialog.hpp"
 #include "xl-add-picture-dialog.hpp"
 #include "xl-add-video-dialog.hpp"
+#include "xl-add-monitor-dialog.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -2408,43 +2409,39 @@ void OBSBasic::CreateInteractionWindow(obs_source_t *source)
 	interaction->setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
-void OBSBasic::showPropertiesWindow(obs_source_t* source, bool edit) {
+XLAddSourceDialog* OBSBasic::showPropertiesWindow(obs_source_t* source, bool edit, bool autoStart) {
 	// create dialog by type
+	XLAddSourceDialog* pd = Q_NULLPTR;
 	const char* id = obs_source_get_id(source);
 	switch(XLUtil::getSourceType(id)) {
-		case XLUtil::XLS_CAMERA: {
-			XLAddCameraDialog dialog(this, source);
-			dialog.init();
-			dialog.setEditMode(edit);
-			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
-			dialog.exec();
+		case XLUtil::XLS_CAMERA:
+			pd = new XLAddCameraDialog(this, source);
 			break;
-		}
-		case XLUtil::XLS_TEXT: {
-			XLAddTextDialog dialog(this, source);
-			dialog.init();
-			dialog.setEditMode(edit);
-			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
-			dialog.exec();
+		case XLUtil::XLS_TEXT:
+			pd = new XLAddTextDialog(this, source);
 			break;
-		}
-		case XLUtil::XLS_PICTURE: {
-			XLAddPictureDialog dialog(this, source);
-			dialog.init();
-			dialog.setEditMode(edit);
-			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
-			dialog.exec();
+		case XLUtil::XLS_PICTURE:
+			pd = new XLAddPictureDialog(this, source);
 			break;
-		}
-		case XLUtil::XLS_VIDEO: {
-			XLAddVideoDialog dialog(this, source);
-			dialog.init();
-			dialog.setEditMode(edit);
-			dialog.setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
-			dialog.exec();
+		case XLUtil::XLS_VIDEO:
+			pd = new XLAddVideoDialog(this, source);
 			break;
-		}
+		case XLUtil::XLS_MONITOR:
+			pd = new XLAddMonitorDialog(this, source);
+			break;
 	}
+
+	// show dialog
+	pd->setAttribute(Qt::WA_DeleteOnClose, true);
+	pd->init();
+	pd->setEditMode(edit);
+	pd->setWindowTitle(L(edit ? "Edit" : "Add") + XLUtil::getSourceLabel(id));
+	if(autoStart) {
+		pd->exec();
+	}
+
+	// return
+	return pd;
 }
 
 QWidget* OBSBasic::getScenePanel() {

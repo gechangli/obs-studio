@@ -21,7 +21,7 @@
 #include "xl-source-toolbox-item-widget.hpp"
 #include "window-basic-main.hpp"
 #include "xl-util.hpp"
-#include "obs.h"
+#include "xl-add-monitor-dialog.hpp"
 
 XLSourceToolboxItemWidget::XLSourceToolboxItemWidget(QWidget* parent, XLSourcePopupWidget::Mode mode) :
 	QWidget(parent),
@@ -58,14 +58,14 @@ QStandardItemModel* XLSourceToolboxItemWidget::getModel() {
 }
 
 void XLSourceToolboxItemWidget::on_openButton_clicked() {
+	const char* id;
 	switch(m_mode) {
 		case XLSourcePopupWidget::MODE_TOOLBOX:
-			const char* id;
 			switch(m_index) {
 				case 0:
 #ifdef Q_OS_OSX
 					id = "text_ft2_source";
-#else
+#elif defined(Q_OS_WIN)
 					id = "text_gdiplus";
 #endif
 					break;
@@ -76,14 +76,32 @@ void XLSourceToolboxItemWidget::on_openButton_clicked() {
 					id = "ffmpeg_source";
 					break;
 			}
-
-			// show properties window
-			OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
-			obs_source_t* source = main->addSourceById(id);
-			main->showPropertiesWindow(source, false);
-			obs_source_release(source);
+			break;
+		case XLSourcePopupWidget::MODE_MONITOR:
+#ifdef Q_OS_OSX
+			id = "display_capture";
+#elif defined(Q_OS_WIN)
+			id = "monitor_capture";
+#endif
 			break;
 	}
+
+	// show properties window
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	obs_source_t* source = main->addSourceById(id);
+	XLAddSourceDialog* dialog = main->showPropertiesWindow(source, false, false);
+
+	// preset monitor
+	XLAddMonitorDialog* md = dynamic_cast<XLAddMonitorDialog*>(dialog);
+	if(md) {
+		md->presetMonitor(m_index);
+	}
+
+	// start dialog
+	dialog->exec();
+
+	// release
+	obs_source_release(source);
 }
 
 int XLSourceToolboxItemWidget::getIndex() {
