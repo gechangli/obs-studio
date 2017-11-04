@@ -65,9 +65,6 @@ void XLAddCameraDialog::onDeviceChanged(int index) {
 }
 
 void XLAddCameraDialog::loadProperties() {
-	// load properties from source
-	m_properties.reset(obs_source_properties(m_source));
-
 	// find properties we want to set
 #ifdef Q_OS_OSX
 	const char* id1 = "device";
@@ -81,10 +78,6 @@ void XLAddCameraDialog::loadProperties() {
 #endif
 	m_deviceProperty = obs_properties_get(m_properties.get(), id1);
 	m_presetProperty = obs_properties_get(m_properties.get(), id2);
-
-	// check defer update flag
-	uint32_t flags = obs_properties_get_flags(m_properties.get());
-	m_deferUpdate = (flags & OBS_PROPERTIES_DEFER_UPDATE) != 0;
 
 	// bind ui
 	bindPropertyUI(m_deviceProperty, ui->cameraComboBox, Q_NULLPTR, SLOT(onDeviceChanged(int)));

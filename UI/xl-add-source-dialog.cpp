@@ -63,6 +63,11 @@ XLAddSourceDialog::~XLAddSourceDialog() {
 			XLSourceListItemWidget *widget = dynamic_cast<XLSourceListItemWidget *>(listView->indexWidget(index));
 			widget->remove();
 		}
+	} else {
+		// update
+		if(m_deferUpdate) {
+			obs_source_update(m_source, m_settings);
+		}
 	}
 }
 
@@ -94,9 +99,16 @@ void XLAddSourceDialog::init() {
 	enum obs_source_type type = obs_source_get_type(m_source);
 	uint32_t caps = obs_source_get_output_flags(m_source);
 	bool drawable_type = type == OBS_SOURCE_TYPE_INPUT || type == OBS_SOURCE_TYPE_SCENE;
-	if (drawable_type && (caps & OBS_SOURCE_VIDEO) != 0) {
+	if (getDisplay() && drawable_type && (caps & OBS_SOURCE_VIDEO) != 0) {
 		connect(getDisplay(), &OBSQTDisplay::DisplayCreated, addDrawCallback);
 	}
+
+	// load properties from source
+	m_properties.reset(obs_source_properties(m_source));
+
+	// check defer update flag
+	uint32_t flags = obs_properties_get_flags(m_properties.get());
+	m_deferUpdate = (flags & OBS_PROPERTIES_DEFER_UPDATE) != 0;
 
 	// init ui for properties
 	loadProperties();
@@ -113,12 +125,17 @@ void XLAddSourceDialog::reject() {
 }
 
 void XLAddSourceDialog::accept() {
+	// clean up
 	cleanup();
+
+	// done
 	QDialog::accept();
 }
 
 void XLAddSourceDialog::cleanup() {
-	obs_display_remove_draw_callback(getDisplay()->GetDisplay(), XLAddSourceDialog::drawPreview, this);
+	if(getDisplay()) {
+		obs_display_remove_draw_callback(getDisplay()->GetDisplay(), XLAddSourceDialog::drawPreview, this);
+	}
 }
 
 obs_source_t* XLAddSourceDialog::getSource() {
@@ -205,6 +222,15 @@ QColor XLAddSourceDialog::onColorPropertyChanged(obs_property_t* prop) {
 
 	// return color
 	return color;
+}
+
+bool XLAddSourceDialog::onBoolPropertyChanged(obs_property_t* prop, QCheckBox* checkbox) {
+	// save setting
+	const char* name = obs_property_name(prop);
+	obs_data_set_bool(m_settings, name, checkbox->checkState() == Qt::Checked);
+
+	// update
+	return postPropertyChanged(prop);
 }
 
 bool XLAddSourceDialog::onPathPropertyChanged(obs_property_t* prop, QLabel* fileNameLabel) {
@@ -385,6 +411,9 @@ void XLAddSourceDialog::bindPropertyUI(obs_property_t* prop, QWidget* widget, QW
 			case OBS_PROPERTY_PATH:
 				bindPathPropertyUI(prop, dynamic_cast<QLabel*>(widget), dynamic_cast<QPushButton*>(actionWidget), slot);
 				break;
+			case OBS_PROPERTY_BOOL:
+				bindBoolPropertyUI(prop, dynamic_cast<QCheckBox*>(widget), slot);
+				break;
 			default:
 				break;
 		}
@@ -439,6 +468,20 @@ void XLAddSourceDialog::bindListPropertyUI(obs_property_t *prop, QComboBox *comb
 
 	// connect event
 	connect(combo, SIGNAL(currentIndexChanged(int)), this, slot);
+}
+
+void XLAddSourceDialog::bindBoolPropertyUI(obs_property_t* prop, QCheckBox* checkbox, const char* slot) {
+	// get property info
+	const char *name = obs_property_name(prop);
+	const char *desc = obs_property_description(prop);
+	bool val = obs_data_get_bool(m_settings, name);
+
+	// set check box
+	checkbox->setText(QT_UTF8(desc));
+	checkbox->setCheckState(val ? Qt::Checked : Qt::Unchecked);
+
+	// event
+	connect(checkbox, SIGNAL(stateChanged(int)), this, slot);
 }
 
 void XLAddSourceDialog::bindPathPropertyUI(obs_property_t* prop, QLabel* fileNameLabel, QPushButton* selectFileButton, const char* slot) {

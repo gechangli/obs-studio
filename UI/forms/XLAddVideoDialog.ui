@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>XLAddPictureDialog</class>
- <widget class="QDialog" name="XLAddPictureDialog">
+ <class>XLAddVideoDialog</class>
+ <widget class="QDialog" name="XLAddVideoDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
-    <height>500</height>
+    <width>552</width>
+    <height>150</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>520</width>
-    <height>500</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>956</width>
-    <height>500</height>
+    <width>552</width>
+    <height>150</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>16</number>
+    <number>0</number>
    </property>
    <property name="leftMargin">
     <number>16</number>
@@ -42,17 +42,19 @@
     <number>24</number>
    </property>
    <item>
-    <widget class="OBSQTDisplay" name="preview" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QWidget" name="filePanel" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>520</width>
+       <height>42</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>520</width>
+       <height>42</height>
+      </size>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <property name="spacing">
        <number>10</number>
@@ -61,7 +63,7 @@
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>10</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
@@ -72,7 +74,7 @@
       <item>
        <widget class="QLabel" name="fileLabel">
         <property name="text">
-         <string>Picture.File</string>
+         <string>Video.File</string>
         </property>
         <property name="indent">
          <number>0</number>
@@ -144,6 +146,26 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>75</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="loopCheckBox">
+       <property name="text">
+        <string>Loop</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item alignment="Qt::AlignHCenter">
     <widget class="QWidget" name="buttonBar" native="true">
      <property name="sizePolicy">
@@ -160,7 +182,7 @@
        <number>0</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>16</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
@@ -211,14 +233,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>OBSQTDisplay</class>
-   <extends>QWidget</extends>
-   <header>qt-display.hpp</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

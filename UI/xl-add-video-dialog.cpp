@@ -17,56 +17,62 @@
 
 #include <QStandardItemModel>
 #include <QLineEdit>
-#include <QComboBox>
 #include <QCloseEvent>
-#include "xl-add-picture-dialog.hpp"
+#include "xl-add-video-dialog.hpp"
 #include "qt-wrappers.hpp"
 #include "xl-util.hpp"
 #include "window-basic-main.hpp"
 
 using namespace std;
 
-XLAddPictureDialog::XLAddPictureDialog(QWidget *parent, obs_source_t* source) :
+XLAddVideoDialog::XLAddVideoDialog(QWidget *parent, obs_source_t* source) :
 	XLAddSourceDialog (parent, source),
-	ui(new Ui::XLAddPictureDialog) {
+	ui(new Ui::XLAddVideoDialog) {
 }
 
-XLAddPictureDialog::~XLAddPictureDialog() {
+XLAddVideoDialog::~XLAddVideoDialog() {
 }
 
-void XLAddPictureDialog::on_yesButton_clicked() {
+void XLAddVideoDialog::on_yesButton_clicked() {
 	accept();
 }
 
-void XLAddPictureDialog::on_noButton_clicked() {
+void XLAddVideoDialog::on_noButton_clicked() {
 	reject();
 }
 
-void XLAddPictureDialog::loadUI() {
+void XLAddVideoDialog::loadUI() {
 	// init ui
 	ui->setupUi(this);
 
 	// set style
-	QString qssPath = XLUtil::getQssPathByName("xl-add-picture-dialog");
+	QString qssPath = XLUtil::getQssPathByName("xl-add-video-dialog");
 	QString qss = XLUtil::loadQss(qssPath);
 	setStyleSheet(qss);
 }
 
-OBSQTDisplay* XLAddPictureDialog::getDisplay() {
-	return ui->preview;
+OBSQTDisplay* XLAddVideoDialog::getDisplay() {
+	return Q_NULLPTR;
 }
 
-void XLAddPictureDialog::loadProperties() {
+void XLAddVideoDialog::loadProperties() {
 	// find properties we want to set
-	const char* id1 = "file";
+	const char* id1 = "local_file";
+	const char* id2 = "looping";
 
 	// property
 	m_fileProperty = obs_properties_get(m_properties.get(), id1);
+	m_loopProperty = obs_properties_get(m_properties.get(), id2);
 
 	// bind ui
 	bindPropertyUI(m_fileProperty, ui->fileNameLabel, ui->selectFileButton, SLOT(onSelectFile()));
+	bindPropertyUI(m_loopProperty, ui->loopCheckBox, Q_NULLPTR, SLOT(onLoopChanged(int)));
 }
 
-void XLAddPictureDialog::onSelectFile() {
+void XLAddVideoDialog::onSelectFile() {
 	onPathPropertyChanged(m_fileProperty, ui->fileNameLabel);
+}
+
+void XLAddVideoDialog::onLoopChanged(int state) {
+	onBoolPropertyChanged(m_loopProperty, ui->loopCheckBox);
 }

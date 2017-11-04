@@ -72,6 +72,9 @@ void XLSourceToolboxItemWidget::on_openButton_clicked() {
 				case 1:
 					id = "image_source";
 					break;
+				case 2:
+					id = "ffmpeg_source";
+					break;
 			}
 
 			// show properties window

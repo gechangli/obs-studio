@@ -57,9 +57,6 @@ OBSQTDisplay* XLAddTextDialog::getDisplay() {
 }
 
 void XLAddTextDialog::loadProperties() {
-	// load properties from source
-	m_properties.reset(obs_source_properties(m_source));
-
 	// find properties we want to set
 	const char* id1 = "font";
 	const char* id2 = "text";
@@ -71,10 +68,6 @@ void XLAddTextDialog::loadProperties() {
 #ifdef Q_OS_OSX
 	const char* id4 = "color2";
 #endif
-
-	// check defer update flag
-	uint32_t flags = obs_properties_get_flags(m_properties.get());
-	m_deferUpdate = (flags & OBS_PROPERTIES_DEFER_UPDATE) != 0;
 
 	// property
 	m_fontProperty = obs_properties_get(m_properties.get(), id1);

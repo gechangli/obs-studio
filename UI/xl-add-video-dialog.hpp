@@ -20,21 +20,23 @@
 #include <QDialog>
 #include <string>
 #include <memory>
-#include "ui_XLAddPictureDialog.h"
+#include "ui_XLAddVideoDialog.h"
 #include "obs.hpp"
 #include "xl-add-source-dialog.hpp"
 
-class XLAddPictureDialog : public XLAddSourceDialog {
+class XLAddVideoDialog : public XLAddSourceDialog {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::XLAddPictureDialog> ui;
+	std::unique_ptr<Ui::XLAddVideoDialog> ui;
 	obs_property_t* m_fileProperty;
+	obs_property_t* m_loopProperty;
 
 private slots:
 	void on_yesButton_clicked();
 	void on_noButton_clicked();
 	void onSelectFile();
+	void onLoopChanged(int state);
 
 protected:
 	void loadUI() Q_DECL_OVERRIDE;
@@ -42,6 +44,6 @@ protected:
 	void loadProperties() Q_DECL_OVERRIDE;
 
 public:
-	XLAddPictureDialog(QWidget *parent, obs_source_t* source);
-	virtual ~XLAddPictureDialog();
+	XLAddVideoDialog(QWidget *parent, obs_source_t* source);
+	virtual ~XLAddVideoDialog();
 };
