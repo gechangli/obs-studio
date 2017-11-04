@@ -68,4 +68,7 @@ public:
 	// color
 	static QColor int2Color(long long val);
 	static long long color2Int(QColor color);
+
+	// monitor
+	static int getMonitorCount();
 };

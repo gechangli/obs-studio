@@ -69,7 +69,8 @@ if(WIN32)
 		win-update/win-update.cpp
 		win-update/win-update-helpers.cpp
 		xl-frameless-window-util-win.cpp
-		obs.rc)
+		obs.rc
+		xl-util-win.cpp)
 	set(xiaomeilive_PLATFORM_HEADERS
 		win-update/update-window.hpp
 		win-update/win-update.hpp
@@ -85,7 +86,8 @@ if(WIN32)
 elseif(APPLE)
 	set(xiaomeilive_PLATFORM_SOURCES
 		platform-osx.mm
-		xl-frameless-window-util-osx.mm)
+		xl-frameless-window-util-osx.mm
+		xl-util-osx.mm)
 	set_source_files_properties(xl-frameless-window-util-osx.mm PROPERTIES COMPILE_FLAGS -fno-objc-arc)
 
 	find_package(AppKit REQUIRED)
@@ -349,7 +351,8 @@ set(xiaomeilive_UI
 	forms/XLAppItemWidget.ui
 	forms/XLAddTextDialog.ui
 	forms/XLAddPictureDialog.ui
-	forms/XLAddVideoDialog.ui)
+	forms/XLAddVideoDialog.ui
+	forms/XLAddMonitorDialog.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)

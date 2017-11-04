@@ -89,6 +89,17 @@ void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
 		case XLSourcePopupWidget::MODE_MONITOR:
 			// title
 			ui->titleLabel->setText(L("Monitor.Title"));
+
+			// init rows
+			for (int i = 0; i < XLUtil::getMonitorCount(); i++) {
+				model->appendRow(new QStandardItem());
+				XLSourceToolboxItemWidget *widget = new XLSourceToolboxItemWidget(this, XLSourcePopupWidget::MODE_MONITOR);
+				widget->setIndex(i);
+				widget->setIcon(QPixmap(":/res/images/source_monitor_pic.png"));
+				widget->setName(QString("%1%2").arg(L("Monitor")).arg(i + 1));
+				widget->setDesc(L("Monitor.Desc").arg(i + 1));
+				ui->listView->setIndexWidget(model->index(i, 0), widget);
+			}
 			break;
 	}
 }
