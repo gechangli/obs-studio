@@ -13,3 +13,6 @@ QLabel#hintLabel {
 QListView#listView::item:selected {
     background: transparent;
 }
+QListView#listView::item:hover {
+    background: transparent;
+}
