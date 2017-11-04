@@ -7,3 +7,4 @@
 @panelSeparatorColor@=#d2d2d2
 @titleBarColor@=#64c112
 @userPopupBackground@=transparent
+@sourcePopupBackground@=transparent

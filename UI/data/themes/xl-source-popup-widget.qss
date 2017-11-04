@@ -1,7 +1,7 @@
 XLSourcePopupWidget {
     /* WORKAROUND for windows, set it same as title bar color */
     /* macOS is ok but windows always show black background */
-    background: @userPopupBackground@;
+    background: @sourcePopupBackground@;
 }
 QWidget#content {
     background: white;
