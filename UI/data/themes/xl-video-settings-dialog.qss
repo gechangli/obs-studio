@@ -1,0 +1,90 @@
+QDialog#XLVideoSettingsDialog {
+    background: #f8f8f8;
+    border: 1px solid #64c112;
+}
+QPushButton#yesButton {
+    font-size: @bigFontSize@;
+    border: none;
+    border-radius: 16px;
+    background-color: #64C123;
+    color: white;
+}
+QPushButton#yesButton:hover {
+    background-color: #64CD23;
+}
+QPushButton#yesButton:pressed {
+    background-color: #64C123;
+}
+QLabel#sectionLabel {
+    font-size: @largeFontSize@;
+    color: black;
+}
+QRadioButton#superRadioButton,QRadioButton#highRadioButton,QRadioButton#normalRadioButton,QRadioButton#customRadioButton {
+    font-size: @bigFontSize@;
+    color: black;
+}
+QLabel#superDescLabel,QLabel#highDescLabel,QLabel#normalDescLabel {
+    font-size: @smallFontSize@;
+    color: #b5b5b5;
+}
+QLabel#frameRateLabel,QLabel#fpsLabel,QLabel#resolutionLabel {
+    font-size: @mediumFontSize@;
+    color: black;
+}
+QComboBox QAbstractItemView {
+    color: black;
+}
+QComboBox QAbstractItemView:item:hover {
+    color: #898989;
+}
+QComboBox#frameRateComboBox:editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#frameRateComboBox:!editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#frameRateComboBox::drop-down {
+    border: none;
+    width: 24px;
+}
+QComboBox#frameRateComboBox::down-arrow {
+    image: url(:/res/images/drop_down_arrow_gray.png);
+}
+QComboBox#fpsComboBox:editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#fpsComboBox:!editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#fpsComboBox::drop-down {
+    border: none;
+    width: 24px;
+}
+QComboBox#fpsComboBox::down-arrow {
+    image: url(:/res/images/drop_down_arrow_gray.png);
+}
+QComboBox#resolutionComboBox:editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#resolutionComboBox:!editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#resolutionComboBox::drop-down {
+    border: none;
+    width: 24px;
+}
+QComboBox#resolutionComboBox::down-arrow {
+    image: url(:/res/images/drop_down_arrow_gray.png);
+}
