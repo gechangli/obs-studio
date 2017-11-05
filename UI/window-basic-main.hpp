@@ -508,6 +508,7 @@ public:
 	XLAddSourceDialog* showPropertiesWindow(obs_source_t* source, bool edit, bool autoStart = true);
 	QWidget* getScenePanel();
 	obs_source_t* addSourceById(const char* id);
+	void addSource(obs_source_t* source);
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);
 

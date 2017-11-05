@@ -19,7 +19,9 @@
 #include <QStandardItemModel>
 #include <QPaintEvent>
 #include "xl-source-app-item-widget.hpp"
+#include "xl-source-popup-widget.hpp"
 #include "window-basic-main.hpp"
+#include "xl-add-window-dialog.hpp"
 #include "xl-util.hpp"
 
 XLSourceAppItemWidget::XLSourceAppItemWidget(QWidget* parent) :
@@ -27,6 +29,11 @@ XLSourceAppItemWidget::XLSourceAppItemWidget(QWidget* parent) :
 	ui(new Ui::XLAppItemWidget),
 	m_index(0) {
 	ui->setupUi(this);
+
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-source-app-item-widget");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
 }
 
 XLSourceAppItemWidget::~XLSourceAppItemWidget() {
@@ -50,6 +57,23 @@ QStandardItemModel* XLSourceAppItemWidget::getModel() {
 }
 
 void XLSourceAppItemWidget::on_openButton_clicked() {
+	// show properties window
+	const char* id = "window_capture";
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	obs_source_t* source = main->addSourceById(id);
+	XLAddSourceDialog* dialog = main->showPropertiesWindow(source, false, false);
+
+	// preset window
+	XLAddWindowDialog* md = dynamic_cast<XLAddWindowDialog*>(dialog);
+	if(md) {
+		md->presetWindow(m_index);
+	}
+
+	// start dialog
+	dialog->exec();
+
+	// release
+	obs_source_release(source);
 }
 
 int XLSourceAppItemWidget::getIndex() {
@@ -58,4 +82,8 @@ int XLSourceAppItemWidget::getIndex() {
 
 void XLSourceAppItemWidget::setIndex(int i) {
 	m_index = i;
+}
+
+void XLSourceAppItemWidget::setName(QString name) {
+	ui->nameLabel->setText(name);
 }

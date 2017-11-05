@@ -1,5 +1,5 @@
 /******************************************************************************
-    Copyright (C) 2013 by luma <stubma@gmail.com>
+    Copyright (C) 2013 by Hugh Bailey <obs.jim@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,37 +17,37 @@
 
 #pragma once
 
-#include <QWidget>
+#include <QDialog>
+#include <string>
 #include <memory>
-#include "ui_XLAppItemWidget.h"
-#include "obs.h"
+#include "ui_XLAddWindowDialog.h"
+#include "obs.hpp"
+#include "xl-add-source-dialog.hpp"
 
-class QStandardItemModel;
+class XLTitleBarSub;
+class QComboBox;
 
-class XLSourceAppItemWidget : public QWidget {
+class XLAddWindowDialog : public XLAddSourceDialog {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::XLAppItemWidget> ui;
-	Q_PROPERTY(int m_index READ getIndex WRITE setIndex);
-	int m_index;
-
-protected:
-	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+	std::unique_ptr<Ui::XLAddWindowDialog> ui;
+	obs_property_t* m_windowProperty;
 
 private slots:
-	void on_openButton_clicked();
+	void on_yesButton_clicked();
+	void on_noButton_clicked();
+	void onWindowChanged(int index);
+
+protected:
+	void loadUI() Q_DECL_OVERRIDE;
+	OBSQTDisplay* getDisplay() Q_DECL_OVERRIDE;
+	void loadProperties() Q_DECL_OVERRIDE;
 
 public:
-	XLSourceAppItemWidget(QWidget* parent = Q_NULLPTR);
-	virtual ~XLSourceAppItemWidget();
+	XLAddWindowDialog(QWidget *parent, obs_source_t* source);
+	virtual ~XLAddWindowDialog();
 
-	// update item
-	void update();
-
-	// setter/getter
-	int getIndex();
-	void setIndex(int i);
-	void setName(QString name);
-	QStandardItemModel* getModel();
+	// pre-select a window
+	void presetWindow(int windowIndex);
 };

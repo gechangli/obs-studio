@@ -21,6 +21,7 @@
 #include <memory>
 #include <QStyledItemDelegate>
 #include "ui_XLSourcePopupWidget.h"
+#include "obs.h"
 
 class XLSourcePopupWidget : public QWidget {
 	Q_OBJECT
@@ -36,6 +37,7 @@ private:
 	std::unique_ptr<Ui::XLSourcePopupWidget> ui;
 	QWidget* m_refLocWidget;
 	Mode m_mode;
+	obs_source_t* m_windowSource;
 
 protected:
 	void hideEvent(QHideEvent *event) Q_DECL_OVERRIDE;
@@ -49,8 +51,9 @@ public:
 	// reference location, if set, place it at center bottom of this widget
 	void setReferenceWidget(QWidget* w);
 
-	// set mode
+	// setter/getter
 	void setMode(Mode m);
+	obs_source_t* getWindowSource();
 };
 
 class XLSourcePopupWidgetListDelegate : public QStyledItemDelegate {

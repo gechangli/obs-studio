@@ -1,0 +1,63 @@
+QDialog#XLAddWindowDialog {
+    background: #f8f8f8;
+    border: 1px solid #64c112;
+}
+QWidget#preview {
+    border: 1px solid #d2d2d2;
+    background: #e7e7e7;
+}
+QLabel#windowLabel {
+    font-size: @bigFontSize@;
+    color: black;
+}
+QPushButton#yesButton {
+    font-size: @bigFontSize@;
+    border: none;
+    border-radius: 16px;
+    background-color: #64C123;
+    color: white;
+}
+QPushButton#yesButton:hover {
+    background-color: #64CD23;
+}
+QPushButton#yesButton:pressed {
+    background-color: #64C123;
+}
+QPushButton#noButton {
+     background-color: rgb(248,248,248);
+     font-size: @bigFontSize@;
+     color: rgb(203,202,202);
+     border: 1px solid rgb(203,202,202);
+     border-radius: 16px;
+}
+QPushButton#noButton:hover {
+     background-color: rgb(203,202,202);
+     color: rgb(248,248,248);
+}
+QPushButton#noButton:pressed {
+     background-color: rgb(248,248,248);
+     color: rgb(203,202,202);
+}
+QComboBox QAbstractItemView {
+    color: black;
+}
+QComboBox QAbstractItemView:item:hover {
+    color: #898989;
+}
+QComboBox#windowComboBox:editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#windowComboBox:!editable {
+    border: 1px solid #D2D2D2;
+    border-radius: 4px;
+    background: white;
+}
+QComboBox#windowComboBox::drop-down {
+    border: none;
+    width: 24px;
+}
+QComboBox#windowComboBox::down-arrow {
+    image: url(:/res/images/drop_down_arrow_gray.png);
+}

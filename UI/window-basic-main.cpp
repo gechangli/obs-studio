@@ -73,6 +73,7 @@
 #include "xl-add-picture-dialog.hpp"
 #include "xl-add-video-dialog.hpp"
 #include "xl-add-monitor-dialog.hpp"
+#include "xl-add-window-dialog.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -1908,19 +1909,21 @@ void OBSBasic::on_sceneButtonDrawer_clicked() {
 	}
 }
 
-obs_source_t* OBSBasic::addSourceById(const char* id) {
-	const char* name = obs_source_get_display_name(id);
-	obs_source_t* source = obs_source_create(id, name, NULL, nullptr);
-
-	// add to scene
+void OBSBasic::addSource(obs_source_t* source) {
 	OBSScene scene = GetCurrentScene();
-	auto addSource = [](void *data, obs_scene_t *scene) {
+	auto add = [](void *data, obs_scene_t *scene) {
 		obs_sceneitem_t* sceneitem = obs_scene_add(scene, (obs_source_t*)data);
 		obs_sceneitem_set_visible(sceneitem, true);
 	};
 	obs_enter_graphics();
-	obs_scene_atomic_update(scene, addSource, source);
+	obs_scene_atomic_update(scene, add, source);
 	obs_leave_graphics();
+}
+
+obs_source_t* OBSBasic::addSourceById(const char* id) {
+	const char* name = obs_source_get_display_name(id);
+	obs_source_t* source = obs_source_create(id, name, Q_NULLPTR, Q_NULLPTR);
+	addSource(source);
 	return source;
 }
 
@@ -2428,6 +2431,9 @@ XLAddSourceDialog* OBSBasic::showPropertiesWindow(obs_source_t* source, bool edi
 			break;
 		case XLUtil::XLS_MONITOR:
 			pd = new XLAddMonitorDialog(this, source);
+			break;
+		case XLUtil::XLS_APP:
+			pd = new XLAddWindowDialog(this, source);
 			break;
 	}
 

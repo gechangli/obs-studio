@@ -1,0 +1,23 @@
+XLSourceAppItemWidget {
+    border: none;
+    background: #f5f5f5;
+}
+QLabel#nameLabel {
+    font-size: @mediumFontSize@;
+    color: black;
+}
+QPushButton#openButton {
+    background-color: transparent;
+    font-size: @mediumFontSize@;
+    color: #64c112;
+    border: 2px solid #64c112;
+    border-radius: 2px;
+}
+QPushButton#openButton:hover {
+    background-color: #64c112;
+    color: #f5f5f5;
+}
+QPushButton#openButton:pressed {
+    background-color: transparent;
+    color: #64c112;
+}

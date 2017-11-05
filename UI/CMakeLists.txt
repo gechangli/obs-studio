@@ -244,7 +244,8 @@ set(xiaomeilive_SOURCES
 	xl-tab-bar.cpp
 	xl-add-picture-dialog.cpp
 	xl-add-video-dialog.cpp
-	xl-add-monitor-dialog.cpp)
+	xl-add-monitor-dialog.cpp
+	xl-add-window-dialog.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -320,7 +321,8 @@ set(xiaomeilive_HEADERS
 	xl-tab-bar.hpp
 	xl-add-picture-dialog.hpp
 	xl-add-video-dialog.hpp
-	xl-add-monitor-dialog.hpp)
+	xl-add-monitor-dialog.hpp
+	xl-add-window-dialog.hpp)
 
 set(xiaomeilive_UI
 	forms/AutoConfigStartPage.ui
@@ -354,7 +356,8 @@ set(xiaomeilive_UI
 	forms/XLAddTextDialog.ui
 	forms/XLAddPictureDialog.ui
 	forms/XLAddVideoDialog.ui
-	forms/XLAddMonitorDialog.ui)
+	forms/XLAddMonitorDialog.ui
+	forms/XLAddWindowDialog.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)

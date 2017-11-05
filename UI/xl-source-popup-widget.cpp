@@ -27,7 +27,8 @@ XLSourcePopupWidget::XLSourcePopupWidget(QWidget* parent) :
 	QWidget(parent),
 	ui(new Ui::XLSourcePopupWidget),
 	m_refLocWidget(Q_NULLPTR),
-	m_mode(MODE_APP) {
+	m_mode(MODE_APP),
+	m_windowSource(Q_NULLPTR) {
 	// init ui
 	ui->setupUi(this);
 
@@ -41,6 +42,13 @@ XLSourcePopupWidget::XLSourcePopupWidget(QWidget* parent) :
 }
 
 XLSourcePopupWidget::~XLSourcePopupWidget() {
+	if(m_windowSource) {
+		obs_source_release(m_windowSource);
+	}
+}
+
+obs_source_t* XLSourcePopupWidget::getWindowSource() {
+	return m_windowSource;
 }
 
 void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
@@ -100,6 +108,32 @@ void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
 				widget->setDesc(L("Monitor.Desc").arg(i + 1));
 				ui->listView->setIndexWidget(model->index(i, 0), widget);
 			}
+			break;
+		case XLSourcePopupWidget::MODE_APP:
+			// title
+			ui->titleLabel->setText(L("App.Title"));
+
+			// create window source
+			if(!m_windowSource) {
+				const char* id = "window_capture";
+				const char* name = obs_source_get_display_name(id);
+				m_windowSource = obs_source_create(id, name, Q_NULLPTR, Q_NULLPTR);
+			}
+
+			// get window count
+			obs_properties_t* properties = obs_source_properties(m_windowSource);
+			obs_property_t* prop = obs_properties_get(properties, "window");
+			size_t count  = obs_property_list_item_count(prop);
+
+			// init rows
+			for(int i = 0; i < count; i++) {
+				model->appendRow(new QStandardItem());
+				XLSourceAppItemWidget* widget = new XLSourceAppItemWidget(this);
+				widget->setIndex(i);
+				widget->setName(obs_property_list_item_name(prop, i));
+				ui->listView->setIndexWidget(model->index(i, 0), widget);
+			}
+
 			break;
 	}
 }
