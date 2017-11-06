@@ -206,7 +206,7 @@
        <number>10</number>
       </property>
       <item row="0" column="1">
-       <widget class="QComboBox" name="frameRateComboBox">
+       <widget class="QComboBox" name="bitRateComboBox">
         <property name="minimumSize">
          <size>
           <width>304</width>
@@ -230,7 +230,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Frame.Rate</string>
+         <string>Video.Bit.Rate</string>
         </property>
        </widget>
       </item>

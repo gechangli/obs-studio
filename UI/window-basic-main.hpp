@@ -641,7 +641,6 @@ private slots:
 	void on_startLiveButton_clicked();
 	void on_recordButton_clicked();
 	void on_marketButton_clicked();
-	void on_profileButton_clicked();
 	void on_livePlatformButton_clicked();
 
 	void on_actionWebsite_triggered();
@@ -656,6 +655,7 @@ private slots:
 	void on_actionRemoveProfile_triggered();
 	void on_actionImportProfile_triggered();
 	void on_actionExportProfile_triggered();
+	void on_action_Settings_triggered();
 
 	void on_actionShowSettingsFolder_triggered();
 	void on_actionShowProfileFolder_triggered();
@@ -727,7 +727,7 @@ private slots:
 
 public slots:
 	void on_actionResetTransform_triggered();
-	void on_action_Settings_triggered();
+	void on_profileButton_clicked();
 
 	void on_actionNewSceneCollection_triggered();
 	void on_actionDupSceneCollection_triggered();

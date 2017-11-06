@@ -33,7 +33,7 @@ XLUserPopupWidget::XLUserPopupWidget(QWidget* parent) :
 	// event
 	OBSBasic* main = static_cast<OBSBasic*>(App()->GetMainWindow());
 	connect(ui->exitButton, &QPushButton::clicked, main, &OBSBasic::close);
-	connect(ui->settingsButton, &QPushButton::clicked, main, &OBSBasic::on_action_Settings_triggered);
+	connect(ui->settingsButton, &QPushButton::clicked, main, &OBSBasic::on_profileButton_clicked);
 	connect(ui->switchUserButton, &QPushButton::clicked, main, &OBSBasic::logout);
 
 	// set style

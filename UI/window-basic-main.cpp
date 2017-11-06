@@ -1318,6 +1318,9 @@ bool OBSBasic::InitBasicConfigDefaults()
 		config_save_safe(basicConfig, "tmp", nullptr);
 	}
 
+	// xiaomei live video setting type, can be super/high/normal/custom
+	config_set_default_string(basicConfig, "Video", "XLVideoProfile", "high");
+
 	config_set_default_uint  (basicConfig, "Video", "FPSType", 0);
 	config_set_default_string(basicConfig, "Video", "FPSCommon", "30");
 	config_set_default_uint  (basicConfig, "Video", "FPSInt", 30);

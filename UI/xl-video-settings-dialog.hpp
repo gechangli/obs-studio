@@ -34,8 +34,15 @@ private:
 
 private slots:
 	void on_yesButton_clicked();
+	void on_superRadioButton_clicked(bool checked);
+	void on_highRadioButton_clicked(bool checked);
+	void on_normalRadioButton_clicked(bool checked);
+	void on_customRadioButton_clicked(bool checked);
 
 public:
 	XLVideoSettingsDialog(QWidget *parent);
 	virtual ~XLVideoSettingsDialog();
+
+	// override
+	void accept();
 };

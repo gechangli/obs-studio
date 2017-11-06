@@ -37,21 +37,21 @@ QComboBox QAbstractItemView {
 QComboBox QAbstractItemView:item:hover {
     color: #898989;
 }
-QComboBox#frameRateComboBox:editable {
+QComboBox#bitRateComboBox:editable {
     border: 1px solid #D2D2D2;
     border-radius: 4px;
     background: white;
 }
-QComboBox#frameRateComboBox:!editable {
+QComboBox#bitRateComboBox:!editable {
     border: 1px solid #D2D2D2;
     border-radius: 4px;
     background: white;
 }
-QComboBox#frameRateComboBox::drop-down {
+QComboBox#bitRateComboBox::drop-down {
     border: none;
     width: 24px;
 }
-QComboBox#frameRateComboBox::down-arrow {
+QComboBox#bitRateComboBox::down-arrow {
     image: url(:/res/images/drop_down_arrow_gray.png);
 }
 QComboBox#fpsComboBox:editable {
