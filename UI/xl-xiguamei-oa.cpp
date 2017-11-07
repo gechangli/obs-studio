@@ -16,9 +16,9 @@
 ******************************************************************************/
 
 #include "xl-xiguamei-oa.hpp"
-#include "window-basic-main.hpp"
 #include <QNetworkAccessManager>
 #include <QJsonObject>
+#include "xl-util.hpp"
 
 using namespace std;
 

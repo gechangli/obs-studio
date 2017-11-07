@@ -75,6 +75,7 @@
 #include "xl-add-monitor-dialog.hpp"
 #include "xl-add-window-dialog.hpp"
 #include "xl-video-settings-dialog.hpp"
+#include "xl-live-platforms-dialog.hpp"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -5171,7 +5172,8 @@ void OBSBasic::on_profileButton_clicked() {
 }
 
 void OBSBasic::on_livePlatformButton_clicked() {
-
+	XLLivePlatformsDialog dialog(this);
+	dialog.exec();
 }
 
 void OBSBasic::on_startLiveButton_clicked()

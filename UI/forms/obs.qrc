@@ -1,5 +1,12 @@
 <RCC>
   <qresource prefix="/res">
+    <file>images/live_bilibili.png</file>
+    <file>images/live_douyu.png</file>
+    <file>images/live_huya.png</file>
+    <file>images/live_platform.png</file>
+    <file>images/live_xiongmao.png</file>
+    <file>images/live_yinke.png</file>
+    <file>images/live_zhanqi.png</file>
     <file>images/source_monitor_pic.png</file>
     <file>images/source_picture_pic.png</file>
     <file>images/source_text_pic.png</file>

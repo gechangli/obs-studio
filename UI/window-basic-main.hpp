@@ -65,11 +65,6 @@ class XLAddSourceDialog;
 
 #define PREVIEW_EDGE_SIZE 10
 
-// simple macro to load a string
-#define L(key) QApplication::translate("OBSBasic", key, Q_NULLPTR)
-#define LCPP(key) QApplication::translate("OBSBasic", key, Q_NULLPTR).toStdString()
-#define LC(key) QApplication::translate("OBSBasic", key, Q_NULLPTR).toStdString().c_str()
-
 struct BasicOutputHandler;
 
 enum class QtDataRole {

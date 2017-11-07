@@ -18,9 +18,9 @@
 #include <QLabel>
 #include <QSpacerItem>
 #include "xl-title-bar-main.hpp"
-#include "window-basic-main.hpp"
-#include "xl-clickable-label.hpp"
 #include "xl-user-popup-widget.hpp"
+#include "xl-util.hpp"
+#include "xl-clickable-label.hpp"
 
 #define TITLE_HEIGHT 48
 #define BUTTON_HEIGHT 30

@@ -246,7 +246,9 @@ set(xiaomeilive_SOURCES
 	xl-add-video-dialog.cpp
 	xl-add-monitor-dialog.cpp
 	xl-add-window-dialog.cpp
-    xl-video-settings-dialog.cpp)
+    xl-video-settings-dialog.cpp
+	xl-live-platforms-dialog.cpp
+	xl-live-platform-item-widget.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -324,7 +326,9 @@ set(xiaomeilive_HEADERS
 	xl-add-video-dialog.hpp
 	xl-add-monitor-dialog.hpp
 	xl-add-window-dialog.hpp
-    xl-video-settings-dialog.hpp)
+    xl-video-settings-dialog.hpp
+	xl-live-platform-item-widget.hpp
+	xl-live-platforms-dialog.hpp)
 
 set(xiaomeilive_UI
 	forms/AutoConfigStartPage.ui
@@ -360,7 +364,9 @@ set(xiaomeilive_UI
 	forms/XLAddVideoDialog.ui
 	forms/XLAddMonitorDialog.ui
 	forms/XLAddWindowDialog.ui
-	forms/XLVideoSettingsDialog.ui)
+	forms/XLVideoSettingsDialog.ui
+	forms/XLLivePlatformsDialog.ui
+	forms/XLLivePlatformItemWidget.ui)
 
 set(xiaomeilive_QRC
 	forms/obs.qrc)

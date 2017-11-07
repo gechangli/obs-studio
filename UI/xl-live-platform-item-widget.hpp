@@ -1,5 +1,5 @@
 /******************************************************************************
-    Copyright (C) 2013 by Hugh Bailey <obs.jim@gmail.com>
+    Copyright (C) 2013 by luma <stubma@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,44 +17,25 @@
 
 #pragma once
 
-#include <QDialog>
-#include <string>
+#include <QWidget>
 #include <memory>
-#include <QDialog>
-#include "ui_XLMessageBox.h"
-#include "xl-util.hpp"
+#include "ui_XLLivePlatformItemWidget.h"
+#include "obs.h"
 
-class XLTitleBarSub;
-
-class XLMessageBox : public QDialog {
+class XLLivePlatformItemWidget : public QWidget {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::XLMessageBox> ui;
-	XLTitleBarSub* m_titleBar;
+	std::unique_ptr<Ui::XLLivePlatformItemWidget> ui;
+
+protected:
+	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
-	void on_yesButton_clicked();
-	void on_noButton_clicked();
+	void on_signInButton_clicked();
+	void on_switchAccountButton_clicked();
 
 public:
-	XLMessageBox(QWidget *parent);
-
-	// override
-	void setWindowTitle(const QString& title);
-
-	// set message
-	void setMessage(const QString& msg);
-
-	// set button text
-	void setPositiveButton(const QString& btnText);
-	void setNegativeButton(const QString& btnText);
-
-	// show message box
-	static QDialog::DialogCode question(
-		QWidget *parent,
-		const QString &title,
-		const QString &text,
-		const QString defaultButtonText = L("OK"),
-		const QString otherButtonText = L("Cancel"));
+	XLLivePlatformItemWidget(QWidget* parent = Q_NULLPTR);
+	virtual ~XLLivePlatformItemWidget();
 };

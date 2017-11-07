@@ -20,41 +20,21 @@
 #include <QDialog>
 #include <string>
 #include <memory>
-#include <QDialog>
-#include "ui_XLMessageBox.h"
-#include "xl-util.hpp"
+#include "ui_XLLivePlatformsDialog.h"
 
 class XLTitleBarSub;
 
-class XLMessageBox : public QDialog {
+class XLLivePlatformsDialog : public QDialog {
 	Q_OBJECT
 
 private:
-	std::unique_ptr<Ui::XLMessageBox> ui;
+	std::unique_ptr<Ui::XLLivePlatformsDialog> ui;
 	XLTitleBarSub* m_titleBar;
 
 private slots:
 	void on_yesButton_clicked();
-	void on_noButton_clicked();
 
 public:
-	XLMessageBox(QWidget *parent);
-
-	// override
-	void setWindowTitle(const QString& title);
-
-	// set message
-	void setMessage(const QString& msg);
-
-	// set button text
-	void setPositiveButton(const QString& btnText);
-	void setNegativeButton(const QString& btnText);
-
-	// show message box
-	static QDialog::DialogCode question(
-		QWidget *parent,
-		const QString &title,
-		const QString &text,
-		const QString defaultButtonText = L("OK"),
-		const QString otherButtonText = L("Cancel"));
+	XLLivePlatformsDialog(QWidget *parent = Q_NULLPTR);
+	virtual ~XLLivePlatformsDialog();
 };

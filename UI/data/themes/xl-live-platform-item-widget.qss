@@ -1,0 +1,34 @@
+XLLivePlatformItemWidget {
+    border: none;
+    background: transparent;
+}
+QPushButton#signInButton {
+    border: 1px solid #FD4E4E;
+    border-radius: 4px;
+    font-size: @bigFontSize@;
+    color: #FD4E4E;
+    background-color: transparent;
+}
+QPushButton#switchAccountButton {
+    border: 1px solid #64C123;
+    border-radius: 4px;
+    font-size: @bigFontSize@;
+    color: #64C123;
+    background-color: transparent;
+}
+QLabel#accountLabel {
+    font-size: @bigFontSize@;
+    color: black;
+}
+QCheckBox#checkBox::indicator {
+    font-size: @bigFontSize@;
+    width: 28px;
+    height: 26px;
+}
+QCheckBox#checkBox::indicator:unchecked {
+    image: url(:/res/images/checkbox_bg_green.png);
+}
+QCheckBox#checkBox::indicator:checked {
+    background-image: url(:/res/images/checkbox_bg_green.png);
+    image: url(:/res/images/tick.png);
+}

@@ -1,0 +1,28 @@
+QDialog#XLLivePlatformsDialog {
+    background: #f8f8f8;
+    border: 1px solid #64c112;
+}
+QLabel#accountLabel {
+    font-size: @bigFontSize@;
+    color: black;
+}
+QLabel#platformLabel {
+    font-size: @bigFontSize@;
+    color: black;
+}
+QPushButton#yesButton {
+    font-size: @bigFontSize@;
+    border: none;
+    border-radius: 16px;
+    background-color: #64C123;
+    color: white;
+}
+QPushButton#yesButton:hover {
+    background-color: #64CD23;
+}
+QPushButton#yesButton:pressed {
+    background-color: #64C123;
+}
+QListView#listView {
+    background-color: transparent;
+}
