@@ -20,6 +20,7 @@
 #include <QDialog>
 #include <string>
 #include <memory>
+#include <QStyledItemDelegate>
 #include "ui_XLLivePlatformsDialog.h"
 
 class XLTitleBarSub;
@@ -37,4 +38,15 @@ private slots:
 public:
 	XLLivePlatformsDialog(QWidget *parent = Q_NULLPTR);
 	virtual ~XLLivePlatformsDialog();
+};
+
+class XLLivePlatformListDelegate : public QStyledItemDelegate {
+Q_OBJECT
+
+public:
+	XLLivePlatformListDelegate(QObject* parent = Q_NULLPTR);
+	virtual ~XLLivePlatformListDelegate();
+
+	// implementation
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
 };

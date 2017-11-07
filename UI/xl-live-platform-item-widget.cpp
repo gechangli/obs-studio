@@ -44,6 +44,7 @@ void XLLivePlatformItemWidget::paintEvent(QPaintEvent* event) {
 }
 
 void XLLivePlatformItemWidget::on_signInButton_clicked() {
+
 }
 
 void XLLivePlatformItemWidget::on_switchAccountButton_clicked() {

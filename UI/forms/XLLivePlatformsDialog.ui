@@ -93,7 +93,7 @@
          <string>Account</string>
         </property>
         <property name="indent">
-         <number>90</number>
+         <number>110</number>
         </property>
        </widget>
       </item>

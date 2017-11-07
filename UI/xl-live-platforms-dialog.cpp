@@ -20,6 +20,9 @@
 #include "xl-live-platforms-dialog.hpp"
 #include "xl-frameless-window-util.hpp"
 #include "xl-title-bar-sub.hpp"
+#include "xl-live-platform.hpp"
+#include <QStandardItemModel>
+#include "xl-live-platform-item-widget.hpp"
 
 using namespace std;
 
@@ -48,6 +51,16 @@ XLLivePlatformsDialog::XLLivePlatformsDialog(QWidget* parent) :
 
 	// remove focus rect
 	ui->listView->setAttribute(Qt::WA_MacShowFocusRect, false);
+
+	// init list view
+	QStandardItemModel* model = new QStandardItemModel();
+	ui->listView->setModel(model);
+	ui->listView->setItemDelegate(new XLLivePlatformListDelegate(ui->listView));
+	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
+		model->appendRow(new QStandardItem());
+		XLLivePlatformItemWidget* widget = new XLLivePlatformItemWidget(this);
+		ui->listView->setIndexWidget(model->index(i, 0), widget);
+	}
 }
 
 XLLivePlatformsDialog::~XLLivePlatformsDialog() {
@@ -56,4 +69,15 @@ XLLivePlatformsDialog::~XLLivePlatformsDialog() {
 
 void XLLivePlatformsDialog::on_yesButton_clicked() {
 	accept();
+}
+
+XLLivePlatformListDelegate::XLLivePlatformListDelegate(QObject* parent) :
+	QStyledItemDelegate(parent) {
+}
+
+XLLivePlatformListDelegate::~XLLivePlatformListDelegate() {
+}
+
+QSize XLLivePlatformListDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
+	return QSize(0, 48);
 }

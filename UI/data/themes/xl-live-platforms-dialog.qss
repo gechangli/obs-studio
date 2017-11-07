@@ -26,3 +26,9 @@ QPushButton#yesButton:pressed {
 QListView#listView {
     background-color: transparent;
 }
+QListView#listView::item:selected {
+    background-color: transparent;
+}
+QListView#listView::item:hover {
+    background-color: transparent;
+}

@@ -5,14 +5,30 @@ XLLivePlatformItemWidget {
 QPushButton#signInButton {
     border: 1px solid #FD4E4E;
     border-radius: 4px;
-    font-size: @bigFontSize@;
+    font-size: @mediumFontSize@;
+    color: #FD4E4E;
+    background-color: transparent;
+}
+QPushButton#signInButton:hover {
+    color: #f8f8f8;
+    background-color: #FD4E4E;
+}
+QPushButton#signInButton:pressed {
     color: #FD4E4E;
     background-color: transparent;
 }
 QPushButton#switchAccountButton {
     border: 1px solid #64C123;
     border-radius: 4px;
-    font-size: @bigFontSize@;
+    font-size: @mediumFontSize@;
+    color: #64C123;
+    background-color: transparent;
+}
+QPushButton#switchAccountButton:hover {
+    color: #f8f8f8;
+    background-color: #64C123;
+}
+QPushButton#switchAccountButton:pressed {
     color: #64C123;
     background-color: transparent;
 }
