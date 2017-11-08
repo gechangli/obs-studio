@@ -5,6 +5,7 @@
 ## macOS
 * 安装homebrew
 * 通过homebrew安装ffmpeg, qt, x264, xvid, freetype
+* 安装XQuartz
 * 去JetBrains下载一个CLion
 * 设置环境变量QTDIR, 用brew安装的应该是在```/usr/local/opt/qt```
 * 用CLion打开项目根目录即可, 它会自动执行cmake配置, 缺省的编译目录是```cmake-build-debug```
