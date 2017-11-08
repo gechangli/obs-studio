@@ -504,6 +504,7 @@ public:
 	QWidget* getScenePanel();
 	obs_source_t* addSourceById(const char* id);
 	void addSource(obs_source_t* source);
+	LivePlatformWeb* getLivePlatformWeb();
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);
 

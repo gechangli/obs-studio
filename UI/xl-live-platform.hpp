@@ -44,6 +44,14 @@ static const char* LivePlatformNames[] = {
     "Basic.Live.HuaJiao"
 };
 
+// icons
+static const char* LivePlatformIcons[] = {
+	":/res/images/live_douyu.png",
+	":/res/images/live_huya.png",
+	":/res/images/live_xiongmao.png",
+	":/res/images/live_zhanqi.png"
+};
+
 // info to push stream
 struct live_platform_info {
 	bool selected; // true means it is selected to push
@@ -83,6 +91,7 @@ public:
 public slots:
 	Q_INVOKABLE void saveLivePlatformRtmpInfo(QString url, QString key);
 	Q_INVOKABLE void saveLivePlatformUserInfo(QString username, QString password);
+	Q_INVOKABLE bool isLivePlatformUserInfoSaved();
 	Q_INVOKABLE void closeWeb();
 	Q_INVOKABLE void showMessageBox(QString title, QString msg);
 	Q_INVOKABLE void clearCookies();

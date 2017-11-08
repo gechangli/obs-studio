@@ -23,7 +23,8 @@
 
 XLLivePlatformItemWidget::XLLivePlatformItemWidget(QWidget* parent) :
 	QWidget(parent),
-	ui(new Ui::XLLivePlatformItemWidget) {
+	ui(new Ui::XLLivePlatformItemWidget),
+	m_plt(LIVE_PLATFORM_DOUYU) {
 	ui->setupUi(this);
 
 	// set style
@@ -44,9 +45,62 @@ void XLLivePlatformItemWidget::paintEvent(QPaintEvent* event) {
 }
 
 void XLLivePlatformItemWidget::on_signInButton_clicked() {
+	// get web
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
 
+	// open web
+	lpWeb->setCurrentPlatform(m_plt);
+	lpWeb->openWeb();
 }
 
 void XLLivePlatformItemWidget::on_switchAccountButton_clicked() {
+	// set current platform and open, but need to clear cookie first
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
+	lpWeb->setCurrentPlatform(m_plt);
+	lpWeb->openWeb(true);
+}
 
+void XLLivePlatformItemWidget::on_checkBox_stateChanged(int state) {
+	// get info
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
+	live_platform_info_t& info = lpWeb->getPlatformInfo(m_plt);
+
+	// set state
+	info.selected = state == Qt::Checked;
+
+	// if rtmp url is not got, open web
+	if(info.selected && strlen(info.rtmpUrl) <= 0) {
+		lpWeb->setCurrentPlatform(m_plt);
+		lpWeb->openWeb();
+	}
+}
+
+void XLLivePlatformItemWidget::setLivePlatform(LivePlatform plt) {
+	m_plt = plt;
+}
+
+LivePlatform XLLivePlatformItemWidget::getLivePlatform() {
+	return m_plt;
+}
+
+void XLLivePlatformItemWidget::update() {
+	// get info
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
+	live_platform_info_t& info = lpWeb->getPlatformInfo(m_plt);
+
+	// selected
+	ui->checkBox->setChecked(info.selected);
+
+	// set account
+	ui->accountLabel->setText(info.username);
+
+	// update icon
+	ui->iconLabel->setPixmap(QPixmap(LivePlatformIcons[m_plt]));
+
+	// tooltip
+	setToolTip(info.rtmpUrl);
 }

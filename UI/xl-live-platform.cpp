@@ -194,6 +194,11 @@ void LivePlatformWeb::saveLivePlatformUserInfo(QString username, QString passwor
 	emit liveUserLoggedIn(type2Id(m_curPlatform));
 }
 
+bool LivePlatformWeb::isLivePlatformUserInfoSaved() {
+	live_platform_info_t& info = getCurrentPlatformInfo();
+	return strlen(info.username) > 0;
+}
+
 bool LivePlatformWeb::isLoggedIn() {
 	live_platform_info_t& info = getCurrentPlatformInfo();
 	return strlen(info.username) > 0;

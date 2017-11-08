@@ -1914,6 +1914,10 @@ void OBSBasic::on_sceneButtonDrawer_clicked() {
 	}
 }
 
+LivePlatformWeb* OBSBasic::getLivePlatformWeb() {
+	return &m_lpWeb;
+}
+
 void OBSBasic::addSource(obs_source_t* source) {
 	OBSScene scene = GetCurrentScene();
 	auto add = [](void *data, obs_scene_t *scene) {

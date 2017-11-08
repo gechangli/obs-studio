@@ -24,6 +24,7 @@
 #include "ui_XLLivePlatformsDialog.h"
 
 class XLTitleBarSub;
+class XLLivePlatformItemWidget;
 
 class XLLivePlatformsDialog : public QDialog {
 	Q_OBJECT
@@ -32,8 +33,13 @@ private:
 	std::unique_ptr<Ui::XLLivePlatformsDialog> ui;
 	XLTitleBarSub* m_titleBar;
 
+private:
+	XLLivePlatformItemWidget* getIndexWidgetByLivePlatform(LivePlatform plt);
+
 private slots:
 	void on_yesButton_clicked();
+	void liveUserLoggedIn(QString pltName);
+	void liveRtmpGot(QString pltName);
 
 public:
 	XLLivePlatformsDialog(QWidget *parent = Q_NULLPTR);

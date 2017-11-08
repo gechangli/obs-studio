@@ -20,7 +20,6 @@
 #include "xl-live-platforms-dialog.hpp"
 #include "xl-frameless-window-util.hpp"
 #include "xl-title-bar-sub.hpp"
-#include "xl-live-platform.hpp"
 #include <QStandardItemModel>
 #include "xl-live-platform-item-widget.hpp"
 
@@ -59,16 +58,62 @@ XLLivePlatformsDialog::XLLivePlatformsDialog(QWidget* parent) :
 	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
 		model->appendRow(new QStandardItem());
 		XLLivePlatformItemWidget* widget = new XLLivePlatformItemWidget(this);
+		widget->setLivePlatform((LivePlatform)i);
 		ui->listView->setIndexWidget(model->index(i, 0), widget);
+		widget->update();
 	}
+
+	// event
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
+	connect(lpWeb, &LivePlatformWeb::liveUserLoggedIn, this, &XLLivePlatformsDialog::liveUserLoggedIn);
+	connect(lpWeb, &LivePlatformWeb::liveRtmpGot, this, &XLLivePlatformsDialog::liveRtmpGot);
 }
 
 XLLivePlatformsDialog::~XLLivePlatformsDialog() {
 
 }
 
+XLLivePlatformItemWidget* XLLivePlatformsDialog::getIndexWidgetByLivePlatform(LivePlatform plt) {
+	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(ui->listView->model());
+	int rc = model->rowCount();
+	for(int i = 0; i < rc; i++) {
+		XLLivePlatformItemWidget* widget = dynamic_cast<XLLivePlatformItemWidget*>(ui->listView->indexWidget(model->index(i, 0)));
+		if(widget->getLivePlatform() == plt) {
+			return widget;
+		}
+	}
+	return Q_NULLPTR;
+}
+
 void XLLivePlatformsDialog::on_yesButton_clicked() {
 	accept();
+}
+
+void XLLivePlatformsDialog::liveUserLoggedIn(QString pltName) {
+	// get platform info
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
+	LivePlatform plt = lpWeb->id2Type(pltName);
+
+	// get row widget, update
+	XLLivePlatformItemWidget* widget = getIndexWidgetByLivePlatform(plt);
+	if(widget) {
+		widget->update();
+	}
+}
+
+void XLLivePlatformsDialog::liveRtmpGot(QString pltName) {
+	// update rtmp url if current row is equal to this platform
+	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
+	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
+	LivePlatform plt = lpWeb->id2Type(pltName);
+
+	// get row widget, update
+	XLLivePlatformItemWidget* widget = getIndexWidgetByLivePlatform(plt);
+	if(widget) {
+		widget->update();
+	}
 }
 
 XLLivePlatformListDelegate::XLLivePlatformListDelegate(QObject* parent) :

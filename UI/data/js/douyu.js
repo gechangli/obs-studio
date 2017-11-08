@@ -97,6 +97,10 @@ function onSettingsPage() {
                 var url = document.querySelector('#rtmp_url').value;
                 var key = document.querySelector('#rtmp_val').value;
                 var lp = channel.objects.lp;
+                if(!lp.isLivePlatformUserInfoSaved()) {
+                    var username = getCookie("acf_nickname");
+                    lp.saveLivePlatformUserInfo(username, "");
+                }
                 lp.saveLivePlatformRtmpInfo(url, key);
                 lp.closeWeb();
             });

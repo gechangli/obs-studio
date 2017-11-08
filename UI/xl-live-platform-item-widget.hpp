@@ -21,12 +21,14 @@
 #include <memory>
 #include "ui_XLLivePlatformItemWidget.h"
 #include "obs.h"
+#include "xl-live-platform.hpp"
 
 class XLLivePlatformItemWidget : public QWidget {
 	Q_OBJECT
 
 private:
 	std::unique_ptr<Ui::XLLivePlatformItemWidget> ui;
+	LivePlatform m_plt;
 
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
@@ -34,8 +36,16 @@ protected:
 private slots:
 	void on_signInButton_clicked();
 	void on_switchAccountButton_clicked();
+	void on_checkBox_stateChanged(int state);
 
 public:
 	XLLivePlatformItemWidget(QWidget* parent = Q_NULLPTR);
 	virtual ~XLLivePlatformItemWidget();
+
+	// update ui
+	void update();
+
+	// setter/getter
+	void setLivePlatform(LivePlatform plt);
+	LivePlatform getLivePlatform();
 };
