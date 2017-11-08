@@ -45,6 +45,7 @@ XLAddSourceDialog::~XLAddSourceDialog() {
 
 	// if user click X and not in edit mode, we need rollback the change
 	// so, get list view item widget and call remove
+	OBSBasic *main = dynamic_cast<OBSBasic *>(App()->GetMainWindow());
 	if(m_rollback) {
 		if(m_editMode) {
 			obs_data_t *settings = obs_source_get_settings(m_source);
@@ -56,7 +57,6 @@ XLAddSourceDialog::~XLAddSourceDialog() {
 				obs_source_update(m_source, m_oldSettings);
 			}
 		} else {
-			OBSBasic *main = dynamic_cast<OBSBasic *>(App()->GetMainWindow());
 			XLSourceListView *listView = main->getSourceList();
 			QAbstractItemModel *model = listView->model();
 			QModelIndex index = model->index(model->rowCount() - 1, 0);
@@ -68,6 +68,9 @@ XLAddSourceDialog::~XLAddSourceDialog() {
 		if(m_deferUpdate) {
 			obs_source_update(m_source, m_settings);
 		}
+
+		// save project
+		main->SaveProject();
 	}
 }
 
