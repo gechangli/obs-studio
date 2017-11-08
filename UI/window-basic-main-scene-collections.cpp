@@ -170,7 +170,7 @@ void OBSBasic::AddSceneCollection(bool create_new)
 	config_set_string(App()->GlobalConfig(), "Basic", "SceneCollectionFile",
 			file.c_str());
 	if (create_new) {
-		CreateDefaultScene(false);
+		CreateDefaultScene(true);
 	}
 	SaveProjectNow();
 	RefreshSceneCollections();
@@ -251,6 +251,9 @@ void OBSBasic::RefreshSceneCollections()
 	main->ui->actionPasteFilters->setEnabled(false);
 	main->ui->actionPasteRef->setEnabled(false);
 	main->ui->actionPasteDup->setEnabled(false);
+
+	// update template name
+	ui->templateNameLabel->setText(L("Current.Template") + ": " + cur_name);
 }
 
 void OBSBasic::on_actionNewSceneCollection_triggered()
@@ -309,9 +312,6 @@ void OBSBasic::on_actionRenameSceneCollection_triggered()
 
 	UpdateTitleBar();
 	RefreshSceneCollections();
-
-	// update template name
-	ui->templateNameLabel->setText(L("Current.Template") + ": " + name.c_str());
 
 	if (api) {
 		api->on_event(OBS_FRONTEND_EVENT_SCENE_COLLECTION_LIST_CHANGED);
@@ -389,9 +389,6 @@ void OBSBasic::on_actionRemoveSceneCollection_triggered()
 	blog(LOG_INFO, "------------------------------------------------");
 
 	UpdateTitleBar();
-
-	// update template name
-	ui->templateNameLabel->setText(L("Current.Template") + ": " + newName.c_str());
 
 	if (api) {
 		api->on_event(OBS_FRONTEND_EVENT_SCENE_COLLECTION_LIST_CHANGED);
