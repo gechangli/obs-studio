@@ -120,10 +120,17 @@ void XLSourceListView::mousePressEvent(QMouseEvent* event) {
 	m_dragPos = event->pos();
 
 	// if not valid index, clear selection
-	QModelIndex item = indexAt(m_dragPos);
-	if(!item.isValid()) {
-		selectionModel()->clearCurrentIndex();
-		clearSelection();
+	QModelIndex index = indexAt(m_dragPos);
+	if(!index.isValid()) {
+		QStandardItemModel* model = static_cast<QStandardItemModel*>(this->model());
+		int rc = model->rowCount();
+		for(int i = 0; i < rc; i++) {
+			XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(indexWidget(model->index(i, 0)));
+			OBSSceneItem item = widget->getSceneItem();
+			if(obs_sceneitem_selected(item)) {
+				obs_sceneitem_select(item, false);
+			}
+		}
 	}
 
 	// call super

@@ -2587,6 +2587,21 @@ void OBSBasic::SelectSceneItem(OBSScene scene, OBSSceneItem item, bool select)
 		witem->setSelected(select);
 		break;
 	}
+
+	// select scene item in source list
+	QAbstractItemModel* model = ui->sourceList->model();
+	for(int i = 0; i < model->rowCount(); i++) {
+		XLSourceListItemWidget* widget = dynamic_cast<XLSourceListItemWidget*>(ui->sourceList->indexWidget(model->index(i, 0)));
+		OBSSceneItem si = widget->getSceneItem();
+		if(item == si) {
+			if(select) {
+				ui->sourceList->selectionModel()->setCurrentIndex(model->index(i, 0), QItemSelectionModel::Select);
+			} else {
+				ui->sourceList->selectionModel()->select(model->index(i, 0), QItemSelectionModel::Deselect);
+			}
+			break;
+		}
+	}
 }
 
 void OBSBasic::GetAudioSourceFilters()
