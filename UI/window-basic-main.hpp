@@ -452,8 +452,6 @@ private slots:
 	void on_actionCopyFilters_triggered();
 	void on_actionPasteFilters_triggered();
 
-	void onLiveSwitchAccountClicked(bool checked);
-
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 	void on_homeTab_clicked();
@@ -677,8 +675,6 @@ private slots:
 	void on_microphoneCheckBox_clicked(bool checked);
 	void on_speakerVolumeSlider_valueChanged(int value);
 	void on_microphoneVolumeSlider_valueChanged(int value);
-	void on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous);
-	void on_liveTable_itemClicked(QTableWidgetItem *item);
 	void windowRequestMinimize();
 	void windowRequestRestore();
 	void windowRequestMaximize();

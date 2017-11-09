@@ -326,54 +326,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 		}
 	}
 
-	// setup live table
-	ui->liveTable->horizontalHeader()->setStretchLastSection(true);
-	ui->liveTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-	ui->liveTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-	ui->liveTable->setSelectionMode(QAbstractItemView::SingleSelection);
-	ui->liveTable->setRowCount(LIVE_PLATFORM_LAST + 1);
-	QStringList headers;
-	headers << L("Basic.Main.Live.Col1")
-		<< L("Basic.Main.Live.Col2")
-		<< L("Basic.Main.Live.Col3")
-		<< L("Basic.Main.Live.Col4");
-	ui->liveTable->setHorizontalHeaderLabels(headers);
-
-	// add item to live table
-	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
-		// check box
-		QTableWidgetItem* itemCheck = new QTableWidgetItem();
-		itemCheck->setCheckState(Qt::Unchecked);
-		ui->liveTable->setItem(i, 0, itemCheck);
-
-		// platform name
-		QTableWidgetItem* itemName = new QTableWidgetItem();
-		itemName->setText(L(LivePlatformNames[i]));
-		itemName->setFlags(itemName->flags() & (~Qt::ItemIsEditable));
-		ui->liveTable->setItem(i, 1, itemName);
-
-		// account
-		QTableWidgetItem* itemAccount = new QTableWidgetItem();
-		itemAccount->setFlags(itemName->flags() & (~Qt::ItemIsEditable));
-		ui->liveTable->setItem(i, 2, itemAccount);
-
-		// operation
-		QWidget* widget = new QWidget();
-		QHBoxLayout* layout = new QHBoxLayout(widget);
-        QMargins margins = layout->contentsMargins();
-        margins.setTop(0);
-        margins.setBottom(0);
-        layout->setContentsMargins(margins);
-		QSpacerItem* sep1 = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Fixed);
-		QPushButton* btnSwitchAccount = new QPushButton(L("SwitchAccount"));
-		btnSwitchAccount->setProperty("row", QVariant(i));
-		connect(btnSwitchAccount, SIGNAL(clicked(bool)), this, SLOT(onLiveSwitchAccountClicked(bool)));
-		layout->addSpacerItem(sep1);
-		layout->addWidget(btnSwitchAccount);
-		ui->liveTable->setCellWidget(i, 3, widget);
-	}
-	m_lpWeb.setCurrentPlatform(LIVE_PLATFORM_DOUYU);
-
 	// hide some UI we don't need
 	ui->modeSwitch->setVisible(false);
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
@@ -442,31 +394,6 @@ void OBSBasic::windowRequestClose() {
 	close();
 }
 
-void OBSBasic::on_liveTable_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous) {
-	// show rtmp url
-	int row = ui->liveTable->currentRow();
-	live_platform_info_t& info = m_lpWeb.getPlatformInfo((LivePlatform) row);
-	ui->liveInfoLabel->setText(info.rtmpUrl);
-}
-
-void OBSBasic::on_liveTable_itemClicked(QTableWidgetItem *item) {
-	if(item->column() == 0) {
-		// if check state changed, we need to do something
-		LivePlatform plt = (LivePlatform)item->row();
-		live_platform_info_t& info = m_lpWeb.getPlatformInfo(plt);
-		bool checked = item->checkState() == Qt::Checked;
-		if(checked != info.selected) {
-			info.selected = checked;
-
-			// if checked, and not logged in, start to login
-			if(checked && strlen(info.rtmpUrl) <= 0) {
-				m_lpWeb.setCurrentPlatform(plt);
-				m_lpWeb.openWeb();
-			}
-		}
-	}
-}
-
 void OBSBasic::on_speakerCheckBox_clicked(bool checked) {
 	if(checked) {
 		m_speakerVolume = ui->speakerVolumeSlider->value();
@@ -531,20 +458,6 @@ void OBSBasic::logout() {
 
 	// show progress
 	showProgressDialog();
-}
-
-void OBSBasic::onLiveSwitchAccountClicked(bool checked) {
-	// get row number
-	UNUSED_PARAMETER(checked);
-	QObject* sender = QObject::sender();
-	LivePlatform plt = (LivePlatform)sender->property("row").toInt();
-
-	// set current platform and open, but need to clear cookie first
-	m_lpWeb.setCurrentPlatform(plt);
-	m_lpWeb.openWeb(true);
-
-	// reset state
-	ui->liveTable->item(plt, 2)->setText("");
 }
 
 static void SaveAudioDevice(const char *name, int channel, obs_data_t *parent,
@@ -1804,12 +1717,6 @@ void OBSBasic::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 
 		// close progress dialog
 		hideProgressDialog();
-
-		// set username in table widget
-		for (int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
-			live_platform_info_t &info = m_lpWeb.getPlatformInfo((LivePlatform) i);
-			ui->liveTable->item(i, 2)->setText(info.username);
-		}
 	} else if(op == XgmOA::OP_ADD_LIVE_PLATFORM_ACCOUNT) {
 		blog(LOG_INFO, "Add live account ok!!");
 	}
@@ -5958,7 +5865,6 @@ void OBSBasic::on_lockUI_toggled(bool lock)
 	ui->sourcesDock->setFeatures(features);
 	ui->transitionsDock->setFeatures(features);
 	ui->controlsDock->setFeatures(features);
-	ui->liveDock->setFeatures(features);
 }
 
 void OBSBasic::on_toggleListboxToolbars_toggled(bool visible)
