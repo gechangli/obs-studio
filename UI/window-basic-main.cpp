@@ -1126,10 +1126,9 @@ void OBSBasic::SaveService()
 bool OBSBasic::InitService()
 {
 	// create service for platform
-	for(int i = 0; i < ui->liveTable->rowCount(); i++) {
-		QTableWidgetItem* item = ui->liveTable->itemAt(i, 0);
-		if(item->checkState() == Qt::Checked) {
-			live_platform_info_t& info = m_lpWeb.getPlatformInfo((LivePlatform) i);
+	for(int i = LIVE_PLATFORM_DOUYU; i <= LIVE_PLATFORM_LAST; i++) {
+		live_platform_info_t& info = m_lpWeb.getPlatformInfo((LivePlatform)i);
+		if(info.selected) {
 			if(strlen(info.rtmpUrl) > 0) {
 				obs_data_t *settings = obs_data_create();
 				obs_data_set_string(settings, "server", info.rtmpUrl);
@@ -1721,8 +1720,6 @@ void OBSBasic::OBSInit()
 	// signals
 	connect(&m_client, &XgmOA::restOpDone, this, &OBSBasic::onXgmOAResponse);
 	connect(&m_client, &XgmOA::restOpFailed, this, &OBSBasic::onXgmOAResponseFailed);
-	connect(&m_lpWeb, &LivePlatformWeb::liveUserLoggedIn, this, &OBSBasic::liveUserLoggedIn);
-	connect(&m_lpWeb, &LivePlatformWeb::liveRtmpGot, this, &OBSBasic::liveRtmpGot);
 
 	// check current user, if has not, show register dialog
 	// if has, check auto login flag
@@ -1843,26 +1840,6 @@ void OBSBasic::onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::Network
 	}
 }
 
-void OBSBasic::liveUserLoggedIn(QString pltName) {
-	// get platform info, set user name to table widget
-	LivePlatform plt = m_lpWeb.id2Type(pltName);
-	live_platform_info_t& info = m_lpWeb.getPlatformInfo(plt);
-	QTableWidgetItem* item = ui->liveTable->item(plt, 2);
-	item->setText(info.username);
-
-	// add user to server
-	m_client.addLivePlatformUser(pltName.toStdString(), info.username);
-}
-
-void OBSBasic::liveRtmpGot(QString pltName) {
-	// update rtmp url if current row is equal to this platform
-	LivePlatform plt = m_lpWeb.id2Type(pltName);
-	if(ui->liveTable->currentRow() == plt) {
-		live_platform_info_t &info = m_lpWeb.getPlatformInfo(plt);
-		ui->liveInfoLabel->setText(info.rtmpUrl);
-	}
-}
-
 void OBSBasic::on_homeTab_clicked() {
 	switchToTab(ui->homeTab);
 }
@@ -1916,6 +1893,10 @@ void OBSBasic::on_sceneButtonDrawer_clicked() {
 
 LivePlatformWeb* OBSBasic::getLivePlatformWeb() {
 	return &m_lpWeb;
+}
+
+XgmOA* OBSBasic::getXgmOA() {
+	return &m_client;
 }
 
 void OBSBasic::addSource(obs_source_t* source) {

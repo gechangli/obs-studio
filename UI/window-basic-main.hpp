@@ -456,8 +456,6 @@ private slots:
 
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
-	void liveUserLoggedIn(QString pltName);
-	void liveRtmpGot(QString pltName);
 	void on_homeTab_clicked();
 	void on_consortiaTab_clicked();
 	void on_earnTab_clicked();
@@ -505,6 +503,7 @@ public:
 	obs_source_t* addSourceById(const char* id);
 	void addSource(obs_source_t* source);
 	LivePlatformWeb* getLivePlatformWeb();
+	XgmOA* getXgmOA();
 
 	void SysTrayNotify(const QString &text, QSystemTrayIcon::MessageIcon n);
 

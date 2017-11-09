@@ -22,6 +22,7 @@
 #include "xl-title-bar-sub.hpp"
 #include <QStandardItemModel>
 #include "xl-live-platform-item-widget.hpp"
+#include "xl-xiguamei-oa.hpp"
 
 using namespace std;
 
@@ -95,12 +96,17 @@ void XLLivePlatformsDialog::liveUserLoggedIn(QString pltName) {
 	OBSBasic* main = dynamic_cast<OBSBasic*>(App()->GetMainWindow());
 	LivePlatformWeb* lpWeb = main->getLivePlatformWeb();
 	LivePlatform plt = lpWeb->id2Type(pltName);
+	live_platform_info_t& info = lpWeb->getPlatformInfo(plt);
 
 	// get row widget, update
 	XLLivePlatformItemWidget* widget = getIndexWidgetByLivePlatform(plt);
 	if(widget) {
 		widget->update();
 	}
+
+	// add user to server
+	XgmOA* client = main->getXgmOA();
+	client->addLivePlatformUser(pltName.toStdString(), info.username);
 }
 
 void XLLivePlatformsDialog::liveRtmpGot(QString pltName) {
