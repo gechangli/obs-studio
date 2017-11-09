@@ -738,11 +738,6 @@ void OBSBasic::CreateProgramOptions()
 	connect(configTransitions, &QAbstractButton::clicked, onConfig);
 }
 
-void OBSBasic::on_modeSwitch_clicked()
-{
-	SetPreviewProgramMode(!IsPreviewProgramMode());
-}
-
 static inline void ResetQuickTransitionText(QuickTransition *qt)
 {
 	qt->button->setText(MakeQuickTransitionText(qt));
@@ -970,7 +965,6 @@ void OBSBasic::SetPreviewProgramMode(bool enabled)
 	if (IsPreviewProgramMode() == enabled)
 		return;
 
-	ui->modeSwitch->setChecked(enabled);
 	os_atomic_set_bool(&previewProgramMode, enabled);
 
 	if (IsPreviewProgramMode()) {
@@ -1154,4 +1148,11 @@ void OBSBasic::LoadTransitions(obs_data_array_t *transitions)
 		obs_data_release(item);
 		obs_source_release(source);
 	}
+}
+
+// below is original code, but UI is removed in xiaomei live
+
+void OBSBasic::on_modeSwitch_clicked()
+{
+	SetPreviewProgramMode(!IsPreviewProgramMode());
 }

@@ -299,14 +299,12 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	assignDockToggle(ui->scenesDock, ui->toggleScenes);
 	assignDockToggle(ui->sourcesDock, ui->toggleSources);
 	assignDockToggle(ui->transitionsDock, ui->toggleTransitions);
-	assignDockToggle(ui->controlsDock, ui->toggleControls);
 
 	//hide all docking panes
 	ui->toggleScenes->setChecked(false);
 	ui->toggleSources->setChecked(false);
 	ui->toggleMixer->setChecked(false);
 	ui->toggleTransitions->setChecked(false);
-	ui->toggleControls->setChecked(false);
 
 	//restore parent window geometry
 	const char *geometry = config_get_string(App()->GlobalConfig(),
@@ -327,7 +325,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	}
 
 	// hide some UI we don't need
-	ui->modeSwitch->setVisible(false);
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
 
@@ -1389,7 +1386,7 @@ void OBSBasic::ResetOutputs()
 					&OBSBasic::ReplayBufferClicked);
 
 			replayBufferButton->setProperty("themeID", "replayBufferButton");
-			ui->buttonsVLayout->insertWidget(2, replayBufferButton);
+//			ui->buttonsVLayout->insertWidget(2, replayBufferButton);
 		}
 
 		if (sysTrayReplayBuffer)
@@ -4846,10 +4843,8 @@ void OBSBasic::StartRecording()
 
 void OBSBasic::RecordStopping()
 {
-	ui->recordButton->setText(QTStr("Basic.Main.StoppingRecording"));
-
 	if (sysTrayRecord)
-		sysTrayRecord->setText(ui->recordButton->text());
+		sysTrayRecord->setText(QTStr("Basic.Main.StoppingRecording"));
 
 	recordingStopping = true;
 	if (api)
@@ -4869,10 +4864,9 @@ void OBSBasic::StopRecording()
 void OBSBasic::RecordingStart()
 {
 	ui->statusBar->RecordingStarted(outputHandler->fileOutput);
-	ui->recordButton->setText(QTStr("Basic.Main.StopRecording"));
 
 	if (sysTrayRecord)
-		sysTrayRecord->setText(ui->recordButton->text());
+		sysTrayRecord->setText(QTStr("Basic.Main.StopRecording"));
 
 	recordingStopping = false;
 	if (api)
@@ -4886,10 +4880,9 @@ void OBSBasic::RecordingStart()
 void OBSBasic::RecordingStop(int code)
 {
 	ui->statusBar->RecordingStopped();
-	ui->recordButton->setText(QTStr("Basic.Main.StartRecording"));
 
 	if (sysTrayRecord)
-		sysTrayRecord->setText(ui->recordButton->text());
+		sysTrayRecord->setText(QTStr("Basic.Main.StartRecording"));
 
 	blog(LOG_INFO, RECORDING_STOP);
 
@@ -5101,14 +5094,6 @@ void OBSBasic::on_startLiveButton_clicked()
 
 		StartStreaming();
 	}
-}
-
-void OBSBasic::on_recordButton_clicked()
-{
-	if (RecordingActive())
-		StopRecording();
-	else
-		StartRecording();
 }
 
 void OBSBasic::on_actionWebsite_triggered()
@@ -5833,8 +5818,7 @@ void OBSBasic::on_resetUI_triggered()
 	QList<QDockWidget*> docks {
 		ui->scenesDock,
 		ui->sourcesDock,
-		ui->transitionsDock,
-		ui->controlsDock
+		ui->transitionsDock
 	};
 
 	QList<int> sizes {
@@ -5848,7 +5832,6 @@ void OBSBasic::on_resetUI_triggered()
 	ui->scenesDock->setVisible(true);
 	ui->sourcesDock->setVisible(true);
 	ui->transitionsDock->setVisible(true);
-	ui->controlsDock->setVisible(true);
 
 	resizeDocks(docks, {cy, cy, cy, cy, cy}, Qt::Vertical);
 	resizeDocks(docks, sizes, Qt::Horizontal);
@@ -5864,7 +5847,6 @@ void OBSBasic::on_lockUI_toggled(bool lock)
 	ui->scenesDock->setFeatures(features);
 	ui->sourcesDock->setFeatures(features);
 	ui->transitionsDock->setFeatures(features);
-	ui->controlsDock->setFeatures(features);
 }
 
 void OBSBasic::on_toggleListboxToolbars_toggled(bool visible)
@@ -6199,4 +6181,14 @@ void OBSBasic::on_stats_triggered()
 	statsDlg = new OBSBasicStats(nullptr);
 	statsDlg->show();
 	stats = statsDlg;
+}
+
+// below is original code, but UI is removed in xiaomei live
+
+void OBSBasic::on_recordButton_clicked()
+{
+	if (RecordingActive())
+		StopRecording();
+	else
+		StartRecording();
 }
