@@ -1483,7 +1483,6 @@ void OBSBasic::OBSInit()
 		} \
 	} while (false)
 
-	SET_VISIBILITY("ShowListboxToolbars", toggleListboxToolbars);
 	SET_VISIBILITY("ShowStatusBar", toggleStatusBar);
 #undef SET_VISIBILITY
 
@@ -1549,9 +1548,6 @@ void OBSBasic::OBSInit()
 	SystemTray(true);
 
 	OpenSavedProjectors();
-
-	if (windowState().testFlag(Qt::WindowFullScreen))
-		fullscreenInterface = true;
 
 	bool has_last_version = config_has_user_value(App()->GlobalConfig(),
 			"General", "LastVersion");
@@ -5703,16 +5699,6 @@ void OBSBasic::RemoveSavedProjectors(int monitor)
 	projectorArray.at((size_t)monitor) = "";
 }
 
-void OBSBasic::on_actionFullscreenInterface_triggered()
-{
-	if (!fullscreenInterface)
-		showFullScreen();
-	else
-		showNormal();
-
-	fullscreenInterface = !fullscreenInterface;
-}
-
 void OBSBasic::UpdateTitleBar()
 {
 	stringstream name;
@@ -5757,15 +5743,6 @@ int OBSBasic::GetProfilePath(char *path, size_t size, const char *file) const
 		return snprintf(path, size, "%s/%s", profiles_path, profile);
 
 	return snprintf(path, size, "%s/%s/%s", profiles_path, profile, file);
-}
-
-void OBSBasic::on_toggleListboxToolbars_toggled(bool visible)
-{
-	ui->sourcesToolbar->setVisible(visible);
-	ui->scenesToolbar->setVisible(visible);
-
-	config_set_bool(App()->GlobalConfig(), "BasicWindow",
-			"ShowListboxToolbars", visible);
 }
 
 void OBSBasic::on_toggleStatusBar_toggled(bool visible)

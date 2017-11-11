@@ -131,7 +131,6 @@ private:
 	long disableSaving = 1;
 	bool projectChanged = false;
 	bool previewEnabled = true;
-	bool fullscreenInterface = false;
 
 	int m_speakerVolume;
 	int m_microphoneVolume;
@@ -577,8 +576,6 @@ protected:
 	void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
-	void on_actionFullscreenInterface_triggered();
-
 	void on_actionShow_Recordings_triggered();
 	void on_actionRemux_triggered();
 	void on_actionAdvAudioProperties_triggered();
@@ -655,7 +652,6 @@ private slots:
 
 	void on_actionAlwaysOnTop_triggered();
 
-	void on_toggleListboxToolbars_toggled(bool visible);
 	void on_toggleStatusBar_toggled(bool visible);
 
 	void on_transitions_currentIndexChanged(int index);

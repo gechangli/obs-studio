@@ -1383,12 +1383,6 @@
     <property name="title">
      <string>Basic.MainMenu.View</string>
     </property>
-    <widget class="QMenu" name="viewMenuToolbars">
-     <property name="title">
-      <string>Basic.MainMenu.View.Toolbars</string>
-     </property>
-     <addaction name="toggleListboxToolbars"/>
-    </widget>
     <action name="actionFullscreenInterface">
      <property name="text">
       <string>Basic.MainMenu.View.Fullscreen.Interface</string>
@@ -1397,9 +1391,6 @@
       <string>F11</string>
      </property>
     </action>
-    <addaction name="actionFullscreenInterface"/>
-    <addaction name="separator"/>
-    <addaction name="viewMenuToolbars"/>
     <addaction name="toggleStatusBar"/>
     <addaction name="separator"/>
     <addaction name="stats"/>
