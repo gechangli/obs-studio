@@ -275,37 +275,6 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	addNudge(Qt::Key_Left, SLOT(NudgeLeft()));
 	addNudge(Qt::Key_Right, SLOT(NudgeRight()));
 
-	auto assignDockToggle = [this](QDockWidget *dock, QAction *action)
-	{
-		auto handleWindowToggle = [action] (bool vis)
-		{
-			action->blockSignals(true);
-			action->setChecked(vis);
-			action->blockSignals(false);
-		};
-		auto handleMenuToggle = [dock] (bool check)
-		{
-			dock->blockSignals(true);
-			dock->setVisible(check);
-			dock->blockSignals(false);
-		};
-
-		dock->connect(dock->toggleViewAction(), &QAction::toggled,
-				handleWindowToggle);
-		dock->connect(action, &QAction::toggled,
-				handleMenuToggle);
-	};
-
-	assignDockToggle(ui->scenesDock, ui->toggleScenes);
-	assignDockToggle(ui->sourcesDock, ui->toggleSources);
-	assignDockToggle(ui->transitionsDock, ui->toggleTransitions);
-
-	//hide all docking panes
-	ui->toggleScenes->setChecked(false);
-	ui->toggleSources->setChecked(false);
-	ui->toggleMixer->setChecked(false);
-	ui->toggleTransitions->setChecked(false);
-
 	//restore parent window geometry
 	const char *geometry = config_get_string(App()->GlobalConfig(),
 											 "BasicWindow", "geometry");
@@ -327,6 +296,9 @@ OBSBasic::OBSBasic(QWidget *parent) :
 	// hide some UI we don't need
 	ui->menuBasic_MainMenu_Help->menuAction()->setVisible(false);
     ui->menuTools->menuAction()->setVisible(false);
+	ui->scenesDock->setVisible(false);
+	ui->transitionsDock->setVisible(false);
+	ui->sourcesDock->setVisible(false);
 
 	// title bar
 	m_titleBar = new XLTitleBarMain(this);
@@ -1574,27 +1546,6 @@ void OBSBasic::OBSInit()
 	show();
 #endif
 
-	const char *dockStateStr = config_get_string(App()->GlobalConfig(),
-			"BasicWindow", "DockState");
-	if (!dockStateStr) {
-		on_resetUI_triggered();
-	} else {
-		QByteArray dockState =
-			QByteArray::fromBase64(QByteArray(dockStateStr));
-		if (!restoreState(dockState))
-			on_resetUI_triggered();
-	}
-
-	config_set_default_bool(App()->GlobalConfig(), "BasicWindow",
-			"DocksLocked", true);
-
-	bool docksLocked = config_get_bool(App()->GlobalConfig(),
-			"BasicWindow", "DocksLocked");
-	on_lockUI_toggled(docksLocked);
-	ui->lockUI->blockSignals(true);
-	ui->lockUI->setChecked(docksLocked);
-	ui->lockUI->blockSignals(false);
-
 	SystemTray(true);
 
 	OpenSavedProjectors();
@@ -1617,11 +1568,6 @@ void OBSBasic::OBSInit()
 		on_stats_triggered();
 
 	OBSBasicStats::InitializeValues();
-
-    // hide scenes dock
-    if(ui->scenesDock->isVisible()) {
-        ui->toggleScenes->activate(QAction::Trigger);
-    }
 
 	// set speaker volume by default
 	m_speakerVolume = 100;
@@ -2149,8 +2095,6 @@ OBSBasic::~OBSBasic()
 			"EditPropertiesMode", editPropertiesMode);
 	config_set_bool(App()->GlobalConfig(), "BasicWindow",
 			"PreviewProgramMode", IsPreviewProgramMode());
-	config_set_bool(App()->GlobalConfig(), "BasicWindow",
-			"DocksLocked", ui->lockUI->isChecked());
 	config_save_safe(App()->GlobalConfig(), "tmp", nullptr);
 
 #ifdef _WIN32
@@ -5813,55 +5757,6 @@ int OBSBasic::GetProfilePath(char *path, size_t size, const char *file) const
 		return snprintf(path, size, "%s/%s", profiles_path, profile);
 
 	return snprintf(path, size, "%s/%s/%s", profiles_path, profile, file);
-}
-
-void OBSBasic::on_resetUI_triggered()
-{
-	restoreState(startingDockLayout);
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
-	int cx = width();
-	int cy = height();
-
-	int cx22_5 = cx * 225 / 1000;
-	int cx5 = cx * 5 / 100;
-
-	cy = cy * 225 / 1000;
-
-	int mixerSize = cx - (cx22_5 * 2 + cx5 * 2);
-
-	QList<QDockWidget*> docks {
-		ui->scenesDock,
-		ui->sourcesDock,
-		ui->transitionsDock
-	};
-
-	QList<int> sizes {
-		cx22_5,
-		cx22_5,
-		mixerSize,
-		cx5,
-		cx5
-	};
-
-	ui->scenesDock->setVisible(true);
-	ui->sourcesDock->setVisible(true);
-	ui->transitionsDock->setVisible(true);
-
-	resizeDocks(docks, {cy, cy, cy, cy, cy}, Qt::Vertical);
-	resizeDocks(docks, sizes, Qt::Horizontal);
-#endif
-}
-
-void OBSBasic::on_lockUI_toggled(bool lock)
-{
-	QDockWidget::DockWidgetFeatures features = lock
-		? QDockWidget::NoDockWidgetFeatures
-		: QDockWidget::AllDockWidgetFeatures;
-
-	ui->scenesDock->setFeatures(features);
-	ui->sourcesDock->setFeatures(features);
-	ui->transitionsDock->setFeatures(features);
 }
 
 void OBSBasic::on_toggleListboxToolbars_toggled(bool visible)

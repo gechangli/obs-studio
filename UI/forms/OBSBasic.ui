@@ -1389,17 +1389,6 @@
      </property>
      <addaction name="toggleListboxToolbars"/>
     </widget>
-    <widget class="QMenu" name="viewMenuDocks">
-     <property name="title">
-      <string>Basic.MainMenu.View.Docks</string>
-     </property>
-     <addaction name="resetUI"/>
-     <addaction name="lockUI"/>
-     <addaction name="separator"/>
-     <addaction name="toggleScenes"/>
-     <addaction name="toggleSources"/>
-     <addaction name="toggleTransitions"/>
-    </widget>
     <action name="actionFullscreenInterface">
      <property name="text">
       <string>Basic.MainMenu.View.Fullscreen.Interface</string>
@@ -1410,7 +1399,6 @@
     </action>
     <addaction name="actionFullscreenInterface"/>
     <addaction name="separator"/>
-    <addaction name="viewMenuDocks"/>
     <addaction name="viewMenuToolbars"/>
     <addaction name="toggleStatusBar"/>
     <addaction name="separator"/>

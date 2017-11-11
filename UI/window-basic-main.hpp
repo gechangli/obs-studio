@@ -668,9 +668,6 @@ private slots:
 	void on_autoConfigure_triggered();
 	void on_stats_triggered();
 
-	void on_resetUI_triggered();
-	void on_lockUI_toggled(bool lock);
-
 	void on_speakerCheckBox_clicked(bool checked);
 	void on_microphoneCheckBox_clicked(bool checked);
 	void on_speakerVolumeSlider_valueChanged(int value);
