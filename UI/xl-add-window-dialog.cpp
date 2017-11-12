@@ -57,8 +57,7 @@ OBSQTDisplay* XLAddWindowDialog::getDisplay() {
 }
 
 void XLAddWindowDialog::onWindowChanged(int index) {
-	QComboBox* combo = static_cast<QComboBox*>(sender());
-	onListPropertyChanged(m_windowProperty, combo, index);
+	onListPropertyChanged(m_windowProperty, ui->windowComboBox, index);
 }
 
 void XLAddWindowDialog::loadProperties() {
