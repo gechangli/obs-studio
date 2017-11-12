@@ -461,6 +461,8 @@ void XLAddSourceDialog::populateListProperty(obs_property_t* prop, QComboBox* co
 
 	// trigger change event if index is -1
 	if(idx == -1 && slot) {
+		// WORKAROUND: invokeMethod only support pure method name, not slot name, so I convert
+		// slot name to pure method name by remove first start "1" and end parentheses
 		QString slotStr(slot);
 		int pIdx = slotStr.indexOf("(");
 		if(pIdx == -1) {
