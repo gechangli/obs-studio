@@ -461,7 +461,13 @@ void XLAddSourceDialog::populateListProperty(obs_property_t* prop, QComboBox* co
 
 	// trigger change event if index is -1
 	if(idx == -1 && slot) {
-		QMetaObject::invokeMethod(this, slot, Q_ARG(int, 0));
+		QString slotStr(slot);
+		int pIdx = slotStr.indexOf("(");
+		if(pIdx == -1) {
+			pIdx = slotStr.length();
+		}
+		slotStr = slotStr.mid(1, pIdx - 1);
+		QMetaObject::invokeMethod(this, slotStr.toStdString().c_str(), Q_ARG(int, 0));
 	}
 }
 
