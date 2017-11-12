@@ -5088,7 +5088,8 @@ QListWidgetItem *OBSBasic::GetTopSelectedSourceItem()
 
 void OBSBasic::on_preview_customContextMenuRequested(const QPoint &pos)
 {
-	CreateSourcePopupMenu(GetTopSelectedSourceItem(), true);
+	// TODO: uncomment it when you want popup menu back
+//	CreateSourcePopupMenu(GetTopSelectedSourceItem(), true);
 
 	UNUSED_PARAMETER(pos);
 }
