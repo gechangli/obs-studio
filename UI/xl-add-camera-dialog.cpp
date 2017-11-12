@@ -53,13 +53,11 @@ OBSQTDisplay* XLAddCameraDialog::getDisplay() {
 }
 
 void XLAddCameraDialog::onPresetResolutionChanged(int index) {
-	QComboBox* combo = static_cast<QComboBox*>(sender());
-	onListPropertyChanged(m_presetProperty, combo, index);
+	onListPropertyChanged(m_presetProperty, ui->resolutionComboBox, index);
 }
 
 void XLAddCameraDialog::onDeviceChanged(int index) {
-	QComboBox* combo = static_cast<QComboBox*>(sender());
-	if(onListPropertyChanged(m_deviceProperty, combo, index)) {
+	if(onListPropertyChanged(m_deviceProperty, ui->cameraComboBox, index)) {
 		populateListProperty(m_presetProperty, ui->resolutionComboBox);
 	}
 }
