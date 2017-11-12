@@ -22,6 +22,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QSize>
+#include <QNetworkCookie>
 
 // live platforms
 typedef enum {
@@ -79,6 +80,9 @@ private:
 
 private:
 	void loadLivePlatformInfos();
+
+private slots:
+	void checkCookieForDeletion(const QNetworkCookie &cookie);
 
 public:
 	Q_INVOKABLE int getPageWidth();

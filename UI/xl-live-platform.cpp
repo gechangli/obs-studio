@@ -46,6 +46,13 @@ static const char* s_livePlatformIds[] = {
 	"huajiao"
 };
 
+// domain keyword for live platform
+static const char* s_livePlatformDomains[] = {
+	"douyu",
+	"huya",
+	"panda"
+};
+
 LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
 m_webDialog(Q_NULLPTR),
@@ -114,14 +121,16 @@ void LivePlatformWeb::showWeb() {
 }
 
 void LivePlatformWeb::openWeb(bool clearSession) {
+	// create web dialog
+	m_webDialog = new XLWebDialog();
+	QWebEngineView* view = m_webDialog->webView();
+
 	// clear session
 	if(clearSession) {
 		clearCookies();
 	}
 
 	// set channel
-	m_webDialog = new XLWebDialog();
-	QWebEngineView* view = m_webDialog->webView();
 	QWebEnginePage* page = view->page();
 	QWebChannel* channel = new QWebChannel(page);
 	page->setWebChannel(channel);
@@ -213,7 +222,18 @@ void LivePlatformWeb::closeWeb() {
 
 void LivePlatformWeb::clearCookies() {
 	if(m_webDialog) {
-		m_webDialog->webView()->page()->profile()->cookieStore()->deleteAllCookies();
+		QWebEngineCookieStore* cs = m_webDialog->webView()->page()->profile()->cookieStore();
+		connect(cs, &QWebEngineCookieStore::cookieAdded, this, &LivePlatformWeb::checkCookieForDeletion);
+		cs->loadAllCookies();
+	}
+}
+
+void LivePlatformWeb::checkCookieForDeletion(const QNetworkCookie &cookie) {
+	blog(LOG_INFO, "check cookie for domain %s", s_livePlatformDomains[m_curPlatform]);
+	if(cookie.domain().indexOf(s_livePlatformDomains[m_curPlatform]) != -1) {
+		blog(LOG_INFO, "cookie %s matched, delete it", QString(cookie.name()).toStdString().c_str());
+		QWebEngineCookieStore* cs = dynamic_cast<QWebEngineCookieStore*>(sender());
+		cs->deleteCookie(cookie);
 	}
 }
 
