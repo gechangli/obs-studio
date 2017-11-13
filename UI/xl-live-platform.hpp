@@ -65,6 +65,8 @@ typedef struct live_platform_info live_platform_info_t;
 
 // declaration
 class XLWebDialog;
+class XLProgressDialog;
+class QTimer;
 
 // helper to access live platform web site
 class LivePlatformWeb : public QObject {
@@ -77,12 +79,19 @@ private:
 	int m_pageHeight;
 	bool m_loggedIn;
 	XLWebDialog* m_webDialog;
+	XLProgressDialog* m_progressDialog;
+	qint64 m_lastCookieAddSecs;
+	QTimer* m_cookieTimer;
+	bool m_deletingCookie;
 
 private:
 	void loadLivePlatformInfos();
+	void doOpenWeb();
+	void clearCookiesAsync();
 
 private slots:
 	void checkCookieForDeletion(const QNetworkCookie &cookie);
+	void onCookieTimer();
 
 public:
 	Q_INVOKABLE int getPageWidth();

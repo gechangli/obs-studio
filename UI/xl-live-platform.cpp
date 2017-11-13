@@ -21,8 +21,11 @@
 #include "window-basic-main.hpp"
 #include "xl-progress-dialog.hpp"
 #include <QMessageBox>
+#include <QDateTime>
+#include <QTimer>
 #include "xl-util.hpp"
 #include "xl-web-dialog.hpp"
+#include "xl-progress-dialog.hpp"
 
 using namespace std;
 
@@ -57,7 +60,10 @@ LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
 m_webDialog(Q_NULLPTR),
 m_pageWidth(0),
-m_pageHeight(0) {
+m_pageHeight(0),
+m_cookieTimer(Q_NULLPTR),
+m_progressDialog(Q_NULLPTR),
+m_deletingCookie(false) {
 	// load info from config
 	loadLivePlatformInfos();
 }
@@ -123,14 +129,21 @@ void LivePlatformWeb::showWeb() {
 void LivePlatformWeb::openWeb(bool clearSession) {
 	// create web dialog
 	m_webDialog = new XLWebDialog();
-	QWebEngineView* view = m_webDialog->webView();
 
-	// clear session
+	// if clear session is set, we need delay to open web because
+	// delete cookie is asynchronous
 	if(clearSession) {
-		clearCookies();
+		m_deletingCookie = true;
+		clearCookiesAsync();
+	} else {
+		m_deletingCookie = false;
+		doOpenWeb();
 	}
+}
 
+void LivePlatformWeb::doOpenWeb() {
 	// set channel
+	QWebEngineView* view = m_webDialog->webView();
 	QWebEnginePage* page = view->page();
 	QWebChannel* channel = new QWebChannel(page);
 	page->setWebChannel(channel);
@@ -215,25 +228,75 @@ bool LivePlatformWeb::isLoggedIn() {
 
 void LivePlatformWeb::closeWeb() {
 	if(m_webDialog) {
+		disconnect(m_webDialog->webView());
 		m_webDialog->closeWeb();
+		m_webDialog->deleteLater();
 		m_webDialog = Q_NULLPTR;
 	}
 }
 
-void LivePlatformWeb::clearCookies() {
-	if(m_webDialog) {
-		QWebEngineCookieStore* cs = m_webDialog->webView()->page()->profile()->cookieStore();
-		connect(cs, &QWebEngineCookieStore::cookieAdded, this, &LivePlatformWeb::checkCookieForDeletion);
-		cs->loadAllCookies();
+void LivePlatformWeb::onCookieTimer() {
+	qint64 now = QDateTime::currentDateTime().toSecsSinceEpoch();
+	blog(LOG_INFO, "oncookie timer, delta is %lld", now - m_lastCookieAddSecs);
+	if(now - m_lastCookieAddSecs > 1) {
+		// stop timer
+		m_cookieTimer->stop();
+		m_cookieTimer->deleteLater();
+		m_cookieTimer = Q_NULLPTR;
+
+		// remove progress dialog
+		m_progressDialog->hide();
+		m_progressDialog->deleteLater();
+		m_progressDialog = Q_NULLPTR;
+
+		// clear flag
+		m_deletingCookie = false;
+
+		// open web now
+		doOpenWeb();
 	}
 }
 
+void LivePlatformWeb::clearCookiesAsync() {
+	if(m_webDialog) {
+		// show progress
+		m_progressDialog = new XLProgressDialog();
+		m_progressDialog->show();
+
+		// start checking
+		QWebEngineCookieStore* cs = m_webDialog->webView()->page()->profile()->cookieStore();
+		connect(cs, &QWebEngineCookieStore::cookieAdded, this, &LivePlatformWeb::checkCookieForDeletion);
+		cs->loadAllCookies();
+
+		if(!m_cookieTimer) {
+			// save time, start timer
+			m_lastCookieAddSecs = QDateTime::currentDateTime().toSecsSinceEpoch();
+			m_cookieTimer = new QTimer(this);
+			connect(m_cookieTimer, &QTimer::timeout, this, &LivePlatformWeb::onCookieTimer);
+			m_cookieTimer->start(1000);
+		}
+	}
+}
+
+void LivePlatformWeb::clearCookies() {
+	QWebEngineCookieStore* cs = m_webDialog->webView()->page()->profile()->cookieStore();
+	connect(cs, &QWebEngineCookieStore::cookieAdded, this, [this](const QNetworkCookie &cookie) {
+		if(cookie.domain().indexOf(s_livePlatformDomains[m_curPlatform]) != -1) {
+			QWebEngineCookieStore* cs = dynamic_cast<QWebEngineCookieStore*>(sender());
+			cs->deleteCookie(cookie);
+		}
+	});
+	cs->loadAllCookies();
+}
+
 void LivePlatformWeb::checkCookieForDeletion(const QNetworkCookie &cookie) {
-	blog(LOG_INFO, "check cookie for domain %s", s_livePlatformDomains[m_curPlatform]);
-	if(cookie.domain().indexOf(s_livePlatformDomains[m_curPlatform]) != -1) {
-		blog(LOG_INFO, "cookie %s matched, delete it", QString(cookie.name()).toStdString().c_str());
-		QWebEngineCookieStore* cs = dynamic_cast<QWebEngineCookieStore*>(sender());
-		cs->deleteCookie(cookie);
+	if(m_deletingCookie) {
+		if(cookie.domain().indexOf(s_livePlatformDomains[m_curPlatform]) != -1) {
+			blog(LOG_INFO, "cookie %s matched, delete it", QString(cookie.name()).toStdString().c_str());
+			QWebEngineCookieStore* cs = dynamic_cast<QWebEngineCookieStore*>(sender());
+			cs->deleteCookie(cookie);
+			m_lastCookieAddSecs = QDateTime::currentDateTime().toSecsSinceEpoch();
+		}
 	}
 }
 

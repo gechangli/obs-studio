@@ -15,13 +15,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
-#include "xl-web-dialog.hpp"
+#include <QWidget>
 #include <QKeyEvent>
 #include "xl-progress-dialog.hpp"
 #include "window-basic-main.hpp"
 #include <QDesktopWidget>
 #include "xl-title-bar-sub.hpp"
 #include "xl-frameless-window-util.hpp"
+#include "xl-web-dialog.hpp"
 
 XLWebDialog::XLWebDialog(QWidget* parent) :
 QDialog (parent),
