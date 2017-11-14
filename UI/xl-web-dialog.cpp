@@ -106,7 +106,7 @@ void XLWebDialog::openUrl(QUrl initUrl, QString title, QSize winSize) {
 
 void XLWebDialog::autoFit() {
 	ui->webView->page()->runJavaScript("document.documentElement.scrollWidth;", [=](QVariant result){
-		int newWidth = result.toInt()+10;
+		int newWidth = result.toInt();
 		QRect r = geometry();
 		QRect screenGeometry = QApplication::desktop()->screenGeometry();
 		r.setWidth(qMin(newWidth, screenGeometry.width() * 2 / 3));

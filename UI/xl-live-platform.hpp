@@ -78,8 +78,6 @@ class LivePlatformWeb : public QObject {
 private:
     LivePlatform m_curPlatform;
     std::map<int, live_platform_info_t> m_infos;
-	int m_pageWidth;
-	int m_pageHeight;
 	bool m_loggedIn;
 	XLWebDialog* m_webDialog;
 	XLProgressDialog* m_progressDialog;
@@ -95,12 +93,10 @@ private:
 private slots:
 	void onCookieAdded(const QNetworkCookie &cookie);
 	void delayOpenWeb();
+	void onLoadFinished(bool ok);
+	void onLoadStarted();
 
 public:
-	Q_INVOKABLE int getPageWidth();
-	Q_INVOKABLE int getPageHeight();
-	Q_PROPERTY(int m_pageWidth READ getPageWidth);
-	Q_PROPERTY(int m_pageHeight READ getPageHeight);
 	Q_INVOKABLE bool isLoggedIn();
 	Q_PROPERTY(bool m_loggedIn READ isLoggedIn);
 

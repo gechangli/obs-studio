@@ -59,8 +59,6 @@ static const char* s_livePlatformDomains[] = {
 LivePlatformWeb::LivePlatformWeb() :
 m_curPlatform(LIVE_PLATFORM_DOUYU),
 m_webDialog(Q_NULLPTR),
-m_pageWidth(0),
-m_pageHeight(0),
 m_delayOpenTimer(Q_NULLPTR),
 m_progressDialog(Q_NULLPTR),
 m_cookieStore(Q_NULLPTR) {
@@ -106,14 +104,6 @@ void LivePlatformWeb::saveLivePlatformInfo(QString pltName) {
 	saveLivePlatformInfo(id2Type(pltName));
 }
 
-int LivePlatformWeb::getPageWidth() {
-	return m_pageWidth;
-}
-
-int LivePlatformWeb::getPageHeight() {
-	return m_pageHeight;
-}
-
 void LivePlatformWeb::hideWeb() {
 	if(m_webDialog) {
 		m_webDialog->hideWeb();
@@ -155,24 +145,9 @@ void LivePlatformWeb::doOpenWeb() {
 	// register self
 	channel->registerObject(QStringLiteral("lp"), this);
 
-	// save web view size
-	QSize size = view->size();
-	m_pageWidth = size.width();
-	m_pageHeight = size.height();
-
 	// setup javascript and event
-	connect(view, &QWebEngineView::loadFinished, [=](bool ok) {
-		QString url = page->url().toString();
-		if(url != "about:blank") {
-			m_webDialog->autoFit();
-			page->runJavaScript(XLUtil::getDataFileContent("js/qwebchannel.js"));
-			page->runJavaScript(XLUtil::getDataFileContent("js/util.js"));
-			page->runJavaScript(XLUtil::getDataFileContent(QString("js/%1.js").arg(type2Id(m_curPlatform))));
-		}
-	});
-	connect(view, &QWebEngineView::loadStarted, [=]() {
-		hideWeb();
-	});
+	connect(view, &QWebEngineView::loadFinished, this, &LivePlatformWeb::onLoadFinished);
+	connect(view, &QWebEngineView::loadStarted, this, &LivePlatformWeb::onLoadStarted);
 
 	// set title
 	m_webDialog->setWindowTitle(L(LivePlatformNames[m_curPlatform]));
@@ -183,6 +158,22 @@ void LivePlatformWeb::doOpenWeb() {
 
 	// open
 	m_webDialog->exec();
+}
+
+void LivePlatformWeb::onLoadStarted() {
+	hideWeb();
+}
+
+void LivePlatformWeb::onLoadFinished(bool ok) {
+	QWebEngineView* view = m_webDialog->webView();
+	QWebEnginePage* page = view->page();
+	QString url = page->url().toString();
+	if(url != "about:blank") {
+		m_webDialog->autoFit();
+		page->runJavaScript(XLUtil::getDataFileContent("js/qwebchannel.js"));
+		page->runJavaScript(XLUtil::getDataFileContent("js/util.js"));
+		page->runJavaScript(XLUtil::getDataFileContent(QString("js/%1.js").arg(type2Id(m_curPlatform))));
+	}
 }
 
 void LivePlatformWeb::jsLog(QString t) {

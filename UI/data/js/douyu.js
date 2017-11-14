@@ -23,8 +23,9 @@ function simplifyLoginPage() {
     document.querySelector('.login-box-toptxt').remove();
     new QWebChannel(qt.webChannelTransport, function(channel) {
         var lp = channel.objects.lp;
+        var width = document.documentElement.scrollWidth;
         document.querySelector('.wrapper.sign-con').setAttribute('style',
-            'width:' + lp.m_pageWidth + 'px;');
+            'width:' + width + 'px;');
     })
 }
 
