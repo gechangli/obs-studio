@@ -23,6 +23,8 @@
 #include <QVariant>
 #include <QSize>
 #include <QNetworkCookie>
+#include <QList>
+#include <QWebEngineCookieStore>
 
 // live platforms
 typedef enum {
@@ -67,6 +69,7 @@ typedef struct live_platform_info live_platform_info_t;
 class XLWebDialog;
 class XLProgressDialog;
 class QTimer;
+class QWebEngineCookieStore;
 
 // helper to access live platform web site
 class LivePlatformWeb : public QObject {
@@ -80,9 +83,9 @@ private:
 	bool m_loggedIn;
 	XLWebDialog* m_webDialog;
 	XLProgressDialog* m_progressDialog;
-	qint64 m_lastCookieAddSecs;
-	QTimer* m_cookieTimer;
-	bool m_deletingCookie;
+	QTimer* m_delayOpenTimer;
+	QList<QNetworkCookie> m_cookieList;
+	QWebEngineCookieStore* m_cookieStore;
 
 private:
 	void loadLivePlatformInfos();
@@ -90,8 +93,8 @@ private:
 	void clearCookiesAsync();
 
 private slots:
-	void checkCookieForDeletion(const QNetworkCookie &cookie);
-	void onCookieTimer();
+	void onCookieAdded(const QNetworkCookie &cookie);
+	void delayOpenWeb();
 
 public:
 	Q_INVOKABLE int getPageWidth();

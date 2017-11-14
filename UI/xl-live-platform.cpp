@@ -61,9 +61,9 @@ m_curPlatform(LIVE_PLATFORM_DOUYU),
 m_webDialog(Q_NULLPTR),
 m_pageWidth(0),
 m_pageHeight(0),
-m_cookieTimer(Q_NULLPTR),
+m_delayOpenTimer(Q_NULLPTR),
 m_progressDialog(Q_NULLPTR),
-m_deletingCookie(false) {
+m_cookieStore(Q_NULLPTR) {
 	// load info from config
 	loadLivePlatformInfos();
 }
@@ -130,13 +130,17 @@ void LivePlatformWeb::openWeb(bool clearSession) {
 	// create web dialog
 	m_webDialog = new XLWebDialog();
 
+	// listen cookie event
+	if(!m_cookieStore) {
+		m_cookieStore = m_webDialog->webView()->page()->profile()->cookieStore();
+		connect(m_cookieStore, &QWebEngineCookieStore::cookieAdded, this, &LivePlatformWeb::onCookieAdded);
+	}
+
 	// if clear session is set, we need delay to open web because
 	// delete cookie is asynchronous
 	if(clearSession) {
-		m_deletingCookie = true;
 		clearCookiesAsync();
 	} else {
-		m_deletingCookie = false;
 		doOpenWeb();
 	}
 }
@@ -235,26 +239,19 @@ void LivePlatformWeb::closeWeb() {
 	}
 }
 
-void LivePlatformWeb::onCookieTimer() {
-	qint64 now = QDateTime::currentDateTime().toSecsSinceEpoch();
-	blog(LOG_INFO, "oncookie timer, delta is %lld", now - m_lastCookieAddSecs);
-	if(now - m_lastCookieAddSecs > 1) {
-		// stop timer
-		m_cookieTimer->stop();
-		m_cookieTimer->deleteLater();
-		m_cookieTimer = Q_NULLPTR;
+void LivePlatformWeb::delayOpenWeb() {
+	// stop timer
+	m_delayOpenTimer->stop();
+	m_delayOpenTimer->deleteLater();
+	m_delayOpenTimer = Q_NULLPTR;
 
-		// remove progress dialog
-		m_progressDialog->hide();
-		m_progressDialog->deleteLater();
-		m_progressDialog = Q_NULLPTR;
+	// remove progress dialog
+	m_progressDialog->hide();
+	m_progressDialog->deleteLater();
+	m_progressDialog = Q_NULLPTR;
 
-		// clear flag
-		m_deletingCookie = false;
-
-		// open web now
-		doOpenWeb();
-	}
+	// open web now
+	doOpenWeb();
 }
 
 void LivePlatformWeb::clearCookiesAsync() {
@@ -263,41 +260,44 @@ void LivePlatformWeb::clearCookiesAsync() {
 		m_progressDialog = new XLProgressDialog();
 		m_progressDialog->show();
 
-		// start checking
-		QWebEngineCookieStore* cs = m_webDialog->webView()->page()->profile()->cookieStore();
-		connect(cs, &QWebEngineCookieStore::cookieAdded, this, &LivePlatformWeb::checkCookieForDeletion);
-		cs->loadAllCookies();
+		// start deleting
+		int c = m_cookieList.count();
+		for(int i = c - 1; i >= 0; i--) {
+			QNetworkCookie& cookie = m_cookieList[i];
+			if(cookie.domain().indexOf(s_livePlatformDomains[m_curPlatform]) != -1) {
+				blog(LOG_INFO, "cookie %s matched, delete it", QString(cookie.name()).toStdString().c_str());
+				m_cookieStore->deleteCookie(cookie);
+				m_cookieList.removeAt(i);
+			}
+		}
 
-		if(!m_cookieTimer) {
+		// delay open web
+		if(!m_delayOpenTimer) {
 			// save time, start timer
-			m_lastCookieAddSecs = QDateTime::currentDateTime().toSecsSinceEpoch();
-			m_cookieTimer = new QTimer(this);
-			connect(m_cookieTimer, &QTimer::timeout, this, &LivePlatformWeb::onCookieTimer);
-			m_cookieTimer->start(1000);
+			m_delayOpenTimer = new QTimer(this);
+			m_delayOpenTimer->setSingleShot(true);
+			connect(m_delayOpenTimer, &QTimer::timeout, this, &LivePlatformWeb::delayOpenWeb);
+			m_delayOpenTimer->start(3000);
+			blog(LOG_INFO, "delay for 3 seconds to open web");
 		}
 	}
 }
 
 void LivePlatformWeb::clearCookies() {
-	QWebEngineCookieStore* cs = m_webDialog->webView()->page()->profile()->cookieStore();
-	connect(cs, &QWebEngineCookieStore::cookieAdded, this, [this](const QNetworkCookie &cookie) {
-		if(cookie.domain().indexOf(s_livePlatformDomains[m_curPlatform]) != -1) {
-			QWebEngineCookieStore* cs = dynamic_cast<QWebEngineCookieStore*>(sender());
-			cs->deleteCookie(cookie);
-		}
-	});
-	cs->loadAllCookies();
-}
-
-void LivePlatformWeb::checkCookieForDeletion(const QNetworkCookie &cookie) {
-	if(m_deletingCookie) {
+	int c = m_cookieList.count();
+	for(int i = c - 1; i >= 0; i--) {
+		QNetworkCookie& cookie = m_cookieList[i];
 		if(cookie.domain().indexOf(s_livePlatformDomains[m_curPlatform]) != -1) {
 			blog(LOG_INFO, "cookie %s matched, delete it", QString(cookie.name()).toStdString().c_str());
-			QWebEngineCookieStore* cs = dynamic_cast<QWebEngineCookieStore*>(sender());
-			cs->deleteCookie(cookie);
-			m_lastCookieAddSecs = QDateTime::currentDateTime().toSecsSinceEpoch();
+			m_cookieStore->deleteCookie(cookie);
+			m_cookieList.removeAt(i);
 		}
 	}
+}
+
+void LivePlatformWeb::onCookieAdded(const QNetworkCookie &cookie) {
+	blog(LOG_INFO, "cookie %s added, domain: %s", QString(cookie.name()).toStdString().c_str(), cookie.domain().toStdString().c_str());
+	m_cookieList.append(cookie);
 }
 
 void LivePlatformWeb::showMessageBox(QString title, QString msg) {
