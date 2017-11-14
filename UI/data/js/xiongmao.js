@@ -4,7 +4,7 @@ function simplifyLoginPage() {
     document.querySelector('.index-wrapper').remove();
     document.querySelector('.index-footer-container').remove();
     document.getElementById('panda_footer').remove();
-    document.querySelector('.panda-header').remove();
+    document.getElementById('panda_header').remove();
     document.querySelector('.index-lift.clearfix.join-anchor').remove();
     document.querySelector('.tab.ruc-goto-register-btn').remove();
     document.querySelector('.ruc-dialog-close').remove();
@@ -18,7 +18,7 @@ function onLoginPage() {
         lp.showWeb();
 
         // click login button to show login ui
-        document.querySelector('.tool-user-info-login.header-login-btn').click();
+        document.querySelector('.ph-func_login.js-ph-login').click();
 
         // simplify page
         simplifyLoginPage();
