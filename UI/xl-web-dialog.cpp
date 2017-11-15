@@ -23,6 +23,7 @@
 #include "xl-title-bar-sub.hpp"
 #include "xl-frameless-window-util.hpp"
 #include "xl-web-dialog.hpp"
+#include "xl-util.hpp"
 
 XLWebDialog::XLWebDialog(QWidget* parent) :
 QDialog (parent),
@@ -39,6 +40,11 @@ m_progressDialog(Q_NULLPTR) {
 	m_titleBar->init();
 	m_titleBar->move(0, 0);
 	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &QDialog::close);
+
+	// set style
+	QString qssPath = XLUtil::getQssPathByName("xl-web-dialog");
+	QString qss = XLUtil::loadQss(qssPath);
+	setStyleSheet(qss);
 }
 
 XLWebDialog::~XLWebDialog() {

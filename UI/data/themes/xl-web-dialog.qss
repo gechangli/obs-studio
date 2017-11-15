@@ -1,0 +1,4 @@
+QDialog#XLWebDialog {
+    background: #f8f8f8;
+    border: 1px solid #64c112;
+}
