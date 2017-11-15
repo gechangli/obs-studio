@@ -1565,6 +1565,15 @@ void OBSBasic::OBSInit()
 
 	OBSBasicStats::InitializeValues();
 
+	// WORDAROUND
+	// In windows, source list doesn't get redrawn during operating, it is weird.
+	// resize window solves this..., wtf? OSX is fine.
+	QSize s = size();
+	s.setWidth(s.width() + 1);
+	resize(s);
+	s.setWidth(s.width() - 1);
+	resize(s);
+
 	// set speaker volume by default
 	m_speakerVolume = 100;
 	ui->speakerVolumeSlider->setValue(m_speakerVolume);
