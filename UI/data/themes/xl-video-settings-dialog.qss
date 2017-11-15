@@ -32,10 +32,19 @@ QLabel#frameRateLabel,QLabel#fpsLabel,QLabel#resolutionLabel {
     color: black;
 }
 QComboBox QAbstractItemView {
+    background-color: white;
+}
+QComboBox QAbstractItemView:item:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #6a6ea9, stop: 1 #888dd9);
+}
+QComboBox QAbstractItemView:item {
     color: black;
 }
 QComboBox QAbstractItemView:item:hover {
-    color: #898989;
+    color: white;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #ABAFE5, stop: 1 #8588B2);
 }
 QComboBox#bitRateComboBox:editable {
     border: 1px solid #D2D2D2;

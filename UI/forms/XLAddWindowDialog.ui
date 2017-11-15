@@ -80,7 +80,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="windowComboBox">
+       <widget class="XLComboBox" name="windowComboBox">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -171,6 +171,11 @@
    <extends>QWidget</extends>
    <header>qt-display.hpp</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>XLComboBox</class>
+   <extends>QComboBox</extends>
+   <header>xl-combo-box.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

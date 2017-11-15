@@ -76,7 +76,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="cameraComboBox">
+      <widget class="XLComboBox" name="cameraComboBox">
        <property name="minimumSize">
         <size>
          <width>154</width>
@@ -112,7 +112,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="resolutionComboBox">
+      <widget class="XLComboBox" name="resolutionComboBox">
        <property name="minimumSize">
         <size>
          <width>154</width>
@@ -156,6 +156,11 @@
    <extends>QWidget</extends>
    <header>qt-display.hpp</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>XLComboBox</class>
+   <extends>QComboBox</extends>
+   <header>xl-combo-box.hpp</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -248,7 +248,8 @@ set(xiaomeilive_SOURCES
 	xl-add-window-dialog.cpp
     xl-video-settings-dialog.cpp
 	xl-live-platforms-dialog.cpp
-	xl-live-platform-item-widget.cpp)
+	xl-live-platform-item-widget.cpp
+	xl-combo-box.cpp)
 
 set(xiaomeilive_HEADERS
 	${xiaomeilive_PLATFORM_HEADERS}
@@ -328,7 +329,8 @@ set(xiaomeilive_HEADERS
 	xl-add-window-dialog.hpp
     xl-video-settings-dialog.hpp
 	xl-live-platform-item-widget.hpp
-	xl-live-platforms-dialog.hpp)
+	xl-live-platforms-dialog.hpp
+	xl-combo-box.hpp)
 
 set(xiaomeilive_UI
 	forms/AutoConfigStartPage.ui

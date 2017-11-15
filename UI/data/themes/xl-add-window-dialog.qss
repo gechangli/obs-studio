@@ -38,12 +38,6 @@ QPushButton#noButton:pressed {
      background-color: rgb(248,248,248);
      color: rgb(203,202,202);
 }
-QComboBox QAbstractItemView {
-    color: black;
-}
-QComboBox QAbstractItemView:item:hover {
-    color: #898989;
-}
 QComboBox#windowComboBox:editable {
     border: 1px solid #D2D2D2;
     border-radius: 4px;
@@ -60,4 +54,19 @@ QComboBox#windowComboBox::drop-down {
 }
 QComboBox#windowComboBox::down-arrow {
     image: url(:/res/images/drop_down_arrow_gray.png);
+}
+QComboBox QAbstractItemView {
+    background-color: white;
+}
+QComboBox QAbstractItemView:item:selected {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #6a6ea9, stop: 1 #888dd9);
+}
+QComboBox QAbstractItemView:item {
+    color: black;
+}
+QComboBox QAbstractItemView:item:hover {
+    color: white;
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 #ABAFE5, stop: 1 #8588B2);
 }

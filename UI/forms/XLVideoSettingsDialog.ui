@@ -206,7 +206,7 @@
        <number>10</number>
       </property>
       <item row="0" column="1">
-       <widget class="QComboBox" name="bitRateComboBox">
+       <widget class="XLComboBox" name="bitRateComboBox">
         <property name="minimumSize">
          <size>
           <width>304</width>
@@ -235,7 +235,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="fpsComboBox">
+       <widget class="XLComboBox" name="fpsComboBox">
         <property name="minimumSize">
          <size>
           <width>304</width>
@@ -277,7 +277,7 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QComboBox" name="resolutionComboBox">
+       <widget class="XLComboBox" name="resolutionComboBox">
         <property name="minimumSize">
          <size>
           <width>304</width>
@@ -335,6 +335,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>XLComboBox</class>
+   <extends>QComboBox</extends>
+   <header>xl-combo-box.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
