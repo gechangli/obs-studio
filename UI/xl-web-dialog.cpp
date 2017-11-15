@@ -39,7 +39,7 @@ m_progressDialog(Q_NULLPTR) {
 	m_titleBar = new XLTitleBarSub(this);
 	m_titleBar->init();
 	m_titleBar->move(0, 0);
-	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &QDialog::close);
+	connect(m_titleBar, &XLTitleBar::windowRequestClose, this, &XLWebDialog::close);
 
 	// set style
 	QString qssPath = XLUtil::getQssPathByName("xl-web-dialog");
@@ -52,6 +52,11 @@ XLWebDialog::~XLWebDialog() {
 		delete m_progressDialog;
 		m_progressDialog = Q_NULLPTR;
 	}
+}
+
+bool XLWebDialog::close() {
+	deleteLater();
+	return QDialog::close();
 }
 
 void XLWebDialog::keyPressEvent(QKeyEvent *event) {

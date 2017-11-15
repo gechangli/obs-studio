@@ -41,6 +41,9 @@ private:
 protected:
 	void keyPressEvent(QKeyEvent *) Q_DECL_OVERRIDE;
 
+public slots:
+	bool close();
+
 public:
 	XLWebDialog(QWidget* parent = Q_NULLPTR);
 	virtual ~XLWebDialog();

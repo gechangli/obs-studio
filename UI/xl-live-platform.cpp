@@ -225,7 +225,6 @@ void LivePlatformWeb::closeWeb() {
 	if(m_webDialog) {
 		disconnect(m_webDialog->webView());
 		m_webDialog->closeWeb();
-		m_webDialog->deleteLater();
 		m_webDialog = Q_NULLPTR;
 	}
 }
