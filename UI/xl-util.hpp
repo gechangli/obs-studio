@@ -55,6 +55,7 @@ public:
 
 	// pixmap
 	static QPixmap createCircle(int radius, QColor color);
+	static QPixmap fromNativeImage(void* img);
 
 	// source
 	static XLSourceType getSourceType(const char* id);

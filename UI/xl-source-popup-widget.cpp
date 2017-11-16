@@ -123,7 +123,7 @@ void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
 			// get window count
 			obs_properties_t* properties = obs_source_properties(m_windowSource);
 			obs_property_t* prop = obs_properties_get(properties, "window");
-			size_t count  = obs_property_list_item_count(prop);
+			size_t count = obs_property_list_item_count(prop);
 
 			// init rows
 			for(int i = 0; i < count; i++) {

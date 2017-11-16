@@ -84,6 +84,8 @@ if(WIN32)
 		add_definitions(-DENABLE_WIN_UPDATER)
 	endif()
 elseif(APPLE)
+	find_package(Qt5MacExtras REQUIRED)
+
 	set(xiaomeilive_PLATFORM_SOURCES
 		platform-osx.mm
 		xl-frameless-window-util-osx.mm
@@ -122,6 +124,7 @@ elseif(APPLE)
 		mp3lame
 		x264
 		iconv
+		Qt5::MacExtras
 		${APPKIT_LIBRARIES}
 		${AUDIOTOOLBOX}
 		${COREVIDEO}
