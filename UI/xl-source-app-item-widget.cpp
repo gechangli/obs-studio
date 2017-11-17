@@ -48,10 +48,30 @@ void XLSourceAppItemWidget::paintEvent(QPaintEvent* event) {
 }
 
 void XLSourceAppItemWidget::update() {
+	// get window property
+	obs_property_t* prop = getWindowProperty();
+
+	// set name
+	ui->nameLabel->setText(obs_property_list_item_name(prop, m_index));
+
+	// get window id
+	long long winId = obs_property_list_item_int(prop, m_index);
+	QPixmap icon = XLUtil::getWindowIcon(winId);
+	if(icon.isNull()) {
+		ui->iconLabel->setPixmap(QPixmap(":/res/images/source_window.png"));
+	} else {
+		ui->iconLabel->setPixmap(icon);
+	}
+}
+
+obs_property_t* XLSourceAppItemWidget::getWindowProperty() {
+	QStandardItemModel* model = getModel();
+	QStandardItem* item = model->item(m_index, 0);
+	return (obs_property_t*)item->data().value<void*>();
 }
 
 QStandardItemModel* XLSourceAppItemWidget::getModel() {
-	XLSourceListView* listView = dynamic_cast<XLSourceListView*>(parentWidget()->parentWidget());
+	QListView* listView = dynamic_cast<QListView*>(parentWidget()->parentWidget());
 	QStandardItemModel* model = dynamic_cast<QStandardItemModel*>(listView->model());
 	return model;
 }
@@ -82,8 +102,4 @@ int XLSourceAppItemWidget::getIndex() {
 
 void XLSourceAppItemWidget::setIndex(int i) {
 	m_index = i;
-}
-
-void XLSourceAppItemWidget::setName(QString name) {
-	ui->nameLabel->setText(name);
 }

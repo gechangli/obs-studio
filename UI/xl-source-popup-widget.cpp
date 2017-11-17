@@ -47,10 +47,6 @@ XLSourcePopupWidget::~XLSourcePopupWidget() {
 	}
 }
 
-obs_source_t* XLSourcePopupWidget::getWindowSource() {
-	return m_windowSource;
-}
-
 void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
 	// set model
 	QStandardItemModel* model = new QStandardItemModel();
@@ -127,11 +123,13 @@ void XLSourcePopupWidget::setMode(XLSourcePopupWidget::Mode m) {
 
 			// init rows
 			for(int i = 0; i < count; i++) {
-				model->appendRow(new QStandardItem());
+				QStandardItem* item = new QStandardItem();
+				item->setData(QVariant::fromValue((void*)prop));
+				model->appendRow(item);
 				XLSourceAppItemWidget* widget = new XLSourceAppItemWidget(this);
 				widget->setIndex(i);
-				widget->setName(obs_property_list_item_name(prop, i));
 				ui->listView->setIndexWidget(model->index(i, 0), widget);
+				widget->update();
 			}
 
 			break;

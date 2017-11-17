@@ -53,7 +53,6 @@ public:
 
 	// setter/getter
 	void setMode(Mode m);
-	obs_source_t* getWindowSource();
 };
 
 class XLSourcePopupWidgetListDelegate : public QStyledItemDelegate {

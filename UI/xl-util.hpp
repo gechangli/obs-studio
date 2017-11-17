@@ -56,6 +56,9 @@ public:
 	// pixmap
 	static QPixmap createCircle(int radius, QColor color);
 	static QPixmap fromNativeImage(void* img);
+#ifdef Q_OS_OSX
+	static QPixmap getWindowIcon(long long winId);
+#endif
 
 	// source
 	static XLSourceType getSourceType(const char* id);

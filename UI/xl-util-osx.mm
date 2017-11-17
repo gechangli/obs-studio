@@ -4,6 +4,7 @@
 
 #include "xl-util.hpp"
 #import <AppKit/AppKit.h>
+#import <CoreGraphics/CoreGraphics.h>
 #include <QtMac>
 
 int XLUtil::getMonitorCount() {
@@ -42,6 +43,32 @@ QPixmap XLUtil::fromNativeImage(void* p) {
 	// release if no ARC
 #if !__has_feature(objc_arc)
 	[bmp release];
+#endif
+
+	// return
+	return pix;
+}
+
+QPixmap XLUtil::getWindowIcon(long long winId) {
+	// get windows, find it by window id
+	QPixmap pix;
+	NSArray* arr = (__bridge NSArray*)CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+	for (NSDictionary* dict in arr) {
+		NSNumber* wid = (NSNumber*)dict[(__bridge NSString*)kCGWindowNumber];
+		if (wid.intValue == winId) {
+			// if find, get icon from running application and convert to pixmap
+			NSNumber* pid = (NSNumber*)dict[(__bridge NSString*)kCGWindowOwnerPID];
+			NSRunningApplication* app = [NSRunningApplication runningApplicationWithProcessIdentifier:pid.intValue];
+			if(app.icon) {
+				pix = fromNativeImage((__bridge void *) app.icon);
+			}
+			break;
+		}
+	}
+
+	// release if no ARC
+#if !__has_feature(objc_arc)
+	[arr release];
 #endif
 
 	// return

@@ -32,6 +32,9 @@ private:
 	Q_PROPERTY(int m_index READ getIndex WRITE setIndex);
 	int m_index;
 
+private:
+	obs_property_t* getWindowProperty();
+
 protected:
 	void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
@@ -48,6 +51,5 @@ public:
 	// setter/getter
 	int getIndex();
 	void setIndex(int i);
-	void setName(QString name);
 	QStandardItemModel* getModel();
 };
