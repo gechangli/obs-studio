@@ -60,6 +60,7 @@ include_directories(${LIBCURL_INCLUDE_DIRS})
 add_definitions(${LIBCURL_DEFINITIONS})
 
 if(WIN32)
+	find_package(Qt5WinExtras REQUIRED)
 	include_directories(${OBS_JANSSON_INCLUDE_DIRS})
 	include_directories(${BLAKE2_INCLUDE_DIR})
 
@@ -78,6 +79,7 @@ if(WIN32)
 	set(xiaomeilive_PLATFORM_LIBRARIES
 		crypt32
 		blake2
+		Qt5::WinExtras
 		${OBS_JANSSON_IMPORT})
 
 	if(ENABLE_WIN_UPDATER)
