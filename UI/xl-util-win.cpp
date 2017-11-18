@@ -372,27 +372,85 @@ static BOOL CALLBACK enum_monitor_props(HMONITOR handle, HDC hdc, LPRECT rect, L
 	return TRUE;
 }
 
+static BOOL SetPrivilege(
+		HANDLE hToken,          // access token handle
+		LPCTSTR lpszPrivilege,  // name of privilege to enable/disable
+		BOOL bEnablePrivilege   // to enable or disable privilege
+)
+{
+		TOKEN_PRIVILEGES tp;
+		LUID luid;
+
+		if (!LookupPrivilegeValue(
+				NULL,            // lookup privilege on local system
+				lpszPrivilege,   // privilege to lookup 
+				&luid))        // receives LUID of privilege
+		{
+				printf("LookupPrivilegeValue error: %u/n", GetLastError());
+				return FALSE;
+		}
+
+		tp.PrivilegeCount = 1;
+		tp.Privileges[0].Luid = luid;
+		if (bEnablePrivilege)
+				tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+		else
+				tp.Privileges[0].Attributes = 0;
+
+		// Enable the privilege or disable all privileges.
+
+		if (!AdjustTokenPrivileges(
+				hToken,
+				FALSE,
+				&tp,
+				sizeof(TOKEN_PRIVILEGES),
+				(PTOKEN_PRIVILEGES)NULL,
+				(PDWORD)NULL))
+		{
+				printf("AdjustTokenPrivileges error: %u/n", GetLastError());
+				return FALSE;
+		}
+
+		if (GetLastError() == ERROR_NOT_ALL_ASSIGNED)
+
+		{
+				printf("The token does not have the specified privilege. /n");
+				return FALSE;
+		}
+
+		return TRUE;
+}
+
+static HANDLE GetProcessHandle(int nID)
+{
+		HANDLE hToken;
+		bool flag = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken);
+		if (!flag)
+		{
+				DWORD err = GetLastError();
+				printf("OpenProcessToken error:%d", err);
+		}
+		SetPrivilege(hToken, SE_DEBUG_NAME, true);
+		CloseHandle(hToken);
+		return OpenProcess(PROCESS_ALL_ACCESS, FALSE, nID);
+}
+
 static HICON GetExeSmallIcon(HWND hWnd) {
 	TCHAR szExeFileName[MAX_PATH] = {0};
 	DWORD dwProcessId;
 	GetWindowThreadProcessId(hWnd, &dwProcessId);
 
-	DWORD dwError = GetLastError();
-	TCHAR szBuf[10];
-	wsprintf(szBuf, _T(""), dwError);
-	OutputDebugString(szBuf);
-
-	HANDLE hProcess = OpenProcess(0, FALSE, dwProcessId);
+	HANDLE hProcess = GetProcessHandle(dwProcessId);
 	if (NULL == hProcess)
 		return NULL;
 
-	GetModuleFileName((HMODULE)hProcess, szExeFileName, MAX_PATH);  //无法获取。
+	GetModuleFileNameEx((HMODULE)hProcess, NULL, szExeFileName, MAX_PATH);
 	OutputDebugString( szExeFileName );
-	SHFILEINFO sfi;
-	SHGetFileInfo(szExeFileName, 0, &sfi, sizeof(SHFILEINFO), SHGFI_SMALLICON);
+	HICON* icon = new HICON();
+	int nIcon = ExtractIconEx(szExeFileName, 0, icon, NULL, 1);
 
 	CloseHandle(hProcess);
-	return sfi.hIcon;
+	return *icon;
 }
 
 int XLUtil::getMonitorCount() {
@@ -424,6 +482,7 @@ QPixmap XLUtil::getWindowIcon(const char* winStr) {
 		HICON icon = GetExeSmallIcon(wnd);
 		if(icon != NULL) {
 			pix = fromNativeImage((void*)icon);
+			DestroyIcon(icon);
 		}
 	}
 
