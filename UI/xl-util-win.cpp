@@ -8,11 +8,6 @@
 #include <QtWin>
 #include <util/dstr.h>
 
-#ifdef _WIN64
-	#define GCL_HICON GCLP_HICON
-	#define GCL_HICONSM GCLP_HICONSM
-#endif
-
 enum window_priority {
 	WINDOW_PRIORITY_CLASS,
 	WINDOW_PRIORITY_TITLE,
@@ -376,63 +371,57 @@ static BOOL SetPrivilege(
 		HANDLE hToken,          // access token handle
 		LPCTSTR lpszPrivilege,  // name of privilege to enable/disable
 		BOOL bEnablePrivilege   // to enable or disable privilege
-)
-{
-		TOKEN_PRIVILEGES tp;
-		LUID luid;
+) {
+	TOKEN_PRIVILEGES tp;
+	LUID luid;
 
-		if (!LookupPrivilegeValue(
-				NULL,            // lookup privilege on local system
-				lpszPrivilege,   // privilege to lookup 
-				&luid))        // receives LUID of privilege
-		{
-				printf("LookupPrivilegeValue error: %u/n", GetLastError());
-				return FALSE;
-		}
+	if (!LookupPrivilegeValue(
+		NULL,            // lookup privilege on local system
+		lpszPrivilege,   // privilege to lookup
+		&luid))        // receives LUID of privilege
+	{
+		printf("LookupPrivilegeValue error: %u/n", GetLastError());
+		return FALSE;
+	}
 
-		tp.PrivilegeCount = 1;
-		tp.Privileges[0].Luid = luid;
-		if (bEnablePrivilege)
-				tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-		else
-				tp.Privileges[0].Attributes = 0;
+	tp.PrivilegeCount = 1;
+	tp.Privileges[0].Luid = luid;
+	if (bEnablePrivilege)
+		tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+	else
+		tp.Privileges[0].Attributes = 0;
 
-		// Enable the privilege or disable all privileges.
+	// Enable the privilege or disable all privileges.
+	if (!AdjustTokenPrivileges(
+		hToken,
+		FALSE,
+		&tp,
+		sizeof(TOKEN_PRIVILEGES),
+		(PTOKEN_PRIVILEGES)NULL,
+		(PDWORD)NULL)) {
+		printf("AdjustTokenPrivileges error: %u/n", GetLastError());
+		return FALSE;
+	}
 
-		if (!AdjustTokenPrivileges(
-				hToken,
-				FALSE,
-				&tp,
-				sizeof(TOKEN_PRIVILEGES),
-				(PTOKEN_PRIVILEGES)NULL,
-				(PDWORD)NULL))
-		{
-				printf("AdjustTokenPrivileges error: %u/n", GetLastError());
-				return FALSE;
-		}
+	if (GetLastError() == ERROR_NOT_ALL_ASSIGNED) {
+		printf("The token does not have the specified privilege. /n");
+		return FALSE;
+	}
 
-		if (GetLastError() == ERROR_NOT_ALL_ASSIGNED)
-
-		{
-				printf("The token does not have the specified privilege. /n");
-				return FALSE;
-		}
-
-		return TRUE;
+	return TRUE;
 }
 
 static HANDLE GetProcessHandle(int nID)
 {
-		HANDLE hToken;
-		bool flag = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken);
-		if (!flag)
-		{
-				DWORD err = GetLastError();
-				printf("OpenProcessToken error:%d", err);
-		}
-		SetPrivilege(hToken, SE_DEBUG_NAME, true);
-		CloseHandle(hToken);
-		return OpenProcess(PROCESS_ALL_ACCESS, FALSE, nID);
+	HANDLE hToken;
+	bool flag = OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken);
+	if (!flag) {
+		DWORD err = GetLastError();
+		printf("OpenProcessToken error:%d", err);
+	}
+	SetPrivilege(hToken, SE_DEBUG_NAME, true);
+	CloseHandle(hToken);
+	return OpenProcess(PROCESS_ALL_ACCESS, FALSE, nID);
 }
 
 static HICON GetExeSmallIcon(HWND hWnd) {
