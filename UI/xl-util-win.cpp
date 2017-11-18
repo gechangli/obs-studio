@@ -7,6 +7,11 @@
 #include <QtWin>
 #include <util/dstr.h>
 
+#ifdef _WIN64
+	#define GCL_HICON GCLP_HICON
+	#define GCL_HICONSM GCLP_HICONSM
+#endif
+
 enum window_priority {
 	WINDOW_PRIORITY_CLASS,
 	WINDOW_PRIORITY_TITLE,
