@@ -25,62 +25,59 @@ enum window_search_mode {
 
 #define LOWER_HALFBYTE(x) ((x) & 0xF)
 #define UPPER_HALFBYTE(x) (((x) >> 4) & 0xF)
-
-static void deobfuscate_str(char *str, uint64_t val)
-{
-		uint8_t *dec_val = (uint8_t*)&val;
-		int i = 0;
-
-		while (*str != 0) {
-				int pos = i / 2;
-				bool bottom = (i % 2) == 0;
-				uint8_t *ch = (uint8_t*)str;
-				uint8_t xor = bottom ?
-						LOWER_HALFBYTE(dec_val[pos]) :
-						UPPER_HALFBYTE(dec_val[pos]);
-
-				*ch ^= xor;
-
-				if (++i == sizeof(uint64_t) * 2)
-						i = 0;
-
-				str++;
-		}
-}
-
-static void *get_obfuscated_func(HMODULE module, const char *str, uint64_t val)
-{
-		char new_name[128];
-		strcpy(new_name, str);
-		deobfuscate_str(new_name, val);
-		return GetProcAddress(module, new_name);
-}
-
-static HMODULE kernel32(void)
-{
-		static HMODULE kernel32_handle = NULL;
-		if (!kernel32_handle)
-				kernel32_handle = GetModuleHandleA("kernel32");
-		return kernel32_handle;
-}
-
 typedef HANDLE(WINAPI *OpenProcessProc)(DWORD, BOOL, DWORD);
-static inline HANDLE open_process(DWORD desired_access, bool inherit_handle,
-		DWORD process_id) {
-		static OpenProcessProc open_process_proc = NULL;
-		if (!open_process_proc)
-				open_process_proc = (OpenProcessProc)get_obfuscated_func(kernel32(),
-						"B}caZyah`~q", 0x2D5BEBAF6DDULL);
 
-		return open_process_proc(desired_access, inherit_handle, process_id);
+static void deobfuscate_str(char *str, uint64_t val) {
+	uint8_t *dec_val = (uint8_t*)&val;
+	int i = 0;
+
+	while (*str != 0) {
+		int pos = i / 2;
+		bool bottom = (i % 2) == 0;
+		uint8_t *ch = (uint8_t*)str;
+		uint8_t xor = bottom ?
+			LOWER_HALFBYTE(dec_val[pos]) :
+			UPPER_HALFBYTE(dec_val[pos]);
+
+		*ch ^= xor;
+
+		if (++i == sizeof(uint64_t) * 2)
+			i = 0;
+
+		str++;
+	}
+}
+
+static void *get_obfuscated_func(HMODULE module, const char *str, uint64_t val) {
+	char new_name[128];
+	strcpy(new_name, str);
+	deobfuscate_str(new_name, val);
+	return GetProcAddress(module, new_name);
+}
+
+static HMODULE kernel32(void) {
+	static HMODULE kernel32_handle = NULL;
+	if (!kernel32_handle)
+		kernel32_handle = GetModuleHandleA("kernel32");
+	return kernel32_handle;
+}
+
+static inline HANDLE open_process(DWORD desired_access, bool inherit_handle,
+	DWORD process_id) {
+	static OpenProcessProc open_process_proc = NULL;
+	if (!open_process_proc)
+		open_process_proc = (OpenProcessProc)get_obfuscated_func(kernel32(),
+			"B}caZyah`~q", 0x2D5BEBAF6DDULL);
+
+	return open_process_proc(desired_access, inherit_handle, process_id);
 }
 
 static inline char *decode_str(const char *src) {
-		struct dstr str = { 0 };
-		dstr_copy(&str, src);
-		dstr_replace(&str, "#3A", ":");
-		dstr_replace(&str, "#22", "#");
-		return str.array;
+	struct dstr str = { 0 };
+	dstr_copy(&str, src);
+	dstr_replace(&str, "#3A", ":");
+	dstr_replace(&str, "#22", "#");
+	return str.array;
 }
 
 static void build_window_strings(const char *str,
@@ -375,6 +372,29 @@ static BOOL CALLBACK enum_monitor_props(HMONITOR handle, HDC hdc, LPRECT rect, L
 	return TRUE;
 }
 
+static HICON GetExeSmallIcon(HWND hWnd) {
+	TCHAR szExeFileName[MAX_PATH] = {0};
+	DWORD dwProcessId;
+	GetWindowThreadProcessId(hWnd, &dwProcessId);
+
+	DWORD dwError = GetLastError();
+	TCHAR szBuf[10];
+	wsprintf(szBuf, _T(""), dwError);
+	OutputDebugString(szBuf);
+
+	HANDLE hProcess = OpenProcess(0, FALSE, dwProcessId);
+	if (NULL == hProcess)
+		return NULL;
+
+	GetModuleFileName((HMODULE)hProcess, szExeFileName, MAX_PATH);  //无法获取。
+	OutputDebugString( szExeFileName );
+	SHFILEINFO sfi;
+	SHGetFileInfo(szExeFileName, 0, &sfi, sizeof(SHFILEINFO), SHGFI_SMALLICON);
+
+	CloseHandle(hProcess);
+	return sfi.hIcon;
+}
+
 int XLUtil::getMonitorCount() {
 	int count = 0;
 	EnumDisplayMonitors(NULL, NULL, enum_monitor_props, (LPARAM)&count);
@@ -401,7 +421,7 @@ QPixmap XLUtil::getWindowIcon(const char* winStr) {
 	if(wnd == NULL) {
 		return pix;
 	} else {
-		HICON icon = (HICON)GetClassLong(wnd, GCL_HICON);
+		HICON icon = GetExeSmallIcon(wnd);
 		if(icon != NULL) {
 			pix = fromNativeImage((void*)icon);
 		}
