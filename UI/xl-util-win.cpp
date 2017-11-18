@@ -1,9 +1,10 @@
-#include <qsystemdetection.h>
+﻿#include <qsystemdetection.h>
 
 #ifdef Q_OS_WIN
 
 #include "xl-util.hpp"
 #include <windows.h>
+#include <psapi.h>
 #include <QtWin>
 #include <util/dstr.h>
 
@@ -22,11 +23,70 @@ enum window_search_mode {
 	EXCLUDE_MINIMIZED
 };
 
+#define LOWER_HALFBYTE(x) ((x) & 0xF)
+#define UPPER_HALFBYTE(x) (((x) >> 4) & 0xF)
+
+static void deobfuscate_str(char *str, uint64_t val)
+{
+		uint8_t *dec_val = (uint8_t*)&val;
+		int i = 0;
+
+		while (*str != 0) {
+				int pos = i / 2;
+				bool bottom = (i % 2) == 0;
+				uint8_t *ch = (uint8_t*)str;
+				uint8_t xor = bottom ?
+						LOWER_HALFBYTE(dec_val[pos]) :
+						UPPER_HALFBYTE(dec_val[pos]);
+
+				*ch ^= xor;
+
+				if (++i == sizeof(uint64_t) * 2)
+						i = 0;
+
+				str++;
+		}
+}
+
+static void *get_obfuscated_func(HMODULE module, const char *str, uint64_t val)
+{
+		char new_name[128];
+		strcpy(new_name, str);
+		deobfuscate_str(new_name, val);
+		return GetProcAddress(module, new_name);
+}
+
+static HMODULE kernel32(void)
+{
+		static HMODULE kernel32_handle = NULL;
+		if (!kernel32_handle)
+				kernel32_handle = GetModuleHandleA("kernel32");
+		return kernel32_handle;
+}
+
+typedef HANDLE(WINAPI *OpenProcessProc)(DWORD, BOOL, DWORD);
+static inline HANDLE open_process(DWORD desired_access, bool inherit_handle,
+		DWORD process_id) {
+		static OpenProcessProc open_process_proc = NULL;
+		if (!open_process_proc)
+				open_process_proc = (OpenProcessProc)get_obfuscated_func(kernel32(),
+						"B}caZyah`~q", 0x2D5BEBAF6DDULL);
+
+		return open_process_proc(desired_access, inherit_handle, process_id);
+}
+
+static inline char *decode_str(const char *src) {
+		struct dstr str = { 0 };
+		dstr_copy(&str, src);
+		dstr_replace(&str, "#3A", ":");
+		dstr_replace(&str, "#22", "#");
+		return str.array;
+}
+
 static void build_window_strings(const char *str,
 		char **klass,
 		char **title,
-		char **exe)
-{
+		char **exe) {
 	char **strlist;
 
 	*klass = NULL;
@@ -92,23 +152,23 @@ static void get_window_title(struct dstr *name, HWND hwnd) {
 	if (!len)
 		return;
 
-	temp = malloc(sizeof(wchar_t) * (len+1));
+	temp = (wchar_t*)malloc(sizeof(wchar_t) * (len+1));
 	if (GetWindowTextW(hwnd, temp, len+1))
 		dstr_from_wcs(name, temp);
 	free(temp);
 }
 
-static void get_window_class(struct dstr *class, HWND hwnd) {
+static void get_window_class(struct dstr *klass, HWND hwnd) {
 	wchar_t temp[256];
 
 	temp[0] = 0;
 	if (GetClassNameW(hwnd, temp, sizeof(temp) / sizeof(wchar_t)))
-		dstr_from_wcs(class, temp);
+		dstr_from_wcs(klass, temp);
 }
 
 static int window_rating(HWND window,
 		enum window_priority priority,
-		const char *class,
+		const char *klass,
 		const char *title,
 		const char *exe,
 		bool uwp_window) {
@@ -122,7 +182,7 @@ static int window_rating(HWND window,
 	get_window_title(&cur_title, window);
 	get_window_class(&cur_class, window);
 
-	bool class_matches = dstr_cmpi(&cur_class, class) == 0;
+	bool class_matches = dstr_cmpi(&cur_class, klass) == 0;
 	bool exe_matches = dstr_cmpi(&cur_exe, exe) == 0;
 	int title_val = abs(dstr_cmpi(&cur_title, title));
 
