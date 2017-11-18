@@ -69,7 +69,7 @@ QPixmap XLUtil::getWindowIcon(const char* winStr) {
 	if(wnd == NULL) {
 		return pix;
 	} else {
-		HICON icon = (HICON)GetClassLong(hWnd, GCL_HICON);
+		HICON icon = (HICON)GetClassLong(wnd, GCL_HICON);
 		if(icon != NULL) {
 			pix = fromNativeImage((void*)icon);
 		}
