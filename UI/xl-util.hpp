@@ -58,6 +58,8 @@ public:
 	static QPixmap fromNativeImage(void* img);
 #ifdef Q_OS_OSX
 	static QPixmap getWindowIcon(long long winId);
+#elif defined(Q_OS_WIN)
+	static QPixmap getWindowIcon(const char* winStr);
 #endif
 
 	// source

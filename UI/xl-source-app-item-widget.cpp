@@ -55,8 +55,13 @@ void XLSourceAppItemWidget::update() {
 	ui->nameLabel->setText(obs_property_list_item_name(prop, m_index));
 
 	// get window id
+#ifdef Q_OS_OSX
 	long long winId = obs_property_list_item_int(prop, m_index);
 	QPixmap icon = XLUtil::getWindowIcon(winId);
+#elif defined(Q_OS_WIN)
+	const char* winStr = obs_property_list_item_string(prop, m_index);
+	QPixmap icon = XLUtil::getWindowIcon(winStr);
+#endif
 	if(icon.isNull()) {
 		ui->iconLabel->setPixmap(QPixmap(":/res/images/source_window.png"));
 	} else {
