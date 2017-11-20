@@ -118,7 +118,7 @@ void XLLoginDialog::showProgressDialog() {
 
 void XLLoginDialog::hideProgressDialog() {
 	m_progressDialog->close();
-	delete m_progressDialog;
+	m_progressDialog->deleteLater();
 	m_progressDialog = Q_NULLPTR;
 }
 

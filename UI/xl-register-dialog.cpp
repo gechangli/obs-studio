@@ -96,7 +96,7 @@ void XLRegisterDialog::showProgressDialog() {
 
 void XLRegisterDialog::hideProgressDialog() {
 	m_progressDialog->close();
-	delete m_progressDialog;
+	m_progressDialog->deleteLater();
 	m_progressDialog = Q_NULLPTR;
 }
 
@@ -214,6 +214,9 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		updateSmsRefreshButtonText();
 		ui->getSmsButton->setEnabled(false);
 	} else if(op == XgmOA::OP_REGISTER) {
+		// hide progress dialog
+		hideProgressDialog();
+
 		// signal
 		m_registeredOk = true;
 		emit xgmUserRegistered(ui->mobileEdit->text().trimmed());
