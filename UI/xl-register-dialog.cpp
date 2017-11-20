@@ -222,6 +222,9 @@ void XLRegisterDialog::onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc) {
 		XLLoginDialog login(m_main);
 		connect(&login, &XLLoginDialog::xgmUserLoggedIn, m_main, &OBSBasic::xgmUserLoggedIn);
 		login.exec();
+
+		// close
+		close();
 	}
 }
 
