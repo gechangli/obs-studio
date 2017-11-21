@@ -99,18 +99,6 @@ void XLLoginDialog::accept() {
 	showProgressDialog();
 }
 
-void XLLoginDialog::reject() {
-	// close self
-	QDialog::reject();
-
-	// show login dialog
-	if(!m_loggedIn) {
-		XLRegisterDialog reg(m_main);
-		connect(&reg, &XLRegisterDialog::xgmUserLoggedIn, m_main, &OBSBasic::xgmUserLoggedIn);
-		reg.exec();
-	}
-}
-
 void XLLoginDialog::showProgressDialog() {
 	m_progressDialog = new XLProgressDialog(m_main);
 	m_progressDialog->exec();
@@ -167,20 +155,12 @@ void XLLoginDialog::on_getSmsButton_clicked() {
 	showProgressDialog();
 }
 
-void XLLoginDialog::on_signUpButton_clicked() {
-	reject();
-}
-
 void XLLoginDialog::on_signInButton_clicked() {
 	accept();
 }
 
 void XLLoginDialog::on_autoLoginWrapper_clicked() {
 	ui->autoLoginCheckBox->toggle();
-}
-
-void XLLoginDialog::on_signUpWrapper_clicked() {
-	on_signUpButton_clicked();
 }
 
 void XLLoginDialog::updateSmsRefreshButtonText() {

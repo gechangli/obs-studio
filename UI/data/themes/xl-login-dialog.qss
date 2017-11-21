@@ -64,15 +64,6 @@ QCheckBox#autoLoginCheckBox::indicator:checked {
 QWidget#buttonBox {
     background: rgb(100,193,18);
 }
-QPushButton#signUpButton {
-    border: none;
-    background-color: transparent;
-    color: white;
-    font-size: @mediumFontSize@;
-}
-QWidget#signUpWrapper:hover {
-    background: rgb(100,203,18);
-}
 QWidget#autoLoginWrapper:hover {
     background: rgb(100,203,18);
 }

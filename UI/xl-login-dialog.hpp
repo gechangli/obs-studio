@@ -53,10 +53,8 @@ protected:
 
 private slots:
 	void on_getSmsButton_clicked();
-	void on_signUpButton_clicked();
 	void on_signInButton_clicked();
 	void on_autoLoginWrapper_clicked();
-	void on_signUpWrapper_clicked();
 	void onXgmOAResponse(XgmOA::XgmRestOp op, QJsonDocument doc);
 	void onXgmOAResponseFailed(XgmOA::XgmRestOp op, QNetworkReply::NetworkError errNo, QString errMsg);
 
@@ -68,5 +66,4 @@ public:
 
 	// slot override
 	void accept() Q_DECL_OVERRIDE;
-	void reject() Q_DECL_OVERRIDE;
 };

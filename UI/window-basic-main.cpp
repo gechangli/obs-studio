@@ -1585,22 +1585,16 @@ void OBSBasic::OBSInit()
 	// check current user, if has not, show register dialog
 	// if has, check auto login flag
 	config_t* globalConfig = GetGlobalConfig();
-	const char * username = config_get_string(globalConfig, "XiaomeiLive", "Username");
-	if(username == Q_NULLPTR) {
-		XLRegisterDialog reg(this);
-		connect(&reg, &XLRegisterDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
-		reg.exec();
+	QString username = config_get_string(globalConfig, "XiaomeiLive", "Username");
+	bool autoLogin = config_get_bool(globalConfig, "XiaomeiLive", "AutoLogin");
+	QString token = config_get_string(globalConfig, "XiaomeiLive", "Token");
+	if(autoLogin && !token.isEmpty() && !username.isEmpty()) {
+		m_client.loginByToken(username.toStdString(), token.toStdString());
+		showProgressDialog();
 	} else {
-		bool autoLogin = config_get_bool(globalConfig, "XiaomeiLive", "AutoLogin");
-		QString token = config_get_string(globalConfig, "XiaomeiLive", "Token");
-		if(autoLogin && !token.isEmpty()) {
-			m_client.loginByToken(username, token.toStdString());
-			showProgressDialog();
-		} else {
-			XLLoginDialog login(this);
-			connect(&login, &XLLoginDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
-			login.exec();
-		}
+		XLLoginDialog login(this);
+		connect(&login, &XLLoginDialog::xgmUserLoggedIn, this, &OBSBasic::xgmUserLoggedIn);
+		login.exec();
 	}
 }
 
