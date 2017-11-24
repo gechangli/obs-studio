@@ -135,7 +135,7 @@ int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator) {
     obs_module_t* mod = creator();
     
     // put module real data path
-    mod->data_path = get_absolute_module_data_path(mod->mod_name);
+    mod->data_path = (char*)get_absolute_module_data_path(mod->mod_name);
     
     // put module to link list
     mod->next = obs->first_module;
