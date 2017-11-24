@@ -1,8 +1,6 @@
 #include <obs-module.h>
 #include <obs-internal.h>
-
-// it is statically linked
-#define __STATIC_MODULE__
+#include <obs-config.h>
 
 #ifdef __STATIC_MODULE__
 OBS_DECLARE_STATIC_MODULE(obs_x264)

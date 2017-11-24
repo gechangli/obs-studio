@@ -6,14 +6,13 @@
 #include <util/darray.h>
 #include <util/threading.h>
 #include <util/platform.h>
-
+#include <obs-config.h>
 #import <CoreGraphics/CGWindow.h>
 #import <Cocoa/Cocoa.h>
 
 #include "window-utils.h"
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(mac_capture)
 #endif

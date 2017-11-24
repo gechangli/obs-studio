@@ -1,9 +1,7 @@
 #include <obs-module.h>
 #include <obs.h>
 #include <obs-internal.h>
-
-// it is statically linked
-#define __STATIC_MODULE__
+#include <obs-config.h>
 
 // declare module, static or not
 #ifdef __STATIC_MODULE__

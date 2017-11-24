@@ -1,9 +1,9 @@
 #include <obs-module.h>
+#include <obs-config.h>
 #include <graphics/vec2.h>
 #include "easings.h"
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(obs_transitions)
 #endif

@@ -2,14 +2,13 @@
 #include <util/threading.h>
 #include <util/platform.h>
 #include <obs-module.h>
+#include <obs-config.h>
 #include <util/dstr.h>
 #include "jansson.h"
 
 #include "twitch.h"
 
 // it is statically linked
-#define __STATIC_MODULE__
-
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(rtmp_services)
 #endif

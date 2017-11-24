@@ -7,7 +7,7 @@
 #include <CoreAudio/CoreAudio.h>
 #include <unistd.h>
 #include <errno.h>
-
+#include <obs-config.h>
 #include <obs-module.h>
 #include <util/threading.h>
 #include <util/c99defs.h>
@@ -36,7 +36,6 @@
 #define TEXT_DEVICE_DEFAULT obs_module_text("CoreAudio.Device.Default")
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(mac_capture)
 #endif

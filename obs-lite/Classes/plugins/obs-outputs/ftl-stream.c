@@ -17,6 +17,7 @@
 
 #include <obs-module.h>
 #include <obs-avc.h>
+#include <obs-config.h>
 #include <util/platform.h>
 #include <util/circlebuf.h>
 #include <util/dstr.h>
@@ -34,7 +35,6 @@
 #endif
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(obs_outputs)
 #endif

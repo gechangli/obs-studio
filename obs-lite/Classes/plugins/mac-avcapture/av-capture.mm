@@ -4,7 +4,7 @@
 #import <CoreVideo/CoreVideo.h>
 #import <CoreMediaIO/CMIOHardware.h>
 #import <AppKit/AppKit.h>
-
+#include <obs-config.h>
 #include <obs-module.h>
 #include <obs.hpp>
 #include <obs-internal.h>
@@ -23,9 +23,6 @@
 #include "scope-guard.hpp"
 
 #define NBSP "\xC2\xA0"
-
-// it is statically linked
-#define __STATIC_MODULE__
 
 // declare module, static or not
 #ifdef __STATIC_MODULE__

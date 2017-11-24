@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <obs-module.h>
 #include <obs-avc.h>
+#include <obs-config.h>
 #include <util/platform.h>
 #include <util/dstr.h>
 #include <util/threading.h>
@@ -25,7 +26,6 @@
 #include "flv-mux.h"
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(obs_outputs)
 #endif

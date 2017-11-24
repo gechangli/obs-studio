@@ -3,7 +3,7 @@
 #if TARGET_OS_OSX
 
 #include "window-utils.h"
-
+#include <obs-config.h>
 #include <util/platform.h>
 
 #define WINDOW_NAME   ((NSString*)kCGWindowName)
@@ -12,7 +12,6 @@
 #define OWNER_PID     ((NSNumber*)kCGWindowOwnerPID)
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(mac_capture)
 #endif

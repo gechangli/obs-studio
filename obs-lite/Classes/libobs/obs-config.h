@@ -74,3 +74,6 @@
 #else
     #define GL_MANGLING(name) name
 #endif
+
+// when statically link modules, define this macro
+#define __STATIC_MODULE__

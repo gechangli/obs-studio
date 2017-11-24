@@ -7,6 +7,7 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+#include <obs-config.h>
 
 #ifndef _WIN32
 #include <AudioToolbox/AudioToolbox.h>
@@ -32,9 +33,6 @@
 #ifdef _WIN32
 #include "windows-imports.h"
 #endif
-
-// it is statically linked
-#define __STATIC_MODULE__
 
 // declare module, static or not
 #ifdef __STATIC_MODULE__

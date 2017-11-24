@@ -1,9 +1,9 @@
 #include <obs-module.h>
 #include <graphics/image-file.h>
 #include <util/dstr.h>
+#include <obs-config.h>
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(obs_transitions)
 #endif

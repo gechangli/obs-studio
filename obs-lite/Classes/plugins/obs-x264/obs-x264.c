@@ -21,6 +21,7 @@
 #include <util/platform.h>
 #include <obs-module.h>
 #include <obs-internal.h>
+#include <obs-config.h>
 
 #ifndef _STDINT_H_INCLUDED
 #define _STDINT_H_INCLUDED
@@ -37,7 +38,6 @@
 #define debug(format, ...) do_log(LOG_DEBUG,   format, ##__VA_ARGS__)
 
 // it is statically linked
-#define __STATIC_MODULE__
 #ifdef __STATIC_MODULE__
 OBS_USE_STATIC_MODULE(obs_x264)
 #endif

@@ -4,14 +4,13 @@
 #include <util/dstr.h>
 #include <obs-module.h>
 #include <obs-internal.h>
+#include <obs-config.h>
 #include <file-updater/file-updater.h>
 
 #include "rtmp-format-ver.h"
 #include "lookup-config.h"
 
 // it is statically linked
-#define __STATIC_MODULE__
-
 #ifdef __STATIC_MODULE__
 OBS_DECLARE_STATIC_MODULE(rtmp_services)
 OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(rtmp_services, "zh_CN")
