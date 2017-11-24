@@ -18,13 +18,13 @@
 #pragma once
 
 #include <util/c99defs.h>
+#include "obs-config.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define __STATIC_OPENGL_RENDERER__
-#ifdef __STATIC_OPENGL_RENDERER__
+#ifdef __STATIC_RENDERER__
 EXPORT const char * _gl_device_get_name(void);
 EXPORT int _gl_device_get_type(void);
 EXPORT bool _gl_device_enum_adapters(
@@ -264,7 +264,7 @@ EXPORT void device_frustum(gs_device_t *device, float left, float right,
 		float top, float bottom, float znear, float zfar);
 EXPORT void device_projection_push(gs_device_t *device);
 EXPORT void device_projection_pop(gs_device_t *device);
-#endif // #ifdef __STATIC_OPENGL_RENDERER__
+#endif // #ifdef __STATIC_RENDERER__
 
 #ifdef __cplusplus
 }

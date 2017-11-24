@@ -19,6 +19,7 @@
 
 #include "../util/bmem.h"
 #include "input.h"
+#include "obs-config.h"
 #ifdef __APPLE__
 #include <objc/objc-runtime.h>
 #endif
@@ -813,8 +814,7 @@ static inline uint32_t gs_get_total_levels(uint32_t width, uint32_t height)
 	return num_levels;
 }
     
-#define __STATIC_OPENGL_RENDERER__
-#ifdef __STATIC_OPENGL_RENDERER__
+#ifdef __STATIC_RENDERER__
     
 EXPORT gs_swapchain_t *_gl_gs_swapchain_create(const struct gs_init_data *data);
 
@@ -1018,7 +1018,7 @@ EXPORT void _gl_gs_shader_set_next_sampler(gs_sparam_t *param,
                                         void *iosurf);
 #endif
     
-#endif // #define __STATIC_OPENGL_RENDERER__
+#endif // #define __STATIC_RENDERER__
 
 #ifdef __cplusplus
 }

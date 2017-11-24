@@ -17,23 +17,15 @@
 
 #pragma once
 
+#include <obs-config.h>
 #include <util/darray.h>
 #include <util/threading.h>
 #include <graphics/graphics.h>
 #include <graphics/device-exports.h>
 #include <graphics/matrix4.h>
-
 #include <glad/glad.h>
 
 #include "gl-helpers.h"
-
-// if link gl subsystem statically, define this
-#define __STATIC_OPENGL_RENDERER__
-#ifdef __STATIC_OPENGL_RENDERER__
-#define GL_EXPORTS(name) _gl_##name
-#else
-#define GL_EXPORTS(name) name
-#endif
 
 struct gl_platform;
 struct gl_windowinfo;

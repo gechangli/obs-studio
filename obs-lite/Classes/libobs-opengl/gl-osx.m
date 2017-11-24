@@ -150,19 +150,19 @@ void gl_update(gs_device_t *device)
 	[device->plat->context update];
 }
 
-void GL_EXPORTS(device_enter_context)(gs_device_t *device)
+void GL_MANGLING(device_enter_context)(gs_device_t *device)
 {
 	[device->plat->context makeCurrentContext];
 }
 
-void GL_EXPORTS(device_leave_context)(gs_device_t *device)
+void GL_MANGLING(device_leave_context)(gs_device_t *device)
 {
 	UNUSED_PARAMETER(device);
 
 	[NSOpenGLContext clearCurrentContext];
 }
 
-void GL_EXPORTS(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swap)
+void GL_MANGLING(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swap)
 {
 	if(device->cur_swap == swap)
 		return;
@@ -175,7 +175,7 @@ void GL_EXPORTS(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swap
 	}
 }
 
-void GL_EXPORTS(device_present)(gs_device_t *device)
+void GL_MANGLING(device_present)(gs_device_t *device)
 {
 	[device->plat->context flushBuffer];
 }
@@ -187,7 +187,7 @@ void gl_getclientsize(const struct gs_swap_chain *swap, uint32_t *width,
 	if(height) *height = swap->info.cy;
 }
 
-gs_texture_t * GL_EXPORTS(device_texture_create_from_iosurface)(gs_device_t *device,
+gs_texture_t * GL_MANGLING(device_texture_create_from_iosurface)(gs_device_t *device,
 		void *iosurf)
 {
 	IOSurfaceRef ref = (IOSurfaceRef)iosurf;
@@ -253,7 +253,7 @@ fail:
 	return NULL;
 }
 
-bool GL_EXPORTS(gs_texture_rebind_iosurface)(gs_texture_t *texture, void *iosurf)
+bool GL_MANGLING(gs_texture_rebind_iosurface)(gs_texture_t *texture, void *iosurf)
 {
 	if (!texture)
 		return false;
