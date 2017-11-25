@@ -6,13 +6,9 @@
 #include <obs-internal.h>
 #include <obs-config.h>
 
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE(mac_capture)
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(mac_capture, "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("mac_capture", "zh_CN")
-#endif
+// declare module
+OBS_DECLARE_MODULE(mac_capture)
+OBS_MODULE_USE_DEFAULT_LOCALE(mac_capture, "zh_CN")
 
 extern struct obs_source_info coreaudio_input_capture_info;
 extern struct obs_source_info coreaudio_output_capture_info;

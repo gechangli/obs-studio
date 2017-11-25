@@ -34,10 +34,8 @@
 #define INFINITE 0xFFFFFFFF
 #endif
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(obs_outputs)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(obs_outputs)
 
 #define do_log(level, format, ...) \
 	blog(level, "[ftl stream: '%s'] " format, \

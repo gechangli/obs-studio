@@ -8,10 +8,8 @@
 
 #include "twitch.h"
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(rtmp_services)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(rtmp_services)
 
 static update_info_t *twitch_update_info = NULL;
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;

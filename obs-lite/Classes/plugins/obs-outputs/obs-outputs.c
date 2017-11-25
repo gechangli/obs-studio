@@ -8,14 +8,9 @@
 #include <winsock2.h>
 #endif
 
-// declare module, static or not
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE(obs_outputs)
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(obs_outputs, "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("obs_outputs", "zh_CN")
-#endif
+// declare module
+OBS_DECLARE_MODULE(obs_outputs)
+OBS_MODULE_USE_DEFAULT_LOCALE(obs_outputs, "zh_CN")
 
 extern struct obs_output_info rtmp_output_info;
 extern struct obs_output_info null_output_info;

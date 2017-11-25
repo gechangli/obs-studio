@@ -3,14 +3,9 @@
 #include <obs-internal.h>
 #include <obs-config.h>
 
-// declare module, static or not
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE(obs_transitions)
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(obs_transitions, "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("obs_transitions", "zh_CN")
-#endif
+// declare module
+OBS_DECLARE_MODULE(obs_transitions)
+OBS_MODULE_USE_DEFAULT_LOCALE(obs_transitions, "zh_CN")
 
 extern struct obs_source_info cut_transition;
 extern struct obs_source_info fade_transition;

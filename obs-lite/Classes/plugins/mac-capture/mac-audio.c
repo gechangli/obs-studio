@@ -35,10 +35,8 @@
 #define TEXT_DEVICE         obs_module_text("CoreAudio.Device")
 #define TEXT_DEVICE_DEFAULT obs_module_text("CoreAudio.Device.Default")
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(mac_capture)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(mac_capture)
 
 struct coreaudio_data {
 	char               *device_name;

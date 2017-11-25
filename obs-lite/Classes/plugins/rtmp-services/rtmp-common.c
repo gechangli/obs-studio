@@ -7,10 +7,8 @@
 #include "rtmp-format-ver.h"
 #include "twitch.h"
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(rtmp_services)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(rtmp_services)
 
 struct rtmp_common {
 	char *service;

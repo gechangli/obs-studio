@@ -24,14 +24,9 @@
 
 #define NBSP "\xC2\xA0"
 
-// declare module, static or not
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE(mac_avcapture)
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(mac_avcapture, "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("mac_avcapture", "zh_CN")
-#endif
+// declare module
+OBS_DECLARE_MODULE(mac_avcapture)
+OBS_MODULE_USE_DEFAULT_LOCALE(mac_avcapture, "zh_CN")
 
 using namespace std;
 

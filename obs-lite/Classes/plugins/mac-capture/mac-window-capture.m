@@ -12,10 +12,8 @@
 
 #include "window-utils.h"
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(mac_capture)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(mac_capture)
 
 struct window_capture {
 	obs_source_t *source;

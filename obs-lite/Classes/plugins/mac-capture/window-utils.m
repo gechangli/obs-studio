@@ -11,10 +11,8 @@
 #define OWNER_NAME    ((NSString*)kCGWindowOwnerName)
 #define OWNER_PID     ((NSNumber*)kCGWindowOwnerPID)
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(mac_capture)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(mac_capture)
 
 static NSComparator win_info_cmp = ^(NSDictionary *o1, NSDictionary *o2)
 {

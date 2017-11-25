@@ -1,10 +1,8 @@
 #include <obs-module.h>
 #include <obs-config.h>
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(obs_transitions)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(obs_transitions)
 
 struct fade_info {
 	obs_source_t *source;

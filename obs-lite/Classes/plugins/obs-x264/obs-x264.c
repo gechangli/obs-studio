@@ -37,10 +37,8 @@
 #define info(format, ...)  do_log(LOG_INFO,    format, ##__VA_ARGS__)
 #define debug(format, ...) do_log(LOG_DEBUG,   format, ##__VA_ARGS__)
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(obs_x264)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(obs_x264)
 
 //#define ENABLE_VFR
 

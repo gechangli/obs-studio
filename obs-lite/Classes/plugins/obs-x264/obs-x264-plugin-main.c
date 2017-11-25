@@ -2,13 +2,9 @@
 #include <obs-internal.h>
 #include <obs-config.h>
 
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE(obs_x264)
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(obs_x264, "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("obs_x264", "zh_CN")
-#endif
+// declare module
+OBS_DECLARE_MODULE(obs_x264)
+OBS_MODULE_USE_DEFAULT_LOCALE(obs_x264, "zh_CN")
 
 extern struct obs_encoder_info obs_x264_encoder;
 

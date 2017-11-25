@@ -10,14 +10,9 @@
 #include "rtmp-format-ver.h"
 #include "lookup-config.h"
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE(rtmp_services)
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(rtmp_services, "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("rtmp_services", "zh_CN")
-#endif
+// declare module
+OBS_DECLARE_MODULE(rtmp_services)
+OBS_MODULE_USE_DEFAULT_LOCALE(rtmp_services, "zh_CN")
 
 #define RTMP_SERVICES_LOG_STR "[rtmp-services plugin] "
 #define RTMP_SERVICES_VER_STR "rtmp-services plugin (libobs " OBS_VERSION ")"

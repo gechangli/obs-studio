@@ -34,14 +34,9 @@
 #include "windows-imports.h"
 #endif
 
-// declare module, static or not
-#ifdef __STATIC_MODULE__
-OBS_DECLARE_STATIC_MODULE(coreaudio_encoder)
-OBS_STATIC_MODULE_USE_DEFAULT_LOCALE(coreaudio_encoder, "zh_CN")
-#else
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("coreaudio_encoder", "zh_CN")
-#endif
+// declare module
+OBS_DECLARE_MODULE(coreaudio_encoder)
+OBS_MODULE_USE_DEFAULT_LOCALE(coreaudio_encoder, "zh_CN")
 
 using namespace std;
 

@@ -18,10 +18,8 @@
 #include <obs-config.h>
 #include "rtmp-stream.h"
 
-// it is statically linked
-#ifdef __STATIC_MODULE__
-OBS_USE_STATIC_MODULE(obs_outputs)
-#endif
+// refer to module
+OBS_REFER_TO_MODULE(obs_outputs)
 
 static const char *rtmp_stream_getname(void *unused)
 {
