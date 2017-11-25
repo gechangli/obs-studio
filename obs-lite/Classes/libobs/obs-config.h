@@ -78,3 +78,14 @@
 // when statically link modules, define this macro
 #define __STATIC_MODULE__
 
+// to avoid symbol conflict
+#ifdef __STATIC_MODULE__
+    #define MODULE_MANGLING(name) _##name
+    #define MODULE_VISIBILITY static
+#else
+    #define MODULE_MANGLING(name) name
+    #define MODULE_VISIBILITY
+#endif
+
+// static creator
+#define STATIC_MODULE_CREATOR(name) create_static_module_##name

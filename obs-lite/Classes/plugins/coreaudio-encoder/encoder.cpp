@@ -1344,11 +1344,7 @@ static obs_properties_t *aac_properties(void *data)
 	return props;
 }
 
-#ifdef __STATIC_MODULE__
-static bool _obs_module_load()
-#else
-bool obs_module_load(void)
-#endif
+MODULE_VISIBILITY bool MODULE_MANGLING(obs_module_load)()
 {
 #ifdef _WIN32
 	if (!load_core_audio()) {
@@ -1379,41 +1375,33 @@ bool obs_module_load(void)
 }
 
 #ifdef _WIN32
-#ifdef __STATIC_MODULE__
-static void _obs_module_unload()
-#else
-void obs_module_unload(void)
-#endif
+MODULE_VISIBILITY void MODULE_MANGLING(obs_module_unload)()
 {
 	unload_core_audio();
 }
 #endif
 
-#ifdef __STATIC_MODULE__
-
 #ifdef __cplusplus
 extern "C" {
 #endif
     
-obs_module_t* create_static_module_coreaudio_encoder() {
+obs_module_t* STATIC_MODULE_CREATOR(coreaudio_encoder)() {
     obs_module_t* mod = (obs_module_t*)bzalloc(sizeof(obs_module_t));
     mod->mod_name = bstrdup("coreaudio_encoder");
     mod->file = bstrdup("coreaudio_encoder");
     mod->data_path = bstrdup("");
     mod->is_static = true;
-    mod->load = _obs_module_load;
+    mod->load = MODULE_MANGLING(obs_module_load);
 #ifdef _WIN32
-    mod->unload = _obs_module_unload;
+    mod->unload = MODULE_MANGLING(obs_module_unload);
 #endif
-    mod->set_locale = _obs_module_set_locale;
-    mod->free_locale = _obs_module_free_locale;
-    mod->ver = _obs_module_ver;
-    mod->set_pointer = _obs_module_set_pointer;
+    mod->set_locale = MODULE_MANGLING(obs_module_set_locale);
+    mod->free_locale = MODULE_MANGLING(obs_module_free_locale);
+    mod->ver = MODULE_MANGLING(obs_module_ver);
+    mod->set_pointer = MODULE_MANGLING(obs_module_set_pointer);
     return mod;
 }
     
 #ifdef __cplusplus
 }
 #endif
-
-#endif // #ifdef __STATIC_MODULE__

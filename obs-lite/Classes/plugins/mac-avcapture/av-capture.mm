@@ -2219,11 +2219,7 @@ static void av_capture_update(void *data, obs_data_t *settings)
 }
 
 // module load method
-#ifdef __STATIC_MODULE__
-static bool _obs_module_load()
-#else
-bool obs_module_load(void)
-#endif
+MODULE_VISIBILITY bool MODULE_MANGLING(obs_module_load)()
 {
 #ifdef __MAC_10_10
 	// Enable iOS device to show up as AVCapture devices
@@ -2256,28 +2252,24 @@ bool obs_module_load(void)
 	return true;
 }
 
-#ifdef __STATIC_MODULE__
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-obs_module_t* create_static_module_mac_avcapture() {
+obs_module_t* STATIC_MODULE_CREATOR(mac_avcapture)() {
     obs_module_t* mod = (obs_module_t*)bzalloc(sizeof(obs_module_t));
     mod->mod_name = bstrdup("mac_avcapture");
     mod->file = bstrdup("mac_avcapture");
     mod->data_path = bstrdup("");
     mod->is_static = true;
-    mod->load = _obs_module_load;
-    mod->set_locale = _obs_module_set_locale;
-    mod->free_locale = _obs_module_free_locale;
-    mod->ver = _obs_module_ver;
-    mod->set_pointer = _obs_module_set_pointer;
+    mod->load = MODULE_MANGLING(obs_module_load);
+    mod->set_locale = MODULE_MANGLING(obs_module_set_locale);
+    mod->free_locale = MODULE_MANGLING(obs_module_free_locale);
+    mod->ver = MODULE_MANGLING(obs_module_ver);
+    mod->set_pointer = MODULE_MANGLING(obs_module_set_pointer);
     return mod;
 }
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif // #ifdef __STATIC_MODULE__
