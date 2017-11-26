@@ -1,10 +1,14 @@
 #include <util/platform.h>
 #include <util/dstr.h>
 #include <obs-module.h>
-#include <jansson.h>
+#include <obs-config.h>
+#include "jansson.h"
 
 #include "rtmp-format-ver.h"
 #include "twitch.h"
+
+// refer to module
+OBS_REFER_TO_MODULE(rtmp_services)
 
 struct rtmp_common {
 	char *service;

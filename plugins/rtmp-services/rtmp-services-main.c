@@ -3,13 +3,16 @@
 #include <util/platform.h>
 #include <util/dstr.h>
 #include <obs-module.h>
+#include <obs-internal.h>
+#include <obs-config.h>
 #include <file-updater/file-updater.h>
 
 #include "rtmp-format-ver.h"
 #include "lookup-config.h"
 
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("rtmp-services", "en-US")
+// declare module
+OBS_DECLARE_MODULE(rtmp_services)
+OBS_MODULE_USE_DEFAULT_LOCALE(rtmp_services, "zh-CN")
 
 #define RTMP_SERVICES_LOG_STR "[rtmp-services plugin] "
 #define RTMP_SERVICES_VER_STR "rtmp-services plugin (libobs " OBS_VERSION ")"
@@ -64,7 +67,7 @@ static void refresh_callback(void *unused, calldata_t *cd)
 	UNUSED_PARAMETER(unused);
 }
 
-bool obs_module_load(void)
+MODULE_VISIBILITY bool MODULE_MANGLING(obs_module_load)()
 {
 	init_twitch_data();
 
@@ -101,9 +104,32 @@ bool obs_module_load(void)
 	return true;
 }
 
-void obs_module_unload(void)
+MODULE_VISIBILITY void MODULE_MANGLING(obs_module_unload)()
 {
 	update_info_destroy(update_info);
 	unload_twitch_data();
 	dstr_free(&module_name);
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+obs_module_t* STATIC_MODULE_CREATOR(rtmp_services)() {
+	obs_module_t* mod = (obs_module_t*)bzalloc(sizeof(obs_module_t));
+	mod->mod_name = bstrdup("rtmp_services");
+	mod->file = bstrdup("rtmp_services");
+	mod->data_path = bstrdup("");
+	mod->is_static = true;
+	mod->load = MODULE_MANGLING(obs_module_load);
+	mod->unload = MODULE_MANGLING(obs_module_unload);
+	mod->set_locale = MODULE_MANGLING(obs_module_set_locale);
+	mod->free_locale = MODULE_MANGLING(obs_module_free_locale);
+	mod->ver = MODULE_MANGLING(obs_module_ver);
+	mod->set_pointer = MODULE_MANGLING(obs_module_set_pointer);
+	return mod;
+}
+
+#ifdef __cplusplus
+}
+#endif

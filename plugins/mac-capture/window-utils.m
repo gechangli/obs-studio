@@ -1,11 +1,18 @@
-#include "window-utils.h"
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
 
+#include "window-utils.h"
+#include <obs-config.h>
 #include <util/platform.h>
 
 #define WINDOW_NAME   ((NSString*)kCGWindowName)
 #define WINDOW_NUMBER ((NSString*)kCGWindowNumber)
 #define OWNER_NAME    ((NSString*)kCGWindowOwnerName)
 #define OWNER_PID     ((NSNumber*)kCGWindowOwnerPID)
+
+// refer to module
+OBS_REFER_TO_MODULE(mac_capture)
 
 static NSComparator win_info_cmp = ^(NSDictionary *o1, NSDictionary *o2)
 {
@@ -231,3 +238,6 @@ void show_window_properties(obs_properties_t *props, bool show)
 	obs_property_set_visible(
 			obs_properties_get(props, "show_empty_names"), show);
 }
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

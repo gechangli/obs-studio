@@ -23,6 +23,9 @@
 #include "obs-module.h"
 
 extern const char *get_module_extension(void);
+extern const char* get_absolute_module_data_path(const char* mod_name);
+
+static OBS_STATIC_MODULE_LOADER obs_static_module_loader = NULL;
 
 static inline int req_func_not_found(const char *name, const char *path)
 {
@@ -34,6 +37,7 @@ static inline int req_func_not_found(const char *name, const char *path)
 
 static int load_module_exports(struct obs_module *mod, const char *path)
 {
+    mod->is_static = false;
 	mod->load = os_dlsym(mod->module, "obs_module_load");
 	if (!mod->load)
 		return req_func_not_found("obs_module_load", path);
@@ -118,6 +122,37 @@ int obs_open_module(obs_module_t **module, const char *path,
 	return MODULE_SUCCESS;
 }
 
+void obs_register_static_module_loader(OBS_STATIC_MODULE_LOADER loader) {
+    obs_static_module_loader = loader;
+}
+
+int obs_open_static_module(OBS_STATIC_MODULE_CREATOR creator) {
+    // check obs core
+    if (!obs)
+        return MODULE_ERROR;
+    
+    // create module
+    obs_module_t* mod = creator();
+    
+    // put module real data path
+    mod->data_path = (char*)get_absolute_module_data_path(mod->mod_name);
+    
+    // put module to link list
+    mod->next = obs->first_module;
+    obs->first_module = mod;
+    mod->set_pointer(mod);
+    
+    // load module locale info
+    if (mod->set_locale)
+        mod->set_locale(obs->locale);
+    
+    // init module
+    obs_init_module(mod);
+    
+    // ok
+    return MODULE_SUCCESS;
+}
+
 bool obs_init_module(obs_module_t *module)
 {
 	if (!module || !obs)
@@ -187,7 +222,7 @@ char *obs_find_module_file(obs_module_t *module, const char *file)
 	if (!module)
 		return NULL;
 
-	dstr_copy(&output, module->data_path);
+	dstr_copy(&output, obs_get_module_data_path(module));
 	if (!dstr_is_empty(&output) && dstr_end(&output) != '/' && *file)
 		dstr_cat_ch(&output, '/');
 	dstr_cat(&output, file);
@@ -245,13 +280,24 @@ static const char *reset_win32_symbol_paths_name = "reset_win32_symbol_paths";
 
 void obs_load_all_modules(void)
 {
+    // start profile
 	profile_start(obs_load_all_modules_name);
+    
+    // load dynamic modules
 	obs_find_modules(load_all_callback, NULL);
+    
+    // load static modules
+    if(obs_static_module_loader) {
+        obs_static_module_loader();
+    }
+    
 #ifdef _WIN32
 	profile_start(reset_win32_symbol_paths_name);
 	reset_win32_symbol_paths();
 	profile_end(reset_win32_symbol_paths_name);
 #endif
+    
+    // end profile
 	profile_end(obs_load_all_modules_name);
 }
 
@@ -470,7 +516,6 @@ lookup_t *obs_module_load_locale(obs_module_t *module,
 	if (!lookup) {
 		blog(LOG_WARNING, "Failed to load '%s' text for module: '%s'",
 				default_locale, module->file);
-		goto cleanup;
 	}
 
 	if (astrcmpi(locale, default_locale) == 0)

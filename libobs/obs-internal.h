@@ -79,6 +79,7 @@ struct obs_module {
 	char *data_path;
 	void *module;
 	bool loaded;
+    bool is_static;
 
 	bool        (*load)(void);
 	void        (*unload)(void);

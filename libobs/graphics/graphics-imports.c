@@ -19,7 +19,19 @@
 #include "../util/dstr.h"
 #include "../util/platform.h"
 #include "graphics-internal.h"
+#include "obs-config.h"
+#include "device-exports.h"
 
+#ifdef __STATIC_RENDERER__
+#define GRAPHICS_IMPORT(func) \
+    do { \
+        exports->func = _gl_##func; \
+    } while(false)
+#define GRAPHICS_IMPORT_OPTIONAL(func) \
+    do { \
+        exports->func = _gl_##func; \
+    } while(false)
+#else
 #define GRAPHICS_IMPORT(func) \
 	do { \
 		exports->func = os_dlsym(module, #func); \
@@ -34,6 +46,7 @@
 	do { \
 		exports->func = os_dlsym(module, #func); \
 	} while (false)
+#endif // #ifdef __STATIC_RENDERER__
 
 bool load_graphics_imports(struct gs_exports *exports, void *module,
 		const char *module_name)

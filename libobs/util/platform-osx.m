@@ -15,6 +15,10 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #include "base.h"
 #include "platform.h"
 #include "dstr.h"
@@ -417,3 +421,6 @@ uint64_t os_get_proc_virtual_size(void)
 		return 0;
 	return taskinfo.virtual_size;
 }
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

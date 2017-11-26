@@ -1,12 +1,19 @@
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #include <stdlib.h>
 #include <obs-module.h>
 #include <util/threading.h>
 #include <pthread.h>
-
+#include <obs-config.h>
 #import <CoreGraphics/CGDisplayStream.h>
 #import <Cocoa/Cocoa.h>
 
 #include "window-utils.h"
+
+// refer to module
+OBS_REFER_TO_MODULE(mac_capture)
 
 enum crop_mode {
 	CROP_NONE,
@@ -669,3 +676,6 @@ struct obs_source_info display_capture_info = {
 	.get_properties = display_capture_properties,
 	.update         = display_capture_update,
 };
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

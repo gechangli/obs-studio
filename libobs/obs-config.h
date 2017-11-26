@@ -64,3 +64,28 @@
 #endif
 
 #define OBS_INSTALL_DATA_PATH OBS_INSTALL_PREFIX OBS_DATA_PATH
+
+// when use static linked renderer module, define this macro
+//#define __STATIC_RENDERER__
+
+// to avoid symbol conflict, add prefix when build static linked renderer
+#ifdef __STATIC_RENDERER__
+    #define GL_MANGLING(name) _gl_##name
+#else
+    #define GL_MANGLING(name) name
+#endif
+
+// when statically link modules, define this macro
+//#define __STATIC_MODULE__
+
+// to avoid symbol conflict
+#ifdef __STATIC_MODULE__
+    #define MODULE_MANGLING(name) _##name
+    #define MODULE_VISIBILITY static
+#else
+    #define MODULE_MANGLING(name) name
+    #define MODULE_VISIBILITY
+#endif
+
+// static creator
+#define STATIC_MODULE_CREATOR(name) create_static_module_##name

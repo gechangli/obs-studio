@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include <obs-config.h>
 #include <util/darray.h>
 #include <util/threading.h>
 #include <graphics/graphics.h>

@@ -1,3 +1,7 @@
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #include <CoreFoundation/CFString.h>
 #include <CoreAudio/CoreAudio.h>
 
@@ -162,3 +166,6 @@ bool coreaudio_get_device_id(CFStringRef uid, AudioDeviceID *id)
 	enum_devices(get_device_id, &data);
 	return data.found;
 }
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

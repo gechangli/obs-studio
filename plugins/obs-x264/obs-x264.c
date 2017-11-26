@@ -20,6 +20,8 @@
 #include <util/darray.h>
 #include <util/platform.h>
 #include <obs-module.h>
+#include <obs-internal.h>
+#include <obs-config.h>
 
 #ifndef _STDINT_H_INCLUDED
 #define _STDINT_H_INCLUDED
@@ -34,6 +36,9 @@
 #define warn(format, ...)  do_log(LOG_WARNING, format, ##__VA_ARGS__)
 #define info(format, ...)  do_log(LOG_INFO,    format, ##__VA_ARGS__)
 #define debug(format, ...) do_log(LOG_DEBUG,   format, ##__VA_ARGS__)
+
+// refer to module
+OBS_REFER_TO_MODULE(obs_x264)
 
 //#define ENABLE_VFR
 

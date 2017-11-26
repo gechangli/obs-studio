@@ -1,6 +1,10 @@
 #include <obs-module.h>
+#include <obs-config.h>
 #include <graphics/vec2.h>
 #include "easings.h"
+
+// refer to module
+OBS_REFER_TO_MODULE(obs_transitions)
 
 struct swipe_info {
 	obs_source_t *source;

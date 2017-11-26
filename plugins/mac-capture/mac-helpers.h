@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #include <util/dstr.h>
 
 static inline bool mac_success(OSStatus stat, const char *action)
@@ -32,3 +36,6 @@ static inline bool cf_to_dstr(CFStringRef ref, struct dstr *str)
 	return (bool)CFStringGetCString(ref, str->array, size+1,
 			kCFStringEncodingUTF8);
 }
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

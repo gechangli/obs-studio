@@ -1,12 +1,19 @@
+#ifdef __APPLE__
+#import <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #include <obs-module.h>
 #include <util/darray.h>
 #include <util/threading.h>
 #include <util/platform.h>
-
+#include <obs-config.h>
 #import <CoreGraphics/CGWindow.h>
 #import <Cocoa/Cocoa.h>
 
 #include "window-utils.h"
+
+// refer to module
+OBS_REFER_TO_MODULE(mac_capture)
 
 struct window_capture {
 	obs_source_t *source;
@@ -226,3 +233,6 @@ struct obs_source_info window_capture_info = {
 	.get_properties = window_capture_properties,
 	.update         = window_capture_update,
 };
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

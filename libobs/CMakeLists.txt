@@ -104,11 +104,11 @@ if(WIN32)
 	endif()
 elseif(APPLE)
 	set(libobs_PLATFORM_SOURCES
-		obs-cocoa.c
+		obs-osx.m
 		util/threading-posix.c
 		util/pipe-posix.c
 		util/platform-nix.c
-		util/platform-cocoa.m)
+		util/platform-osx.m)
 	set(libobs_PLATFORM_HEADERS
 		util/threading-posix.h)
 	set(libobs_audio_monitoring_SOURCES
@@ -160,6 +160,10 @@ elseif(APPLE)
 	mark_as_advanced(COREMEDIA)
 	include_directories(${COREMEDIA})
 
+	find_library(COREIMAGE CoreImage)
+	mark_as_advanced(COREIMAGE)
+	include_directories(${COREIMAGE})
+
 	find_library(SECURITY Security)
 	mark_as_advanced(SECURITY)
 	include_directories(${SECURITY})
@@ -187,6 +191,7 @@ elseif(APPLE)
 		${CARBON}
 		${COREVIDEO}
 		${COREMEDIA}
+		${COREIMAGE}
 		${SECURITY}
 		${VIDEODECODEACCELERATION}
 		${VIDEOTOOLBOX})

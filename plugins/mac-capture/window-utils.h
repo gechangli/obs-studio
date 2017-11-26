@@ -1,3 +1,7 @@
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #import <CoreGraphics/CGWindow.h>
 #import <Cocoa/Cocoa.h>
 
@@ -30,3 +34,6 @@ void window_defaults(obs_data_t *settings);
 void add_window_properties(obs_properties_t *props);
 
 void show_window_properties(obs_properties_t *props, bool show);
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

@@ -15,6 +15,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_IPHONE
 #include "util/platform.h"
 #include "util/dstr.h"
 #include "obs.h"
@@ -25,6 +28,7 @@
 #include <sys/sysctl.h>
 
 #include <objc/objc.h>
+#import <Foundation/Foundation.h>
 #include <Carbon/Carbon.h>
 #include <IOKit/hid/IOHIDDevice.h>
 #include <IOKit/hid/IOHIDManager.h>
@@ -35,13 +39,11 @@ const char *get_module_extension(void)
 }
 
 static const char *module_bin[] = {
-	"../obs-plugins",
-	OBS_INSTALL_PREFIX "obs-plugins",
+	"plugins"
 };
 
 static const char *module_data[] = {
-	"../data/obs-plugins/%module%",
-	OBS_INSTALL_DATA_PATH "obs-plugins/%module%",
+	"data/plugins/%module%"
 };
 
 static const int module_patterns_size =
@@ -49,16 +51,25 @@ static const int module_patterns_size =
 
 void add_default_module_paths(void)
 {
-	for (int i = 0; i < module_patterns_size; i++)
-		obs_add_module_path(module_bin[i], module_data[i]);
+	NSString* resPath = [NSBundle mainBundle].resourcePath;
+	for (int i = 0; i < module_patterns_size; i++) {
+		NSString* dataPath = [resPath stringByAppendingFormat:@"/%s", module_data[i]];
+		obs_add_module_path(module_bin[i], [dataPath UTF8String]);
+	}
+}
+
+const char* get_absolute_module_data_path(const char* mod_name) {
+	NSString* resPath = [NSBundle mainBundle].resourcePath;
+	NSString* dataPath = [resPath stringByAppendingFormat:@"/%s", module_data[0]];
+	dataPath = [dataPath stringByReplacingOccurrencesOfString:@"%module%" withString:[NSString stringWithUTF8String:mod_name]];
+	return bstrdup([dataPath UTF8String]);
 }
 
 char *find_libobs_data_file(const char *file)
 {
-	struct dstr path;
-	dstr_init_copy(&path, OBS_INSTALL_DATA_PATH "/libobs/");
-	dstr_cat(&path, file);
-	return path.array;
+	NSString* resPath = [NSBundle mainBundle].resourcePath;
+	NSString* dataPath = [resPath stringByAppendingFormat:@"/data/libobs/%s", file];
+	return bstrdup([dataPath UTF8String]);
 }
 
 static void log_processor_name(void)
@@ -111,30 +122,27 @@ static void log_available_memory(void)
 				memory_available / 1024 / 1024);
 }
 
-static void log_os_name(id pi, SEL UTF8String)
+static void log_os_name(id _id, SEL UTF8String)
 {
-	unsigned long os_id = (unsigned long)objc_msgSend(pi,
-			sel_registerName("operatingSystem"));
+	NSProcessInfo* pi = (NSProcessInfo*)_id;
+	NSUInteger os_id = [pi operatingSystem];
 
-	id os = objc_msgSend(pi,
-			sel_registerName("operatingSystemName"));
-	const char *name = (const char*)objc_msgSend(os, UTF8String);
+	NSString *os = [pi operatingSystemName];
 
-	if (os_id == 5 /*NSMACHOperatingSystem*/) {
-		blog(LOG_INFO, "OS Name: Mac OS X (%s)", name);
+	if (os_id == NSMACHOperatingSystem) {
+		blog(LOG_INFO, "OS Name: Mac OS X (%s)", [os cStringUsingEncoding:NSUTF8StringEncoding]);
 		return;
 	}
 
-	blog(LOG_INFO, "OS Name: %s", name ? name : "Unknown");
+	blog(LOG_INFO, "OS Name: %s", os ? [os cStringUsingEncoding:NSUTF8StringEncoding] : "Unknown");
 }
 
-static void log_os_version(id pi, SEL UTF8String)
+static void log_os_version(id _id, SEL UTF8String)
 {
-	id vs = objc_msgSend(pi,
-			sel_registerName("operatingSystemVersionString"));
-	const char *version = (const char*)objc_msgSend(vs, UTF8String);
+	NSProcessInfo* pi = (NSProcessInfo*)_id;
+	NSString *version = [pi operatingSystemVersionString];
 
-	blog(LOG_INFO, "OS Version: %s", version ? version : "Unknown");
+	blog(LOG_INFO, "OS Version: %s", version ? [version cStringUsingEncoding:NSUTF8StringEncoding] : "Unknown");
 }
 
 static void log_os(void)
@@ -1325,3 +1333,6 @@ bool obs_hotkeys_platform_is_pressed(obs_hotkeys_platform_t *plat,
 
 	return false;
 }
+
+#endif // #if TARGET_OS_IPHONE
+#endif // #ifdef __APPLE__

@@ -1,4 +1,8 @@
 #include <obs-module.h>
+#include <obs-config.h>
+
+// refer to module
+OBS_REFER_TO_MODULE(obs_transitions)
 
 #define S_COLOR "color"
 #define S_SWITCH_POINT "switch_point"

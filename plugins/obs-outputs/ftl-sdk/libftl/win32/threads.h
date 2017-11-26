@@ -22,6 +22,8 @@
 * SOFTWARE.
 **/
 
+#ifdef _WIN32
+
 #include <Windows.h>
 
 typedef CRITICAL_SECTION OS_MUTEX;
@@ -57,3 +59,5 @@ int os_semaphore_post(OS_SEMAPHORE *sem);
 int os_semaphore_delete(OS_SEMAPHORE *sem);
 
 void sleep_ms(int ms);
+
+#endif // #ifdef _WIN32

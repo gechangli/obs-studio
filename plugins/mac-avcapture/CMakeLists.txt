@@ -5,16 +5,18 @@ find_library(COCOA Cocoa)
 find_library(COREFOUNDATION CoreFoundation)
 find_library(COREMEDIA CoreMedia)
 find_library(COREVIDEO CoreVideo)
+find_library(COREIMAGE CoreImage)
 find_library(COCOA Cocoa)
 find_library(COREMEDIAIO CoreMediaIO)
 
 include_directories(${AVFOUNDATION}
-                    ${COCOA}
-                    ${COREFOUNDATION}
-                    ${COREMEDIA}
-                    ${COREVIDEO}
-                    ${COREMEDIAIO}
-		    ${COCOA})
+	${COCOA}
+	${COREFOUNDATION}
+	${COREMEDIA}
+	${COREVIDEO}
+	${COREIMAGE}
+	${COREMEDIAIO}
+	${COCOA})
 
 set(mac-avcapture_HEADERS
 	left-right.hpp
@@ -37,6 +39,7 @@ target_link_libraries(mac-avcapture
 	${COCOA}
 	${COREFOUNDATION}
 	${COREMEDIA}
+	${COREIMAGE}
 	${COREVIDEO}
 	${COREMEDIAIO}
 	${COCOA})

@@ -1,6 +1,10 @@
 #include <obs-module.h>
 #include <graphics/image-file.h>
 #include <util/dstr.h>
+#include <obs-config.h>
+
+// refer to module
+OBS_REFER_TO_MODULE(obs_transitions)
 
 #define S_LUMA_IMG              "luma_image"
 #define S_LUMA_INV              "luma_invert"

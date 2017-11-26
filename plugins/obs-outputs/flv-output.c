@@ -18,11 +18,15 @@
 #include <stdio.h>
 #include <obs-module.h>
 #include <obs-avc.h>
+#include <obs-config.h>
 #include <util/platform.h>
 #include <util/dstr.h>
 #include <util/threading.h>
 #include <inttypes.h>
 #include "flv-mux.h"
+
+// refer to module
+OBS_REFER_TO_MODULE(obs_outputs)
 
 #define do_log(level, format, ...) \
 	blog(level, "[flv output: '%s'] " format, \

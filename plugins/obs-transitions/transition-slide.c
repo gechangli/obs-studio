@@ -1,6 +1,10 @@
 #include <obs-module.h>
 #include <graphics/vec2.h>
 #include "easings.h"
+#include <obs-config.h>
+
+// refer to module
+OBS_REFER_TO_MODULE(obs_transitions)
 
 #define S_DIRECTION "direction"
 

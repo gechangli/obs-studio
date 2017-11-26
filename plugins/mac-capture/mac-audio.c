@@ -1,9 +1,13 @@
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #include <AudioUnit/AudioUnit.h>
 #include <CoreFoundation/CFString.h>
 #include <CoreAudio/CoreAudio.h>
 #include <unistd.h>
 #include <errno.h>
-
+#include <obs-config.h>
 #include <obs-module.h>
 #include <util/threading.h>
 #include <util/c99defs.h>
@@ -30,6 +34,9 @@
 #define TEXT_AUDIO_OUTPUT   obs_module_text("CoreAudio.OutputCapture");
 #define TEXT_DEVICE         obs_module_text("CoreAudio.Device")
 #define TEXT_DEVICE_DEFAULT obs_module_text("CoreAudio.Device.Default")
+
+// refer to module
+OBS_REFER_TO_MODULE(mac_capture)
 
 struct coreaudio_data {
 	char               *device_name;
@@ -806,3 +813,6 @@ struct obs_source_info coreaudio_output_capture_info = {
 	.get_defaults   = coreaudio_defaults,
 	.get_properties = coreaudio_output_properties
 };
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

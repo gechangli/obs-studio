@@ -3,13 +3,15 @@
 #import <CoreMedia/CoreMedia.h>
 #import <CoreVideo/CoreVideo.h>
 #import <CoreMediaIO/CMIOHardware.h>
-
+#import <AppKit/AppKit.h>
+#include <obs-config.h>
 #include <obs-module.h>
 #include <obs.hpp>
+#include <obs-internal.h>
 #include <media-io/video-io.h>
 
 #include <util/dstr.hpp>
-
+#include <util/util.hpp>
 #include <algorithm>
 #include <initializer_list>
 #include <cinttypes>
@@ -21,6 +23,10 @@
 #include "scope-guard.hpp"
 
 #define NBSP "\xC2\xA0"
+
+// declare module
+OBS_DECLARE_MODULE(mac_avcapture)
+OBS_MODULE_USE_DEFAULT_LOCALE(mac_avcapture, "zh-CN")
 
 using namespace std;
 
@@ -90,6 +96,7 @@ struct av_capture;
 @public
 	struct av_capture *capture;
 }
+- (void)saveImage:(CVImageBufferRef)image;
 - (void)captureOutput:(AVCaptureOutput *)out
         didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer
         fromConnection:(AVCaptureConnection *)connection;
@@ -161,7 +168,17 @@ static NSString *get_string(obs_data_t *data, char const *name)
 
 static AVCaptureDevice *get_device(obs_data_t *settings)
 {
+    // if device id is "default", then auto pick a matched device
 	auto uid = get_string(settings, "device");
+    if([uid isEqualToString:@"default"]) {
+        for (AVCaptureDevice* dev in [AVCaptureDevice devices]) {
+            if ([dev hasMediaType: AVMediaTypeVideo] ||
+                [dev hasMediaType: AVMediaTypeMuxed]) {
+                uid = dev.uniqueID;
+                break;
+            }
+        }
+    }
 	return [AVCaptureDevice deviceWithUniqueID:uid];
 }
 
@@ -610,6 +627,24 @@ static inline bool update_frame(av_capture *capture,
 	UNUSED_PARAMETER(out);
 	UNUSED_PARAMETER(sampleBuffer);
 	UNUSED_PARAMETER(connection);
+}
+
+- (void)saveImage:(CVImageBufferRef)image {
+    // create CIImage from CVImageBuffer
+    NSCIImageRep *imageRep = [NSCIImageRep imageRepWithCIImage:[CIImage imageWithCVImageBuffer:image]];
+    NSImage *_image = [[NSImage alloc] initWithSize:[imageRep size]];
+    [_image addRepresentation:imageRep];
+    
+    // convert to tiff, then convert to jpeg
+    NSData* tiffData = [_image TIFFRepresentation];
+    NSBitmapImageRep *bitmapRep = [NSBitmapImageRep imageRepWithData:tiffData];
+    NSData *imageData = [bitmapRep representationUsingType:NSJPEGFileType properties:@{}];
+    _image = [[NSImage alloc] initWithData:imageData];
+    
+    // finally to png
+    NSBitmapImageRep *imgRep = (NSBitmapImageRep*)[[_image representations] objectAtIndex: 0];
+    NSData *data = [imgRep representationUsingType:NSPNGFileType properties:@{}];
+    [data writeToFile:@"/Users/maruojie/Desktop/a.png" atomically: NO];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
@@ -1168,7 +1203,17 @@ static bool av_capture_init(av_capture *capture, obs_data_t *settings)
 	if (!init_session(capture))
 		return false;
 
+    // if device id is "default", then auto pick a matched device
 	capture->uid = get_string(settings, "device");
+    if([capture->uid isEqualToString:@"default"]) {
+        for (AVCaptureDevice* dev in [AVCaptureDevice devices]) {
+            if ([dev hasMediaType: AVMediaTypeVideo] ||
+                [dev hasMediaType: AVMediaTypeMuxed]) {
+                capture->uid = dev.uniqueID;
+                break;
+            }
+        }
+    }
 
 	NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 	capture->disconnect_observer.reset([nc
@@ -2173,10 +2218,8 @@ static void av_capture_update(void *data, obs_data_t *settings)
 			obs_data_get_bool(settings, "buffering"));
 }
 
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("mac-avcapture", "en-US")
-
-bool obs_module_load(void)
+// module load method
+MODULE_VISIBILITY bool MODULE_MANGLING(obs_module_load)()
 {
 #ifdef __MAC_10_10
 	// Enable iOS device to show up as AVCapture devices
@@ -2208,3 +2251,25 @@ bool obs_module_load(void)
 	obs_register_source(&av_capture_info);
 	return true;
 }
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+obs_module_t* STATIC_MODULE_CREATOR(mac_avcapture)() {
+    obs_module_t* mod = (obs_module_t*)bzalloc(sizeof(obs_module_t));
+    mod->mod_name = bstrdup("mac_avcapture");
+    mod->file = bstrdup("mac_avcapture");
+    mod->data_path = bstrdup("");
+    mod->is_static = true;
+    mod->load = MODULE_MANGLING(obs_module_load);
+    mod->set_locale = MODULE_MANGLING(obs_module_set_locale);
+    mod->free_locale = MODULE_MANGLING(obs_module_free_locale);
+    mod->ver = MODULE_MANGLING(obs_module_ver);
+    mod->set_pointer = MODULE_MANGLING(obs_module_set_pointer);
+    return mod;
+}
+
+#ifdef __cplusplus
+}
+#endif

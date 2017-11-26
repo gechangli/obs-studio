@@ -15,7 +15,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ******************************************************************************/
 
+#include <obs-config.h>
 #include "rtmp-stream.h"
+
+// refer to module
+OBS_REFER_TO_MODULE(obs_outputs)
 
 static const char *rtmp_stream_getname(void *unused)
 {

@@ -22,6 +22,8 @@
 * SOFTWARE.
 **/
 
+#ifdef _WIN32
+
 #include "threads.h"
 
 int os_init(){
@@ -134,4 +136,4 @@ void sleep_ms(int ms)
         Sleep(ms);
 }
 
-
+#endif // #ifdef _WIN32

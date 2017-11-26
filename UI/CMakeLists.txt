@@ -108,6 +108,10 @@ elseif(APPLE)
 	mark_as_advanced(COREMEDIA)
 	include_directories(${COREMEDIA})
 
+	find_library(COREIMAGE CoreImage)
+	mark_as_advanced(COREIMAGE)
+	include_directories(${COREIMAGE})
+
 	find_library(SECURITY Security)
 	mark_as_advanced(SECURITY)
 	include_directories(${SECURITY})
@@ -130,6 +134,7 @@ elseif(APPLE)
 		${APPKIT_LIBRARIES}
 		${AUDIOTOOLBOX}
 		${COREVIDEO}
+		${COREIMAGE}
 		${COREMEDIA}
 		${SECURITY}
 		${VIDEODECODEACCELERATION}

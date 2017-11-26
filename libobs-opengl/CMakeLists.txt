@@ -11,7 +11,7 @@ if(WIN32)
 		gl-windows.c)
 elseif(APPLE)
 	set(libobs-opengl_PLATFORM_SOURCES
-		gl-cocoa.m)
+		gl-osx.m)
 
 	set_source_files_properties(${libobs-opengl_PLATFORM_SOURCES}
 		PROPERTIES

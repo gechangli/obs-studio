@@ -1,3 +1,7 @@
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#if TARGET_OS_OSX
+
 #pragma once
 
 #include <util/darray.h>
@@ -34,3 +38,6 @@ static inline void device_list_add(struct device_list *list,
 
 extern void coreaudio_enum_devices(struct device_list *list, bool input);
 extern bool coreaudio_get_device_id(CFStringRef uid, AudioDeviceID *id);
+
+#endif // #if TARGET_OS_OSX
+#endif // #ifdef __APPLE__

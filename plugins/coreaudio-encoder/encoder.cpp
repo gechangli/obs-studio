@@ -1,12 +1,13 @@
 #include <util/dstr.hpp>
 #include <obs-module.h>
-
+#include <obs-internal.h>
 #include <algorithm>
 #include <cstdlib>
 #include <initializer_list>
 #include <memory>
 #include <mutex>
 #include <vector>
+#include <obs-config.h>
 
 #ifndef _WIN32
 #include <AudioToolbox/AudioToolbox.h>
@@ -32,6 +33,10 @@
 #ifdef _WIN32
 #include "windows-imports.h"
 #endif
+
+// declare module
+OBS_DECLARE_MODULE(coreaudio_encoder)
+OBS_MODULE_USE_DEFAULT_LOCALE(coreaudio_encoder, "zh-CN")
 
 using namespace std;
 
@@ -1339,10 +1344,7 @@ static obs_properties_t *aac_properties(void *data)
 	return props;
 }
 
-OBS_DECLARE_MODULE()
-OBS_MODULE_USE_DEFAULT_LOCALE("coreaudio-encoder", "en-US")
-
-bool obs_module_load(void)
+MODULE_VISIBILITY bool MODULE_MANGLING(obs_module_load)()
 {
 #ifdef _WIN32
 	if (!load_core_audio()) {
@@ -1373,8 +1375,33 @@ bool obs_module_load(void)
 }
 
 #ifdef _WIN32
-void obs_module_unload(void)
+MODULE_VISIBILITY void MODULE_MANGLING(obs_module_unload)()
 {
 	unload_core_audio();
+}
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+obs_module_t* STATIC_MODULE_CREATOR(coreaudio_encoder)() {
+    obs_module_t* mod = (obs_module_t*)bzalloc(sizeof(obs_module_t));
+    mod->mod_name = bstrdup("coreaudio_encoder");
+    mod->file = bstrdup("coreaudio_encoder");
+    mod->data_path = bstrdup("");
+    mod->is_static = true;
+    mod->load = MODULE_MANGLING(obs_module_load);
+#ifdef _WIN32
+    mod->unload = MODULE_MANGLING(obs_module_unload);
+#endif
+    mod->set_locale = MODULE_MANGLING(obs_module_set_locale);
+    mod->free_locale = MODULE_MANGLING(obs_module_free_locale);
+    mod->ver = MODULE_MANGLING(obs_module_ver);
+    mod->set_pointer = MODULE_MANGLING(obs_module_set_pointer);
+    return mod;
+}
+    
+#ifdef __cplusplus
 }
 #endif

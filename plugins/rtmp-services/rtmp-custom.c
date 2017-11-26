@@ -1,4 +1,8 @@
 #include <obs-module.h>
+#include <obs-config.h>
+
+// refer to module
+OBS_REFER_TO_MODULE(rtmp_services)
 
 struct rtmp_custom {
 	char *server, *key;

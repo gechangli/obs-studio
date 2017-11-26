@@ -22,6 +22,8 @@
 * SOFTWARE.
 **/
 
+#ifdef _WIN32
+
 #include "ftl.h"
 #include "ftl_private.h"
 
@@ -106,3 +108,5 @@ int poll_socket_for_receive(SOCKET socket, int timeoutMs)
     return SOCKET_ERROR;
   }
 }
+
+#endif // #ifdef _WIN32

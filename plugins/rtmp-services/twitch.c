@@ -2,10 +2,14 @@
 #include <util/threading.h>
 #include <util/platform.h>
 #include <obs-module.h>
+#include <obs-config.h>
 #include <util/dstr.h>
-#include <jansson.h>
+#include "jansson.h"
 
 #include "twitch.h"
+
+// refer to module
+OBS_REFER_TO_MODULE(rtmp_services)
 
 static update_info_t *twitch_update_info = NULL;
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
