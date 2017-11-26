@@ -4,7 +4,7 @@
 
 // declare module
 OBS_DECLARE_MODULE(obs_x264)
-OBS_MODULE_USE_DEFAULT_LOCALE(obs_x264, "zh_CN")
+OBS_MODULE_USE_DEFAULT_LOCALE(obs_x264, "zh-CN")
 
 extern struct obs_encoder_info obs_x264_encoder;
 

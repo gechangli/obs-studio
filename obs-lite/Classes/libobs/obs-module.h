@@ -27,9 +27,6 @@
 #define MODULE_EXTERN extern
 #endif
 
-// hide symbol in a module
-#define MODULE_HIDDEN __attribute__ ((visibility ("hidden")))
-
 /**
  * @file
  * @brief This file is used by modules for module declaration and module
@@ -232,13 +229,14 @@ MODULE_EXTERN obs_module_t *obs_current_module(void);
  *
  * @param name Author name(s)
  */
-#define OBS_MODULE_AUTHOR(name) \
-	MODULE_EXPORT const char *obs_module_author(void); \
-	const char *obs_module_author(void) {return name;}
-
-/// declare the author for static module
-#define OBS_STATIC_MODULE_AUTHOR(name) \
-    MODULE_HIDDEN const char *obs_module_author(void) {return name;}
+#ifdef __STATIC_MODULE__
+    #define OBS_MODULE_AUTHOR(name) \
+        static const char * _obs_module_author(void) {return name;}
+#else
+    #define OBS_MODULE_AUTHOR(name) \
+    	MODULE_EXPORT const char *obs_module_author(void); \
+    	const char *obs_module_author(void) {return name;}
+#endif
 
 /** Optional: Returns the full name of the module */
 MODULE_EXPORT const char *obs_module_name(void);

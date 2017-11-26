@@ -12,7 +12,7 @@
 
 // declare module
 OBS_DECLARE_MODULE(rtmp_services)
-OBS_MODULE_USE_DEFAULT_LOCALE(rtmp_services, "zh_CN")
+OBS_MODULE_USE_DEFAULT_LOCALE(rtmp_services, "zh-CN")
 
 #define RTMP_SERVICES_LOG_STR "[rtmp-services plugin] "
 #define RTMP_SERVICES_VER_STR "rtmp-services plugin (libobs " OBS_VERSION ")"

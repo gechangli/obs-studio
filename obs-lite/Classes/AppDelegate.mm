@@ -39,7 +39,7 @@
                                  sh,
                                  (int)glView.frame.size.width,
                                  (int)glView.frame.size.height);
-        self.obsApp->StartupOBS("zh_CN");
+        self.obsApp->StartupOBS("zh-CN");
         self.obsApp->LoadDefaultScene();
         self.obsApp->CreateDisplay({ glView });
     }

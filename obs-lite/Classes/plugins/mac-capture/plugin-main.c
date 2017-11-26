@@ -8,7 +8,7 @@
 
 // declare module
 OBS_DECLARE_MODULE(mac_capture)
-OBS_MODULE_USE_DEFAULT_LOCALE(mac_capture, "zh_CN")
+OBS_MODULE_USE_DEFAULT_LOCALE(mac_capture, "zh-CN")
 
 extern struct obs_source_info coreaudio_input_capture_info;
 extern struct obs_source_info coreaudio_output_capture_info;

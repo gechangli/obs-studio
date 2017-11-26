@@ -22,7 +22,7 @@
 
 using namespace std;
 
-#define DEFAULT_LANG "en_US"
+#define DEFAULT_LANG "en-US"
 #define INVALID_BITRATE 10000
 
 // shared instance

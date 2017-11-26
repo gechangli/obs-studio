@@ -5,7 +5,7 @@
 
 // declare module
 OBS_DECLARE_MODULE(obs_transitions)
-OBS_MODULE_USE_DEFAULT_LOCALE(obs_transitions, "zh_CN")
+OBS_MODULE_USE_DEFAULT_LOCALE(obs_transitions, "zh-CN")
 
 extern struct obs_source_info cut_transition;
 extern struct obs_source_info fade_transition;

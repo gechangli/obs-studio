@@ -36,7 +36,7 @@
 
 // declare module
 OBS_DECLARE_MODULE(coreaudio_encoder)
-OBS_MODULE_USE_DEFAULT_LOCALE(coreaudio_encoder, "zh_CN")
+OBS_MODULE_USE_DEFAULT_LOCALE(coreaudio_encoder, "zh-CN")
 
 using namespace std;
 

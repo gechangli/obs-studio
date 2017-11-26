@@ -26,7 +26,7 @@
 
 // declare module
 OBS_DECLARE_MODULE(mac_avcapture)
-OBS_MODULE_USE_DEFAULT_LOCALE(mac_avcapture, "zh_CN")
+OBS_MODULE_USE_DEFAULT_LOCALE(mac_avcapture, "zh-CN")
 
 using namespace std;
 

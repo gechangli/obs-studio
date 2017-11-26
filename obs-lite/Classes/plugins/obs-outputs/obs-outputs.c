@@ -10,7 +10,7 @@
 
 // declare module
 OBS_DECLARE_MODULE(obs_outputs)
-OBS_MODULE_USE_DEFAULT_LOCALE(obs_outputs, "zh_CN")
+OBS_MODULE_USE_DEFAULT_LOCALE(obs_outputs, "zh-CN")
 
 extern struct obs_output_info rtmp_output_info;
 extern struct obs_output_info null_output_info;
