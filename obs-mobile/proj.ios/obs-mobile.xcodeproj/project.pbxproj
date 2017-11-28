@@ -119,6 +119,7 @@
 		924180B51FCD806500A852EE /* strconv.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C361FCD806400A852EE /* strconv.c */; };
 		924180B61FCD806500A852EE /* utf.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C371FCD806400A852EE /* utf.c */; };
 		924180B71FCD806500A852EE /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C391FCD806400A852EE /* value.c */; };
+		924183FF1FCDBA1700A852EE /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 924183FE1FCDBA1700A852EE /* libcurl.a */; };
 		925E18471F6EAB45007DC703 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18431F6EAB45007DC703 /* AppDelegate.mm */; };
 		925E18481F6EAB45007DC703 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 925E18441F6EAB45007DC703 /* main.m */; };
 		925E18491F6EAB45007DC703 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18461F6EAB45007DC703 /* ViewController.mm */; };
@@ -344,6 +345,7 @@
 		924183F81FCD99FE00A852EE /* sse2neon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sse2neon.h; sourceTree = "<group>"; };
 		924183FC1FCDAD1800A852EE /* jansson_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jansson_config.h; sourceTree = "<group>"; };
 		924183FD1FCDAD1800A852EE /* obsconfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = obsconfig.h; sourceTree = "<group>"; };
+		924183FE1FCDBA1700A852EE /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		925E18271F6EAAC2007DC703 /* obs-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "obs-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		925E18421F6EAB45007DC703 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		925E18431F6EAB45007DC703 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				925E19811F6EB6CE007DC703 /* AVFoundation.framework in Frameworks */,
 				925E18591F6EAC50007DC703 /* GLKit.framework in Frameworks */,
 				925E18571F6EAC36007DC703 /* OpenGLES.framework in Frameworks */,
+				924183FF1FCDBA1700A852EE /* libcurl.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,6 +811,7 @@
 		925E18551F6EAC28007DC703 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				924183FE1FCDBA1700A852EE /* libcurl.a */,
 				925E198E1F6EB779007DC703 /* libbz2.tbd */,
 				925E198C1F6EB714007DC703 /* libiconv.tbd */,
 				925E198A1F6EB701007DC703 /* libz.tbd */,
@@ -1139,9 +1143,11 @@
 					"$(PROJECT_DIR)/../../deps/glad/include",
 					"$(PROJECT_DIR)/../../deps/file-updater",
 					"$(PROJECT_DIR)/../../plugins/obs-outputs/ftl-sdk/libftl",
+					"$(PROJECT_DIR)/../third_party/ios",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../third_party/ios/libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shanshan.obs-mobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1160,9 +1166,11 @@
 					"$(PROJECT_DIR)/../../deps/glad/include",
 					"$(PROJECT_DIR)/../../deps/file-updater",
 					"$(PROJECT_DIR)/../../plugins/obs-outputs/ftl-sdk/libftl",
+					"$(PROJECT_DIR)/../third_party/ios",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../third_party/ios/libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shanshan.obs-mobile";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
