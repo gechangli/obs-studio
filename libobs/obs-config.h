@@ -65,8 +65,14 @@
 
 #define OBS_INSTALL_DATA_PATH OBS_INSTALL_PREFIX OBS_DATA_PATH
 
-// when use static linked renderer module, define this macro
-//#define __STATIC_RENDERER__
+// when compiled for mobile platform, use static library
+#ifdef __APPLE__
+    #include <TargetConditionals.h>
+    #if TARGET_OS_IPHONE || defined(ANDROID)
+        #define __STATIC_RENDERER__
+        #define __STATIC_MODULE__
+    #endif
+#endif
 
 // to avoid symbol conflict, add prefix when build static linked renderer
 #ifdef __STATIC_RENDERER__
@@ -74,9 +80,6 @@
 #else
     #define GL_MANGLING(name) name
 #endif
-
-// when statically link modules, define this macro
-//#define __STATIC_MODULE__
 
 // to avoid symbol conflict
 #ifdef __STATIC_MODULE__
