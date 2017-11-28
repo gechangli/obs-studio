@@ -21,7 +21,8 @@
 #include "input.h"
 #include "obs-config.h"
 #ifdef __APPLE__
-#include <objc/objc-runtime.h>
+#include <objc/runtime.h>
+#include <objc/message.h>
 #endif
 
 /*

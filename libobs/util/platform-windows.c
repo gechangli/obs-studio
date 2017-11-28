@@ -14,6 +14,8 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+#ifdef _WIN32
+
 #define PSAPI_VERSION 1
 #include <windows.h>
 #include <mmsystem.h>
@@ -1011,3 +1013,5 @@ uint64_t os_get_free_disk_space(const char *dir)
 
 	return success ? free.QuadPart : 0;
 }
+
+#endif // #ifdef _WIN32

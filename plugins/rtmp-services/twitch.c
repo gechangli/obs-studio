@@ -165,6 +165,7 @@ extern const char *get_module_name(void);
 
 void twitch_ingests_refresh(int seconds)
 {
+#if !defined(_WIN32) && CHECK_FOR_SERVICE_UPDATES
 	if (os_atomic_load_bool(&ingests_refreshed))
 		return;
 
@@ -187,6 +188,7 @@ void twitch_ingests_refresh(int seconds)
 			os_sleep_ms(10);
 		}
 	}
+#endif
 }
 
 void load_twitch_data(void)

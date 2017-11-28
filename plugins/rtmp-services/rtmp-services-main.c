@@ -10,6 +10,10 @@
 #include "rtmp-format-ver.h"
 #include "lookup-config.h"
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 // declare module
 OBS_DECLARE_MODULE(rtmp_services)
 OBS_MODULE_USE_DEFAULT_LOCALE(rtmp_services, "zh-CN")
@@ -79,7 +83,7 @@ MODULE_VISIBILITY bool MODULE_MANGLING(obs_module_load)()
 	proc_handler_add(ph, "void twitch_ingests_refresh(int seconds)",
 			refresh_callback, NULL);
 
-#if !defined(_WIN32) || CHECK_FOR_SERVICE_UPDATES
+#if !defined(_WIN32) && CHECK_FOR_SERVICE_UPDATES
 	char *local_dir = obs_module_file("");
 	char *cache_dir = obs_module_config_path("");
 

@@ -20,7 +20,14 @@
 #include "../util/c99defs.h"
 #include "math-defs.h"
 #include "vec3.h"
-#include <xmmintrin.h>
+#ifdef __APPLE__
+    #include <TargetConditionals.h>
+    #if TARGET_OS_IPHONE || defined(ANDROID)
+        #include "sse2neon.h"
+    #else
+        #include <xmmintrin.h>
+    #endif
+#endif
 
 /*
  * Quaternion math
