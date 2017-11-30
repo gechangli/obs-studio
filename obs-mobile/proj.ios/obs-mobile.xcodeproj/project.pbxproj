@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9228408F1FD0259C000AA83C /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922840881FD0259B000AA83C /* libavdevice.a */; };
+		922840901FD0259C000AA83C /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922840891FD0259B000AA83C /* libswresample.a */; };
+		922840911FD0259C000AA83C /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408A1FD0259B000AA83C /* libavfilter.a */; };
+		922840921FD0259C000AA83C /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408B1FD0259B000AA83C /* libavformat.a */; };
+		922840931FD0259C000AA83C /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408C1FD0259C000AA83C /* libavutil.a */; };
+		922840941FD0259C000AA83C /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408D1FD0259C000AA83C /* libswscale.a */; };
+		922840951FD0259C000AA83C /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408E1FD0259C000AA83C /* libavcodec.a */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -139,6 +146,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		922840881FD0259B000AA83C /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavdevice.a; path = ../third_party/ios/libraries/libavdevice.a; sourceTree = "<group>"; };
+		922840891FD0259B000AA83C /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../third_party/ios/libraries/libswresample.a; sourceTree = "<group>"; };
+		9228408A1FD0259B000AA83C /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = ../third_party/ios/libraries/libavfilter.a; sourceTree = "<group>"; };
+		9228408B1FD0259B000AA83C /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ../third_party/ios/libraries/libavformat.a; sourceTree = "<group>"; };
+		9228408C1FD0259C000AA83C /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../third_party/ios/libraries/libavutil.a; sourceTree = "<group>"; };
+		9228408D1FD0259C000AA83C /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../third_party/ios/libraries/libswscale.a; sourceTree = "<group>"; };
+		9228408E1FD0259C000AA83C /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../third_party/ios/libraries/libavcodec.a; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -373,17 +387,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				922840901FD0259C000AA83C /* libswresample.a in Frameworks */,
 				925E198F1F6EB779007DC703 /* libbz2.tbd in Frameworks */,
 				925E198D1F6EB714007DC703 /* libiconv.tbd in Frameworks */,
+				922840921FD0259C000AA83C /* libavformat.a in Frameworks */,
 				925E198B1F6EB701007DC703 /* libz.tbd in Frameworks */,
 				925E19891F6EB6ED007DC703 /* AudioToolbox.framework in Frameworks */,
+				922840931FD0259C000AA83C /* libavutil.a in Frameworks */,
 				925E19871F6EB6E9007DC703 /* VideoToolbox.framework in Frameworks */,
 				925E19851F6EB6DA007DC703 /* CoreMedia.framework in Frameworks */,
 				925E19831F6EB6D7007DC703 /* CoreVideo.framework in Frameworks */,
 				925E19811F6EB6CE007DC703 /* AVFoundation.framework in Frameworks */,
 				925E18591F6EAC50007DC703 /* GLKit.framework in Frameworks */,
+				922840941FD0259C000AA83C /* libswscale.a in Frameworks */,
+				922840911FD0259C000AA83C /* libavfilter.a in Frameworks */,
 				925E18571F6EAC36007DC703 /* OpenGLES.framework in Frameworks */,
+				9228408F1FD0259C000AA83C /* libavdevice.a in Frameworks */,
 				924183FF1FCDBA1700A852EE /* libcurl.a in Frameworks */,
+				922840951FD0259C000AA83C /* libavcodec.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,6 +832,13 @@
 		925E18551F6EAC28007DC703 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9228408E1FD0259C000AA83C /* libavcodec.a */,
+				922840881FD0259B000AA83C /* libavdevice.a */,
+				9228408A1FD0259B000AA83C /* libavfilter.a */,
+				9228408B1FD0259B000AA83C /* libavformat.a */,
+				9228408C1FD0259C000AA83C /* libavutil.a */,
+				922840891FD0259B000AA83C /* libswresample.a */,
+				9228408D1FD0259C000AA83C /* libswscale.a */,
 				924183FE1FCDBA1700A852EE /* libcurl.a */,
 				925E198E1F6EB779007DC703 /* libbz2.tbd */,
 				925E198C1F6EB714007DC703 /* libiconv.tbd */,
@@ -1144,6 +1172,7 @@
 					"$(PROJECT_DIR)/../../deps/file-updater",
 					"$(PROJECT_DIR)/../../plugins/obs-outputs/ftl-sdk/libftl",
 					"$(PROJECT_DIR)/../third_party/ios",
+					"$(PROJECT_DIR)/../third_party/ios/ffmpeg",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1167,6 +1196,7 @@
 					"$(PROJECT_DIR)/../../deps/file-updater",
 					"$(PROJECT_DIR)/../../plugins/obs-outputs/ftl-sdk/libftl",
 					"$(PROJECT_DIR)/../third_party/ios",
+					"$(PROJECT_DIR)/../third_party/ios/ffmpeg",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
