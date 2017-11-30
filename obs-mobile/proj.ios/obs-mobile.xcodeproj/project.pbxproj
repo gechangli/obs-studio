@@ -14,6 +14,8 @@
 		922840931FD0259C000AA83C /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408C1FD0259C000AA83C /* libavutil.a */; };
 		922840941FD0259C000AA83C /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408D1FD0259C000AA83C /* libswscale.a */; };
 		922840951FD0259C000AA83C /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408E1FD0259C000AA83C /* libavcodec.a */; };
+		922840981FD0555D000AA83C /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922840961FD0555C000AA83C /* libssl.a */; };
+		922840991FD0555D000AA83C /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922840971FD0555C000AA83C /* libcrypto.a */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -43,7 +45,6 @@
 		92417B8A1FCD804B00A852EE /* effect.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AC61FCD804B00A852EE /* effect.c */; };
 		92417B8B1FCD804B00A852EE /* graphics-ffmpeg.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AC81FCD804B00A852EE /* graphics-ffmpeg.c */; };
 		92417B8C1FCD804B00A852EE /* graphics-imports.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AC91FCD804B00A852EE /* graphics-imports.c */; };
-		92417B8D1FCD804B00A852EE /* graphics-magick.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417ACB1FCD804B00A852EE /* graphics-magick.c */; };
 		92417B8E1FCD804B00A852EE /* graphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417ACC1FCD804B00A852EE /* graphics.c */; };
 		92417B8F1FCD804B00A852EE /* image-file.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417ACE1FCD804B00A852EE /* image-file.c */; };
 		92417B901FCD804B00A852EE /* libnsgif.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AD21FCD804B00A852EE /* libnsgif.c */; };
@@ -76,7 +77,6 @@
 		92417BAD1FCD804B00A852EE /* obs-hotkey.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B0C1FCD804B00A852EE /* obs-hotkey.c */; };
 		92417BAE1FCD804B00A852EE /* obs-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 92417B111FCD804B00A852EE /* obs-ios.m */; };
 		92417BAF1FCD804B00A852EE /* obs-module.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B121FCD804B00A852EE /* obs-module.c */; };
-		92417BB01FCD804B00A852EE /* obs-nix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B141FCD804B00A852EE /* obs-nix.c */; };
 		92417BB11FCD804B00A852EE /* obs-osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 92417B151FCD804B00A852EE /* obs-osx.m */; };
 		92417BB21FCD804B00A852EE /* obs-output-delay.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B161FCD804B00A852EE /* obs-output-delay.c */; };
 		92417BB31FCD804B00A852EE /* obs-output.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B171FCD804B00A852EE /* obs-output.c */; };
@@ -88,8 +88,6 @@
 		92417BB91FCD804B00A852EE /* obs-source.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B211FCD804B00A852EE /* obs-source.c */; };
 		92417BBA1FCD804B00A852EE /* obs-video.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B241FCD804B00A852EE /* obs-video.c */; };
 		92417BBB1FCD804B00A852EE /* obs-view.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B251FCD804B00A852EE /* obs-view.c */; };
-		92417BBC1FCD804B00A852EE /* obs-win-crash-handler.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B261FCD804B00A852EE /* obs-win-crash-handler.c */; };
-		92417BBD1FCD804B00A852EE /* obs-windows.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B271FCD804B00A852EE /* obs-windows.c */; };
 		92417BBE1FCD804B00A852EE /* obs.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B281FCD804B00A852EE /* obs.c */; };
 		92417BC01FCD804B00A852EE /* array-serializer.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B2E1FCD804B00A852EE /* array-serializer.c */; };
 		92417BC11FCD804B00A852EE /* base.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B301FCD804B00A852EE /* base.c */; };
@@ -102,16 +100,11 @@
 		92417BC81FCD804B00A852EE /* file-serializer.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B421FCD804B00A852EE /* file-serializer.c */; };
 		92417BC91FCD804B00A852EE /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B441FCD804B00A852EE /* lexer.c */; };
 		92417BCA1FCD804B00A852EE /* pipe-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B461FCD804B00A852EE /* pipe-posix.c */; };
-		92417BCB1FCD804B00A852EE /* pipe-windows.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B471FCD804B00A852EE /* pipe-windows.c */; };
-		92417BCC1FCD804B00A852EE /* platform-nix-dbus.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B491FCD804B00A852EE /* platform-nix-dbus.c */; };
-		92417BCD1FCD804B00A852EE /* platform-nix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4A1FCD804B00A852EE /* platform-nix.c */; };
 		92417BCE1FCD804B00A852EE /* platform-osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4B1FCD804B00A852EE /* platform-osx.m */; };
-		92417BCF1FCD804B00A852EE /* platform-windows.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4C1FCD804B00A852EE /* platform-windows.c */; };
 		92417BD01FCD804B00A852EE /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4D1FCD804B00A852EE /* platform.c */; };
 		92417BD11FCD804B00A852EE /* profiler.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4F1FCD804B00A852EE /* profiler.c */; };
 		92417BD21FCD804B00A852EE /* text-lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B531FCD804B00A852EE /* text-lookup.c */; };
 		92417BD31FCD804B00A852EE /* threading-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B551FCD804B00A852EE /* threading-posix.c */; };
-		92417BD41FCD804B00A852EE /* threading-windows.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B571FCD804B00A852EE /* threading-windows.c */; };
 		92417BD51FCD804B00A852EE /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B5A1FCD804B00A852EE /* utf8.c */; };
 		9241807C1FCD806500A852EE /* file-updater.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417BE11FCD806300A852EE /* file-updater.c */; };
 		9241807E1FCD806500A852EE /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417BED1FCD806300A852EE /* glad.c */; };
@@ -153,6 +146,8 @@
 		9228408C1FD0259C000AA83C /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../third_party/ios/libraries/libavutil.a; sourceTree = "<group>"; };
 		9228408D1FD0259C000AA83C /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../third_party/ios/libraries/libswscale.a; sourceTree = "<group>"; };
 		9228408E1FD0259C000AA83C /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../third_party/ios/libraries/libavcodec.a; sourceTree = "<group>"; };
+		922840961FD0555C000AA83C /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../third_party/ios/libraries/libssl.a; sourceTree = "<group>"; };
+		922840971FD0555C000AA83C /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../third_party/ios/libraries/libcrypto.a; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -193,7 +188,6 @@
 		92417AC81FCD804B00A852EE /* graphics-ffmpeg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "graphics-ffmpeg.c"; sourceTree = "<group>"; };
 		92417AC91FCD804B00A852EE /* graphics-imports.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "graphics-imports.c"; sourceTree = "<group>"; };
 		92417ACA1FCD804B00A852EE /* graphics-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "graphics-internal.h"; sourceTree = "<group>"; };
-		92417ACB1FCD804B00A852EE /* graphics-magick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "graphics-magick.c"; sourceTree = "<group>"; };
 		92417ACC1FCD804B00A852EE /* graphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = graphics.c; sourceTree = "<group>"; };
 		92417ACD1FCD804B00A852EE /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		92417ACE1FCD804B00A852EE /* image-file.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "image-file.c"; sourceTree = "<group>"; };
@@ -262,7 +256,6 @@
 		92417B111FCD804B00A852EE /* obs-ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "obs-ios.m"; sourceTree = "<group>"; };
 		92417B121FCD804B00A852EE /* obs-module.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-module.c"; sourceTree = "<group>"; };
 		92417B131FCD804B00A852EE /* obs-module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "obs-module.h"; sourceTree = "<group>"; };
-		92417B141FCD804B00A852EE /* obs-nix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-nix.c"; sourceTree = "<group>"; };
 		92417B151FCD804B00A852EE /* obs-osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "obs-osx.m"; sourceTree = "<group>"; };
 		92417B161FCD804B00A852EE /* obs-output-delay.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-output-delay.c"; sourceTree = "<group>"; };
 		92417B171FCD804B00A852EE /* obs-output.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-output.c"; sourceTree = "<group>"; };
@@ -280,8 +273,6 @@
 		92417B231FCD804B00A852EE /* obs-ui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "obs-ui.h"; sourceTree = "<group>"; };
 		92417B241FCD804B00A852EE /* obs-video.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-video.c"; sourceTree = "<group>"; };
 		92417B251FCD804B00A852EE /* obs-view.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-view.c"; sourceTree = "<group>"; };
-		92417B261FCD804B00A852EE /* obs-win-crash-handler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-win-crash-handler.c"; sourceTree = "<group>"; };
-		92417B271FCD804B00A852EE /* obs-windows.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-windows.c"; sourceTree = "<group>"; };
 		92417B281FCD804B00A852EE /* obs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = obs.c; sourceTree = "<group>"; };
 		92417B291FCD804B00A852EE /* obs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = obs.h; sourceTree = "<group>"; };
 		92417B2A1FCD804B00A852EE /* obs.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = obs.hpp; sourceTree = "<group>"; };
@@ -311,12 +302,8 @@
 		92417B441FCD804B00A852EE /* lexer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lexer.c; sourceTree = "<group>"; };
 		92417B451FCD804B00A852EE /* lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
 		92417B461FCD804B00A852EE /* pipe-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "pipe-posix.c"; sourceTree = "<group>"; };
-		92417B471FCD804B00A852EE /* pipe-windows.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "pipe-windows.c"; sourceTree = "<group>"; };
 		92417B481FCD804B00A852EE /* pipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pipe.h; sourceTree = "<group>"; };
-		92417B491FCD804B00A852EE /* platform-nix-dbus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "platform-nix-dbus.c"; sourceTree = "<group>"; };
-		92417B4A1FCD804B00A852EE /* platform-nix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "platform-nix.c"; sourceTree = "<group>"; };
 		92417B4B1FCD804B00A852EE /* platform-osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "platform-osx.m"; sourceTree = "<group>"; };
-		92417B4C1FCD804B00A852EE /* platform-windows.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "platform-windows.c"; sourceTree = "<group>"; };
 		92417B4D1FCD804B00A852EE /* platform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = platform.c; sourceTree = "<group>"; };
 		92417B4E1FCD804B00A852EE /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		92417B4F1FCD804B00A852EE /* profiler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = profiler.c; sourceTree = "<group>"; };
@@ -327,8 +314,6 @@
 		92417B541FCD804B00A852EE /* text-lookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "text-lookup.h"; sourceTree = "<group>"; };
 		92417B551FCD804B00A852EE /* threading-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "threading-posix.c"; sourceTree = "<group>"; };
 		92417B561FCD804B00A852EE /* threading-posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "threading-posix.h"; sourceTree = "<group>"; };
-		92417B571FCD804B00A852EE /* threading-windows.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "threading-windows.c"; sourceTree = "<group>"; };
-		92417B581FCD804B00A852EE /* threading-windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "threading-windows.h"; sourceTree = "<group>"; };
 		92417B591FCD804B00A852EE /* threading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threading.h; sourceTree = "<group>"; };
 		92417B5A1FCD804B00A852EE /* utf8.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utf8.c; sourceTree = "<group>"; };
 		92417B5B1FCD804B00A852EE /* utf8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utf8.h; sourceTree = "<group>"; };
@@ -393,6 +378,7 @@
 				922840921FD0259C000AA83C /* libavformat.a in Frameworks */,
 				925E198B1F6EB701007DC703 /* libz.tbd in Frameworks */,
 				925E19891F6EB6ED007DC703 /* AudioToolbox.framework in Frameworks */,
+				922840991FD0555D000AA83C /* libcrypto.a in Frameworks */,
 				922840931FD0259C000AA83C /* libavutil.a in Frameworks */,
 				925E19871F6EB6E9007DC703 /* VideoToolbox.framework in Frameworks */,
 				925E19851F6EB6DA007DC703 /* CoreMedia.framework in Frameworks */,
@@ -404,6 +390,7 @@
 				925E18571F6EAC36007DC703 /* OpenGLES.framework in Frameworks */,
 				9228408F1FD0259C000AA83C /* libavdevice.a in Frameworks */,
 				924183FF1FCDBA1700A852EE /* libcurl.a in Frameworks */,
+				922840981FD0555D000AA83C /* libssl.a in Frameworks */,
 				922840951FD0259C000AA83C /* libavcodec.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,7 +430,6 @@
 				92417B111FCD804B00A852EE /* obs-ios.m */,
 				92417B121FCD804B00A852EE /* obs-module.c */,
 				92417B131FCD804B00A852EE /* obs-module.h */,
-				92417B141FCD804B00A852EE /* obs-nix.c */,
 				92417B151FCD804B00A852EE /* obs-osx.m */,
 				92417B161FCD804B00A852EE /* obs-output-delay.c */,
 				92417B171FCD804B00A852EE /* obs-output.c */,
@@ -461,8 +447,6 @@
 				92417B231FCD804B00A852EE /* obs-ui.h */,
 				92417B241FCD804B00A852EE /* obs-video.c */,
 				92417B251FCD804B00A852EE /* obs-view.c */,
-				92417B261FCD804B00A852EE /* obs-win-crash-handler.c */,
-				92417B271FCD804B00A852EE /* obs-windows.c */,
 				92417B281FCD804B00A852EE /* obs.c */,
 				92417B291FCD804B00A852EE /* obs.h */,
 				92417B2A1FCD804B00A852EE /* obs.hpp */,
@@ -544,7 +528,6 @@
 				92417AC81FCD804B00A852EE /* graphics-ffmpeg.c */,
 				92417AC91FCD804B00A852EE /* graphics-imports.c */,
 				92417ACA1FCD804B00A852EE /* graphics-internal.h */,
-				92417ACB1FCD804B00A852EE /* graphics-magick.c */,
 				92417ACC1FCD804B00A852EE /* graphics.c */,
 				92417ACD1FCD804B00A852EE /* graphics.h */,
 				92417ACE1FCD804B00A852EE /* image-file.c */,
@@ -639,12 +622,8 @@
 				92417B441FCD804B00A852EE /* lexer.c */,
 				92417B451FCD804B00A852EE /* lexer.h */,
 				92417B461FCD804B00A852EE /* pipe-posix.c */,
-				92417B471FCD804B00A852EE /* pipe-windows.c */,
 				92417B481FCD804B00A852EE /* pipe.h */,
-				92417B491FCD804B00A852EE /* platform-nix-dbus.c */,
-				92417B4A1FCD804B00A852EE /* platform-nix.c */,
 				92417B4B1FCD804B00A852EE /* platform-osx.m */,
-				92417B4C1FCD804B00A852EE /* platform-windows.c */,
 				92417B4D1FCD804B00A852EE /* platform.c */,
 				92417B4E1FCD804B00A852EE /* platform.h */,
 				92417B4F1FCD804B00A852EE /* profiler.c */,
@@ -655,8 +634,6 @@
 				92417B541FCD804B00A852EE /* text-lookup.h */,
 				92417B551FCD804B00A852EE /* threading-posix.c */,
 				92417B561FCD804B00A852EE /* threading-posix.h */,
-				92417B571FCD804B00A852EE /* threading-windows.c */,
-				92417B581FCD804B00A852EE /* threading-windows.h */,
 				92417B591FCD804B00A852EE /* threading.h */,
 				92417B5A1FCD804B00A852EE /* utf8.c */,
 				92417B5B1FCD804B00A852EE /* utf8.h */,
@@ -832,6 +809,8 @@
 		925E18551F6EAC28007DC703 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				922840971FD0555C000AA83C /* libcrypto.a */,
+				922840961FD0555C000AA83C /* libssl.a */,
 				9228408E1FD0259C000AA83C /* libavcodec.a */,
 				922840881FD0259B000AA83C /* libavdevice.a */,
 				9228408A1FD0259B000AA83C /* libavfilter.a */,
@@ -973,7 +952,6 @@
 				92417BC11FCD804B00A852EE /* base.c in Sources */,
 				92417BD51FCD804B00A852EE /* utf8.c in Sources */,
 				92417B8C1FCD804B00A852EE /* graphics-imports.c in Sources */,
-				92417BCD1FCD804B00A852EE /* platform-nix.c in Sources */,
 				92417BA31FCD804B00A852EE /* video-io.c in Sources */,
 				92417BAA1FCD804B00A852EE /* obs-display.c in Sources */,
 				92417BC21FCD804B00A852EE /* bmem.c in Sources */,
@@ -983,11 +961,8 @@
 				92417BC51FCD804B00A852EE /* config-file.c in Sources */,
 				924180AA1FCD806500A852EE /* dump.c in Sources */,
 				92417BC61FCD804B00A852EE /* crc32.c in Sources */,
-				92417BCC1FCD804B00A852EE /* platform-nix-dbus.c in Sources */,
 				925E18491F6EAB45007DC703 /* ViewController.mm in Sources */,
 				92417B871FCD804B00A852EE /* axisang.c in Sources */,
-				92417BCF1FCD804B00A852EE /* platform-windows.c in Sources */,
-				92417BD41FCD804B00A852EE /* threading-windows.c in Sources */,
 				92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */,
 				924180B31FCD806500A852EE /* pack_unpack.c in Sources */,
 				92417B731FCD804B00A852EE /* signal.c in Sources */,
@@ -1003,7 +978,6 @@
 				92417B931FCD804B00A852EE /* matrix4.c in Sources */,
 				92417BB11FCD804B00A852EE /* obs-osx.m in Sources */,
 				92417BAD1FCD804B00A852EE /* obs-hotkey.c in Sources */,
-				92417BBD1FCD804B00A852EE /* obs-windows.c in Sources */,
 				92417B8F1FCD804B00A852EE /* image-file.c in Sources */,
 				92417BB81FCD804B00A852EE /* obs-source-transition.c in Sources */,
 				924180B71FCD806500A852EE /* value.c in Sources */,
@@ -1022,9 +996,7 @@
 				92417BA11FCD804B00A852EE /* video-fourcc.c in Sources */,
 				924180B21FCD806500A852EE /* memory.c in Sources */,
 				92417BB21FCD804B00A852EE /* obs-output-delay.c in Sources */,
-				92417B8D1FCD804B00A852EE /* graphics-magick.c in Sources */,
 				92417BBA1FCD804B00A852EE /* obs-video.c in Sources */,
-				92417BBC1FCD804B00A852EE /* obs-win-crash-handler.c in Sources */,
 				92417B701FCD804B00A852EE /* calldata.c in Sources */,
 				924180AC1FCD806500A852EE /* hashtable.c in Sources */,
 				92417BC81FCD804B00A852EE /* file-serializer.c in Sources */,
@@ -1037,9 +1009,7 @@
 				92417B8A1FCD804B00A852EE /* effect.c in Sources */,
 				92417BCA1FCD804B00A852EE /* pipe-posix.c in Sources */,
 				92417BB71FCD804B00A852EE /* obs-source-deinterlace.c in Sources */,
-				92417BCB1FCD804B00A852EE /* pipe-windows.c in Sources */,
 				92417B9E1FCD804B00A852EE /* audio-resampler-ffmpeg.c in Sources */,
-				92417BB01FCD804B00A852EE /* obs-nix.c in Sources */,
 				92417B971FCD804B00A852EE /* texture-render.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1164,6 +1134,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6N3H22GT6H;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Classes",
 					"$(PROJECT_DIR)/Classes/config",
@@ -1188,6 +1159,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6N3H22GT6H;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/Classes",
 					"$(PROJECT_DIR)/Classes/config",

@@ -16,8 +16,15 @@
 ******************************************************************************/
 
 #include "format-conversion.h"
-#include <xmmintrin.h>
-#include <emmintrin.h>
+#ifdef __APPLE__
+    #include <TargetConditionals.h>
+    #if TARGET_OS_IPHONE || defined(ANDROID)
+        #include "sse2neon.h"
+    #else
+        #include <xmmintrin.h>
+        #include <emmintrin.h>
+    #endif
+#endif
 
 /* ...surprisingly, if I don't use a macro to force inlining, it causes the
  * CPU usage to boost by a tremendous amount in debug builds. */

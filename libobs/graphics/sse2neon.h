@@ -349,6 +349,10 @@ FORCE_INLINE __m128i _mm_set1_epi32(int _i)
 	return vreinterpretq_m128i_s32(vdupq_n_s32(_i));
 }
 
+FORCE_INLINE __m128i _mm_set1_epi16(int _i) {
+    return vreinterpretq_m128i_s16(vdupq_n_s16(_i));
+}
+
 // Sets the 4 signed 32-bit integer values. https://msdn.microsoft.com/en-us/library/vstudio/019beekt(v=vs.100).aspx
 FORCE_INLINE __m128i _mm_set_epi32(int i3, int i2, int i1, int i0)
 {
@@ -822,8 +826,8 @@ FORCE_INLINE __m128i _mm_shuffle_epi32_default(__m128i a, __constrange(0,255) in
 })
 
 // Shuffles the upper 4 signed or unsigned 16 - bit integers in a as specified by imm.  https://msdn.microsoft.com/en-us/library/13ywktbs(v=vs.100).aspx
-//FORCE_INLINE __m128i _mm_shufflehi_epi16_function(__m128i a, __constrange(0,255) int imm)
-#define _mm_shufflehi_epi16_function(a, imm) \
+//FORCE_INLINE __m128i _mm_shufflehi_epi16(__m128i a, __constrange(0,255) int imm)
+#define _mm_shufflehi_epi16(a, imm) \
 ({ \
 	int16x8_t ret = vreinterpretq_s16_s32(a); \
 	int16x4_t highBits = vget_high_s16(ret); \
@@ -834,10 +838,16 @@ FORCE_INLINE __m128i _mm_shuffle_epi32_default(__m128i a, __constrange(0,255) in
 	vreinterpretq_s32_s16(ret); \
 })
 
-//FORCE_INLINE __m128i _mm_shufflehi_epi16(__m128i a, __constrange(0,255) int imm)
-#define _mm_shufflehi_epi16(a, imm) \
-	_mm_shufflehi_epi16_function((a), (imm))
-
+#define _mm_shufflelo_epi16(a, imm) \
+({ \
+	int16x8_t ret = vreinterpretq_s16_s32(a); \
+	int16x4_t lowBits = vget_low_s16(ret); \
+	ret = vsetq_lane_s16(vget_lane_s16(lowBits, (imm) & 0x3), ret, 4); \
+	ret = vsetq_lane_s16(vget_lane_s16(lowBits, ((imm) >> 2) & 0x3), ret, 5); \
+	ret = vsetq_lane_s16(vget_lane_s16(lowBits, ((imm) >> 4) & 0x3), ret, 6); \
+	ret = vsetq_lane_s16(vget_lane_s16(lowBits, ((imm) >> 6) & 0x3), ret, 7); \
+	vreinterpretq_s32_s16(ret); \
+})
 
 // Shifts the 4 signed or unsigned 32-bit integers in a left by count bits while shifting in zeros. : https://msdn.microsoft.com/en-us/library/z2k3bbtb%28v=vs.90%29.aspx
 //FORCE_INLINE __m128i _mm_slli_epi32(__m128i a, __constrange(0,255) int imm)
@@ -887,6 +897,22 @@ FORCE_INLINE __m128i _mm_shuffle_epi32_default(__m128i a, __constrange(0,255) in
 	} \
 	else { \
 		ret = vreinterpretq_m128i_s32(vshrq_n_s32(vreinterpretq_s32_m128i(a), (imm))); \
+	} \
+	ret; \
+})
+
+#define _mm_srai_epi16(a, imm) \
+({ \
+	__m128i ret; \
+	if ((imm) <= 0) { \
+		ret = a; \
+	} \
+	else if ((imm) > 15) { \
+		ret = vreinterpretq_m128i_s16(vshrq_n_s16(vreinterpretq_s16_m128i(a), 8)); \
+		ret = vreinterpretq_m128i_s16(vshrq_n_s16(vreinterpretq_s16_m128i(ret), 8)); \
+	} \
+	else { \
+		ret = vreinterpretq_m128i_s16(vshrq_n_s16(vreinterpretq_s16_m128i(a), (imm))); \
 	} \
 	ret; \
 })
@@ -1002,6 +1028,10 @@ FORCE_INLINE __m128i _mm_add_epi32(__m128i a, __m128i b)
 FORCE_INLINE __m128i _mm_add_epi16(__m128i a, __m128i b)
 {
 	return vreinterpretq_m128i_s16(vaddq_s16(vreinterpretq_s16_m128i(a), vreinterpretq_s16_m128i(b)));
+}
+
+FORCE_INLINE __m128i _mm_add_epi64(__m128i a, __m128i b) {
+    return vreinterpretq_m128i_s64(vaddq_s64(vreinterpretq_s64_m128i(a), vreinterpretq_s64_m128i(b)));
 }
 
 // Multiplies the 8 signed or unsigned 16-bit integers from a by the 8 signed or unsigned 16-bit integers from b. https://msdn.microsoft.com/en-us/library/vstudio/9ks1472s(v=vs.100).aspx
