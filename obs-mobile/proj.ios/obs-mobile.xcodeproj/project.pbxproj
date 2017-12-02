@@ -18,6 +18,17 @@
 		922840991FD0555D000AA83C /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922840971FD0555C000AA83C /* libcrypto.a */; };
 		9239D3551FD2C2B1008ADEBB /* platform-nix.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3541FD2C2B1008ADEBB /* platform-nix.c */; };
 		9239D3571FD2C392008ADEBB /* platform-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3561FD2C392008ADEBB /* platform-ios.m */; };
+		9239D3871FD2F4C6008ADEBB /* gl-helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3791FD2F4C6008ADEBB /* gl-helpers.c */; };
+		9239D3881FD2F4C6008ADEBB /* gl-indexbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37B1FD2F4C6008ADEBB /* gl-indexbuffer.c */; };
+		9239D3891FD2F4C6008ADEBB /* gl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37C1FD2F4C6008ADEBB /* gl-ios.mm */; };
+		9239D38A1FD2F4C6008ADEBB /* gl-shader.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37D1FD2F4C6008ADEBB /* gl-shader.c */; };
+		9239D38B1FD2F4C6008ADEBB /* gl-shaderparser.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37E1FD2F4C6008ADEBB /* gl-shaderparser.c */; };
+		9239D38C1FD2F4C6008ADEBB /* gl-stagesurf.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3801FD2F4C6008ADEBB /* gl-stagesurf.c */; };
+		9239D38D1FD2F4C6008ADEBB /* gl-subsystem.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3811FD2F4C6008ADEBB /* gl-subsystem.c */; };
+		9239D38E1FD2F4C6008ADEBB /* gl-texture2d.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3831FD2F4C6008ADEBB /* gl-texture2d.c */; };
+		9239D38F1FD2F4C6008ADEBB /* gl-texturecube.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3841FD2F4C6008ADEBB /* gl-texturecube.c */; };
+		9239D3901FD2F4C6008ADEBB /* gl-vertexbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3851FD2F4C6008ADEBB /* gl-vertexbuffer.c */; };
+		9239D3911FD2F4C6008ADEBB /* gl-zstencil.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3861FD2F4C6008ADEBB /* gl-zstencil.c */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -151,6 +162,20 @@
 		922840971FD0555C000AA83C /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../third_party/ios/libraries/libcrypto.a; sourceTree = "<group>"; };
 		9239D3541FD2C2B1008ADEBB /* platform-nix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "platform-nix.c"; sourceTree = "<group>"; };
 		9239D3561FD2C392008ADEBB /* platform-ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "platform-ios.m"; sourceTree = "<group>"; };
+		9239D3791FD2F4C6008ADEBB /* gl-helpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-helpers.c"; sourceTree = "<group>"; };
+		9239D37A1FD2F4C6008ADEBB /* gl-helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gl-helpers.h"; sourceTree = "<group>"; };
+		9239D37B1FD2F4C6008ADEBB /* gl-indexbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-indexbuffer.c"; sourceTree = "<group>"; };
+		9239D37C1FD2F4C6008ADEBB /* gl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "gl-ios.mm"; sourceTree = "<group>"; };
+		9239D37D1FD2F4C6008ADEBB /* gl-shader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-shader.c"; sourceTree = "<group>"; };
+		9239D37E1FD2F4C6008ADEBB /* gl-shaderparser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-shaderparser.c"; sourceTree = "<group>"; };
+		9239D37F1FD2F4C6008ADEBB /* gl-shaderparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gl-shaderparser.h"; sourceTree = "<group>"; };
+		9239D3801FD2F4C6008ADEBB /* gl-stagesurf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-stagesurf.c"; sourceTree = "<group>"; };
+		9239D3811FD2F4C6008ADEBB /* gl-subsystem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-subsystem.c"; sourceTree = "<group>"; };
+		9239D3821FD2F4C6008ADEBB /* gl-subsystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gl-subsystem.h"; sourceTree = "<group>"; };
+		9239D3831FD2F4C6008ADEBB /* gl-texture2d.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-texture2d.c"; sourceTree = "<group>"; };
+		9239D3841FD2F4C6008ADEBB /* gl-texturecube.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-texturecube.c"; sourceTree = "<group>"; };
+		9239D3851FD2F4C6008ADEBB /* gl-vertexbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-vertexbuffer.c"; sourceTree = "<group>"; };
+		9239D3861FD2F4C6008ADEBB /* gl-zstencil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-zstencil.c"; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -400,6 +425,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9239D3781FD2F4C6008ADEBB /* libobs-opengles */ = {
+			isa = PBXGroup;
+			children = (
+				9239D3791FD2F4C6008ADEBB /* gl-helpers.c */,
+				9239D37A1FD2F4C6008ADEBB /* gl-helpers.h */,
+				9239D37B1FD2F4C6008ADEBB /* gl-indexbuffer.c */,
+				9239D37C1FD2F4C6008ADEBB /* gl-ios.mm */,
+				9239D37D1FD2F4C6008ADEBB /* gl-shader.c */,
+				9239D37E1FD2F4C6008ADEBB /* gl-shaderparser.c */,
+				9239D37F1FD2F4C6008ADEBB /* gl-shaderparser.h */,
+				9239D3801FD2F4C6008ADEBB /* gl-stagesurf.c */,
+				9239D3811FD2F4C6008ADEBB /* gl-subsystem.c */,
+				9239D3821FD2F4C6008ADEBB /* gl-subsystem.h */,
+				9239D3831FD2F4C6008ADEBB /* gl-texture2d.c */,
+				9239D3841FD2F4C6008ADEBB /* gl-texturecube.c */,
+				9239D3851FD2F4C6008ADEBB /* gl-vertexbuffer.c */,
+				9239D3861FD2F4C6008ADEBB /* gl-zstencil.c */,
+			);
+			name = "libobs-opengles";
+			path = "../../../libobs-opengles";
+			sourceTree = "<group>";
+		};
 		92417A8F1FCD804B00A852EE /* libobs */ = {
 			isa = PBXGroup;
 			children = (
@@ -782,6 +829,7 @@
 			children = (
 				92417BD61FCD806300A852EE /* deps */,
 				92417A8F1FCD804B00A852EE /* libobs */,
+				9239D3781FD2F4C6008ADEBB /* libobs-opengles */,
 				925E18421F6EAB45007DC703 /* AppDelegate.h */,
 				925E18431F6EAB45007DC703 /* AppDelegate.mm */,
 				925E18441F6EAB45007DC703 /* main.m */,
@@ -936,10 +984,13 @@
 				92417B961FCD804B00A852EE /* shader-parser.c in Sources */,
 				92417BAE1FCD804B00A852EE /* obs-ios.m in Sources */,
 				92417BA71FCD804B00A852EE /* obs-audio.c in Sources */,
+				9239D3911FD2F4C6008ADEBB /* gl-zstencil.c in Sources */,
 				92417BD21FCD804B00A852EE /* text-lookup.c in Sources */,
+				9239D38F1FD2F4C6008ADEBB /* gl-texturecube.c in Sources */,
 				9241807C1FCD806500A852EE /* file-updater.c in Sources */,
 				92417BD01FCD804B00A852EE /* platform.c in Sources */,
 				9241807E1FCD806500A852EE /* glad.c in Sources */,
+				9239D38D1FD2F4C6008ADEBB /* gl-subsystem.c in Sources */,
 				924180B51FCD806500A852EE /* strconv.c in Sources */,
 				92417B711FCD804B00A852EE /* decl.c in Sources */,
 				92417BB51FCD804B00A852EE /* obs-scene.c in Sources */,
@@ -949,6 +1000,7 @@
 				92417BC91FCD804B00A852EE /* lexer.c in Sources */,
 				92417BB31FCD804B00A852EE /* obs-output.c in Sources */,
 				92417B891FCD804B00A852EE /* effect-parser.c in Sources */,
+				9239D38E1FD2F4C6008ADEBB /* gl-texture2d.c in Sources */,
 				92417B991FCD804B00A852EE /* vec3.c in Sources */,
 				92417BC71FCD804B00A852EE /* dstr.c in Sources */,
 				92417BC11FCD804B00A852EE /* base.c in Sources */,
@@ -982,6 +1034,8 @@
 				92417BAD1FCD804B00A852EE /* obs-hotkey.c in Sources */,
 				92417B8F1FCD804B00A852EE /* image-file.c in Sources */,
 				92417BB81FCD804B00A852EE /* obs-source-transition.c in Sources */,
+				9239D38B1FD2F4C6008ADEBB /* gl-shaderparser.c in Sources */,
+				9239D3891FD2F4C6008ADEBB /* gl-ios.mm in Sources */,
 				924180B71FCD806500A852EE /* value.c in Sources */,
 				92417B8E1FCD804B00A852EE /* graphics.c in Sources */,
 				925E18481F6EAB45007DC703 /* main.m in Sources */,
@@ -991,6 +1045,7 @@
 				924180B61FCD806500A852EE /* utf.c in Sources */,
 				924180AB1FCD806500A852EE /* error.c in Sources */,
 				92417B901FCD804B00A852EE /* libnsgif.c in Sources */,
+				9239D38A1FD2F4C6008ADEBB /* gl-shader.c in Sources */,
 				92417BA41FCD804B00A852EE /* video-matrices.c in Sources */,
 				92417BB41FCD804B00A852EE /* obs-properties.c in Sources */,
 				92417BC31FCD804B00A852EE /* cf-lexer.c in Sources */,
@@ -1006,6 +1061,9 @@
 				92417BC81FCD804B00A852EE /* file-serializer.c in Sources */,
 				925E18471F6EAB45007DC703 /* AppDelegate.mm in Sources */,
 				92417B9D1FCD804B00A852EE /* audio-io.c in Sources */,
+				9239D3871FD2F4C6008ADEBB /* gl-helpers.c in Sources */,
+				9239D38C1FD2F4C6008ADEBB /* gl-stagesurf.c in Sources */,
+				9239D3901FD2F4C6008ADEBB /* gl-vertexbuffer.c in Sources */,
 				92417B9A1FCD804B00A852EE /* vec4.c in Sources */,
 				92417BAF1FCD804B00A852EE /* obs-module.c in Sources */,
 				92417B721FCD804B00A852EE /* proc.c in Sources */,
@@ -1015,6 +1073,7 @@
 				92417BB71FCD804B00A852EE /* obs-source-deinterlace.c in Sources */,
 				92417B9E1FCD804B00A852EE /* audio-resampler-ffmpeg.c in Sources */,
 				92417B971FCD804B00A852EE /* texture-render.c in Sources */,
+				9239D3881FD2F4C6008ADEBB /* gl-indexbuffer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
