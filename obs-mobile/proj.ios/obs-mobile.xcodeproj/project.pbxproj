@@ -16,6 +16,8 @@
 		922840951FD0259C000AA83C /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9228408E1FD0259C000AA83C /* libavcodec.a */; };
 		922840981FD0555D000AA83C /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922840961FD0555C000AA83C /* libssl.a */; };
 		922840991FD0555D000AA83C /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922840971FD0555C000AA83C /* libcrypto.a */; };
+		9239D3551FD2C2B1008ADEBB /* platform-nix.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3541FD2C2B1008ADEBB /* platform-nix.c */; };
+		9239D3571FD2C392008ADEBB /* platform-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3561FD2C392008ADEBB /* platform-ios.m */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -100,7 +102,6 @@
 		92417BC81FCD804B00A852EE /* file-serializer.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B421FCD804B00A852EE /* file-serializer.c */; };
 		92417BC91FCD804B00A852EE /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B441FCD804B00A852EE /* lexer.c */; };
 		92417BCA1FCD804B00A852EE /* pipe-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B461FCD804B00A852EE /* pipe-posix.c */; };
-		92417BCE1FCD804B00A852EE /* platform-osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4B1FCD804B00A852EE /* platform-osx.m */; };
 		92417BD01FCD804B00A852EE /* platform.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4D1FCD804B00A852EE /* platform.c */; };
 		92417BD11FCD804B00A852EE /* profiler.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B4F1FCD804B00A852EE /* profiler.c */; };
 		92417BD21FCD804B00A852EE /* text-lookup.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B531FCD804B00A852EE /* text-lookup.c */; };
@@ -148,6 +149,8 @@
 		9228408E1FD0259C000AA83C /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../third_party/ios/libraries/libavcodec.a; sourceTree = "<group>"; };
 		922840961FD0555C000AA83C /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../third_party/ios/libraries/libssl.a; sourceTree = "<group>"; };
 		922840971FD0555C000AA83C /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../third_party/ios/libraries/libcrypto.a; sourceTree = "<group>"; };
+		9239D3541FD2C2B1008ADEBB /* platform-nix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "platform-nix.c"; sourceTree = "<group>"; };
+		9239D3561FD2C392008ADEBB /* platform-ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "platform-ios.m"; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -303,7 +306,6 @@
 		92417B451FCD804B00A852EE /* lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
 		92417B461FCD804B00A852EE /* pipe-posix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "pipe-posix.c"; sourceTree = "<group>"; };
 		92417B481FCD804B00A852EE /* pipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pipe.h; sourceTree = "<group>"; };
-		92417B4B1FCD804B00A852EE /* platform-osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "platform-osx.m"; sourceTree = "<group>"; };
 		92417B4D1FCD804B00A852EE /* platform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = platform.c; sourceTree = "<group>"; };
 		92417B4E1FCD804B00A852EE /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		92417B4F1FCD804B00A852EE /* profiler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = profiler.c; sourceTree = "<group>"; };
@@ -623,7 +625,8 @@
 				92417B451FCD804B00A852EE /* lexer.h */,
 				92417B461FCD804B00A852EE /* pipe-posix.c */,
 				92417B481FCD804B00A852EE /* pipe.h */,
-				92417B4B1FCD804B00A852EE /* platform-osx.m */,
+				9239D3541FD2C2B1008ADEBB /* platform-nix.c */,
+				9239D3561FD2C392008ADEBB /* platform-ios.m */,
 				92417B4D1FCD804B00A852EE /* platform.c */,
 				92417B4E1FCD804B00A852EE /* platform.h */,
 				92417B4F1FCD804B00A852EE /* profiler.c */,
@@ -947,7 +950,6 @@
 				92417BB31FCD804B00A852EE /* obs-output.c in Sources */,
 				92417B891FCD804B00A852EE /* effect-parser.c in Sources */,
 				92417B991FCD804B00A852EE /* vec3.c in Sources */,
-				92417BCE1FCD804B00A852EE /* platform-osx.m in Sources */,
 				92417BC71FCD804B00A852EE /* dstr.c in Sources */,
 				92417BC11FCD804B00A852EE /* base.c in Sources */,
 				92417BD51FCD804B00A852EE /* utf8.c in Sources */,
@@ -993,11 +995,13 @@
 				92417BB41FCD804B00A852EE /* obs-properties.c in Sources */,
 				92417BC31FCD804B00A852EE /* cf-lexer.c in Sources */,
 				92417BD11FCD804B00A852EE /* profiler.c in Sources */,
+				9239D3551FD2C2B1008ADEBB /* platform-nix.c in Sources */,
 				92417BA11FCD804B00A852EE /* video-fourcc.c in Sources */,
 				924180B21FCD806500A852EE /* memory.c in Sources */,
 				92417BB21FCD804B00A852EE /* obs-output-delay.c in Sources */,
 				92417BBA1FCD804B00A852EE /* obs-video.c in Sources */,
 				92417B701FCD804B00A852EE /* calldata.c in Sources */,
+				9239D3571FD2C392008ADEBB /* platform-ios.m in Sources */,
 				924180AC1FCD806500A852EE /* hashtable.c in Sources */,
 				92417BC81FCD804B00A852EE /* file-serializer.c in Sources */,
 				925E18471F6EAB45007DC703 /* AppDelegate.mm in Sources */,
@@ -1131,7 +1135,6 @@
 		925E183F1F6EAAC2007DC703 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6N3H22GT6H;
 				ENABLE_BITCODE = NO;
@@ -1156,7 +1159,6 @@
 		925E18401F6EAAC2007DC703 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6N3H22GT6H;
 				ENABLE_BITCODE = NO;
