@@ -35,6 +35,10 @@
 #include <graphics/matrix4.h>
 #include "gl-helpers.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 struct gl_platform;
 struct gl_windowinfo;
 
@@ -48,15 +52,16 @@ enum copy_type {
 struct obsGLversionStruct {
     int major;
     int minor;
-} GLVersion;
+};
+extern struct obsGLversionStruct GLVersion;
 
 // version flag
-bool GLES_VERSION_1_0;
-bool GLES_VERSION_1_1;
-bool GLES_VERSION_2_0;
-bool GLES_VERSION_3_0;
-bool GLES_VERSION_3_1;
-bool GLES_VERSION_3_2;
+extern bool GLES_VERSION_1_0;
+extern bool GLES_VERSION_1_1;
+extern bool GLES_VERSION_2_0;
+extern bool GLES_VERSION_3_0;
+extern bool GLES_VERSION_3_1;
+extern bool GLES_VERSION_3_2;
 
 static inline GLint convert_gs_format(enum gs_color_format format)
 {
@@ -539,3 +544,7 @@ extern void                  gl_windowinfo_destroy(struct gl_windowinfo *wi);
 extern void                  gl_getclientsize(const struct gs_swap_chain *swap,
                                               uint32_t *width,
                                               uint32_t *height);
+
+#ifdef __cplusplus
+}
+#endif

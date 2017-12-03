@@ -23,9 +23,14 @@
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
 #import <UIKit/UIKit.h>
+#import "EAGLView.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 struct gl_windowinfo {
-	UIView *view;
+	EAGLView* view;
 };
 
 struct gl_platform {
@@ -33,43 +38,21 @@ struct gl_platform {
 };
 
 static EAGLContext *gl_context_create(void) {
-    // create context
-    EAGLContext* context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-	return context;
+    return nil;
 }
 
 struct gl_platform *gl_platform_create(gs_device_t *device, uint32_t adapter)
 {
 	struct gl_platform *plat = (struct gl_platform *)bzalloc(sizeof(struct gl_platform));
-	GLint interval = 0;
-
-	plat->context = gl_context_create();
-	if (!plat->context)
-		goto fail;
-
-    [EAGLContext setCurrentContext:plat->context];
-
 	return plat;
-
-fail:
-	blog(LOG_ERROR, "gl_platform_create failed");
-	gl_platform_destroy(plat);
-
-	UNUSED_PARAMETER(device);
-	UNUSED_PARAMETER(adapter);
-	return NULL;
 }
 
 void gl_platform_destroy(struct gl_platform *platform)
 {
 	if(!platform)
 		return;
-
-#if !__has_feature(objc_arc)
-    [platform->context release];
-#endif
+    
 	platform->context = nil;
-
 	bfree(platform);
 }
 
@@ -114,32 +97,32 @@ void gl_update(gs_device_t *device)
     // nothing to do for OpenGLES
 }
 
-void device_enter_context(gs_device_t *device)
+void GL_MANGLING(device_enter_context)(gs_device_t *device)
 {
     [EAGLContext setCurrentContext:device->plat->context];
 }
 
-void device_leave_context(gs_device_t *device)
+void GL_MANGLING(device_leave_context)(gs_device_t *device)
 {
 	UNUSED_PARAMETER(device);
 
     [EAGLContext setCurrentContext:nil];
 }
 
-void device_load_swapchain(gs_device_t *device, gs_swapchain_t *swap)
+void GL_MANGLING(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swap)
 {
 	if(device->cur_swap == swap)
 		return;
 
 	device->cur_swap = swap;
 	if (swap) {
-		[device->plat->context setView:swap->wi->view];
+        [EAGLContext setCurrentContext:swap->wi->view.context];
 	} else {
-		[device->plat->context clearDrawable];
+        [EAGLContext setCurrentContext:nil];
 	}
 }
 
-void device_present(gs_device_t *device)
+void GL_MANGLING(device_present)(gs_device_t *device)
 {
 	[device->plat->context presentRenderbuffer:GL_FRAMEBUFFER];
 }
@@ -150,6 +133,16 @@ void gl_getclientsize(const struct gs_swap_chain *swap, uint32_t *width,
 	if(width) *width = swap->info.cx;
 	if(height) *height = swap->info.cy;
 }
+    
+bool GL_MANGLING(device_enum_adapters)(bool (*callback)(void *param, const char *name, uint32_t id),
+                                       void *param) {
+    // it is optional and not needed in iOS
+    return false;
+}
+    
+#ifdef __cplusplus
+}
+#endif
 
 #endif // #if TARGET_OS_IPHONE
 

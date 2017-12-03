@@ -48,9 +48,6 @@
             context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:sharegroup];
 
         if (!context_ || ![EAGLContext setCurrentContext:context_]) {
-#if !__has_feature(objc_arc)
-            [self release];
-#endif
             return nil;
         }
         
@@ -131,7 +128,7 @@
         }
     }
 
-    CHECK_GL_ERROR();
+    gl_success("resizeFromLayer");
 
     if (depthFormat_)
     {
@@ -157,7 +154,7 @@
         glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer_);        
     }
 
-    CHECK_GL_ERROR();
+    gl_success("resizeFromLayer");
 
     GLenum error;
     if( (error=glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE) {

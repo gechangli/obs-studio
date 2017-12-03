@@ -27,6 +27,17 @@
 extern "C" {
 #endif
     
+// version struct
+struct obsGLversionStruct GLVersion;
+    
+// version flag
+bool GLES_VERSION_1_0;
+bool GLES_VERSION_1_1;
+bool GLES_VERSION_2_0;
+bool GLES_VERSION_3_0;
+bool GLES_VERSION_3_1;
+bool GLES_VERSION_3_2;
+
 /* #define SHOW_ALL_GL_MESSAGES */
 
 #ifdef _DEBUG
