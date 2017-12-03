@@ -20,7 +20,6 @@
 		9239D3571FD2C392008ADEBB /* platform-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3561FD2C392008ADEBB /* platform-ios.m */; };
 		9239D3871FD2F4C6008ADEBB /* gl-helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3791FD2F4C6008ADEBB /* gl-helpers.c */; };
 		9239D3881FD2F4C6008ADEBB /* gl-indexbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37B1FD2F4C6008ADEBB /* gl-indexbuffer.c */; };
-		9239D3891FD2F4C6008ADEBB /* gl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37C1FD2F4C6008ADEBB /* gl-ios.mm */; };
 		9239D38A1FD2F4C6008ADEBB /* gl-shader.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37D1FD2F4C6008ADEBB /* gl-shader.c */; };
 		9239D38B1FD2F4C6008ADEBB /* gl-shaderparser.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D37E1FD2F4C6008ADEBB /* gl-shaderparser.c */; };
 		9239D38C1FD2F4C6008ADEBB /* gl-stagesurf.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3801FD2F4C6008ADEBB /* gl-stagesurf.c */; };
@@ -119,7 +118,6 @@
 		92417BD31FCD804B00A852EE /* threading-posix.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B551FCD804B00A852EE /* threading-posix.c */; };
 		92417BD51FCD804B00A852EE /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B5A1FCD804B00A852EE /* utf8.c */; };
 		9241807C1FCD806500A852EE /* file-updater.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417BE11FCD806300A852EE /* file-updater.c */; };
-		9241807E1FCD806500A852EE /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417BED1FCD806300A852EE /* glad.c */; };
 		924180AA1FCD806500A852EE /* dump.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C261FCD806300A852EE /* dump.c */; };
 		924180AB1FCD806500A852EE /* error.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C271FCD806300A852EE /* error.c */; };
 		924180AC1FCD806500A852EE /* hashtable.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C281FCD806300A852EE /* hashtable.c */; };
@@ -148,6 +146,9 @@
 		925E198B1F6EB701007DC703 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 925E198A1F6EB701007DC703 /* libz.tbd */; };
 		925E198D1F6EB714007DC703 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 925E198C1F6EB714007DC703 /* libiconv.tbd */; };
 		925E198F1F6EB779007DC703 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 925E198E1F6EB779007DC703 /* libbz2.tbd */; };
+		9275C83F1FD3DD3A00D6DD7D /* CCES3Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */; };
+		9275C8401FD3DD3A00D6DD7D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */; };
+		9275C8411FD3DD3A00D6DD7D /* gl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -165,7 +166,6 @@
 		9239D3791FD2F4C6008ADEBB /* gl-helpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-helpers.c"; sourceTree = "<group>"; };
 		9239D37A1FD2F4C6008ADEBB /* gl-helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gl-helpers.h"; sourceTree = "<group>"; };
 		9239D37B1FD2F4C6008ADEBB /* gl-indexbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-indexbuffer.c"; sourceTree = "<group>"; };
-		9239D37C1FD2F4C6008ADEBB /* gl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "gl-ios.mm"; sourceTree = "<group>"; };
 		9239D37D1FD2F4C6008ADEBB /* gl-shader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-shader.c"; sourceTree = "<group>"; };
 		9239D37E1FD2F4C6008ADEBB /* gl-shaderparser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-shaderparser.c"; sourceTree = "<group>"; };
 		9239D37F1FD2F4C6008ADEBB /* gl-shaderparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "gl-shaderparser.h"; sourceTree = "<group>"; };
@@ -348,9 +348,6 @@
 		92417B5D1FCD804B00A852EE /* util_uint128.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = util_uint128.h; sourceTree = "<group>"; };
 		92417BE11FCD806300A852EE /* file-updater.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "file-updater.c"; sourceTree = "<group>"; };
 		92417BE21FCD806300A852EE /* file-updater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "file-updater.h"; sourceTree = "<group>"; };
-		92417BE71FCD806300A852EE /* glad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glad.h; sourceTree = "<group>"; };
-		92417BEB1FCD806300A852EE /* khrplatform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = khrplatform.h; sourceTree = "<group>"; };
-		92417BED1FCD806300A852EE /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 		92417C261FCD806300A852EE /* dump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dump.c; sourceTree = "<group>"; };
 		92417C271FCD806300A852EE /* error.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = error.c; sourceTree = "<group>"; };
 		92417C281FCD806300A852EE /* hashtable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hashtable.c; sourceTree = "<group>"; };
@@ -392,6 +389,12 @@
 		925E198A1F6EB701007DC703 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		925E198C1F6EB714007DC703 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		925E198E1F6EB779007DC703 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		9275C8391FD3DD3A00D6DD7D /* CCES3Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCES3Renderer.h; sourceTree = "<group>"; };
+		9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCES3Renderer.m; sourceTree = "<group>"; };
+		9275C83B1FD3DD3A00D6DD7D /* CCESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCESRenderer.h; sourceTree = "<group>"; };
+		9275C83C1FD3DD3A00D6DD7D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
+		9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
+		9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "gl-ios.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -428,10 +431,10 @@
 		9239D3781FD2F4C6008ADEBB /* libobs-opengles */ = {
 			isa = PBXGroup;
 			children = (
+				9275C8381FD3DD3A00D6DD7D /* ios */,
 				9239D3791FD2F4C6008ADEBB /* gl-helpers.c */,
 				9239D37A1FD2F4C6008ADEBB /* gl-helpers.h */,
 				9239D37B1FD2F4C6008ADEBB /* gl-indexbuffer.c */,
-				9239D37C1FD2F4C6008ADEBB /* gl-ios.mm */,
 				9239D37D1FD2F4C6008ADEBB /* gl-shader.c */,
 				9239D37E1FD2F4C6008ADEBB /* gl-shaderparser.c */,
 				9239D37F1FD2F4C6008ADEBB /* gl-shaderparser.h */,
@@ -697,7 +700,6 @@
 			isa = PBXGroup;
 			children = (
 				92417BDE1FCD806300A852EE /* file-updater */,
-				92417BE31FCD806300A852EE /* glad */,
 				92417BF81FCD806300A852EE /* jansson */,
 			);
 			name = deps;
@@ -719,48 +721,6 @@
 				92417BE21FCD806300A852EE /* file-updater.h */,
 			);
 			path = "file-updater";
-			sourceTree = "<group>";
-		};
-		92417BE31FCD806300A852EE /* glad */ = {
-			isa = PBXGroup;
-			children = (
-				92417BE51FCD806300A852EE /* include */,
-				92417BEC1FCD806300A852EE /* src */,
-			);
-			path = glad;
-			sourceTree = "<group>";
-		};
-		92417BE51FCD806300A852EE /* include */ = {
-			isa = PBXGroup;
-			children = (
-				92417BE61FCD806300A852EE /* glad */,
-				92417BEA1FCD806300A852EE /* KHR */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		92417BE61FCD806300A852EE /* glad */ = {
-			isa = PBXGroup;
-			children = (
-				92417BE71FCD806300A852EE /* glad.h */,
-			);
-			path = glad;
-			sourceTree = "<group>";
-		};
-		92417BEA1FCD806300A852EE /* KHR */ = {
-			isa = PBXGroup;
-			children = (
-				92417BEB1FCD806300A852EE /* khrplatform.h */,
-			);
-			path = KHR;
-			sourceTree = "<group>";
-		};
-		92417BEC1FCD806300A852EE /* src */ = {
-			isa = PBXGroup;
-			children = (
-				92417BED1FCD806300A852EE /* glad.c */,
-			);
-			path = src;
 			sourceTree = "<group>";
 		};
 		92417BF81FCD806300A852EE /* jansson */ = {
@@ -884,6 +844,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9275C8381FD3DD3A00D6DD7D /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				9275C8391FD3DD3A00D6DD7D /* CCES3Renderer.h */,
+				9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */,
+				9275C83B1FD3DD3A00D6DD7D /* CCESRenderer.h */,
+				9275C83C1FD3DD3A00D6DD7D /* EAGLView.h */,
+				9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */,
+				9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -979,8 +952,10 @@
 				92417BBB1FCD804B00A852EE /* obs-view.c in Sources */,
 				92417BC41FCD804B00A852EE /* cf-parser.c in Sources */,
 				92417BAB1FCD804B00A852EE /* obs-encoder.c in Sources */,
+				9275C8411FD3DD3A00D6DD7D /* gl-ios.mm in Sources */,
 				92417B911FCD804B00A852EE /* math-extra.c in Sources */,
 				92417BB61FCD804B00A852EE /* obs-service.c in Sources */,
+				9275C8401FD3DD3A00D6DD7D /* EAGLView.mm in Sources */,
 				92417B961FCD804B00A852EE /* shader-parser.c in Sources */,
 				92417BAE1FCD804B00A852EE /* obs-ios.m in Sources */,
 				92417BA71FCD804B00A852EE /* obs-audio.c in Sources */,
@@ -989,7 +964,6 @@
 				9239D38F1FD2F4C6008ADEBB /* gl-texturecube.c in Sources */,
 				9241807C1FCD806500A852EE /* file-updater.c in Sources */,
 				92417BD01FCD804B00A852EE /* platform.c in Sources */,
-				9241807E1FCD806500A852EE /* glad.c in Sources */,
 				9239D38D1FD2F4C6008ADEBB /* gl-subsystem.c in Sources */,
 				924180B51FCD806500A852EE /* strconv.c in Sources */,
 				92417B711FCD804B00A852EE /* decl.c in Sources */,
@@ -1012,6 +986,7 @@
 				924180B41FCD806500A852EE /* strbuffer.c in Sources */,
 				92417B8B1FCD804B00A852EE /* graphics-ffmpeg.c in Sources */,
 				92417BA51FCD804B00A852EE /* video-scaler-ffmpeg.c in Sources */,
+				9275C83F1FD3DD3A00D6DD7D /* CCES3Renderer.m in Sources */,
 				92417BC51FCD804B00A852EE /* config-file.c in Sources */,
 				924180AA1FCD806500A852EE /* dump.c in Sources */,
 				92417BC61FCD804B00A852EE /* crc32.c in Sources */,
@@ -1035,7 +1010,6 @@
 				92417B8F1FCD804B00A852EE /* image-file.c in Sources */,
 				92417BB81FCD804B00A852EE /* obs-source-transition.c in Sources */,
 				9239D38B1FD2F4C6008ADEBB /* gl-shaderparser.c in Sources */,
-				9239D3891FD2F4C6008ADEBB /* gl-ios.mm in Sources */,
 				924180B71FCD806500A852EE /* value.c in Sources */,
 				92417B8E1FCD804B00A852EE /* graphics.c in Sources */,
 				925E18481F6EAB45007DC703 /* main.m in Sources */,

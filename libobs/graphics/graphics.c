@@ -28,6 +28,10 @@
 #include "effect-parser.h"
 #include "effect.h"
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 #ifdef _MSC_VER
 static __declspec(thread) graphics_t *thread_graphics = NULL;
 #else /* assume GCC or that other compiler we dare not mention */
@@ -2486,7 +2490,7 @@ enum gs_index_type gs_indexbuffer_get_type(const gs_indexbuffer_t *indexbuffer)
 	return thread_graphics->exports.gs_indexbuffer_get_type(indexbuffer);
 }
 
-#ifdef __APPLE__
+#if TARGET_OS_OSX
 
 /** Platform specific functions */
 gs_texture_t *gs_texture_create_from_iosurface(void *iosurf)

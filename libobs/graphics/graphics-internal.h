@@ -23,6 +23,10 @@
 #include "matrix3.h"
 #include "matrix4.h"
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 struct gs_exports {
 	const char *(*device_get_name)(void);
 	int (*device_get_type)(void);
@@ -228,7 +232,7 @@ struct gs_exports {
 	void (*gs_shader_set_next_sampler)(gs_sparam_t *param,
 			gs_samplerstate_t *sampler);
 
-#ifdef __APPLE__
+#if TARGET_OS_OSX
 	/* OSX/Cocoa specific functions */
 	gs_texture_t *(*device_texture_create_from_iosurface)(gs_device_t *dev,
 			void *iosurf);
@@ -257,7 +261,7 @@ struct gs_exports {
 
 	gs_texture_t *(*device_texture_open_shared)(gs_device_t *device,
 				uint32_t handle);
-#endif
+#endif // #if TARGET_OS_OSX
 };
 
 struct blend_state {

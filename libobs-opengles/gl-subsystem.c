@@ -117,34 +117,34 @@ static void gl_enable_debug()
 }
 #else
 static void gl_enable_debug() {}
-#endif
+#endif // #ifdef _DEBUG
+
+static void find_coreGL(void) {
+    const char *v = (const char *)glGetString(GL_VERSION);
+    int major = v[0] - '0';
+    int minor = v[2] - '0';
+    GLVersion.major = major;
+    GLVersion.minor = minor;
+    GLES_VERSION_1_0 = (major == 1 && minor >= 0) || major > 1;
+    GLES_VERSION_1_1 = (major == 1 && minor >= 1) || major > 1;
+    GLES_VERSION_2_0 = (major == 2 && minor >= 0) || major > 2;
+    GLES_VERSION_3_0 = (major == 3 && minor >= 0) || major > 3;
+    GLES_VERSION_3_1 = (major == 3 && minor >= 1) || major > 3;
+    GLES_VERSION_3_2 = (major == 3 && minor >= 2) || major > 3;
+}
 
 static bool gl_init_extensions(struct gs_device* device)
 {
-	if (!GLAD_GL_VERSION_2_1) {
-		blog(LOG_ERROR, "obs-studio requires OpenGL version 2.1 or "
+	if (!GLES_VERSION_2_0) {
+		blog(LOG_ERROR, "obs-studio requires OpenGLES version 2.0 or "
 		                "higher.");
 		return false;
 	}
 
 	gl_enable_debug();
 
-	if (!GLAD_GL_VERSION_3_0 && !GLAD_GL_ARB_framebuffer_object) {
-		blog(LOG_ERROR, "OpenGL extension ARB_framebuffer_object "
-		                "is required.");
-		return false;
-	}
-
-	if (GLAD_GL_VERSION_3_2 || GLAD_GL_ARB_seamless_cube_map) {
-		gl_enable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-	}
-
-	if (GLAD_GL_VERSION_4_3 || GLAD_GL_ARB_copy_image)
-		device->copy_type = COPY_TYPE_ARB;
-	else if (GLAD_GL_NV_copy_image)
-		device->copy_type = COPY_TYPE_NV;
-	else
-		device->copy_type = COPY_TYPE_FBO_BLIT;
+    // set to fbo blit type
+    device->copy_type = COPY_TYPE_FBO_BLIT;
 
 	return true;
 }
@@ -1054,7 +1054,7 @@ void GL_MANGLING(device_clear)(gs_device_t *device, uint32_t clear_flags,
 	}
 
 	if (clear_flags & GS_CLEAR_DEPTH) {
-		glClearDepth(depth);
+		glClearDepthf(depth);
 		gl_flags |= GL_DEPTH_BUFFER_BIT;
 	}
 

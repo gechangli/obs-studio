@@ -21,6 +21,7 @@
 #include "input.h"
 #include "obs-config.h"
 #ifdef __APPLE__
+#include <TargetConditionals.h>
 #include <objc/runtime.h>
 #include <objc/message.h>
 #endif
@@ -1009,7 +1010,7 @@ EXPORT void GL_MANGLING(gs_shader_set_default)(gs_sparam_t *param);
 EXPORT void GL_MANGLING(gs_shader_set_next_sampler)(gs_sparam_t *param,
                                        gs_samplerstate_t *sampler);
     
-#ifdef __APPLE__
+#if TARGET_OS_OSX
     /* OSX/Cocoa specific functions */
     EXPORT gs_texture_t * GL_MANGLING(device_texture_create_from_iosurface)(gs_device_t *dev,
                                                           void *iosurf);

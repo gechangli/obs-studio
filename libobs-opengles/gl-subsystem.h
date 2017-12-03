@@ -17,47 +17,65 @@
 
 #pragma once
 
+#ifdef __APPLE__
+    #include <TargetConditionals.h>
+    #if TARGET_OS_IPHONE
+        #import <OpenGLES/ES3/gl.h>
+        #import <OpenGLES/ES3/glext.h>
+    #elif defined(ANDROID)
+        // TODO
+    #endif // #if TARGET_OS_IPHONE
+#endif // #ifdef __APPLE__
+
 #include <obs-config.h>
 #include <util/darray.h>
 #include <util/threading.h>
 #include <graphics/graphics.h>
 #include <graphics/device-exports.h>
 #include <graphics/matrix4.h>
-
-#include <glad/glad.h>
-
 #include "gl-helpers.h"
 
 struct gl_platform;
 struct gl_windowinfo;
 
 enum copy_type {
-	COPY_TYPE_ARB,
-	COPY_TYPE_NV,
+    // XXX: in OpenGLES, we only copy by blit
+//    COPY_TYPE_ARB,
+//    COPY_TYPE_NV,
 	COPY_TYPE_FBO_BLIT
 };
+
+struct obsGLversionStruct {
+    int major;
+    int minor;
+} GLVersion;
+
+// version flag
+bool GLES_VERSION_1_0;
+bool GLES_VERSION_1_1;
+bool GLES_VERSION_2_0;
+bool GLES_VERSION_3_0;
+bool GLES_VERSION_3_1;
+bool GLES_VERSION_3_2;
 
 static inline GLint convert_gs_format(enum gs_color_format format)
 {
 	switch (format) {
-	case GS_A8:          return GL_RED;
-	case GS_R8:          return GL_RED;
+	case GS_A8:          return GL_ALPHA;
+	case GS_R8:          return GL_R8;
 	case GS_RGBA:        return GL_RGBA;
 	case GS_BGRX:        return GL_BGRA;
 	case GS_BGRA:        return GL_BGRA;
-	case GS_R10G10B10A2: return GL_RGBA;
+	case GS_R10G10B10A2: return GL_RGB10_A2;
 	case GS_RGBA16:      return GL_RGBA;
-	case GS_R16:         return GL_RED;
-	case GS_RGBA16F:     return GL_RGBA;
-	case GS_RGBA32F:     return GL_RGBA;
-	case GS_RG16F:       return GL_RG;
-	case GS_RG32F:       return GL_RG;
-	case GS_R16F:        return GL_RED;
-	case GS_R32F:        return GL_RED;
-	case GS_DXT1:        return GL_RGB;
-	case GS_DXT3:        return GL_RGBA;
-	case GS_DXT5:        return GL_RGBA;
-	case GS_UNKNOWN:     return 0;
+	case GS_R16:         return GL_R16I;
+	case GS_RGBA16F:     return GL_RGBA16F;
+	case GS_RGBA32F:     return GL_RGBA32F;
+	case GS_RG16F:       return GL_RG16F;
+	case GS_RG32F:       return GL_RG32F;
+	case GS_R16F:        return GL_R16F;
+	case GS_R32F:        return GL_R32F;
+	default:     return 0;
 	}
 
 	return 0;
@@ -66,24 +84,21 @@ static inline GLint convert_gs_format(enum gs_color_format format)
 static inline GLint convert_gs_internal_format(enum gs_color_format format)
 {
 	switch (format) {
-	case GS_A8:          return GL_R8; /* NOTE: use GL_TEXTURE_SWIZZLE_x */
+	case GS_A8:          return GL_ALPHA; /* NOTE: use GL_TEXTURE_SWIZZLE_x */
 	case GS_R8:          return GL_R8;
-	case GS_RGBA:        return GL_RGBA;
-	case GS_BGRX:        return GL_RGB;
-	case GS_BGRA:        return GL_RGBA;
+	case GS_RGBA:        return GL_RGBA8I;
+	case GS_BGRX:        return GL_BGRA;
+	case GS_BGRA:        return GL_BGRA;
 	case GS_R10G10B10A2: return GL_RGB10_A2;
-	case GS_RGBA16:      return GL_RGBA16;
-	case GS_R16:         return GL_R16;
+	case GS_RGBA16:      return GL_RGBA16I;
+	case GS_R16:         return GL_R16I;
 	case GS_RGBA16F:     return GL_RGBA16F;
 	case GS_RGBA32F:     return GL_RGBA32F;
 	case GS_RG16F:       return GL_RG16F;
 	case GS_RG32F:       return GL_RG32F;
 	case GS_R16F:        return GL_R16F;
 	case GS_R32F:        return GL_R32F;
-	case GS_DXT1:        return GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
-	case GS_DXT3:        return GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
-	case GS_DXT5:        return GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
-	case GS_UNKNOWN:     return 0;
+	default:     return 0;
 	}
 
 	return 0;
@@ -97,7 +112,6 @@ static inline GLenum get_gl_format_type(enum gs_color_format format)
 	case GS_RGBA:        return GL_UNSIGNED_BYTE;
 	case GS_BGRX:        return GL_UNSIGNED_BYTE;
 	case GS_BGRA:        return GL_UNSIGNED_BYTE;
-	case GS_R10G10B10A2: return GL_UNSIGNED_INT_10_10_10_2;
 	case GS_RGBA16:      return GL_UNSIGNED_SHORT;
 	case GS_R16:         return GL_UNSIGNED_SHORT;
 	case GS_RGBA16F:     return GL_UNSIGNED_SHORT;
@@ -109,7 +123,7 @@ static inline GLenum get_gl_format_type(enum gs_color_format format)
 	case GS_DXT1:        return GL_UNSIGNED_BYTE;
 	case GS_DXT3:        return GL_UNSIGNED_BYTE;
 	case GS_DXT5:        return GL_UNSIGNED_BYTE;
-	case GS_UNKNOWN:     return 0;
+	default:     return 0;
 	}
 
 	return GL_UNSIGNED_BYTE;
@@ -250,8 +264,8 @@ static inline GLint convert_address_mode(enum gs_address_mode mode)
 	case GS_ADDRESS_WRAP:       return GL_REPEAT;
 	case GS_ADDRESS_CLAMP:      return GL_CLAMP_TO_EDGE;
 	case GS_ADDRESS_MIRROR:     return GL_MIRRORED_REPEAT;
-	case GS_ADDRESS_BORDER:     return GL_CLAMP_TO_BORDER;
-	case GS_ADDRESS_MIRRORONCE: return GL_MIRROR_CLAMP_EXT;
+	case GS_ADDRESS_BORDER:     return GL_CLAMP_TO_EDGE;
+	case GS_ADDRESS_MIRRORONCE: return GL_MIRRORED_REPEAT;
 	}
 
 	return GL_REPEAT;

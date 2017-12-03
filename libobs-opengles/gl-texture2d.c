@@ -179,8 +179,20 @@ bool GL_MANGLING(gs_texture_map)(gs_texture_t *tex, uint8_t **ptr, uint32_t *lin
 	if (!gl_bind_buffer(GL_PIXEL_UNPACK_BUFFER, tex2d->unpack_buffer))
 		goto fail;
 
-	*ptr = glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY);
-	if (!gl_success("glMapBuffer"))
+    // get size of tex data
+    GLsizeiptr size = tex2d->width * gs_get_format_bpp(tex2d->base.format);
+    if (!gs_is_compressed_format(tex2d->base.format)) {
+        size /= 8;
+        size  = (size+3) & 0xFFFFFFFC;
+        size *= tex2d->height;
+    } else {
+        size *= tex2d->height;
+        size /= 8;
+    }
+    
+    // map buffer range
+    *ptr = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, size, GL_MAP_WRITE_BIT);
+	if (!gl_success("glMapBufferRange"))
 		goto fail;
 
 	gl_bind_buffer(GL_PIXEL_UNPACK_BUFFER, 0);
@@ -229,18 +241,18 @@ failed:
 bool GL_MANGLING(gs_texture_is_rect)(const gs_texture_t *tex)
 {
 	const struct gs_texture_2d *tex2d = (const struct gs_texture_2d*)tex;
-	if (!is_texture_2d(tex, "gs_texture_unmap")) {
+	if (!is_texture_2d(tex, "gs_texture_is_rect")) {
 		blog(LOG_ERROR, "gs_texture_is_rect (GL) failed");
 		return false;
 	}
 
-	return tex2d->base.gl_target == GL_TEXTURE_RECTANGLE;
+    return tex2d->base.gl_target == GL_TEXTURE_2D;
 }
 
 void * GL_MANGLING(gs_texture_get_obj)(gs_texture_t *tex)
 {
 	struct gs_texture_2d *tex2d = (struct gs_texture_2d*)tex;
-	if (!is_texture_2d(tex, "gs_texture_unmap")) {
+	if (!is_texture_2d(tex, "gs_texture_get_obj")) {
 		blog(LOG_ERROR, "gs_texture_get_obj (GL) failed");
 		return NULL;
 	}

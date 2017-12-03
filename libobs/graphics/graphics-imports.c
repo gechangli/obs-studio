@@ -22,6 +22,10 @@
 #include "obs-config.h"
 #include "device-exports.h"
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 #ifdef __STATIC_RENDERER__
 #define GRAPHICS_IMPORT(func) \
     do { \
@@ -183,10 +187,9 @@ bool load_graphics_imports(struct gs_exports *exports, void *module,
 	GRAPHICS_IMPORT(gs_shader_set_next_sampler);
 
 	/* OSX/Cocoa specific functions */
-#ifdef __APPLE__
+#if TARGET_OS_OSX
 	GRAPHICS_IMPORT_OPTIONAL(device_texture_create_from_iosurface);
 	GRAPHICS_IMPORT_OPTIONAL(gs_texture_rebind_iosurface);
-
 	/* win32 specific functions */
 #elif _WIN32
 	GRAPHICS_IMPORT(device_gdi_texture_available);
@@ -200,7 +203,7 @@ bool load_graphics_imports(struct gs_exports *exports, void *module,
 	GRAPHICS_IMPORT_OPTIONAL(gs_texture_get_dc);
 	GRAPHICS_IMPORT_OPTIONAL(gs_texture_release_dc);
 	GRAPHICS_IMPORT_OPTIONAL(device_texture_open_shared);
-#endif
+#endif // #if TARGET_OS_OSX
 
 	return success;
 }

@@ -208,8 +208,14 @@ bool GL_MANGLING(gs_stagesurface_map)(gs_stagesurf_t *stagesurf, uint8_t **data,
 	if (!gl_bind_buffer(GL_PIXEL_PACK_BUFFER, stagesurf->pack_buffer))
 		goto fail;
 
-	*data = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
-	if (!gl_success("glMapBuffer"))
+    // get size of buffer
+    GLsizeiptr size  = stagesurf->width * stagesurf->bytes_per_pixel;
+    size = (size + 3) & 0xFFFFFFFC; /* align width to 4-byte boundary */
+    size *= stagesurf->height;
+    
+    // map range
+	*data = glMapBufferRange(GL_PIXEL_PACK_BUFFER, 0, size, GL_MAP_READ_BIT);
+	if (!gl_success("glMapBufferRange"))
 		goto fail;
 
 	gl_bind_buffer(GL_PIXEL_PACK_BUFFER, 0);
