@@ -28,6 +28,7 @@
 		9239D38F1FD2F4C6008ADEBB /* gl-texturecube.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3841FD2F4C6008ADEBB /* gl-texturecube.c */; };
 		9239D3901FD2F4C6008ADEBB /* gl-vertexbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3851FD2F4C6008ADEBB /* gl-vertexbuffer.c */; };
 		9239D3911FD2F4C6008ADEBB /* gl-zstencil.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3861FD2F4C6008ADEBB /* gl-zstencil.c */; };
+		92416C621FD6DCEA00232AF5 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 92416C611FD6DCEA00232AF5 /* data */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -176,6 +177,7 @@
 		9239D3841FD2F4C6008ADEBB /* gl-texturecube.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-texturecube.c"; sourceTree = "<group>"; };
 		9239D3851FD2F4C6008ADEBB /* gl-vertexbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-vertexbuffer.c"; sourceTree = "<group>"; };
 		9239D3861FD2F4C6008ADEBB /* gl-zstencil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-zstencil.c"; sourceTree = "<group>"; };
+		92416C611FD6DCEA00232AF5 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -810,6 +812,7 @@
 		925E184C1F6EAB5D007DC703 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				92416C611FD6DCEA00232AF5 /* data */,
 				925E184F1F6EAB6A007DC703 /* LaunchScreen.storyboard */,
 				925E18511F6EAB6A007DC703 /* Main.storyboard */,
 				925E184D1F6EAB65007DC703 /* Assets.xcassets */,
@@ -930,6 +933,7 @@
 				925E18541F6EAB6A007DC703 /* Main.storyboard in Resources */,
 				925E184E1F6EAB65007DC703 /* Assets.xcassets in Resources */,
 				92417B7E1FCD804B00A852EE /* deinterlace_linear.effect in Resources */,
+				92416C621FD6DCEA00232AF5 /* data in Resources */,
 				92417B7A1FCD804B00A852EE /* deinterlace_blend.effect in Resources */,
 				925E18531F6EAB6A007DC703 /* LaunchScreen.storyboard in Resources */,
 				92417B771FCD804B00A852EE /* default.effect in Resources */,
