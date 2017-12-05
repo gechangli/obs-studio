@@ -83,7 +83,7 @@ static int os_get_path_internal(char *dst, size_t size, const char *name,
 			NSApplicationSupportDirectory, domainMask, YES);
 
 	if([paths count] == 0)
-		bcrash("Could not get home directory (platform-cocoa)");
+		bcrash("Could not get home directory (platform-osx)");
 
 	NSString *application_support = paths[0];
 	const char *base_path = [application_support UTF8String];
@@ -101,7 +101,7 @@ static char *os_get_path_ptr_internal(const char *name,
 			NSApplicationSupportDirectory, domainMask, YES);
 
 	if([paths count] == 0)
-		bcrash("Could not get home directory (platform-cocoa)");
+		bcrash("Could not get home directory (platform-osx)");
 
 	NSString *application_support = paths[0];
 

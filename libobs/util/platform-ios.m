@@ -24,6 +24,9 @@
 #include <sys/sysctl.h>
 #include <mach/mach.h>
 #include <mach/mach_time.h>
+#include "bmem.h"
+#include "dstr.h"
+#import <Foundation/Foundation.h>
 
 int os_get_logical_cores(void) {
     unsigned int ncpu;
@@ -66,6 +69,58 @@ uint64_t os_gettime_ns(void) {
     static time_func f = NULL;
     if (!f) f = ns_time_select_func();
     return f();
+}
+
+static int os_get_path_internal(char *dst, size_t size, const char *name, NSSearchPathDomainMask domainMask) {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, domainMask, YES);
+    
+    if([paths count] == 0)
+        bcrash("Could not get document directory (platform-ios)");
+    
+    NSString *docDir = paths[0];
+    const char *base_path = [docDir UTF8String];
+    
+    if (!name || !*name)
+        return snprintf(dst, size, "%s", base_path);
+    else
+        return snprintf(dst, size, "%s/%s", base_path, name);
+}
+
+static char *os_get_path_ptr_internal(const char *name, NSSearchPathDomainMask domainMask) {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, domainMask, YES);
+    if([paths count] == 0)
+        bcrash("Could not get document directory (platform-ios)");
+    
+    NSString *docDir = paths[0];
+    NSUInteger len = [docDir lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    
+    char *path_ptr = bmalloc(len+1);
+    
+    path_ptr[len] = 0;
+    
+    memcpy(path_ptr, [docDir UTF8String], len);
+    
+    struct dstr path;
+    dstr_init_move_array(&path, path_ptr);
+    dstr_cat(&path, "/");
+    dstr_cat(&path, name);
+    return path.array;
+}
+
+int os_get_config_path(char *dst, size_t size, const char *name) {
+    return os_get_path_internal(dst, size, name, NSUserDomainMask);
+}
+
+char *os_get_config_path_ptr(const char *name) {
+    return os_get_path_ptr_internal(name, NSUserDomainMask);
+}
+
+int os_get_program_data_path(char *dst, size_t size, const char *name) {
+    return os_get_path_internal(dst, size, name, NSUserDomainMask);
+}
+
+char *os_get_program_data_path_ptr(const char *name) {
+    return os_get_path_ptr_internal(name, NSUserDomainMask);
 }
 
 #endif // #if TARGET_OS_IPHONE
