@@ -123,6 +123,15 @@ char *os_get_program_data_path_ptr(const char *name) {
     return os_get_path_ptr_internal(name, NSUserDomainMask);
 }
 
+os_performance_token_t *os_request_high_performance(const char *reason) {
+    UNUSED_PARAMETER(reason);
+    return NULL;
+}
+
+void os_end_high_performance(os_performance_token_t *token) {
+    UNUSED_PARAMETER(token);
+}
+
 #endif // #if TARGET_OS_IPHONE
 
 #endif // #ifdef __APPLE__

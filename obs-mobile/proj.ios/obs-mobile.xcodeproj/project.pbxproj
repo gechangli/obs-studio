@@ -66,6 +66,9 @@
 		92416D811FD6E3FF00232AF5 /* transition-slide.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4D1FD6E3FF00232AF5 /* transition-slide.c */; };
 		92416D821FD6E3FF00232AF5 /* transition-stinger.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4E1FD6E3FF00232AF5 /* transition-stinger.c */; };
 		92416D831FD6E3FF00232AF5 /* transition-swipe.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4F1FD6E3FF00232AF5 /* transition-swipe.c */; };
+		92416D8F1FD6E4B000232AF5 /* obs-x264-plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D8A1FD6E4B000232AF5 /* obs-x264-plugin-main.c */; };
+		92416D901FD6E4B000232AF5 /* obs-x264.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D8B1FD6E4B000232AF5 /* obs-x264.c */; };
+		92416D921FD6E58600232AF5 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92416D911FD6E58600232AF5 /* libx264.a */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -279,6 +282,9 @@
 		92416D4D1FD6E3FF00232AF5 /* transition-slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-slide.c"; sourceTree = "<group>"; };
 		92416D4E1FD6E3FF00232AF5 /* transition-stinger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-stinger.c"; sourceTree = "<group>"; };
 		92416D4F1FD6E3FF00232AF5 /* transition-swipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-swipe.c"; sourceTree = "<group>"; };
+		92416D8A1FD6E4B000232AF5 /* obs-x264-plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264-plugin-main.c"; sourceTree = "<group>"; };
+		92416D8B1FD6E4B000232AF5 /* obs-x264.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264.c"; sourceTree = "<group>"; };
+		92416D911FD6E58600232AF5 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = ../third_party/ios/libraries/libx264.a; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -519,6 +525,7 @@
 				925E19811F6EB6CE007DC703 /* AVFoundation.framework in Frameworks */,
 				925E18591F6EAC50007DC703 /* GLKit.framework in Frameworks */,
 				922840941FD0259C000AA83C /* libswscale.a in Frameworks */,
+				92416D921FD6E58600232AF5 /* libx264.a in Frameworks */,
 				922840911FD0259C000AA83C /* libavfilter.a in Frameworks */,
 				925E18571F6EAC36007DC703 /* OpenGLES.framework in Frameworks */,
 				9228408F1FD0259C000AA83C /* libavdevice.a in Frameworks */,
@@ -556,6 +563,7 @@
 		92416C631FD6DD3300232AF5 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
+				92416D841FD6E4B000232AF5 /* obs-x264 */,
 				92416D171FD6E3FF00232AF5 /* obs-transitions */,
 				92416C701FD6DFC300232AF5 /* obs-outputs */,
 				92416C641FD6DD3F00232AF5 /* coreaudio-encoder */,
@@ -704,6 +712,16 @@
 			);
 			name = "obs-transitions";
 			path = "../../../../plugins/obs-transitions";
+			sourceTree = "<group>";
+		};
+		92416D841FD6E4B000232AF5 /* obs-x264 */ = {
+			isa = PBXGroup;
+			children = (
+				92416D8A1FD6E4B000232AF5 /* obs-x264-plugin-main.c */,
+				92416D8B1FD6E4B000232AF5 /* obs-x264.c */,
+			);
+			name = "obs-x264";
+			path = "../../../../plugins/obs-x264";
 			sourceTree = "<group>";
 		};
 		92417A8F1FCD804B00A852EE /* libobs */ = {
@@ -1079,6 +1097,7 @@
 		925E18551F6EAC28007DC703 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				92416D911FD6E58600232AF5 /* libx264.a */,
 				922840971FD0555C000AA83C /* libcrypto.a */,
 				922840961FD0555C000AA83C /* libssl.a */,
 				9228408E1FD0259C000AA83C /* libavcodec.a */,
@@ -1271,7 +1290,9 @@
 				924180B31FCD806500A852EE /* pack_unpack.c in Sources */,
 				92417B731FCD804B00A852EE /* signal.c in Sources */,
 				92416CCA1FD6DFC400232AF5 /* hmac.c in Sources */,
+				92416D901FD6E4B000232AF5 /* obs-x264.c in Sources */,
 				92417BA81FCD804B00A852EE /* obs-avc.c in Sources */,
+				92416D8F1FD6E4B000232AF5 /* obs-x264-plugin-main.c in Sources */,
 				92416CDD1FD6DFC400232AF5 /* parseurl.c in Sources */,
 				92417B881FCD804B00A852EE /* bounds.c in Sources */,
 				92416C6F1FD6DD3F00232AF5 /* encoder.cpp in Sources */,
@@ -1479,6 +1500,7 @@
 					"$(PROJECT_DIR)/../../plugins/obs-outputs/ftl-sdk/libftl",
 					"$(PROJECT_DIR)/../third_party/ios",
 					"$(PROJECT_DIR)/../third_party/ios/ffmpeg",
+					"$(PROJECT_DIR)/../third_party/ios/x264",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1504,6 +1526,7 @@
 					"$(PROJECT_DIR)/../../plugins/obs-outputs/ftl-sdk/libftl",
 					"$(PROJECT_DIR)/../third_party/ios",
 					"$(PROJECT_DIR)/../third_party/ios/ffmpeg",
+					"$(PROJECT_DIR)/../third_party/ios/x264",
 				);
 				INFOPLIST_FILE = Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
