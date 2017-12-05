@@ -58,6 +58,14 @@
 		92416CE21FD6DFC400232AF5 /* obs-outputs.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416CB71FD6DFC400232AF5 /* obs-outputs.c */; };
 		92416CE31FD6DFC400232AF5 /* rtmp-stream.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416CB91FD6DFC400232AF5 /* rtmp-stream.c */; };
 		92416CE41FD6DFC400232AF5 /* rtmp-windows.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416CBB1FD6DFC400232AF5 /* rtmp-windows.c */; };
+		92416D7C1FD6E3FF00232AF5 /* obs-transitions.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D481FD6E3FF00232AF5 /* obs-transitions.c */; };
+		92416D7D1FD6E3FF00232AF5 /* transition-cut.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D491FD6E3FF00232AF5 /* transition-cut.c */; };
+		92416D7E1FD6E3FF00232AF5 /* transition-fade-to-color.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4A1FD6E3FF00232AF5 /* transition-fade-to-color.c */; };
+		92416D7F1FD6E3FF00232AF5 /* transition-fade.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4B1FD6E3FF00232AF5 /* transition-fade.c */; };
+		92416D801FD6E3FF00232AF5 /* transition-luma-wipe.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4C1FD6E3FF00232AF5 /* transition-luma-wipe.c */; };
+		92416D811FD6E3FF00232AF5 /* transition-slide.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4D1FD6E3FF00232AF5 /* transition-slide.c */; };
+		92416D821FD6E3FF00232AF5 /* transition-stinger.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4E1FD6E3FF00232AF5 /* transition-stinger.c */; };
+		92416D831FD6E3FF00232AF5 /* transition-swipe.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D4F1FD6E3FF00232AF5 /* transition-swipe.c */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -262,6 +270,15 @@
 		92416CBA1FD6DFC400232AF5 /* rtmp-stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rtmp-stream.h"; sourceTree = "<group>"; };
 		92416CBB1FD6DFC400232AF5 /* rtmp-windows.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-windows.c"; sourceTree = "<group>"; };
 		92416CE51FD6E27900232AF5 /* obs-outputs-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "obs-outputs-config.h"; sourceTree = "<group>"; };
+		92416D471FD6E3FF00232AF5 /* easings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = easings.h; sourceTree = "<group>"; };
+		92416D481FD6E3FF00232AF5 /* obs-transitions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-transitions.c"; sourceTree = "<group>"; };
+		92416D491FD6E3FF00232AF5 /* transition-cut.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-cut.c"; sourceTree = "<group>"; };
+		92416D4A1FD6E3FF00232AF5 /* transition-fade-to-color.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-fade-to-color.c"; sourceTree = "<group>"; };
+		92416D4B1FD6E3FF00232AF5 /* transition-fade.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-fade.c"; sourceTree = "<group>"; };
+		92416D4C1FD6E3FF00232AF5 /* transition-luma-wipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-luma-wipe.c"; sourceTree = "<group>"; };
+		92416D4D1FD6E3FF00232AF5 /* transition-slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-slide.c"; sourceTree = "<group>"; };
+		92416D4E1FD6E3FF00232AF5 /* transition-stinger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-stinger.c"; sourceTree = "<group>"; };
+		92416D4F1FD6E3FF00232AF5 /* transition-swipe.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "transition-swipe.c"; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -539,6 +556,7 @@
 		92416C631FD6DD3300232AF5 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
+				92416D171FD6E3FF00232AF5 /* obs-transitions */,
 				92416C701FD6DFC300232AF5 /* obs-outputs */,
 				92416C641FD6DD3F00232AF5 /* coreaudio-encoder */,
 			);
@@ -669,6 +687,23 @@
 				92416CB11FD6DFC400232AF5 /* rtmp_sys.h */,
 			);
 			path = librtmp;
+			sourceTree = "<group>";
+		};
+		92416D171FD6E3FF00232AF5 /* obs-transitions */ = {
+			isa = PBXGroup;
+			children = (
+				92416D471FD6E3FF00232AF5 /* easings.h */,
+				92416D481FD6E3FF00232AF5 /* obs-transitions.c */,
+				92416D491FD6E3FF00232AF5 /* transition-cut.c */,
+				92416D4A1FD6E3FF00232AF5 /* transition-fade-to-color.c */,
+				92416D4B1FD6E3FF00232AF5 /* transition-fade.c */,
+				92416D4C1FD6E3FF00232AF5 /* transition-luma-wipe.c */,
+				92416D4D1FD6E3FF00232AF5 /* transition-slide.c */,
+				92416D4E1FD6E3FF00232AF5 /* transition-stinger.c */,
+				92416D4F1FD6E3FF00232AF5 /* transition-swipe.c */,
+			);
+			name = "obs-transitions";
+			path = "../../../../plugins/obs-transitions";
 			sourceTree = "<group>";
 		};
 		92417A8F1FCD804B00A852EE /* libobs */ = {
@@ -1244,16 +1279,20 @@
 				92417BA91FCD804B00A852EE /* obs-data.c in Sources */,
 				924180B01FCD806500A852EE /* load.c in Sources */,
 				92417BA01FCD804B00A852EE /* media-remux.c in Sources */,
+				92416D821FD6E3FF00232AF5 /* transition-stinger.c in Sources */,
 				92417BB91FCD804B00A852EE /* obs-source.c in Sources */,
 				92416CE31FD6DFC400232AF5 /* rtmp-stream.c in Sources */,
 				92417B9F1FCD804B00A852EE /* format-conversion.c in Sources */,
 				92417BA61FCD804B00A852EE /* obs-audio-controls.c in Sources */,
 				92417B931FCD804B00A852EE /* matrix4.c in Sources */,
+				92416D7F1FD6E3FF00232AF5 /* transition-fade.c in Sources */,
 				92417BB11FCD804B00A852EE /* obs-osx.m in Sources */,
 				92417BAD1FCD804B00A852EE /* obs-hotkey.c in Sources */,
 				92417B8F1FCD804B00A852EE /* image-file.c in Sources */,
+				92416D7C1FD6E3FF00232AF5 /* obs-transitions.c in Sources */,
 				92417BB81FCD804B00A852EE /* obs-source-transition.c in Sources */,
 				9239D38B1FD2F4C6008ADEBB /* gl-shaderparser.c in Sources */,
+				92416D811FD6E3FF00232AF5 /* transition-slide.c in Sources */,
 				924180B71FCD806500A852EE /* value.c in Sources */,
 				92417B8E1FCD804B00A852EE /* graphics.c in Sources */,
 				925E18481F6EAB45007DC703 /* main.m in Sources */,
@@ -1273,6 +1312,7 @@
 				92417BA41FCD804B00A852EE /* video-matrices.c in Sources */,
 				92417BB41FCD804B00A852EE /* obs-properties.c in Sources */,
 				92417BC31FCD804B00A852EE /* cf-lexer.c in Sources */,
+				92416D831FD6E3FF00232AF5 /* transition-swipe.c in Sources */,
 				92416CC71FD6DFC400232AF5 /* ftl_helpers.c in Sources */,
 				92417BD11FCD804B00A852EE /* profiler.c in Sources */,
 				9239D3551FD2C2B1008ADEBB /* platform-nix.c in Sources */,
@@ -1287,14 +1327,17 @@
 				92417BC81FCD804B00A852EE /* file-serializer.c in Sources */,
 				925E18471F6EAB45007DC703 /* AppDelegate.mm in Sources */,
 				92417B9D1FCD804B00A852EE /* audio-io.c in Sources */,
+				92416D7E1FD6E3FF00232AF5 /* transition-fade-to-color.c in Sources */,
 				9239D3871FD2F4C6008ADEBB /* gl-helpers.c in Sources */,
 				92416CDA1FD6DFC400232AF5 /* hashswf.c in Sources */,
+				92416D7D1FD6E3FF00232AF5 /* transition-cut.c in Sources */,
 				9239D38C1FD2F4C6008ADEBB /* gl-stagesurf.c in Sources */,
 				9239D3901FD2F4C6008ADEBB /* gl-vertexbuffer.c in Sources */,
 				92417B9A1FCD804B00A852EE /* vec4.c in Sources */,
 				92417BAF1FCD804B00A852EE /* obs-module.c in Sources */,
 				92417B721FCD804B00A852EE /* proc.c in Sources */,
 				92417BAC1FCD804B00A852EE /* obs-hotkey-name-map.c in Sources */,
+				92416D801FD6E3FF00232AF5 /* transition-luma-wipe.c in Sources */,
 				92417B8A1FCD804B00A852EE /* effect.c in Sources */,
 				92416CD71FD6DFC400232AF5 /* amf.c in Sources */,
 				92417BCA1FCD804B00A852EE /* pipe-posix.c in Sources */,

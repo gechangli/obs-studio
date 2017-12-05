@@ -7,8 +7,8 @@ OBS_REFER_TO_MODULE(obs_transitions)
 #define S_COLOR "color"
 #define S_SWITCH_POINT "switch_point"
 
-#define S_COLOR_TEXT obs_module_text("Color")
-#define S_SWITCH_POINT_TEXT obs_module_text("SwitchPoint")
+#define S_COLOR_TEXT MODULE_MANGLING(obs_module_text)("Color")
+#define S_SWITCH_POINT_TEXT MODULE_MANGLING(obs_module_text)("SwitchPoint")
 
 struct fade_to_color_info {
 	obs_source_t *source;
@@ -45,7 +45,7 @@ static inline float smoothstep(float min, float max, float x)
 static const char *fade_to_color_get_name(void *type_data)
 {
 	UNUSED_PARAMETER(type_data);
-	return obs_module_text("FadeToColorTransition");
+	return MODULE_MANGLING(obs_module_text)("FadeToColorTransition");
 }
 
 static void fade_to_color_update(void *data, obs_data_t *settings)

@@ -10,9 +10,9 @@ OBS_REFER_TO_MODULE(obs_transitions)
 #define S_LUMA_INV              "luma_invert"
 #define S_LUMA_SOFT             "luma_softness"
 
-#define T_LUMA_IMG              obs_module_text("LumaWipe.Image")
-#define T_LUMA_INV              obs_module_text("LumaWipe.Invert")
-#define T_LUMA_SOFT             obs_module_text("LumaWipe.Softness")
+#define T_LUMA_IMG              MODULE_MANGLING(obs_module_text)("LumaWipe.Image")
+#define T_LUMA_INV              MODULE_MANGLING(obs_module_text)("LumaWipe.Invert")
+#define T_LUMA_SOFT             MODULE_MANGLING(obs_module_text)("LumaWipe.Softness")
 
 struct luma_wipe_info {
 	obs_source_t *source;
@@ -34,7 +34,7 @@ struct luma_wipe_info {
 static const char *luma_wipe_get_name(void *type_data)
 {
 	UNUSED_PARAMETER(type_data);
-	return obs_module_text("LumaWipeTransition");
+	return MODULE_MANGLING(obs_module_text)("LumaWipeTransition");
 }
 
 static void luma_wipe_update(void *data, obs_data_t *settings)
@@ -142,7 +142,7 @@ static obs_properties_t *luma_wipe_properties(void *data)
 	for (; item != NULL; obs_data_item_next(&item)) {
 		const char *name = obs_data_item_get_name(item);
 		const char *path = obs_data_item_get_string(item);
-		obs_property_list_add_string(p, obs_module_text(name), path);
+		obs_property_list_add_string(p, MODULE_MANGLING(obs_module_text)(name), path);
 	}
 
 	obs_properties_add_float(props, S_LUMA_SOFT, T_LUMA_SOFT, 0.0, 1.0, 0.05);

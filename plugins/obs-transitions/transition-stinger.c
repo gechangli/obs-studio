@@ -36,7 +36,7 @@ struct stinger_info {
 static const char *stinger_get_name(void *type_data)
 {
 	UNUSED_PARAMETER(type_data);
-	return obs_module_text("StingerTransition");
+	return MODULE_MANGLING(obs_module_text)("StingerTransition");
 }
 
 static float mix_a_fade_in_out(void *data, float t);
@@ -297,10 +297,10 @@ static bool transition_point_type_modified(obs_properties_t *ppts,
 
 	if (type == TIMING_TIME)
 		obs_property_set_description(p,
-				obs_module_text("TransitionPoint"));
+				MODULE_MANGLING(obs_module_text)("TransitionPoint"));
 	else
 		obs_property_set_description(p,
-				obs_module_text("TransitionPointFrame"));
+				MODULE_MANGLING(obs_module_text)("TransitionPointFrame"));
 	return true;
 }
 
@@ -311,46 +311,46 @@ static obs_properties_t *stinger_properties(void *data)
 	obs_properties_set_flags(ppts, OBS_PROPERTIES_DEFER_UPDATE);
 
 	obs_properties_add_path(ppts, "path",
-			obs_module_text("VideoFile"),
+			MODULE_MANGLING(obs_module_text)("VideoFile"),
 			OBS_PATH_FILE,
 			FILE_FILTER, NULL);
 	obs_property_t *list = obs_properties_add_list(ppts, "tp_type",
-			obs_module_text("TransitionPointType"),
+			MODULE_MANGLING(obs_module_text)("TransitionPointType"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_list_add_int(list,
-			obs_module_text("TransitionPointTypeTime"),
+			MODULE_MANGLING(obs_module_text)("TransitionPointTypeTime"),
 			TIMING_TIME);
 	obs_property_list_add_int(list,
-			obs_module_text("TransitionPointTypeFrame"),
+			MODULE_MANGLING(obs_module_text)("TransitionPointTypeFrame"),
 			TIMING_FRAME);
 
 	obs_property_set_modified_callback(list, transition_point_type_modified);
 
 	obs_properties_add_int(ppts, "transition_point",
-			obs_module_text("TransitionPoint"),
+			MODULE_MANGLING(obs_module_text)("TransitionPoint"),
 			0, 120000, 1);
 
 	obs_property_t *monitor_list = obs_properties_add_list(ppts,
-			"audio_monitoring", obs_module_text("AudioMonitoring"),
+			"audio_monitoring", MODULE_MANGLING(obs_module_text)("AudioMonitoring"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_list_add_int(monitor_list,
-			obs_module_text("AudioMonitoring.None"),
+			MODULE_MANGLING(obs_module_text)("AudioMonitoring.None"),
 			OBS_MONITORING_TYPE_NONE);
 	obs_property_list_add_int(monitor_list,
-			obs_module_text("AudioMonitoring.MonitorOnly"),
+			MODULE_MANGLING(obs_module_text)("AudioMonitoring.MonitorOnly"),
 			OBS_MONITORING_TYPE_MONITOR_ONLY);
 	obs_property_list_add_int(monitor_list,
-			obs_module_text("AudioMonitoring.Both"),
+			MODULE_MANGLING(obs_module_text)("AudioMonitoring.Both"),
 			OBS_MONITORING_TYPE_MONITOR_AND_OUTPUT);
 
 	obs_property_t *audio_fade_style = obs_properties_add_list(ppts,
-			"audio_fade_style", obs_module_text("AudioFadeStyle"),
+			"audio_fade_style", MODULE_MANGLING(obs_module_text)("AudioFadeStyle"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	obs_property_list_add_int(audio_fade_style,
-			obs_module_text("AudioFadeStyle.FadeOutFadeIn"),
+			MODULE_MANGLING(obs_module_text)("AudioFadeStyle.FadeOutFadeIn"),
 			FADE_STYLE_FADE_OUT_FADE_IN);
 	obs_property_list_add_int(audio_fade_style,
-			obs_module_text("AudioFadeStyle.CrossFade"),
+			MODULE_MANGLING(obs_module_text)("AudioFadeStyle.CrossFade"),
 			FADE_STYLE_CROSS_FADE);
 
 	UNUSED_PARAMETER(data);

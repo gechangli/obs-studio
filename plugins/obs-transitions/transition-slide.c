@@ -24,7 +24,7 @@ struct slide_info {
 static const char *slide_get_name(void *type_data)
 {
 	UNUSED_PARAMETER(type_data);
-	return obs_module_text("SlideTransition");
+	return MODULE_MANGLING(obs_module_text)("SlideTransition");
 }
 
 static void slide_update(void *data, obs_data_t *settings)
@@ -141,15 +141,15 @@ static obs_properties_t *slide_properties(void *data)
 	obs_property_t *p;
 
 	p = obs_properties_add_list(ppts, S_DIRECTION,
-			obs_module_text("Direction"), OBS_COMBO_TYPE_LIST,
+			MODULE_MANGLING(obs_module_text)("Direction"), OBS_COMBO_TYPE_LIST,
 			OBS_COMBO_FORMAT_STRING);
-	obs_property_list_add_string(p, obs_module_text("Direction.Left"),
+	obs_property_list_add_string(p, MODULE_MANGLING(obs_module_text)("Direction.Left"),
 			"left");
-	obs_property_list_add_string(p, obs_module_text("Direction.Right"),
+	obs_property_list_add_string(p, MODULE_MANGLING(obs_module_text)("Direction.Right"),
 			"right");
-	obs_property_list_add_string(p, obs_module_text("Direction.Up"),
+	obs_property_list_add_string(p, MODULE_MANGLING(obs_module_text)("Direction.Up"),
 			"up");
-	obs_property_list_add_string(p, obs_module_text("Direction.Down"),
+	obs_property_list_add_string(p, MODULE_MANGLING(obs_module_text)("Direction.Down"),
 			"down");
 
 	UNUSED_PARAMETER(data);
