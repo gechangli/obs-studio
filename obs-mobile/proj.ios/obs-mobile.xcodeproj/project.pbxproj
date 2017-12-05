@@ -69,6 +69,10 @@
 		92416D8F1FD6E4B000232AF5 /* obs-x264-plugin-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D8A1FD6E4B000232AF5 /* obs-x264-plugin-main.c */; };
 		92416D901FD6E4B000232AF5 /* obs-x264.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D8B1FD6E4B000232AF5 /* obs-x264.c */; };
 		92416D921FD6E58600232AF5 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92416D911FD6E58600232AF5 /* libx264.a */; };
+		92416DA81FD6E83700232AF5 /* rtmp-common.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D9C1FD6E83700232AF5 /* rtmp-common.c */; };
+		92416DA91FD6E83700232AF5 /* rtmp-custom.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D9D1FD6E83700232AF5 /* rtmp-custom.c */; };
+		92416DAA1FD6E83700232AF5 /* rtmp-services-main.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416D9F1FD6E83700232AF5 /* rtmp-services-main.c */; };
+		92416DAB1FD6E83700232AF5 /* twitch.c in Sources */ = {isa = PBXBuildFile; fileRef = 92416DA01FD6E83700232AF5 /* twitch.c */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -285,6 +289,13 @@
 		92416D8A1FD6E4B000232AF5 /* obs-x264-plugin-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264-plugin-main.c"; sourceTree = "<group>"; };
 		92416D8B1FD6E4B000232AF5 /* obs-x264.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-x264.c"; sourceTree = "<group>"; };
 		92416D911FD6E58600232AF5 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = ../third_party/ios/libraries/libx264.a; sourceTree = "<group>"; };
+		92416D9C1FD6E83700232AF5 /* rtmp-common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-common.c"; sourceTree = "<group>"; };
+		92416D9D1FD6E83700232AF5 /* rtmp-custom.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-custom.c"; sourceTree = "<group>"; };
+		92416D9E1FD6E83700232AF5 /* rtmp-format-ver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "rtmp-format-ver.h"; sourceTree = "<group>"; };
+		92416D9F1FD6E83700232AF5 /* rtmp-services-main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtmp-services-main.c"; sourceTree = "<group>"; };
+		92416DA01FD6E83700232AF5 /* twitch.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = twitch.c; sourceTree = "<group>"; };
+		92416DA11FD6E83700232AF5 /* twitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = twitch.h; sourceTree = "<group>"; };
+		92416DAC1FD6E86A00232AF5 /* lookup-config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "lookup-config.h"; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -563,6 +574,7 @@
 		92416C631FD6DD3300232AF5 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
+				92416D931FD6E83700232AF5 /* rtmp-services */,
 				92416D841FD6E4B000232AF5 /* obs-x264 */,
 				92416D171FD6E3FF00232AF5 /* obs-transitions */,
 				92416C701FD6DFC300232AF5 /* obs-outputs */,
@@ -722,6 +734,20 @@
 			);
 			name = "obs-x264";
 			path = "../../../../plugins/obs-x264";
+			sourceTree = "<group>";
+		};
+		92416D931FD6E83700232AF5 /* rtmp-services */ = {
+			isa = PBXGroup;
+			children = (
+				92416D9C1FD6E83700232AF5 /* rtmp-common.c */,
+				92416D9D1FD6E83700232AF5 /* rtmp-custom.c */,
+				92416D9E1FD6E83700232AF5 /* rtmp-format-ver.h */,
+				92416D9F1FD6E83700232AF5 /* rtmp-services-main.c */,
+				92416DA01FD6E83700232AF5 /* twitch.c */,
+				92416DA11FD6E83700232AF5 /* twitch.h */,
+			);
+			name = "rtmp-services";
+			path = "../../../../plugins/rtmp-services";
 			sourceTree = "<group>";
 		};
 		92417A8F1FCD804B00A852EE /* libobs */ = {
@@ -1032,6 +1058,7 @@
 		924183FB1FCDAD1800A852EE /* config */ = {
 			isa = PBXGroup;
 			children = (
+				92416DAC1FD6E86A00232AF5 /* lookup-config.h */,
 				924183FC1FCDAD1800A852EE /* jansson_config.h */,
 				92416CE51FD6E27900232AF5 /* obs-outputs-config.h */,
 				924183FD1FCDAD1800A852EE /* obsconfig.h */,
@@ -1267,6 +1294,7 @@
 				92417BD51FCD804B00A852EE /* utf8.c in Sources */,
 				92416CC81FD6DFC400232AF5 /* gettimeofday.c in Sources */,
 				92417B8C1FCD804B00A852EE /* graphics-imports.c in Sources */,
+				92416DA91FD6E83700232AF5 /* rtmp-custom.c in Sources */,
 				92416CD61FD6DFC400232AF5 /* ftl-stream.c in Sources */,
 				92417BA31FCD804B00A852EE /* video-io.c in Sources */,
 				92417BAA1FCD804B00A852EE /* obs-display.c in Sources */,
@@ -1285,6 +1313,7 @@
 				92416CE01FD6DFC400232AF5 /* null-output.c in Sources */,
 				925E18491F6EAB45007DC703 /* ViewController.mm in Sources */,
 				92417B871FCD804B00A852EE /* axisang.c in Sources */,
+				92416DAB1FD6E83700232AF5 /* twitch.c in Sources */,
 				92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */,
 				92416CE21FD6DFC400232AF5 /* obs-outputs.c in Sources */,
 				924180B31FCD806500A852EE /* pack_unpack.c in Sources */,
@@ -1320,6 +1349,7 @@
 				92416CD01FD6DFC400232AF5 /* socket.c in Sources */,
 				92416CC01FD6DFC400232AF5 /* flv-output.c in Sources */,
 				92417B951FCD804B00A852EE /* quat.c in Sources */,
+				92416DAA1FD6E83700232AF5 /* rtmp-services-main.c in Sources */,
 				92416CD11FD6DFC400232AF5 /* threads.c in Sources */,
 				92417BD31FCD804B00A852EE /* threading-posix.c in Sources */,
 				92417B981FCD804B00A852EE /* vec2.c in Sources */,
@@ -1355,6 +1385,7 @@
 				9239D38C1FD2F4C6008ADEBB /* gl-stagesurf.c in Sources */,
 				9239D3901FD2F4C6008ADEBB /* gl-vertexbuffer.c in Sources */,
 				92417B9A1FCD804B00A852EE /* vec4.c in Sources */,
+				92416DA81FD6E83700232AF5 /* rtmp-common.c in Sources */,
 				92417BAF1FCD804B00A852EE /* obs-module.c in Sources */,
 				92417B721FCD804B00A852EE /* proc.c in Sources */,
 				92417BAC1FCD804B00A852EE /* obs-hotkey-name-map.c in Sources */,

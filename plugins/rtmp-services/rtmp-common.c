@@ -21,7 +21,7 @@ struct rtmp_common {
 static const char *rtmp_common_getname(void *unused)
 {
 	UNUSED_PARAMETER(unused);
-	return obs_module_text("StreamingServices");
+	return MODULE_MANGLING(obs_module_text)("StreamingServices");
 }
 
 static json_t *open_services_file(void);
@@ -254,7 +254,7 @@ static bool fill_twitch_servers_locked(obs_property_t *servers_prop)
 	size_t count = twitch_ingest_count();
 
 	obs_property_list_add_string(servers_prop,
-			obs_module_text("Server.Auto"), "auto");
+			MODULE_MANGLING(obs_module_text)("Server.Auto"), "auto");
 
 	if (count <= 1)
 		return false;
@@ -297,7 +297,7 @@ static void fill_servers(obs_property_t *servers_prop, json_t *service,
 
 	if (strcmp(name, "Mixer.com - FTL") == 0) {
 		obs_property_list_add_string(servers_prop,
-				obs_module_text("Server.Auto"), "auto");
+				MODULE_MANGLING(obs_module_text)("Server.Auto"), "auto");
 	}
 	if (name && strcmp(name, "Twitch") == 0) {
 		if (fill_twitch_servers(servers_prop))
@@ -388,20 +388,20 @@ static obs_properties_t *rtmp_common_properties(void *unused)
 		obs_properties_set_param(ppts, root, properties_data_destroy);
 
 	p = obs_properties_add_list(ppts, "service",
-			obs_module_text("Service"),
+			MODULE_MANGLING(obs_module_text)("Service"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
 	obs_property_set_modified_callback(p, service_selected);
 
 	p = obs_properties_add_bool(ppts, "show_all",
-			obs_module_text("ShowAll"));
+			MODULE_MANGLING(obs_module_text)("ShowAll"));
 
 	obs_property_set_modified_callback(p, show_all_services_toggled);
 
-	obs_properties_add_list(ppts, "server", obs_module_text("Server"),
+	obs_properties_add_list(ppts, "server", MODULE_MANGLING(obs_module_text)("Server"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
-	obs_properties_add_text(ppts, "key", obs_module_text("StreamKey"),
+	obs_properties_add_text(ppts, "key", MODULE_MANGLING(obs_module_text)("StreamKey"),
 			OBS_TEXT_PASSWORD);
 	return ppts;
 }

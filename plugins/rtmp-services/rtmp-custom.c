@@ -13,7 +13,7 @@ struct rtmp_custom {
 static const char *rtmp_custom_name(void *unused)
 {
 	UNUSED_PARAMETER(unused);
-	return obs_module_text("CustomStreamingServer");
+	return MODULE_MANGLING(obs_module_text)("CustomStreamingServer");
 }
 
 static void rtmp_custom_update(void *data, obs_data_t *settings)
@@ -70,13 +70,13 @@ static obs_properties_t *rtmp_custom_properties(void *unused)
 
 	obs_properties_add_text(ppts, "server", "URL", OBS_TEXT_DEFAULT);
 
-	obs_properties_add_text(ppts, "key", obs_module_text("StreamKey"),
+	obs_properties_add_text(ppts, "key", MODULE_MANGLING(obs_module_text)("StreamKey"),
 			OBS_TEXT_PASSWORD);
 
-	p = obs_properties_add_bool(ppts, "use_auth", obs_module_text("UseAuth"));
-	obs_properties_add_text(ppts, "username", obs_module_text("Username"),
+	p = obs_properties_add_bool(ppts, "use_auth", MODULE_MANGLING(obs_module_text)("UseAuth"));
+	obs_properties_add_text(ppts, "username", MODULE_MANGLING(obs_module_text)("Username"),
 			OBS_TEXT_DEFAULT);
-	obs_properties_add_text(ppts, "password", obs_module_text("Password"),
+	obs_properties_add_text(ppts, "password", MODULE_MANGLING(obs_module_text)("Password"),
 			OBS_TEXT_PASSWORD);
 	obs_property_set_modified_callback(p, use_auth_modified);
 	return ppts;
