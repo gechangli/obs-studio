@@ -88,7 +88,7 @@ bool obs_module_load(void)
         extern obs_module_t *obs_module_pointer_##name; \
         static obs_module_t * _obs_current_module(void) {return obs_module_pointer_##name;} \
         extern lookup_t *obs_module_lookup_##name; \
-        static const char * obs_module_text(const char *val) { \
+        static const char * _obs_module_text(const char *val) { \
             const char *out = val; \
             text_lookup_getstr(obs_module_lookup_##name, val, &out); \
             return out; \
@@ -147,7 +147,7 @@ MODULE_EXPORT uint32_t obs_module_ver(void);
     /// declare locale memthod used by static module
     #define OBS_MODULE_USE_DEFAULT_LOCALE(name, default_locale) \
         lookup_t *obs_module_lookup_##name = NULL; \
-        static const char * obs_module_text(const char *val) { \
+        static const char * _obs_module_text(const char *val) { \
             const char *out = val; \
             text_lookup_getstr(obs_module_lookup_##name, val, &out); \
             return out; \

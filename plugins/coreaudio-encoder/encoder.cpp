@@ -34,6 +34,10 @@
 #include "windows-imports.h"
 #endif
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+#endif
+
 // declare module
 OBS_DECLARE_MODULE(coreaudio_encoder)
 OBS_MODULE_USE_DEFAULT_LOCALE(coreaudio_encoder, "zh-CN")
@@ -220,7 +224,7 @@ static const char *flush_log(DStr &log)
 
 static const char *aac_get_name(void*)
 {
-	return obs_module_text("CoreAudioAAC");
+	return MODULE_MANGLING(obs_module_text)("CoreAudioAAC");
 }
 
 static const char *code_to_str(OSStatus code)
@@ -459,9 +463,11 @@ static bool create_encoder(DStr &log, ca_encoder *ca,
 
 	STATUS_CHECK(AudioConverterNew(in, out, &ca->converter))
 
+#if !TARGET_OS_IPHONE
 	STATUS_CHECK(AudioConverterSetProperty(ca->converter,
 			kAudioCodecPropertyBitRateControlMode,
 			sizeof(rate_control), &rate_control));
+#endif
 
 	if (!bitrate_valid(log, ca, ca->converter, bitrate)) {
 		log_to_dstr(log, ca, "Encoder does not support bitrate %u "
@@ -549,7 +555,12 @@ static void *aac_create(obs_data_t *settings, obs_encoder_t *encoder)
 
 	AudioStreamBasicDescription out;
 
-	UInt32 rate_control = kAudioCodecBitRateControlMode_Constant;
+	UInt32 rate_control =
+#if !TARGET_OS_IPHONE
+    kAudioCodecBitRateControlMode_Constant;
+#else
+    0;
+#endif
 
 	if (obs_data_get_bool(settings, "allow he-aac")) {
 		ca->allowed_formats = &aac_formats;
@@ -649,8 +660,13 @@ static void *aac_create(obs_data_t *settings, obs_encoder_t *encoder)
 			"\toutput buffer: %lu",
 			format_name, (unsigned int)bitrate / 1000,
 			ca->samples_per_second,
-			rate_control == kAudioCodecBitRateControlMode_Constant ?
-			"on" : "off",
+			rate_control ==
+#if !TARGET_OS_IPHONE
+            kAudioCodecBitRateControlMode_Constant
+#else
+            0
+#endif
+            ? "on" : "off",
 			(unsigned long)ca->output_buffer_size);
 
 	return ca.release();
@@ -1182,7 +1198,7 @@ static vector<UInt32> get_samplerates(DStr &log, ca_encoder *ca)
 static void add_samplerates(obs_property_t *prop, ca_encoder *ca)
 {
 	obs_property_list_add_int(prop,
-			obs_module_text("UseInputSampleRate"), 0);
+			MODULE_MANGLING(obs_module_text)("UseInputSampleRate"), 0);
 
 	DStr log;
 
@@ -1328,18 +1344,18 @@ static obs_properties_t *aac_properties(void *data)
 	obs_properties_t *props = obs_properties_create();
 
 	obs_property_t *p = obs_properties_add_list(props, "samplerate",
-			obs_module_text("OutputSamplerate"),
+			MODULE_MANGLING(obs_module_text)("OutputSamplerate"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	add_samplerates(p, ca);
 	obs_property_set_modified_callback(p, samplerate_updated);
 
 	p = obs_properties_add_list(props, "bitrate",
-			obs_module_text("Bitrate"),
+			MODULE_MANGLING(obs_module_text)("Bitrate"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
 	add_bitrates(p, ca);
 
 	obs_properties_add_bool(props, "allow he-aac",
-			obs_module_text("AllowHEAAC"));
+			MODULE_MANGLING(obs_module_text)("AllowHEAAC"));
 
 	return props;
 }

@@ -29,6 +29,7 @@
 		9239D3901FD2F4C6008ADEBB /* gl-vertexbuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3851FD2F4C6008ADEBB /* gl-vertexbuffer.c */; };
 		9239D3911FD2F4C6008ADEBB /* gl-zstencil.c in Sources */ = {isa = PBXBuildFile; fileRef = 9239D3861FD2F4C6008ADEBB /* gl-zstencil.c */; };
 		92416C621FD6DCEA00232AF5 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 92416C611FD6DCEA00232AF5 /* data */; };
+		92416C6F1FD6DD3F00232AF5 /* encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92416C6A1FD6DD3F00232AF5 /* encoder.cpp */; };
 		92417B681FCD804B00A852EE /* null-audio-monitoring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417A921FCD804B00A852EE /* null-audio-monitoring.c */; };
 		92417B701FCD804B00A852EE /* calldata.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA11FCD804B00A852EE /* calldata.c */; };
 		92417B711FCD804B00A852EE /* decl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417AA31FCD804B00A852EE /* decl.c */; };
@@ -178,6 +179,7 @@
 		9239D3851FD2F4C6008ADEBB /* gl-vertexbuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-vertexbuffer.c"; sourceTree = "<group>"; };
 		9239D3861FD2F4C6008ADEBB /* gl-zstencil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "gl-zstencil.c"; sourceTree = "<group>"; };
 		92416C611FD6DCEA00232AF5 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = data; sourceTree = "<group>"; };
+		92416C6A1FD6DD3F00232AF5 /* encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = encoder.cpp; sourceTree = "<group>"; };
 		92417A921FCD804B00A852EE /* null-audio-monitoring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "null-audio-monitoring.c"; sourceTree = "<group>"; };
 		92417AA11FCD804B00A852EE /* calldata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = calldata.c; sourceTree = "<group>"; };
 		92417AA21FCD804B00A852EE /* calldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calldata.h; sourceTree = "<group>"; };
@@ -450,6 +452,23 @@
 			);
 			name = "libobs-opengles";
 			path = "../../../libobs-opengles";
+			sourceTree = "<group>";
+		};
+		92416C631FD6DD3300232AF5 /* plugins */ = {
+			isa = PBXGroup;
+			children = (
+				92416C641FD6DD3F00232AF5 /* coreaudio-encoder */,
+			);
+			path = plugins;
+			sourceTree = "<group>";
+		};
+		92416C641FD6DD3F00232AF5 /* coreaudio-encoder */ = {
+			isa = PBXGroup;
+			children = (
+				92416C6A1FD6DD3F00232AF5 /* encoder.cpp */,
+			);
+			name = "coreaudio-encoder";
+			path = "../../../../plugins/coreaudio-encoder";
 			sourceTree = "<group>";
 		};
 		92417A8F1FCD804B00A852EE /* libobs */ = {
@@ -792,6 +811,7 @@
 				92417BD61FCD806300A852EE /* deps */,
 				92417A8F1FCD804B00A852EE /* libobs */,
 				9239D3781FD2F4C6008ADEBB /* libobs-opengles */,
+				92416C631FD6DD3300232AF5 /* plugins */,
 				925E18421F6EAB45007DC703 /* AppDelegate.h */,
 				925E18431F6EAB45007DC703 /* AppDelegate.mm */,
 				925E18441F6EAB45007DC703 /* main.m */,
@@ -1001,6 +1021,7 @@
 				92417B731FCD804B00A852EE /* signal.c in Sources */,
 				92417BA81FCD804B00A852EE /* obs-avc.c in Sources */,
 				92417B881FCD804B00A852EE /* bounds.c in Sources */,
+				92416C6F1FD6DD3F00232AF5 /* encoder.cpp in Sources */,
 				924180AD1FCD806500A852EE /* hashtable_seed.c in Sources */,
 				92417BA91FCD804B00A852EE /* obs-data.c in Sources */,
 				924180B01FCD806500A852EE /* load.c in Sources */,
