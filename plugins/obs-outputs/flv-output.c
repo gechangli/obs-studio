@@ -64,7 +64,7 @@ static inline bool active(struct flv_output *stream)
 static const char *flv_output_getname(void *unused)
 {
 	UNUSED_PARAMETER(unused);
-	return obs_module_text("FLVOutput");
+	return MODULE_MANGLING(obs_module_text)("FLVOutput");
 }
 
 static void flv_output_stop(void *data, uint64_t ts);
@@ -259,7 +259,7 @@ static obs_properties_t *flv_output_properties(void *unused)
 	obs_properties_t *props = obs_properties_create();
 
 	obs_properties_add_text(props, "path",
-			obs_module_text("FLVOutput.FilePath"),
+			MODULE_MANGLING(obs_module_text)("FLVOutput.FilePath"),
 			OBS_TEXT_DEFAULT);
 	return props;
 }

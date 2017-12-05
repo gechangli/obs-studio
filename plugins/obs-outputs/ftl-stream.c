@@ -123,7 +123,7 @@ static int _ftl_error_to_obs_error(int status);
 static const char *ftl_stream_getname(void *unused)
 {
 	UNUSED_PARAMETER(unused);
-	return obs_module_text("FTLStream");
+	return MODULE_MANGLING(obs_module_text)("FTLStream");
 }
 
 static void log_ftl(int level, const char *format, va_list args)
@@ -879,7 +879,7 @@ static obs_properties_t *ftl_stream_properties(void *unused)
 
 	obs_properties_t *props = obs_properties_create();
 	obs_properties_add_int(props, "peak_bitrate_kbps",
-			obs_module_text("FTLStream.PeakBitrate"),
+			MODULE_MANGLING(obs_module_text)("FTLStream.PeakBitrate"),
 			1000, 10000, 500);
 
 	return props;

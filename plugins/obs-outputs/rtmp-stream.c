@@ -24,7 +24,7 @@ OBS_REFER_TO_MODULE(obs_outputs)
 static const char *rtmp_stream_getname(void *unused)
 {
 	UNUSED_PARAMETER(unused);
-	return obs_module_text("RTMPStream");
+	return MODULE_MANGLING(obs_module_text)("RTMPStream");
 }
 
 static void log_rtmp(int level, const char *format, va_list args)
@@ -394,50 +394,50 @@ static void set_output_error(struct rtmp_stream *stream)
 	switch (stream->rtmp.last_error_code)
 	{
 	case WSAETIMEDOUT:
-		msg = obs_module_text("ConnectionTimedOut");
+		msg = MODULE_MANGLING(obs_module_text)("ConnectionTimedOut");
 		break;
 	case WSAEACCES:
-		msg = obs_module_text("PermissionDenied");
+		msg = MODULE_MANGLING(obs_module_text)("PermissionDenied");
 		break;
 	case WSAECONNABORTED:
-		msg = obs_module_text("ConnectionAborted");
+		msg = MODULE_MANGLING(obs_module_text)("ConnectionAborted");
 		break;
 	case WSAECONNRESET:
-		msg = obs_module_text("ConnectionReset");
+		msg = MODULE_MANGLING(obs_module_text)("ConnectionReset");
 		break;
 	case WSAHOST_NOT_FOUND:
-		msg = obs_module_text("HostNotFound");
+		msg = MODULE_MANGLING(obs_module_text)("HostNotFound");
 		break;
 	case WSANO_DATA:
-		msg = obs_module_text("NoData");
+		msg = MODULE_MANGLING(obs_module_text)("NoData");
 		break;
 	case WSAEADDRNOTAVAIL:
-		msg = obs_module_text("AddressNotAvailable");
+		msg = MODULE_MANGLING(obs_module_text)("AddressNotAvailable");
 		break;
 	}
 #else
 	switch (stream->rtmp.last_error_code)
 	{
 	case ETIMEDOUT:
-		msg = obs_module_text("ConnectionTimedOut");
+		msg = MODULE_MANGLING(obs_module_text)("ConnectionTimedOut");
 		break;
 	case EACCES:
-		msg = obs_module_text("PermissionDenied");
+		msg = MODULE_MANGLING(obs_module_text)("PermissionDenied");
 		break;
 	case ECONNABORTED:
-		msg = obs_module_text("ConnectionAborted");
+		msg = MODULE_MANGLING(obs_module_text)("ConnectionAborted");
 		break;
 	case ECONNRESET:
-		msg = obs_module_text("ConnectionReset");
+		msg = MODULE_MANGLING(obs_module_text)("ConnectionReset");
 		break;
 	case HOST_NOT_FOUND:
-		msg = obs_module_text("HostNotFound");
+		msg = MODULE_MANGLING(obs_module_text)("HostNotFound");
 		break;
 	case NO_DATA:
-		msg = obs_module_text("NoData");
+		msg = MODULE_MANGLING(obs_module_text)("NoData");
 		break;
 	case EADDRNOTAVAIL:
-		msg = obs_module_text("AddressNotAvailable");
+		msg = MODULE_MANGLING(obs_module_text)("AddressNotAvailable");
 		break;
 	}
 #endif
@@ -1144,14 +1144,14 @@ static obs_properties_t *rtmp_stream_properties(void *unused)
 	obs_property_t *p;
 
 	obs_properties_add_int(props, OPT_DROP_THRESHOLD,
-			obs_module_text("RTMPStream.DropThreshold"),
+			MODULE_MANGLING(obs_module_text)("RTMPStream.DropThreshold"),
 			200, 10000, 100);
 
 	p = obs_properties_add_list(props, OPT_BIND_IP,
-			obs_module_text("RTMPStream.BindIP"),
+			MODULE_MANGLING(obs_module_text)("RTMPStream.BindIP"),
 			OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
-	obs_property_list_add_string(p, obs_module_text("Default"), "default");
+	obs_property_list_add_string(p, MODULE_MANGLING(obs_module_text)("Default"), "default");
 
 	netif_get_addrs(&addrs);
 	for (size_t i = 0; i < addrs.addrs.num; i++) {
@@ -1161,9 +1161,9 @@ static obs_properties_t *rtmp_stream_properties(void *unused)
 	netif_saddr_data_free(&addrs);
 
 	obs_properties_add_bool(props, OPT_NEWSOCKETLOOP_ENABLED,
-			obs_module_text("RTMPStream.NewSocketLoop"));
+			MODULE_MANGLING(obs_module_text)("RTMPStream.NewSocketLoop"));
 	obs_properties_add_bool(props, OPT_LOWLATENCY_ENABLED,
-			obs_module_text("RTMPStream.LowLatencyMode"));
+			MODULE_MANGLING(obs_module_text)("RTMPStream.LowLatencyMode"));
 
 	return props;
 }
