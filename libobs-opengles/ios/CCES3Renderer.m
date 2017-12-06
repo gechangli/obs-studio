@@ -43,9 +43,9 @@
     if (self)
     {
         if( ! sharegroup )
-            context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+            context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
         else
-            context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:sharegroup];
+            context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
 
         if (!context_ || ![EAGLContext setCurrentContext:context_]) {
             return nil;

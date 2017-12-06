@@ -176,14 +176,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
                                        withMultiSampling:self.multiSampling
                                      withNumberOfSamples:requestedSamples_];
     
-    NSAssert(renderer_, @"OpenGL ES 2.O is required.");
+    NSAssert(renderer_, @"OpenGL ES 3.O is required.");
     if (!renderer_)
         return NO;
     
     self.context = [renderer_ context];
     
-
-    //discardFramebufferSupported_ = [[CCConfiguration sharedConfiguration] supportsDiscardFramebuffer];
     gl_success("setupSurfaceWithSharegroup");
     
     return YES;
