@@ -176,7 +176,7 @@
 		924180B71FCD806500A852EE /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C391FCD806400A852EE /* value.c */; };
 		924183FF1FCDBA1700A852EE /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 924183FE1FCDBA1700A852EE /* libcurl.a */; };
 		925E18471F6EAB45007DC703 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18431F6EAB45007DC703 /* AppDelegate.mm */; };
-		925E18481F6EAB45007DC703 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 925E18441F6EAB45007DC703 /* main.m */; };
+		925E18481F6EAB45007DC703 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18441F6EAB45007DC703 /* main.mm */; };
 		925E18491F6EAB45007DC703 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18461F6EAB45007DC703 /* ViewController.mm */; };
 		925E184E1F6EAB65007DC703 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 925E184D1F6EAB65007DC703 /* Assets.xcassets */; };
 		925E18531F6EAB6A007DC703 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 925E184F1F6EAB6A007DC703 /* LaunchScreen.storyboard */; };
@@ -195,6 +195,7 @@
 		9275C8401FD3DD3A00D6DD7D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */; };
 		9275C8411FD3DD3A00D6DD7D /* gl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */; };
 		927A6CF31FD81C4400CA6260 /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 927A6CEC1FD81C4400CA6260 /* av-capture.mm */; };
+		927A6CF91FD83D9800CA6260 /* obs_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 927A6CF71FD83D9700CA6260 /* obs_app.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -493,7 +494,7 @@
 		925E18271F6EAAC2007DC703 /* obs-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "obs-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		925E18421F6EAB45007DC703 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		925E18431F6EAB45007DC703 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		925E18441F6EAB45007DC703 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		925E18441F6EAB45007DC703 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		925E18451F6EAB45007DC703 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		925E18461F6EAB45007DC703 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		925E184B1F6EAB54007DC703 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -519,6 +520,11 @@
 		927A6CEC1FD81C4400CA6260 /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
 		927A6CF11FD81C4400CA6260 /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
 		927A6CF21FD81C4400CA6260 /* scope-guard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "scope-guard.hpp"; sourceTree = "<group>"; };
+		927A6CF71FD83D9700CA6260 /* obs_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = obs_app.cpp; sourceTree = "<group>"; };
+		927A6CF81FD83D9700CA6260 /* obs_app.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = obs_app.hpp; sourceTree = "<group>"; };
+		927A6CFA1FD8463B00CA6260 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		927A6CFB1FD847D300CA6260 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		927A6CFC1FD847D800CA6260 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1098,9 +1104,10 @@
 				92417A8F1FCD804B00A852EE /* libobs */,
 				9239D3781FD2F4C6008ADEBB /* libobs-opengles */,
 				92416C631FD6DD3300232AF5 /* plugins */,
+				927A6CF61FD83D9700CA6260 /* ui */,
 				925E18421F6EAB45007DC703 /* AppDelegate.h */,
 				925E18431F6EAB45007DC703 /* AppDelegate.mm */,
-				925E18441F6EAB45007DC703 /* main.m */,
+				925E18441F6EAB45007DC703 /* main.mm */,
 				925E18451F6EAB45007DC703 /* ViewController.h */,
 				925E18461F6EAB45007DC703 /* ViewController.mm */,
 			);
@@ -1129,6 +1136,8 @@
 		925E18551F6EAC28007DC703 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				927A6CFC1FD847D800CA6260 /* CoreFoundation.framework */,
+				927A6CFB1FD847D300CA6260 /* Foundation.framework */,
 				92416D911FD6E58600232AF5 /* libx264.a */,
 				922840971FD0555C000AA83C /* libcrypto.a */,
 				922840961FD0555C000AA83C /* libssl.a */,
@@ -1143,6 +1152,7 @@
 				925E198E1F6EB779007DC703 /* libbz2.tbd */,
 				925E198C1F6EB714007DC703 /* libiconv.tbd */,
 				925E198A1F6EB701007DC703 /* libz.tbd */,
+				927A6CFA1FD8463B00CA6260 /* UIKit.framework */,
 				925E19881F6EB6ED007DC703 /* AudioToolbox.framework */,
 				925E19861F6EB6E9007DC703 /* VideoToolbox.framework */,
 				925E19841F6EB6DA007DC703 /* CoreMedia.framework */,
@@ -1176,6 +1186,15 @@
 			);
 			name = "ios-avcapture";
 			path = "../../../../plugins/ios-avcapture";
+			sourceTree = "<group>";
+		};
+		927A6CF61FD83D9700CA6260 /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				927A6CF71FD83D9700CA6260 /* obs_app.cpp */,
+				927A6CF81FD83D9700CA6260 /* obs_app.hpp */,
+			);
+			path = ui;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1351,6 +1370,7 @@
 				92416CE31FD6DFC400232AF5 /* rtmp-stream.c in Sources */,
 				92417B9F1FCD804B00A852EE /* format-conversion.c in Sources */,
 				92417BA61FCD804B00A852EE /* obs-audio-controls.c in Sources */,
+				927A6CF91FD83D9800CA6260 /* obs_app.cpp in Sources */,
 				92417B931FCD804B00A852EE /* matrix4.c in Sources */,
 				92416D7F1FD6E3FF00232AF5 /* transition-fade.c in Sources */,
 				92417BB11FCD804B00A852EE /* obs-osx.m in Sources */,
@@ -1362,7 +1382,7 @@
 				92416D811FD6E3FF00232AF5 /* transition-slide.c in Sources */,
 				924180B71FCD806500A852EE /* value.c in Sources */,
 				92417B8E1FCD804B00A852EE /* graphics.c in Sources */,
-				925E18481F6EAB45007DC703 /* main.m in Sources */,
+				925E18481F6EAB45007DC703 /* main.mm in Sources */,
 				92416CD01FD6DFC400232AF5 /* socket.c in Sources */,
 				92416CC01FD6DFC400232AF5 /* flv-output.c in Sources */,
 				92417B951FCD804B00A852EE /* quat.c in Sources */,
@@ -1551,6 +1571,7 @@
 					"$(PROJECT_DIR)/../third_party/ios/x264",
 				);
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../third_party/ios/libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shanshan.obs-mobile";
@@ -1577,6 +1598,7 @@
 					"$(PROJECT_DIR)/../third_party/ios/x264",
 				);
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/../third_party/ios/libraries";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.shanshan.obs-mobile";

@@ -1,4 +1,6 @@
 #import "AppDelegate.h"
+#import "ViewController.h"
+#import <GLKit/GLKit.h>
 
 @interface AppDelegate ()
 
@@ -6,6 +8,10 @@
 
 @implementation AppDelegate
 
+- (void)dealloc {
+    delete self.obsApp;
+    self.obsApp = nullptr;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -31,7 +37,30 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    // init obs app
+    if(!self.obsApp) {
+        /* use 1920x1080 for new default base res if main monitor is above
+         * 1920x1080 */
+        UIScreen* mainScreen = [UIScreen mainScreen];
+        CGRect screenRect = [mainScreen nativeBounds];
+        int sw = (int)screenRect.size.width;
+        int sh = (int)screenRect.size.height;
+        if ((sw * sh) > (1920 * 1080)) {
+            sw = 1920;
+            sh = 1080;
+        }
+        
+        // create app
+        UIApplication* app = [UIApplication sharedApplication];
+        GLKView* glView = ((ViewController*)app.keyWindow.rootViewController).glView;
+        self.obsApp = new OBSApp(sw,
+                                 sh,
+                                 (int)glView.frame.size.width,
+                                 (int)glView.frame.size.height);
+        self.obsApp->StartupOBS("zh-CN");
+        self.obsApp->LoadDefaultScene();
+        self.obsApp->CreateDisplay({ glView });
+    }
 }
 
 

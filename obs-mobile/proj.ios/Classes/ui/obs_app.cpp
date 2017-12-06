@@ -592,7 +592,7 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
     // set encoder to output, and bind service
     obs_output_set_video_encoder(m_streamOutput, m_h264Streaming);
     obs_output_set_audio_encoder(m_streamOutput, m_aacStreaming, 0);
-    obs_output_set_service(m_streamOutput, m_rtmpService);
+    obs_output_add_service(m_streamOutput, m_rtmpService);
     
     // get output default config
     bool reconnect = config_get_bool(m_globalConfig, "Output", "Reconnect");

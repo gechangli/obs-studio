@@ -23,14 +23,14 @@
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
 #import <UIKit/UIKit.h>
-#import "EAGLView.h"
+#import <GLKit/GLKit.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
     
 struct gl_windowinfo {
-	EAGLView* view;
+	GLKView* view;
 };
 
 struct gl_platform {
@@ -58,14 +58,16 @@ void gl_platform_destroy(struct gl_platform *platform)
 
 bool gl_platform_init_swapchain(struct gs_swap_chain *swap)
 {
-	UNUSED_PARAMETER(swap);
+    // create context for GLKView
+    EAGLContext* ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+    [swap->wi->view setContext:ctx];
 
 	return true;
 }
 
 void gl_platform_cleanup_swapchain(struct gs_swap_chain *swap)
 {
-	UNUSED_PARAMETER(swap);
+    [swap->wi->view setContext:nil];
 }
 
 struct gl_windowinfo *gl_windowinfo_create(const struct gs_init_data *info)

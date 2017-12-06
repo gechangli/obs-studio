@@ -3,7 +3,6 @@
 
 @interface ViewController ()
 
-@property (weak, nonatomic) IBOutlet GLKView *glView;
 @property (weak, nonatomic) IBOutlet UIButton *pushButton;
 
 - (IBAction)onPushClicked:(id)sender;

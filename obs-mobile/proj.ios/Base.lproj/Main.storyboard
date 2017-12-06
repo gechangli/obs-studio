@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -31,9 +31,18 @@
                                             <action selector="onPushClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8c1-6P-LDQ"/>
                                         </connections>
                                     </button>
+                                    <glkView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0TU-qq-QcF">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="203"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="203" id="2Xb-o6-BmX"/>
+                                        </constraints>
+                                    </glkView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="dOZ-Ve-tre" secondAttribute="bottom" constant="8" id="NCn-cp-qIe"/>
+                                    <constraint firstItem="0TU-qq-QcF" firstAttribute="top" secondItem="ZWt-zF-ojC" secondAttribute="top" id="qGu-Uk-CaE"/>
+                                    <constraint firstAttribute="trailing" secondItem="0TU-qq-QcF" secondAttribute="trailing" id="x1W-pT-2aV"/>
+                                    <constraint firstItem="0TU-qq-QcF" firstAttribute="leading" secondItem="ZWt-zF-ojC" secondAttribute="leading" id="xJF-um-eGG"/>
                                     <constraint firstAttribute="trailing" secondItem="dOZ-Ve-tre" secondAttribute="trailing" constant="13" id="yEo-8H-UXO"/>
                                 </constraints>
                             </glkView>
