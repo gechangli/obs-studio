@@ -194,6 +194,7 @@
 		9275C83F1FD3DD3A00D6DD7D /* CCES3Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */; };
 		9275C8401FD3DD3A00D6DD7D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */; };
 		9275C8411FD3DD3A00D6DD7D /* gl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */; };
+		927A6CF31FD81C4400CA6260 /* av-capture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 927A6CEC1FD81C4400CA6260 /* av-capture.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -515,6 +516,9 @@
 		9275C83C1FD3DD3A00D6DD7D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "gl-ios.mm"; sourceTree = "<group>"; };
+		927A6CEC1FD81C4400CA6260 /* av-capture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "av-capture.mm"; sourceTree = "<group>"; };
+		927A6CF11FD81C4400CA6260 /* left-right.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "left-right.hpp"; sourceTree = "<group>"; };
+		927A6CF21FD81C4400CA6260 /* scope-guard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "scope-guard.hpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -574,6 +578,7 @@
 		92416C631FD6DD3300232AF5 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
+				927A6CEB1FD81C4400CA6260 /* ios-avcapture */,
 				92416D931FD6E83700232AF5 /* rtmp-services */,
 				92416D841FD6E4B000232AF5 /* obs-x264 */,
 				92416D171FD6E3FF00232AF5 /* obs-transitions */,
@@ -1162,6 +1167,17 @@
 			path = ios;
 			sourceTree = "<group>";
 		};
+		927A6CEB1FD81C4400CA6260 /* ios-avcapture */ = {
+			isa = PBXGroup;
+			children = (
+				927A6CEC1FD81C4400CA6260 /* av-capture.mm */,
+				927A6CF11FD81C4400CA6260 /* left-right.hpp */,
+				927A6CF21FD81C4400CA6260 /* scope-guard.hpp */,
+			);
+			name = "ios-avcapture";
+			path = "../../../../plugins/ios-avcapture";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1279,6 +1295,7 @@
 				92417BD01FCD804B00A852EE /* platform.c in Sources */,
 				9239D38D1FD2F4C6008ADEBB /* gl-subsystem.c in Sources */,
 				924180B51FCD806500A852EE /* strconv.c in Sources */,
+				927A6CF31FD81C4400CA6260 /* av-capture.mm in Sources */,
 				92417B711FCD804B00A852EE /* decl.c in Sources */,
 				92417BB51FCD804B00A852EE /* obs-scene.c in Sources */,
 				92417B941FCD804B00A852EE /* plane.c in Sources */,
