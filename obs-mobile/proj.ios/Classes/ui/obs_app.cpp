@@ -16,11 +16,14 @@
 #include <obs.hpp>
 #include "obs-internal.h"
 #include "obs_app.hpp"
+#import "obs-module.h"
 #include <TargetConditionals.h>
+#import <OpenGLES/ES3/gl.h>
+#import <OpenGLES/ES3/glext.h>
 
 using namespace std;
 
-#define DEFAULT_LANG "en_US"
+#define DEFAULT_LANG "en-US"
 #define INVALID_BITRATE 10000
 
 // shared instance
@@ -33,12 +36,30 @@ static once_flag populateBitrateMap;
 // audio encoder available
 static const string aac_ = "AAC";
 static const string encoders[] = {
-//    "ffmpeg_aac",
-//    "mf_aac",
-//    "libfdk_aac",
+    //    "ffmpeg_aac",
+    //    "mf_aac",
+    //    "libfdk_aac",
     "CoreAudio_AAC",
 };
 static const string &fallbackEncoder = encoders[0];
+
+// declare static modules
+OBS_DECLARE_STATIC_MODULE_CREATOR(coreaudio_encoder)
+OBS_DECLARE_STATIC_MODULE_CREATOR(ios_avcapture)
+OBS_DECLARE_STATIC_MODULE_CREATOR(obs_outputs)
+OBS_DECLARE_STATIC_MODULE_CREATOR(obs_transitions)
+OBS_DECLARE_STATIC_MODULE_CREATOR(obs_x264)
+OBS_DECLARE_STATIC_MODULE_CREATOR(rtmp_services)
+
+// loader for static modules
+static void loadStaticModules() {
+    OBS_OPEN_STATIC_MODULE(coreaudio_encoder);
+    OBS_OPEN_STATIC_MODULE(ios_avcapture);
+    OBS_OPEN_STATIC_MODULE(obs_outputs);
+    OBS_OPEN_STATIC_MODULE(obs_transitions);
+    OBS_OPEN_STATIC_MODULE(obs_x264);
+    OBS_OPEN_STATIC_MODULE(rtmp_services);
+}
 
 OBSApp::OBSApp(int baseWidth, int baseHeight, int w, int h) :
 m_baseWidth(baseWidth),
@@ -49,6 +70,7 @@ m_videoScale(0),
 m_delayActive(false),
 m_streamingActive(false) {
     sharedInstance = this;
+    RegisterStaticModuleLoader(loadStaticModules);
 }
 
 OBSApp::~OBSApp() {
@@ -137,7 +159,7 @@ bool OBSApp::ResetAudio() {
     struct obs_audio_info ai;
     ai.samples_per_sec = (int)config_get_uint(m_globalConfig, "Audio", "SampleRate");
     const char *channelSetupStr = config_get_string(m_globalConfig, "Audio", "ChannelSetup");
-
+    
     // set mono or stereo
     if (strcmp(channelSetupStr, "Mono") == 0)
         ai.speakers = SPEAKERS_MONO;
@@ -331,18 +353,6 @@ bool OBSApp::MakeUserDirs() {
     if (!do_mkdir(path))
         return false;
     
-#ifdef _WIN32
-    if (GetConfigPath(path, sizeof(path), "data/crashes") <= 0)
-        return false;
-    if (!do_mkdir(path))
-        return false;
-    
-    if (GetConfigPath(path, sizeof(path), "data/updates") <= 0)
-        return false;
-    if (!do_mkdir(path))
-        return false;
-#endif
-    
     if (GetConfigPath(path, sizeof(path), "data/plugin_config") <= 0)
         return false;
     if (!do_mkdir(path))
@@ -385,7 +395,7 @@ bool OBSApp::InitGlobalConfigDefaults() {
 #else
     config_set_default_string(m_globalConfig, "Video", "Renderer", "OpenGL-static");
 #endif
-
+    
 #if TARGET_OS_OSX
     config_set_default_bool(m_globalConfig, "Video", "DisableOSXVSync", true);
     config_set_default_bool(m_globalConfig, "Video", "ResetOSXVSyncOnExit",
@@ -477,7 +487,7 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     float videoScale = app->GetVideoScale();
     int previewCX = int(videoScale * ovi.base_width);
     int previewCY = int(videoScale * ovi.base_height);
-
+    
     // push projection and viewport
     gs_viewport_push();
     gs_projection_push();
@@ -489,6 +499,42 @@ void OBSApp::RenderMain(void *data, uint32_t cx, uint32_t cy) {
     
     // render to main view
     obs_render_main_view();
+    
+    // DEBUG: test code for grab opengl buffer
+    //    #define WindowWidth ovi.base_width
+    //    #define WindowHeight previewCY
+    //    FILE*     pWritingFile = 0;
+    //    GLubyte   BMP_Header[] = {
+    //        0x42, 0x4D, 0xD6, 0x2E, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    //        0x36, 0x00, 0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0xD0, 0x02,
+    //        0x00, 0x00, 0x4A, 0x03, 0x00, 0x00, 0x01, 0x00, 0x18, 0x00,
+    //        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x0B,
+    //        0x00, 0x00, 0x40, 0x0B, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+    //        0x00, 0x00, 0x00, 0x00
+    //    };
+    //    GLint     pixelWidth = WindowWidth * 3;
+    //    GLint PixelDataLength = pixelWidth * WindowHeight;
+    //    GLint FileLength = PixelDataLength + sizeof(BMP_Header);
+    //    GLubyte* pPixelData = (GLubyte* )malloc(PixelDataLength);
+    //    pWritingFile = fopen("/Users/maruojie/Desktop/a.bmp", "wb");
+    //    if( pWritingFile == 0 )
+    //        exit(0);
+    //    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    //    glReadPixels(0, 0,
+    //                 WindowWidth, WindowHeight,
+    //                 GL_RGB, GL_UNSIGNED_BYTE, pPixelData);
+    //    fwrite(BMP_Header, sizeof(BMP_Header), 1, pWritingFile);
+    //    fseek(pWritingFile, 0x2, SEEK_SET);
+    //    fwrite(&FileLength, 4, 1, pWritingFile);
+    //    fseek(pWritingFile, 0x0012, SEEK_SET);
+    //    pixelWidth = WindowWidth;
+    //    int j = WindowHeight;
+    //    fwrite(&pixelWidth, sizeof(pixelWidth), 1, pWritingFile);
+    //    fwrite(&j, sizeof(j), 1, pWritingFile);
+    //    fseek(pWritingFile, 0, SEEK_END);
+    //    fwrite(pPixelData, PixelDataLength, 1, pWritingFile);
+    //    fclose(pWritingFile);
+    //    free(pPixelData);
     
     // clear buffer
     gs_load_vertexbuffer(nullptr);
@@ -588,7 +634,7 @@ bool OBSApp::StartStreaming(const char* url, const char* key) {
         // save output type
         m_outputType = type;
     }
-
+    
     // set encoder to output, and bind service
     obs_output_set_video_encoder(m_streamOutput, m_h264Streaming);
     obs_output_set_audio_encoder(m_streamOutput, m_aacStreaming, 0);
@@ -758,43 +804,43 @@ const char* OBSApp::GetCodec(const char *id) {
 void OBSApp::PopulateBitrateMap() {
     call_once(populateBitrateMap, []() {
         HandleEncoderProperties(fallbackEncoder.c_str());
-
+        
         const char *id = nullptr;
         for (size_t i = 0; obs_enum_encoder_types(i, &id); i++) {
             auto Compare = [=](const string &val) {
                 return val == NullToEmpty(id);
             };
-
+            
             if (find_if(begin(encoders), end(encoders), Compare) != end(encoders))
                 continue;
-
+            
             if (aac_ != GetCodec(id))
                 continue;
-
+            
             HandleEncoderProperties(id);
         }
-
+        
         for (auto &encoder : encoders) {
             if (encoder == fallbackEncoder)
                 continue;
-
+            
             if (aac_ != GetCodec(encoder.c_str()))
                 continue;
-
+            
             HandleEncoderProperties(encoder.c_str());
         }
-
+        
         if (bitrateMap.empty()) {
             blog(LOG_ERROR, "Could not enumerate any AAC encoder bitrates");
             return;
         }
-
+        
         ostringstream ss;
         for (auto &entry : bitrateMap)
-            ss << "\n	" << setw(3) << entry.first << " kbit/s: '" << EncoderName(entry.second) << "' (" << entry.second << ')';
-
+            ss << "\n    " << setw(3) << entry.first << " kbit/s: '" << EncoderName(entry.second) << "' (" << entry.second << ')';
+        
         blog(LOG_DEBUG, "AAC encoder bitrate mapping:%s",
-        ss.str().c_str());
+             ss.str().c_str());
     });
 }
 
@@ -925,3 +971,4 @@ void OBSApp::SetupOutputs() {
     obs_encoder_set_video(m_h264Streaming, obs_get_video());
     obs_encoder_set_audio(m_aacStreaming,  obs_get_audio());
 }
+
