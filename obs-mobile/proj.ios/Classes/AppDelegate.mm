@@ -1,8 +1,12 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import <GLKit/GLKit.h>
+#import "obs.h"
+#import "obs_app.hpp"
 
-@interface AppDelegate ()
+@interface AppDelegate()
+
+@property (nonatomic, assign) OBSApp* obsApp;
 
 @end
 

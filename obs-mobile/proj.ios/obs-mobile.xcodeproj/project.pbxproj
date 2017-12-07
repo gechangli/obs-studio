@@ -176,7 +176,7 @@
 		924180B71FCD806500A852EE /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417C391FCD806400A852EE /* value.c */; };
 		924183FF1FCDBA1700A852EE /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 924183FE1FCDBA1700A852EE /* libcurl.a */; };
 		925E18471F6EAB45007DC703 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18431F6EAB45007DC703 /* AppDelegate.mm */; };
-		925E18481F6EAB45007DC703 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18441F6EAB45007DC703 /* main.mm */; };
+		925E18481F6EAB45007DC703 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 925E18441F6EAB45007DC703 /* main.m */; };
 		925E18491F6EAB45007DC703 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 925E18461F6EAB45007DC703 /* ViewController.mm */; };
 		925E184E1F6EAB65007DC703 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 925E184D1F6EAB65007DC703 /* Assets.xcassets */; };
 		925E18531F6EAB6A007DC703 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 925E184F1F6EAB6A007DC703 /* LaunchScreen.storyboard */; };
@@ -494,7 +494,7 @@
 		925E18271F6EAAC2007DC703 /* obs-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "obs-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		925E18421F6EAB45007DC703 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		925E18431F6EAB45007DC703 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		925E18441F6EAB45007DC703 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		925E18441F6EAB45007DC703 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		925E18451F6EAB45007DC703 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		925E18461F6EAB45007DC703 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		925E184B1F6EAB54007DC703 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1107,7 +1107,7 @@
 				927A6CF61FD83D9700CA6260 /* ui */,
 				925E18421F6EAB45007DC703 /* AppDelegate.h */,
 				925E18431F6EAB45007DC703 /* AppDelegate.mm */,
-				925E18441F6EAB45007DC703 /* main.mm */,
+				925E18441F6EAB45007DC703 /* main.m */,
 				925E18451F6EAB45007DC703 /* ViewController.h */,
 				925E18461F6EAB45007DC703 /* ViewController.mm */,
 			);
@@ -1382,7 +1382,7 @@
 				92416D811FD6E3FF00232AF5 /* transition-slide.c in Sources */,
 				924180B71FCD806500A852EE /* value.c in Sources */,
 				92417B8E1FCD804B00A852EE /* graphics.c in Sources */,
-				925E18481F6EAB45007DC703 /* main.mm in Sources */,
+				925E18481F6EAB45007DC703 /* main.m in Sources */,
 				92416CD01FD6DFC400232AF5 /* socket.c in Sources */,
 				92416CC01FD6DFC400232AF5 /* flv-output.c in Sources */,
 				92417B951FCD804B00A852EE /* quat.c in Sources */,

@@ -1,5 +1,6 @@
 #import "ViewController.h"
 #import <GLKit/GLKit.h>
+#include "obs_app.hpp"
 
 @interface ViewController ()
 
@@ -23,6 +24,14 @@
 }
 
 - (IBAction)onPushClicked:(id)sender {
+    OBSApp* obsApp = OBSApp::sharedApp();
+    if(obsApp->IsStreamingActive()) {
+        obsApp->StopStreaming();
+        self.pushButton.titleLabel.text = @"Push";
+    } else {
+        obsApp->StartStreaming("rtmp://send1.douyu.com/live", "2957252ruUkRlHvo?wsSecret=a303f4610c88e209dc79fa350ea08cd9&wsTime=59aa3479&wsSeek=off");
+        self.pushButton.titleLabel.text = @"Stop";
+    }
 }
 
 @end
