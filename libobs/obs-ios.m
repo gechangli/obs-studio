@@ -164,7 +164,8 @@ obs_key_t obs_key_from_virtual_key(int code)
 
 bool obs_hotkeys_platform_init(struct obs_core_hotkeys *hotkeys)
 {
-    return false;
+    // do nothing for iOS
+    return true;
 }
 
 void obs_hotkeys_platform_free(struct obs_core_hotkeys *hotkeys)

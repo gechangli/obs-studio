@@ -130,24 +130,10 @@ static void gl_enable_debug()
 static void gl_enable_debug() {}
 #endif // #ifdef _DEBUG
 
-static void find_coreGL(void) {
-    const char *v = (const char *)glGetString(GL_VERSION);
-    int major = v[0] - '0';
-    int minor = v[2] - '0';
-    GLVersion.major = major;
-    GLVersion.minor = minor;
-    GLES_VERSION_1_0 = (major == 1 && minor >= 0) || major > 1;
-    GLES_VERSION_1_1 = (major == 1 && minor >= 1) || major > 1;
-    GLES_VERSION_2_0 = (major == 2 && minor >= 0) || major > 2;
-    GLES_VERSION_3_0 = (major == 3 && minor >= 0) || major > 3;
-    GLES_VERSION_3_1 = (major == 3 && minor >= 1) || major > 3;
-    GLES_VERSION_3_2 = (major == 3 && minor >= 2) || major > 3;
-}
-
 static bool gl_init_extensions(struct gs_device* device)
 {
 	if (!GLES_VERSION_2_0) {
-		blog(LOG_ERROR, "obs-studio requires OpenGLES version 2.0 or "
+		blog(LOG_ERROR, "obs-studio requires OpenGLES version 3.0 or "
 		                "higher.");
 		return false;
 	}

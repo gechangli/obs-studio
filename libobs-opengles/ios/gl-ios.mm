@@ -40,10 +40,37 @@ struct gl_platform {
 static EAGLContext *gl_context_create(void) {
     return nil;
 }
+    
+static void find_coreGL(void) {
+    // TODO: opengl is not initialized
+//    const char *v = (const char *)glGetString(GL_VERSION);
+//    int major = v[0] - '0';
+//    int minor = v[2] - '0';
+//    GLVersion.major = major;
+//    GLVersion.minor = minor;
+//    GLES_VERSION_1_0 = (major == 1 && minor >= 0) || major > 1;
+//    GLES_VERSION_1_1 = (major == 1 && minor >= 1) || major > 1;
+//    GLES_VERSION_2_0 = (major == 2 && minor >= 0) || major > 2;
+//    GLES_VERSION_3_0 = (major == 3 && minor >= 0) || major > 3;
+//    GLES_VERSION_3_1 = (major == 3 && minor >= 1) || major > 3;
+//    GLES_VERSION_3_2 = (major == 3 && minor >= 2) || major > 3;
+    GLES_VERSION_1_0 = false;
+    GLES_VERSION_1_1 = false;
+    GLES_VERSION_2_0 = true;
+    GLES_VERSION_3_0 = true;
+    GLES_VERSION_3_1 = true;
+    GLES_VERSION_3_2 = true;
+}
 
 struct gl_platform *gl_platform_create(gs_device_t *device, uint32_t adapter)
 {
+    // allocate platform struct
 	struct gl_platform *plat = (struct gl_platform *)bzalloc(sizeof(struct gl_platform));
+    
+    // detect gl version
+    find_coreGL();
+    
+    // return
 	return plat;
 }
 

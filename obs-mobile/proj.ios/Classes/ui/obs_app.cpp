@@ -393,7 +393,7 @@ bool OBSApp::InitGlobalConfigDefaults() {
     config_set_default_string(m_globalConfig, "Video", "Renderer",
                               "Direct3D 11");
 #else
-    config_set_default_string(m_globalConfig, "Video", "Renderer", "OpenGL-static");
+    config_set_default_string(m_globalConfig, "Video", "Renderer", "OpenGLES");
 #endif
     
 #if TARGET_OS_OSX
