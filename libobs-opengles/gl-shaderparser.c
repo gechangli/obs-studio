@@ -648,7 +648,7 @@ static bool gl_shader_buildstring(struct gl_shader_parser *glsp)
 		return false;
 	}
 
-	dstr_copy(&glsp->gl_string, "#version 150\n\n");
+	dstr_copy(&glsp->gl_string, "#version 300 es\n\n");
 	gl_write_params(glsp);
 	gl_write_inputs(glsp, main_func);
 	gl_write_outputs(glsp, main_func);
