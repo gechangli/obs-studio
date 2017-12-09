@@ -27,6 +27,7 @@
 #include "axisang.h"
 #include "effect-parser.h"
 #include "effect.h"
+#include "obs-config.h"
 
 #ifdef __APPLE__
 #include <TargetConditionals.h>
@@ -189,14 +190,14 @@ int gs_create(graphics_t **pgraphics, const char *module, uint32_t adapter)
 	pthread_mutex_init_value(&graphics->mutex);
 	pthread_mutex_init_value(&graphics->effect_mutex);
 
-    // if module is not OpenGL ES renderer, load dynamic library
-    if(strcmp(module, "OpenGLES") != 0) {
+    // if not static renderer, load dynamic library
+#ifndef __STATIC_RENDERER__
         graphics->module = os_dlopen(module);
         if (!graphics->module) {
             errcode = GS_ERROR_MODULE_NOT_FOUND;
             goto error;
         }
-    }
+#endif
 
 	if (!load_graphics_imports(&graphics->exports, graphics->module,
 	                           module))
