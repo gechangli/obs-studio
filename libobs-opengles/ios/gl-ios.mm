@@ -37,10 +37,6 @@ struct gl_platform {
 	EAGLContext *context;
 };
 
-static EAGLContext *gl_context_create(void) {
-    return nil;
-}
-
 struct gl_platform *gl_platform_create(gs_device_t *device, uint32_t adapter)
 {
     // allocate platform struct
@@ -80,18 +76,11 @@ void gl_platform_destroy(struct gl_platform *platform)
 	bfree(platform);
 }
 
-bool gl_platform_init_swapchain(struct gs_swap_chain *swap)
-{
-    // create context for GLKView
-    EAGLContext* ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-    [swap->wi->view setContext:ctx];
-
+bool gl_platform_init_swapchain(struct gs_swap_chain *swap) {
 	return true;
 }
 
-void gl_platform_cleanup_swapchain(struct gs_swap_chain *swap)
-{
-    [swap->wi->view setContext:nil];
+void gl_platform_cleanup_swapchain(struct gs_swap_chain *swap) {
 }
 
 struct gl_windowinfo *gl_windowinfo_create(const struct gs_init_data *info)
@@ -141,10 +130,8 @@ void GL_MANGLING(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swa
 		return;
 
 	device->cur_swap = swap;
-	if (swap) {
-        [EAGLContext setCurrentContext:swap->wi->view.context];
-	} else {
-        [EAGLContext setCurrentContext:nil];
+	if (swap && swap->wi->view.context == nil) {
+        [swap->wi->view setContext:device->plat->context];
 	}
 }
 
