@@ -20,7 +20,7 @@
 #include "c99defs.h"
 #include "base.h"
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || defined(DEBUG)
 static int log_output_level = LOG_DEBUG;
 #else
 static int log_output_level = LOG_INFO;
