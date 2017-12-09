@@ -220,20 +220,12 @@ int GL_MANGLING(device_create)(gs_device_t **p_device, uint32_t adapter)
 		goto fail;
 	}
 
-	blog(LOG_INFO, "OpenGL version: %s", glGetString(GL_VERSION));
+	blog(LOG_INFO, glGetString(GL_VERSION));
 	
 	gl_enable(GL_CULL_FACE);
 	
 	GL_MANGLING(device_leave_context)(device);
 	device->cur_swap = NULL;
-
-#ifdef _WIN32
-	blog(LOG_INFO, "Warning: The OpenGL renderer is currently in use.  "
-			"On windows, the OpenGL renderer can decrease "
-			"capture performance due to the lack of specific "
-			"features used to maximize capture performance.  "
-			"The Direct3D 11 renderer is recommended instead.");
-#endif
 
 	*p_device = device;
 	return GS_SUCCESS;
