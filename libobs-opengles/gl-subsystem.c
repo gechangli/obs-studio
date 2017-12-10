@@ -195,7 +195,7 @@ const char * GL_MANGLING(device_get_name)(void)
 
 int GL_MANGLING(device_get_type)(void)
 {
-	return GS_DEVICE_OPENGL;
+	return GS_DEVICE_OPENGLES;
 }
 
 const char *GL_MANGLING(device_preprocessor_name)(void)
