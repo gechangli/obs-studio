@@ -56,7 +56,7 @@
         
         // create app
         UIApplication* app = [UIApplication sharedApplication];
-        GLKView* glView = ((ViewController*)app.keyWindow.rootViewController).glView;
+        GLKView* glView = (GLKView*)((ViewController*)app.keyWindow.rootViewController).view;
         self.obsApp = new OBSApp(sw,
                                  sh,
                                  (int)glView.frame.size.width,

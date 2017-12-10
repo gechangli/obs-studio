@@ -142,12 +142,15 @@ void GL_MANGLING(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swa
 	device->cur_swap = swap;
 	if (swap && swap->wi->view.context == nil) {
         [swap->wi->view setContext:device->plat->context];
+        swap->wi->view.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
+        swap->wi->view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
+        swap->wi->view.drawableStencilFormat = GLKViewDrawableStencilFormat8;
 	}
 }
 
 void GL_MANGLING(device_present)(gs_device_t *device)
 {
-	[device->plat->context presentRenderbuffer:GL_FRAMEBUFFER];
+    [device->plat->context presentRenderbuffer:GL_FRAMEBUFFER];
 }
 
 void gl_getclientsize(const struct gs_swap_chain *swap, uint32_t *width,
