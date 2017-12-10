@@ -70,11 +70,11 @@ static bool gl_write_type_n(struct gl_shader_parser *glsp,
 	else if (cmp_type(type, len, "int4", 4) == 0)
 		dstr_cat(&glsp->gl_string, "ivec4");
 	else if (cmp_type(type, len, "float3x3", 8) == 0)
-		dstr_cat(&glsp->gl_string, "mat3x3");
+		dstr_cat(&glsp->gl_string, "mat3");
 	else if (cmp_type(type, len, "float3x4", 8) == 0)
 		dstr_cat(&glsp->gl_string, "mat3x4");
 	else if (cmp_type(type, len, "float4x4", 8) == 0)
-		dstr_cat(&glsp->gl_string, "mat4x4");
+		dstr_cat(&glsp->gl_string, "mat4");
 	else if (cmp_type(type, len, "texture2d", 9) == 0)
 		dstr_cat(&glsp->gl_string, "sampler2D");
 	else if (cmp_type(type, len, "texture3d", 9) == 0)
@@ -224,7 +224,7 @@ static void gl_write_struct(struct gl_shader_parser *glsp,
 
 static void gl_write_interface_block(struct gl_shader_parser *glsp)
 {
-	if (glsp->type == GS_SHADER_VERTEX) {
+	if (glsp->type == GS_SHADER_VERTEX && gl_has_extension("EXT_shader_io_blocks")) {
 		dstr_cat(&glsp->gl_string, "out gl_PerVertex {\n"
 		                           "\tvec4 gl_Position;\n};\n\n");
 	}
@@ -638,6 +638,12 @@ static void gl_rename_attributes(struct gl_shader_parser *glsp)
 	}
 }
 
+static void gl_write_precision(struct gl_shader_parser *glsp) {
+    if(glsp->type == GS_SHADER_PIXEL) {
+        dstr_cat(&glsp->gl_string, "precision mediump float;\n");
+    }
+}
+
 static bool gl_shader_buildstring(struct gl_shader_parser *glsp)
 {
 	struct shader_func *main_func;
@@ -649,10 +655,11 @@ static bool gl_shader_buildstring(struct gl_shader_parser *glsp)
 	}
 
 	dstr_copy(&glsp->gl_string, "#version 300 es\n\n");
+    gl_write_precision(glsp);
 	gl_write_params(glsp);
 	gl_write_inputs(glsp, main_func);
 	gl_write_outputs(glsp, main_func);
-	gl_write_interface_block(glsp);
+    gl_write_interface_block(glsp);
 	gl_write_structs(glsp);
 	gl_write_functions(glsp);
 	gl_write_main(glsp, main_func);

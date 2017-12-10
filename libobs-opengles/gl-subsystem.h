@@ -544,6 +544,7 @@ extern void                  gl_windowinfo_destroy(struct gl_windowinfo *wi);
 extern void                  gl_getclientsize(const struct gs_swap_chain *swap,
                                               uint32_t *width,
                                               uint32_t *height);
+extern bool gl_has_extension(const char* ext);
 
 #ifdef __cplusplus
 }

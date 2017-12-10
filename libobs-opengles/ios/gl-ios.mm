@@ -29,6 +29,9 @@
 extern "C" {
 #endif
     
+// extension strings
+static char* _gl_extensions;
+    
 struct gl_windowinfo {
 	GLKView* view;
 };
@@ -63,8 +66,61 @@ struct gl_platform *gl_platform_create(gs_device_t *device, uint32_t adapter)
     // set current context
     [EAGLContext setCurrentContext:plat->context];
     
+    // get gl extensions
+    _gl_extensions = (char*)glGetString(GL_EXTENSIONS);
+    
+//    int compiled = 0;
+//    GLuint shader = glCreateShader(GL_VERTEX_SHADER);
+//    const GLchar* sources[] = {
+//        "#version 300 es\n"
+//        "uniform mat4x4 ViewProj;\n"
+//        "in vec4 _input_attrib0;\n"
+//        "in vec2 _input_attrib1;\n"
+//        "out vec4 _vertex_shader_attrib0;\n"
+//        "out vec2 _vertex_shader_attrib1;\n"
+//        "struct VertInOut {\n"
+//        "    vec4 pos;\n"
+//        "    vec2 uv;\n"
+//        "};\n"
+//        "VertInOut VSDefault(VertInOut vert_in)\n"
+//        "{\n"
+//        "    VertInOut vert_out;\n"
+//        "    vert_out.pos = ((vec4(vert_in.pos.xyz, 1.0)) * (ViewProj));\n"
+//        "    vert_out.uv  = vert_in.uv;\n"
+//        "    return vert_out;\n"
+//        "}\n"
+//        "VertInOut _main_wrap(VertInOut vert_in)\n"
+//        "{\n"
+//        "    return VSDefault(vert_in);\n"
+//        "}\n"
+//        "void main(void)\n"
+//        "{\n"
+//        "    VertInOut vert_in;\n"
+//        "    VertInOut outputval;\n"
+//        "\n"
+//        "    vert_in.pos = _input_attrib0;\n"
+//        "    vert_in.uv = _input_attrib1;\n"
+//        "\n"
+//        "    outputval = _main_wrap(vert_in);\n"
+//        "\n"
+//        "    _vertex_shader_attrib0 = outputval.pos;\n"
+//        "    gl_Position = outputval.pos;\n"
+//        "    _vertex_shader_attrib1 = outputval.uv;\n"
+//        "}\n"
+//    };
+//    glShaderSource(shader, 1, sources, 0);
+//    glCompileShader(shader);
+//    glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+//    if (!compiled) {
+//        printf("test");
+//    }
+    
     // return
 	return plat;
+}
+    
+bool gl_has_extension(const char* ext) {
+    return strstr(_gl_extensions, ext) != NULL;
 }
 
 void gl_platform_destroy(struct gl_platform *platform)
