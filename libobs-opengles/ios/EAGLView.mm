@@ -61,6 +61,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 */
 
+#ifdef __APPLE__
+#include <TargetConditionals.h>
+
+#if TARGET_OS_IPHONE
+
 #import <QuartzCore/QuartzCore.h>
 #import "EAGLView.h"
 #import "CCES3Renderer.h"
@@ -277,3 +282,7 @@ static EAGLView *view = 0;
 }
 
 @end
+
+#endif // #if TARGET_OS_IPHONE
+
+#endif // #ifdef __APPLE__
