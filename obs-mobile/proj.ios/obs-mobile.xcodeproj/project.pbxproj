@@ -148,7 +148,7 @@
 		925E198B1F6EB701007DC703 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 925E198A1F6EB701007DC703 /* libz.tbd */; };
 		925E198D1F6EB714007DC703 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 925E198C1F6EB714007DC703 /* libiconv.tbd */; };
 		925E198F1F6EB779007DC703 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 925E198E1F6EB779007DC703 /* libbz2.tbd */; };
-		9275C83F1FD3DD3A00D6DD7D /* CCES3Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */; };
+		9275C83F1FD3DD3A00D6DD7D /* GLES3FrameBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83A1FD3DD3A00D6DD7D /* GLES3FrameBuffer.m */; };
 		9275C8401FD3DD3A00D6DD7D /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */; };
 		9275C8411FD3DD3A00D6DD7D /* gl-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */; };
 		927A6CF91FD83D9800CA6260 /* obs_app.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 927A6CF71FD83D9700CA6260 /* obs_app.cpp */; };
@@ -440,8 +440,8 @@
 		925E198A1F6EB701007DC703 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		925E198C1F6EB714007DC703 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		925E198E1F6EB779007DC703 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
-		9275C8391FD3DD3A00D6DD7D /* CCES3Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCES3Renderer.h; sourceTree = "<group>"; };
-		9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCES3Renderer.m; sourceTree = "<group>"; };
+		9275C8391FD3DD3A00D6DD7D /* GLES3FrameBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLES3FrameBuffer.h; sourceTree = "<group>"; };
+		9275C83A1FD3DD3A00D6DD7D /* GLES3FrameBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLES3FrameBuffer.m; sourceTree = "<group>"; };
 		9275C83C1FD3DD3A00D6DD7D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "gl-ios.mm"; sourceTree = "<group>"; };
@@ -987,8 +987,8 @@
 		9275C8381FD3DD3A00D6DD7D /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				9275C8391FD3DD3A00D6DD7D /* CCES3Renderer.h */,
-				9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */,
+				9275C8391FD3DD3A00D6DD7D /* GLES3FrameBuffer.h */,
+				9275C83A1FD3DD3A00D6DD7D /* GLES3FrameBuffer.m */,
 				9275C83C1FD3DD3A00D6DD7D /* EAGLView.h */,
 				9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */,
 				9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */,
@@ -1340,7 +1340,7 @@
 				924180B41FCD806500A852EE /* strbuffer.c in Sources */,
 				92417B8B1FCD804B00A852EE /* graphics-ffmpeg.c in Sources */,
 				92417BA51FCD804B00A852EE /* video-scaler-ffmpeg.c in Sources */,
-				9275C83F1FD3DD3A00D6DD7D /* CCES3Renderer.m in Sources */,
+				9275C83F1FD3DD3A00D6DD7D /* GLES3FrameBuffer.m in Sources */,
 				92417BC51FCD804B00A852EE /* config-file.c in Sources */,
 				92B916181FDFB80500A95AF3 /* null-output.c in Sources */,
 				924180AA1FCD806500A852EE /* dump.c in Sources */,
