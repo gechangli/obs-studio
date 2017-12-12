@@ -43,11 +43,11 @@
     if (self)
     {
         if( ! sharegroup )
-            context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+            self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
         else
-            context_ = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
+            self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3 sharegroup:sharegroup];
 
-        if (!context_ || ![EAGLContext setCurrentContext:context_]) {
+        if (!self.context || ![EAGLContext setCurrentContext:self.context]) {
             return nil;
         }
         
@@ -89,7 +89,7 @@
     // Allocate color buffer backing based on the current layer size
     glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer_);
 
-    if( ! [context_ renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer] )
+    if( ! [self.context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer] )
     {
         NSLog(@"failed to call context");
     }
@@ -225,10 +225,10 @@
     }
 
     // Tear down context
-    if ([EAGLContext currentContext] == context_)
+    if ([EAGLContext currentContext] == self.context)
         [EAGLContext setCurrentContext:nil];
     
-    context_ = nil;
+    self.context = nil;
 }
 
 @end

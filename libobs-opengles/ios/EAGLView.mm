@@ -68,6 +68,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #include "util/base.h"
 #include "gl-helpers.h"
 
+static EAGLView *view = 0;
+
 @interface EAGLView (Private)
 - (BOOL) setupSurfaceWithSharegroup:(EAGLSharegroup*)sharegroup;
 - (unsigned int) convertPixelFormat:(NSString*) pixelFormat;
@@ -120,9 +122,13 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         requestedSamples_ = nSamples;
         preserveBackbuffer_ = retained;
 
+        
+        
         if( ! [self setupSurfaceWithSharegroup:sharegroup] ) {
             return nil;
         }
+        
+        view = self;
     }
         
     return self;
@@ -142,6 +148,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         if( ! [self setupSurfaceWithSharegroup:nil] ) {
             return nil;
         }
+        
+        view = self;
     }
     
     return self;
@@ -185,6 +193,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     gl_success("setupSurfaceWithSharegroup");
     
     return YES;
+}
+
++ (id) sharedEGLView
+{
+    return view;
 }
 
 - (void) layoutSubviews

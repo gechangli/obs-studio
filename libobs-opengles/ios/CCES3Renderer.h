@@ -50,8 +50,6 @@
     //buffers for MSAA
     GLuint msaaFramebuffer_;
     GLuint msaaColorbuffer_;
-
-    EAGLContext *context_;
 }
 
 /** Color Renderbuffer */
@@ -66,8 +64,7 @@
 /** MSAA Color Buffer */
 @property (nonatomic, readonly, assign) GLuint msaaColorbuffer;
 
-/** EAGLContext */
-@property (nonatomic, readonly, strong) EAGLContext* context;
+@property (strong, nonatomic) EAGLContext* context;
 
 - (BOOL)resizeFromLayer:(CAEAGLLayer *)layer;
 

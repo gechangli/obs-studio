@@ -14,16 +14,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // init gl view
-    GLKView* glView = (GLKView*)self.view;
-    glView.delegate = self;
-}
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-    NSLog(@"ggg");
-    glClearColor(1, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 - (void)didReceiveMemoryWarning {

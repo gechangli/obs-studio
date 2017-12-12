@@ -24,6 +24,7 @@
 #import <OpenGLES/ES3/glext.h>
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
+#import "EAGLView.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,7 +34,7 @@ extern "C" {
 static char* _gl_extensions;
     
 struct gl_windowinfo {
-	GLKView* view;
+	EAGLView* view;
 };
 
 struct gl_platform {
@@ -49,19 +50,12 @@ struct gl_platform *gl_platform_create(gs_device_t *device, uint32_t adapter)
     GLES_VERSION_1_0 = false;
     GLES_VERSION_1_1 = false;
     GLES_VERSION_2_0 = true;
+    GLES_VERSION_3_0 = true;
+    GLES_VERSION_3_1 = false;
+    GLES_VERSION_3_2 = false;
     
     // create context
-    plat->context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-    if(plat->context == nil) {
-        GLES_VERSION_3_0 = false;
-        GLES_VERSION_3_1 = false;
-        GLES_VERSION_3_2 = false;
-        plat->context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    } else {
-        GLES_VERSION_3_0 = true;
-        GLES_VERSION_3_1 = false;
-        GLES_VERSION_3_2 = false;
-    }
+    plat->context = [[EAGLView sharedEGLView] context];
     
     // set current context
     [EAGLContext setCurrentContext:plat->context];
@@ -104,7 +98,7 @@ struct gl_windowinfo *gl_windowinfo_create(const struct gs_init_data *info)
 	struct gl_windowinfo *wi = (struct gl_windowinfo *)bzalloc(sizeof(struct gl_windowinfo));
 
 	wi->view = info->window.view;
-
+    
 	return wi;
 }
 
@@ -141,16 +135,12 @@ void GL_MANGLING(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swa
 
 	device->cur_swap = swap;
 	if (swap && swap->wi->view.context == nil) {
-        [swap->wi->view setContext:device->plat->context];
-        swap->wi->view.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
-        swap->wi->view.drawableDepthFormat = GLKViewDrawableDepthFormat16;
-        swap->wi->view.drawableStencilFormat = GLKViewDrawableStencilFormat8;
 	}
 }
 
 void GL_MANGLING(device_present)(gs_device_t *device)
 {
-    [device->plat->context presentRenderbuffer:GL_FRAMEBUFFER];
+    [device->cur_swap->wi->view swapBuffers];
 }
 
 void gl_getclientsize(const struct gs_swap_chain *swap, uint32_t *width,

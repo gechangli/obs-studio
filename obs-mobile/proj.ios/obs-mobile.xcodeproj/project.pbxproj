@@ -174,7 +174,6 @@
 		92B916331FDFB80500A95AF3 /* log.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B912751FDFB80400A95AF3 /* log.c */; };
 		92B916341FDFB80500A95AF3 /* hashswf.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B9127C1FDFB80400A95AF3 /* hashswf.c */; };
 		92B916351FDFB80500A95AF3 /* rtmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B9127D1FDFB80400A95AF3 /* rtmp.c */; };
-		92B916361FDFB80500A95AF3 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 92B912801FDFB80400A95AF3 /* COPYING */; };
 		92B916371FDFB80500A95AF3 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B912831FDFB80400A95AF3 /* md5.c */; };
 		92B916381FDFB80500A95AF3 /* parseurl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B912841FDFB80400A95AF3 /* parseurl.c */; };
 		92B916391FDFB80500A95AF3 /* amf.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B912851FDFB80400A95AF3 /* amf.c */; };
@@ -492,7 +491,6 @@
 		92B9127D1FDFB80400A95AF3 /* rtmp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rtmp.c; sourceTree = "<group>"; };
 		92B9127E1FDFB80400A95AF3 /* cencode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cencode.h; sourceTree = "<group>"; };
 		92B9127F1FDFB80400A95AF3 /* amf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amf.h; sourceTree = "<group>"; };
-		92B912801FDFB80400A95AF3 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		92B912811FDFB80400A95AF3 /* log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = log.h; sourceTree = "<group>"; };
 		92B912821FDFB80400A95AF3 /* bytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bytes.h; sourceTree = "<group>"; };
 		92B912831FDFB80400A95AF3 /* md5.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = md5.c; sourceTree = "<group>"; };
@@ -1128,7 +1126,6 @@
 				92B9127D1FDFB80400A95AF3 /* rtmp.c */,
 				92B9127E1FDFB80400A95AF3 /* cencode.h */,
 				92B9127F1FDFB80400A95AF3 /* amf.h */,
-				92B912801FDFB80400A95AF3 /* COPYING */,
 				92B912811FDFB80400A95AF3 /* log.h */,
 				92B912821FDFB80400A95AF3 /* bytes.h */,
 				92B912831FDFB80400A95AF3 /* md5.c */,
@@ -1265,7 +1262,6 @@
 				92417B761FCD804B00A852EE /* bilinear_lowres_scale.effect in Resources */,
 				92417B751FCD804B00A852EE /* bicubic_scale.effect in Resources */,
 				92417B861FCD804B00A852EE /* solid.effect in Resources */,
-				92B916361FDFB80500A95AF3 /* COPYING in Resources */,
 				92417B791FCD804B00A852EE /* deinterlace_base.effect in Resources */,
 				92417B7B1FCD804B00A852EE /* deinterlace_blend_2x.effect in Resources */,
 				92417B7C1FCD804B00A852EE /* deinterlace_discard.effect in Resources */,

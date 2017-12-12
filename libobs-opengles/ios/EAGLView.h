@@ -115,6 +115,8 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @property(nonatomic, assign) BOOL multiSampling;
 
+// get the view object
++(id) sharedEGLView;
 
 /** EAGLView uses double-buffer. This method swaps the buffers */
 -(void) swapBuffers;
