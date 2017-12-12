@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,14 +33,24 @@
                                     <action selector="onPushClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8c1-6P-LDQ"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v4R-dF-415">
+                                <rect key="frame" x="0.0" y="454" width="375" height="213"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="213" id="gGk-nq-OmY"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="dOZ-Ve-tre" secondAttribute="bottom" constant="20" id="CsX-Yu-j8e"/>
+                            <constraint firstItem="v4R-dF-415" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="HVX-WH-b3l"/>
+                            <constraint firstAttribute="trailing" secondItem="v4R-dF-415" secondAttribute="trailing" id="LMf-sr-YuD"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="v4R-dF-415" secondAttribute="bottom" id="bk0-oP-MMy"/>
                             <constraint firstItem="dOZ-Ve-tre" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="oml-B8-Jne"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="debugImageView" destination="v4R-dF-415" id="PVJ-un-3rl"/>
                         <outlet property="pushButton" destination="dOZ-Ve-tre" id="heb-so-aFn"/>
                     </connections>
                 </viewController>

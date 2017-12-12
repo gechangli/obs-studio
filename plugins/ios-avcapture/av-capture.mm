@@ -650,14 +650,28 @@ static inline bool update_frame(av_capture *capture,
 			kCMTimeRoundingMethod_Default);
 	frame->timestamp = target_pts_nano.value;
 
-	if (!update_frame(capture, frame, sampleBuffer)) {
-		obs_source_output_video(capture->source, nullptr);
-		return;
-	}
+    if (!update_frame(capture, frame, sampleBuffer)) {
+        obs_source_output_video(capture->source, nullptr);
+        return;
+    }
 
-	obs_source_output_video(capture->source, frame);
+    obs_source_output_video(capture->source, frame);
 
 	CVImageBufferRef img = CMSampleBufferGetImageBuffer(sampleBuffer);
+    
+    // XXX: test code, show capture image in a view
+#if 0
+    static int c = 0;
+    c++;
+    if(c % 111 == 0) {
+        UIImage* uiImage = [self getUIImage:img];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            id vc = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            [vc performSelector:@selector(showCameraImage:) withObject:uiImage];
+        });
+    }
+#endif
+    
 	CVPixelBufferUnlockBaseAddress(img, kCVPixelBufferLock_ReadOnly);
 }
 
