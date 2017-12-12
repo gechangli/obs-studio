@@ -619,7 +619,7 @@ void *obs_video_thread(void *param)
 		profile_end(render_displays_name);
 
 		profile_start(output_frame_name);
-//        output_frame();
+        output_frame();
 		profile_end(output_frame_name);
 
 		frame_time_ns = os_gettime_ns() - frame_start;

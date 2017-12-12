@@ -71,8 +71,8 @@ uint64_t os_gettime_ns(void) {
     return f();
 }
 
-static int os_get_path_internal(char *dst, size_t size, const char *name, NSSearchPathDomainMask domainMask) {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, domainMask, YES);
+int os_get_config_path(char *dst, size_t size, const char *name) {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
     if([paths count] == 0)
         bcrash("Could not get document directory (platform-ios)");
@@ -86,8 +86,8 @@ static int os_get_path_internal(char *dst, size_t size, const char *name, NSSear
         return snprintf(dst, size, "%s/%s", base_path, name);
 }
 
-static char *os_get_path_ptr_internal(const char *name, NSSearchPathDomainMask domainMask) {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, domainMask, YES);
+char *os_get_config_path_ptr(const char *name) {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     if([paths count] == 0)
         bcrash("Could not get document directory (platform-ios)");
     
@@ -107,20 +107,29 @@ static char *os_get_path_ptr_internal(const char *name, NSSearchPathDomainMask d
     return path.array;
 }
 
-int os_get_config_path(char *dst, size_t size, const char *name) {
-    return os_get_path_internal(dst, size, name, NSUserDomainMask);
-}
-
-char *os_get_config_path_ptr(const char *name) {
-    return os_get_path_ptr_internal(name, NSUserDomainMask);
-}
-
 int os_get_program_data_path(char *dst, size_t size, const char *name) {
-    return os_get_path_internal(dst, size, name, NSUserDomainMask);
+    NSString* resPath = [NSBundle mainBundle].resourcePath;
+    const char *base_path = [resPath UTF8String];
+    
+    if (!name || !*name)
+        return snprintf(dst, size, "%s", base_path);
+    else
+        return snprintf(dst, size, "%s/%s", base_path, name);
 }
 
 char *os_get_program_data_path_ptr(const char *name) {
-    return os_get_path_ptr_internal(name, NSUserDomainMask);
+    NSString* resPath = [NSBundle mainBundle].resourcePath;
+    const char *base_path = [resPath UTF8String];
+    NSUInteger len = [resPath lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    char *path_ptr = bmalloc(len+1);
+    path_ptr[len] = 0;
+    memcpy(path_ptr, [resPath UTF8String], len);
+    
+    struct dstr path;
+    dstr_init_move_array(&path, path_ptr);
+    dstr_cat(&path, "/");
+    dstr_cat(&path, name);
+    return path.array;
 }
 
 os_performance_token_t *os_request_high_performance(const char *reason) {

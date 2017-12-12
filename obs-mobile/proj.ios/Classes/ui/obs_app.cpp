@@ -85,6 +85,10 @@ int OBSApp::GetConfigPath(char *path, size_t size, const char *name) {
     return os_get_config_path(path, size, name);
 }
 
+int OBSApp::GetDataPath(char* path, size_t size, const char* name) {
+    return os_get_program_data_path(path, size, name);
+}
+
 int OBSApp::GetProfilePath(char *path, size_t size, const char *file) {
     char profiles_path[512];
     const char *profile = config_get_string(m_globalConfig, "Basic", "ProfileDir");
@@ -203,7 +207,7 @@ void OBSApp::SourceLoaded(void *data, obs_source_t *source) {
 void OBSApp::LoadDefaultScene() {
     // load scene
     char scenePath[512];
-    int ret = GetConfigPath(scenePath, sizeof(scenePath), "data/scenes/default.json");
+    int ret = GetDataPath(scenePath, sizeof(scenePath), "data/scenes/default.json");
     if (ret <= 0)
         throw "Failed to get scene collection json file path";
     LoadScene(scenePath);

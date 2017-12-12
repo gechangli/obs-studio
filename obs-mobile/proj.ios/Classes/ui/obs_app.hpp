@@ -121,8 +121,9 @@ private:
     void RegisterStaticModuleLoader(OBS_STATIC_MODULE_LOADER loader);
     
 public:
-    // get config file path
+    // get file path
     int GetConfigPath(char* path, size_t size, const char* name);
+    int GetDataPath(char* path, size_t size, const char* name);
     int GetProfilePath(char *path, size_t size, const char *file);
     
     // ctor & dtor

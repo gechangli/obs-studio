@@ -91,7 +91,6 @@
 		92417BAD1FCD804B00A852EE /* obs-hotkey.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B0C1FCD804B00A852EE /* obs-hotkey.c */; };
 		92417BAE1FCD804B00A852EE /* obs-ios.m in Sources */ = {isa = PBXBuildFile; fileRef = 92417B111FCD804B00A852EE /* obs-ios.m */; };
 		92417BAF1FCD804B00A852EE /* obs-module.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B121FCD804B00A852EE /* obs-module.c */; };
-		92417BB11FCD804B00A852EE /* obs-osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 92417B151FCD804B00A852EE /* obs-osx.m */; };
 		92417BB21FCD804B00A852EE /* obs-output-delay.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B161FCD804B00A852EE /* obs-output-delay.c */; };
 		92417BB31FCD804B00A852EE /* obs-output.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B171FCD804B00A852EE /* obs-output.c */; };
 		92417BB41FCD804B00A852EE /* obs-properties.c in Sources */ = {isa = PBXBuildFile; fileRef = 92417B191FCD804B00A852EE /* obs-properties.c */; };
@@ -335,7 +334,6 @@
 		92417B111FCD804B00A852EE /* obs-ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "obs-ios.m"; sourceTree = "<group>"; };
 		92417B121FCD804B00A852EE /* obs-module.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-module.c"; sourceTree = "<group>"; };
 		92417B131FCD804B00A852EE /* obs-module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "obs-module.h"; sourceTree = "<group>"; };
-		92417B151FCD804B00A852EE /* obs-osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "obs-osx.m"; sourceTree = "<group>"; };
 		92417B161FCD804B00A852EE /* obs-output-delay.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-output-delay.c"; sourceTree = "<group>"; };
 		92417B171FCD804B00A852EE /* obs-output.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "obs-output.c"; sourceTree = "<group>"; };
 		92417B181FCD804B00A852EE /* obs-output.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "obs-output.h"; sourceTree = "<group>"; };
@@ -613,7 +611,6 @@
 				92417B111FCD804B00A852EE /* obs-ios.m */,
 				92417B121FCD804B00A852EE /* obs-module.c */,
 				92417B131FCD804B00A852EE /* obs-module.h */,
-				92417B151FCD804B00A852EE /* obs-osx.m */,
 				92417B161FCD804B00A852EE /* obs-output-delay.c */,
 				92417B171FCD804B00A852EE /* obs-output.c */,
 				92417B181FCD804B00A852EE /* obs-output.h */,
@@ -1368,7 +1365,6 @@
 				92417B931FCD804B00A852EE /* matrix4.c in Sources */,
 				92B917F81FDFB80600A95AF3 /* transition-luma-wipe.c in Sources */,
 				92B916241FDFB80500A95AF3 /* gettimeofday.c in Sources */,
-				92417BB11FCD804B00A852EE /* obs-osx.m in Sources */,
 				92417BAD1FCD804B00A852EE /* obs-hotkey.c in Sources */,
 				92417B8F1FCD804B00A852EE /* image-file.c in Sources */,
 				92417BB81FCD804B00A852EE /* obs-source-transition.c in Sources */,
