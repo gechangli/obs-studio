@@ -101,6 +101,8 @@ struct av_capture;
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
         didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         fromConnection:(AVCaptureConnection *)connection;
+- (UIImage*)getUIImage:(CVImageBufferRef)cvImage;
+
 @end
 
 namespace {
@@ -658,6 +660,20 @@ static inline bool update_frame(av_capture *capture,
 	CVImageBufferRef img = CMSampleBufferGetImageBuffer(sampleBuffer);
 	CVPixelBufferUnlockBaseAddress(img, kCVPixelBufferLock_ReadOnly);
 }
+
+- (UIImage*)getUIImage:(CVImageBufferRef)cvImage {
+    CIImage* ciImage = [CIImage imageWithCVPixelBuffer:cvImage];
+    CIContext *temporaryContext = [CIContext contextWithOptions:nil];
+    CGImageRef videoImage = [temporaryContext createCGImage:ciImage
+                                                   fromRect:CGRectMake(0, 0,
+                                                                       CVPixelBufferGetWidth(cvImage),
+                                                                       CVPixelBufferGetHeight(cvImage))];
+    
+    UIImage* image = [[UIImage alloc] initWithCGImage:videoImage];
+    CGImageRelease(videoImage);
+    return image;
+}
+
 @end
 
 static void av_capture_enable_buffering(av_capture *capture, bool enabled)
