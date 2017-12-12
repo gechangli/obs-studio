@@ -359,6 +359,8 @@ static inline video_format format_from_subtype(FourCharCode subtype)
 		return VIDEO_FORMAT_ARGB;*/
 	case kCVPixelFormatType_32BGRA:
 		return VIDEO_FORMAT_BGRA;
+    case kCVPixelFormatType_32RGBA:
+        return VIDEO_FORMAT_RGBA;
 	default:
 		return VIDEO_FORMAT_NONE;
 	}
@@ -785,6 +787,14 @@ static uint32_t uint_from_dict(NSDictionary *dict, CFStringRef key)
 
 static bool init_format(av_capture *capture, AVCaptureDevice *dev)
 {
+#if DEBUG
+    // list supported pixel format
+    NSArray* supportedPixelFormats = [capture->out availableVideoCVPixelFormatTypes];
+    for(NSNumber* pf in supportedPixelFormats) {
+        AVLOG(LOG_DEBUG, "Supported pixel format: %s", AV_FOURCC_STR([pf intValue]));
+    }
+#endif
+    
 	AVCaptureDeviceFormat *format = dev.activeFormat;
 
 	CMMediaType mtype = CMFormatDescriptionGetMediaType(
