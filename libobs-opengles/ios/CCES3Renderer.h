@@ -30,48 +30,50 @@
 
 #if TARGET_OS_IPHONE
 
-#import "CCESRenderer.h"
+#import <QuartzCore/QuartzCore.h>
+#import <OpenGLES/EAGL.h>
+#import <OpenGLES/EAGLDrawable.h>
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
 
-@interface CCES3Renderer : NSObject <CCESRenderer>
-{
-    // The pixel dimensions of the CAEAGLLayer
-    GLint backingWidth_;
-    GLint backingHeight_;
-
-    unsigned int    samplesToUse_;
-    BOOL            multiSampling_;
-
-    unsigned int    depthFormat_;
-    unsigned int    pixelFormat_;
-
-    // The OpenGL ES names for the framebuffer and renderbuffer used to render to this view
-    GLuint defaultFramebuffer_;
-    GLuint colorRenderbuffer_;
-    GLuint depthBuffer_;
-
-
-    //buffers for MSAA
-    GLuint msaaFramebuffer_;
-    GLuint msaaColorbuffer_;
-}
+@interface CCES3Renderer : NSObject
 
 /** Color Renderbuffer */
-@property (nonatomic, readonly, assign) GLuint colorRenderbuffer;
+@property (nonatomic, assign) GLuint colorRenderbuffer;
 
 /** Default Renderbuffer */
-@property (nonatomic, readonly, assign) GLuint defaultFramebuffer;
+@property (nonatomic, assign) GLuint defaultFramebuffer;
 
 /** MSAA Framebuffer */
-@property (nonatomic, readonly, assign) GLuint msaaFramebuffer;
+@property (nonatomic, assign) GLuint msaaFramebuffer;
 
 /** MSAA Color Buffer */
-@property (nonatomic, readonly, assign) GLuint msaaColorbuffer;
+@property (nonatomic, assign) GLuint msaaColorbuffer;
 
+/// depth buffer
+@property (nonatomic, assign) GLuint depthBuffer;
+
+/// depth format
+@property (nonatomic, assign) unsigned int depthFormat;
+
+/// pixel format
+@property (nonatomic, assign) unsigned int pixelFormat;
+
+/// sample count
+@property (nonatomic, assign) unsigned int samplesToUse;
+
+/// multisample or not
+@property (nonatomic, assign) BOOL multiSampling;
+
+/// context
 @property (strong, nonatomic) EAGLContext* context;
 
+// layer size
+@property (nonatomic, assign) CGSize backingSize;
+
 - (BOOL)resizeFromLayer:(CAEAGLLayer *)layer;
+
+- (id) initWithDepthFormat:(unsigned int)depthFormat withPixelFormat:(unsigned int)pixelFormat withSharegroup:(EAGLSharegroup*)sharegroup withMultiSampling:(BOOL) multiSampling withNumberOfSamples:(unsigned int) requestedSamples;
 
 @end
 

@@ -183,17 +183,17 @@ static EAGLView *view = 0;
                                     };
     
     
-    renderer_ = [[CCES3Renderer alloc] initWithDepthFormat:self.depthFormat
+    self.renderer = [[CCES3Renderer alloc] initWithDepthFormat:self.depthFormat
                                          withPixelFormat:[self convertPixelFormat:self.pixelFormat]
                                           withSharegroup:sharegroup
                                        withMultiSampling:self.multiSampling
                                      withNumberOfSamples:requestedSamples_];
     
-    NSAssert(renderer_, @"OpenGL ES 3.O is required.");
-    if (!renderer_)
+    NSAssert(self.renderer, @"OpenGL ES 3.O is required.");
+    if (!self.renderer)
         return NO;
     
-    self.context = [renderer_ context];
+    self.context = [self.renderer context];
     
     gl_success("setupSurfaceWithSharegroup");
     
@@ -207,8 +207,8 @@ static EAGLView *view = 0;
 
 - (void) layoutSubviews
 {
-    [renderer_ resizeFromLayer:(CAEAGLLayer*)self.layer];
-    self.surfaceSize = [renderer_ backingSize];
+    [self.renderer resizeFromLayer:(CAEAGLLayer*)self.layer];
+    self.surfaceSize = [self.renderer backingSize];
 }
 
 - (void) swapBuffers
@@ -223,8 +223,8 @@ static EAGLView *view = 0;
     if (self.multiSampling)
     {
         /* Resolve from msaaFramebuffer to resolveFramebuffer */
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, [renderer_ msaaFrameBuffer]);
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, [renderer_ defaultFrameBuffer]);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, self.renderer.msaaFramebuffer);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, self.renderer.defaultFramebuffer);
         glBlitFramebuffer(0, 0, self.surfaceSize.width, self.surfaceSize.height,
                           0, 0, self.surfaceSize.width, self.surfaceSize.height,
                           GL_COLOR_BUFFER_BIT, GL_NEAREST);
@@ -245,7 +245,7 @@ static EAGLView *view = 0;
                 glInvalidateFramebuffer(GL_READ_FRAMEBUFFER, 1, attachments);
             }
             
-            glBindRenderbuffer(GL_RENDERBUFFER, [renderer_ colorRenderBuffer]);
+            glBindRenderbuffer(GL_RENDERBUFFER, self.renderer.colorRenderbuffer);
     
         }    
         
@@ -265,7 +265,7 @@ static EAGLView *view = 0;
     // We can safely re-bind the framebuffer here, since this will be the
     // 1st instruction of the new main loop
     if(self.multiSampling)
-        glBindFramebuffer(GL_FRAMEBUFFER, [renderer_ msaaFrameBuffer]);    
+        glBindFramebuffer(GL_FRAMEBUFFER, self.renderer.msaaFramebuffer);
 }
 
 - (unsigned int) convertPixelFormat:(NSString*) pixelFormat

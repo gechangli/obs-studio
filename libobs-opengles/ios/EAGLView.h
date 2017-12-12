@@ -72,7 +72,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
 #import <CoreFoundation/CoreFoundation.h>
-#import "CCESRenderer.h"
+#import "CCES3Renderer.h"
 
 //CLASS INTERFACE:
 
@@ -83,8 +83,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
  */
 @interface EAGLView : UIView <UIKeyInput, UITextInput>
 {
-    id                        <CCESRenderer> renderer_;
-
     BOOL                    preserveBackbuffer_;
     BOOL                    discardFramebufferSupported_;
 
@@ -119,13 +117,16 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 /** OpenGL context */
 @property(nonatomic, strong) EAGLContext *context;
 
+/// renderer
+@property (nonatomic, strong) CCES3Renderer* renderer;
+
 @property(nonatomic, assign) BOOL multiSampling;
 
 // get the view object
-+(id) sharedEGLView;
++ (id)sharedEGLView;
 
 /** EAGLView uses double-buffer. This method swaps the buffers */
--(void) swapBuffers;
+- (void) swapBuffers;
 
 - (CGRect) convertRectFromViewToSurface:(CGRect)rect;
 - (CGPoint) convertPointFromViewToSurface:(CGPoint)point;

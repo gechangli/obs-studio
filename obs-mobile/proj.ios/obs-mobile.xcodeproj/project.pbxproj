@@ -442,7 +442,6 @@
 		925E198E1F6EB779007DC703 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		9275C8391FD3DD3A00D6DD7D /* CCES3Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCES3Renderer.h; sourceTree = "<group>"; };
 		9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCES3Renderer.m; sourceTree = "<group>"; };
-		9275C83B1FD3DD3A00D6DD7D /* CCESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCESRenderer.h; sourceTree = "<group>"; };
 		9275C83C1FD3DD3A00D6DD7D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "gl-ios.mm"; sourceTree = "<group>"; };
@@ -990,7 +989,6 @@
 			children = (
 				9275C8391FD3DD3A00D6DD7D /* CCES3Renderer.h */,
 				9275C83A1FD3DD3A00D6DD7D /* CCES3Renderer.m */,
-				9275C83B1FD3DD3A00D6DD7D /* CCESRenderer.h */,
 				9275C83C1FD3DD3A00D6DD7D /* EAGLView.h */,
 				9275C83D1FD3DD3A00D6DD7D /* EAGLView.mm */,
 				9275C83E1FD3DD3A00D6DD7D /* gl-ios.mm */,
