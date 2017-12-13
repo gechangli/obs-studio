@@ -183,8 +183,8 @@ int OBSApp::ResetVideo() {
     ovi.fps_den         = 1001;
     ovi.graphics_module = config_get_string(m_globalConfig, "Video", "Renderer");
     ovi.output_format   = VIDEO_FORMAT_RGBA;
-    ovi.output_width    = 1280;
-    ovi.output_height   = 720;
+    ovi.output_width    = 720;
+    ovi.output_height   = 1280;
     
     if (obs_reset_video(&ovi) != 0)
         throw "Couldn't initialize video";

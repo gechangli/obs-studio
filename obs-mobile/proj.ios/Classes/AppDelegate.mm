@@ -50,8 +50,8 @@
         int sw = (int)screenRect.size.width;
         int sh = (int)screenRect.size.height;
         if ((sw * sh) > (1920 * 1080)) {
-            sw = 1920;
-            sh = 1080;
+            sw = 1080;
+            sh = 1920;
         }
         
         // create app
