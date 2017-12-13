@@ -240,13 +240,8 @@ failed:
 
 bool GL_MANGLING(gs_texture_is_rect)(const gs_texture_t *tex)
 {
-	const struct gs_texture_2d *tex2d = (const struct gs_texture_2d*)tex;
-	if (!is_texture_2d(tex, "gs_texture_is_rect")) {
-		blog(LOG_ERROR, "gs_texture_is_rect (GL) failed");
-		return false;
-	}
-
-    return tex2d->base.gl_target == GL_TEXTURE_2D;
+    // OpenGLES doesn't support GL_TEXTURE_RECTANGLE
+    return false;
 }
 
 void * GL_MANGLING(gs_texture_get_obj)(gs_texture_t *tex)
