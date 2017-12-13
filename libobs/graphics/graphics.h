@@ -466,6 +466,7 @@ EXPORT int gs_create(graphics_t **graphics, const char *module,
 		uint32_t adapter);
 EXPORT void gs_destroy(graphics_t *graphics);
 
+EXPORT int gs_get_swapchain_back_fbo();
 EXPORT void gs_enter_context(graphics_t *graphics);
 EXPORT void gs_leave_context(void);
 EXPORT graphics_t *gs_get_context(void);

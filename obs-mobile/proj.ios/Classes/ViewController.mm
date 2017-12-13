@@ -5,7 +5,6 @@
 @interface ViewController ()
 
 @property (weak, nonatomic) IBOutlet UIButton *pushButton;
-@property (weak, nonatomic) IBOutlet UIImageView *debugImageView;
 
 - (IBAction)onPushClicked:(id)sender;
 
@@ -31,10 +30,6 @@
         obsApp->StartStreaming("rtmp://send1.douyu.com/live", "2957252ruUkRlHvo?wsSecret=a303f4610c88e209dc79fa350ea08cd9&wsTime=59aa3479&wsSeek=off");
         self.pushButton.titleLabel.text = @"Stop";
     }
-}
-
-- (void)showCameraImage:(UIImage*)img {
-    self.debugImageView.image = img;
 }
 
 @end

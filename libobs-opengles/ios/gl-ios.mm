@@ -115,7 +115,15 @@ void gl_update(gs_device_t *device)
 {
     // nothing to do for OpenGLES
 }
-
+    
+int GL_MANGLING(device_get_swapchain_back_fbo)(gs_device_t *device) {
+    if(device->cur_swap) {
+        return device->cur_swap->wi->view.renderer.defaultFramebuffer;
+    } else {
+        return 0;
+    }
+}
+    
 void GL_MANGLING(device_enter_context)(gs_device_t *device)
 {
     [EAGLContext setCurrentContext:device->plat->context];

@@ -32,6 +32,7 @@ EXPORT bool GL_MANGLING(device_enum_adapters)(
 EXPORT const char *GL_MANGLING(device_preprocessor_name)(void);
 EXPORT int GL_MANGLING(device_create)(gs_device_t **device, uint32_t adapter);
 EXPORT void GL_MANGLING(device_destroy)(gs_device_t *device);
+EXPORT int GL_MANGLING(device_get_swapchain_back_fbo)(gs_device_t* device);
 EXPORT void GL_MANGLING(device_enter_context)(gs_device_t *device);
 EXPORT void GL_MANGLING(device_leave_context)(gs_device_t *device);
 EXPORT gs_swapchain_t *GL_MANGLING(device_swapchain_create)(gs_device_t *device,

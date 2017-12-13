@@ -36,6 +36,7 @@ struct gs_exports {
 	const char *(*device_preprocessor_name)(void);
 	int (*device_create)(gs_device_t **device, uint32_t adapter);
 	void (*device_destroy)(gs_device_t *device);
+    int (*device_get_swapchain_back_fbo)(gs_device_t* device);
 	void (*device_enter_context)(gs_device_t *device);
 	void (*device_leave_context)(gs_device_t *device);
 	gs_swapchain_t *(*device_swapchain_create)(gs_device_t *device,

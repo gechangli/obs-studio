@@ -685,8 +685,8 @@ static inline struct fbo_info *get_fbo_by_tex(struct gs_device *device,
 static bool set_current_fbo(gs_device_t *device, struct fbo_info *fbo)
 {
 	if (device->cur_fbo != fbo) {
-		GLuint fbo_obj = fbo ? fbo->fbo : 0;
-		if (!gl_bind_framebuffer(GL_DRAW_FRAMEBUFFER, fbo_obj))
+		GLuint fbo_obj = fbo ? fbo->fbo : (GLuint)gs_get_swapchain_back_fbo();
+		if (!gl_bind_framebuffer(GL_FRAMEBUFFER, fbo_obj))
 			return false;
 
 		if (device->cur_fbo) {
@@ -708,12 +708,12 @@ static bool attach_rendertarget(struct fbo_info *fbo, gs_texture_t *tex,
 	fbo->cur_render_target = tex;
 
 	if (tex->type == GS_TEXTURE_2D) {
-		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER,
+		glFramebufferTexture2D(GL_FRAMEBUFFER,
 				GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
 				tex->texture, 0);
 
 	} else if (tex->type == GS_TEXTURE_CUBE) {
-		glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER,
+		glFramebufferTexture2D(GL_FRAMEBUFFER,
 				GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_CUBE_MAP_POSITIVE_X + side,
 				tex->texture, 0);
@@ -740,7 +740,7 @@ static bool attach_zstencil(struct fbo_info *fbo, gs_zstencil_t *zs)
 		zs_attachment = zs->attachment;
 	}
 
-	glFramebufferRenderbuffer(GL_DRAW_FRAMEBUFFER,
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER,
 			zs_attachment, GL_RENDERBUFFER, zsbuffer);
 	if (!gl_success("glFramebufferRenderbuffer"))
 		return false;

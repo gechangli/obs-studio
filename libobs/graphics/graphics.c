@@ -263,6 +263,13 @@ void gs_destroy(graphics_t *graphics)
 	gs_free_image_deps();
 }
 
+int gs_get_swapchain_back_fbo() {
+    graphics_t *graphics = thread_graphics;
+    if (!ptr_valid(graphics, "gs_get_swapchain_back_fbo"))
+        return 0;
+    return graphics->exports.device_get_swapchain_back_fbo(thread_graphics->device);
+}
+
 void gs_enter_context(graphics_t *graphics)
 {
 	if (!ptr_valid(graphics, "gs_enter_context"))

@@ -2,7 +2,5 @@
 
 @interface ViewController : UIViewController
 
-- (void)showCameraImage:(UIImage*)img;
-
 @end
 

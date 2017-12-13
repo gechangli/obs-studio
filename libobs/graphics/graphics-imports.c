@@ -65,6 +65,7 @@ bool load_graphics_imports(struct gs_exports *exports, void *module,
 	GRAPHICS_IMPORT(device_destroy);
 	GRAPHICS_IMPORT(device_enter_context);
 	GRAPHICS_IMPORT(device_leave_context);
+    GRAPHICS_IMPORT(device_get_swapchain_back_fbo);
 	GRAPHICS_IMPORT(device_swapchain_create);
 	GRAPHICS_IMPORT(device_resize);
 	GRAPHICS_IMPORT(device_get_size);

@@ -525,6 +525,10 @@ void gl_windowinfo_destroy(struct gl_windowinfo *wi)
 	}
 }
 
+int device_get_swapchain_back_fbo(gs_device_t *device) {
+	return 0;
+}
+
 void device_enter_context(gs_device_t *device)
 {
 	HDC hdc = device->plat->window.hdc;

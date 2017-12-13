@@ -149,6 +149,10 @@ void gl_update(gs_device_t *device)
 	[device->plat->context update];
 }
 
+int GL_MANGLING(device_get_swapchain_back_fbo)(gs_device_t *device) {
+    return 0;
+}
+
 void device_enter_context(gs_device_t *device)
 {
 	[device->plat->context makeCurrentContext];

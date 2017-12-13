@@ -479,6 +479,10 @@ extern void gl_platform_cleanup_swapchain(struct gs_swap_chain *swap)
 	/* Really nothing to clean up? */
 }
 
+extern int device_get_swapchain_back_fbo(gs_device_t *device) {
+	return 0;
+}
+
 extern void device_enter_context(gs_device_t *device)
 {
 	GLXContext context = device->plat->context;
