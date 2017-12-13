@@ -134,8 +134,6 @@ void GL_MANGLING(device_load_swapchain)(gs_device_t *device, gs_swapchain_t *swa
 		return;
 
 	device->cur_swap = swap;
-	if (swap && swap->wi->view.context == nil) {
-	}
 }
 
 void GL_MANGLING(device_present)(gs_device_t *device)
