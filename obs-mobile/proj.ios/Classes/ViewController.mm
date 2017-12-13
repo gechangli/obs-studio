@@ -27,7 +27,7 @@
         obsApp->StopStreaming();
         self.pushButton.titleLabel.text = @"Push";
     } else {
-        obsApp->StartStreaming("rtmp://send1.douyu.com/live", "2957252ruUkRlHvo?wsSecret=a303f4610c88e209dc79fa350ea08cd9&wsTime=59aa3479&wsSeek=off");
+        obsApp->StartStreaming("rtmp://send1.douyu.com/live", "2957252r44UxbR5k?wsSecret=3c301ca80d115fe8ff9544e814ba12e7&wsTime=5a312ac0&wsSeek=off");
         self.pushButton.titleLabel.text = @"Stop";
     }
 }
